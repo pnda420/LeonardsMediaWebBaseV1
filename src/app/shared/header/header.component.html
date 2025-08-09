@@ -1,0 +1,15 @@
+<header class="header">
+  <div class="container header__inner">
+    <img class="brand" src="logo.png" alt="Logo" />
+
+    <button class="nav-toggle" aria-label="Menü umschalten" (click)="open = !open">
+      ☰
+    </button>
+
+    <nav class="nav" [class.open]="open" aria-label="Hauptnavigation">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+      <a routerLink="/about" routerLinkActive="active">Über uns</a>
+      <a routerLink="/contact" routerLinkActive="active">Kontakt</a>
+    </nav>
+  </div>
+</header>

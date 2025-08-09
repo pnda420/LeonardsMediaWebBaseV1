@@ -1,0 +1,19 @@
+.footer {
+  .footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-block: 16px;
+
+    a {
+      color: #c9d6e5;
+      text-decoration: none;
+      margin-left: 12px;
+    }
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+    }
+  }
+}
