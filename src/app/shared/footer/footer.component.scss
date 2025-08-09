@@ -10,6 +10,11 @@
       color: #c9d6e5;
       text-decoration: none;
       margin-left: 12px;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     @media (max-width: 600px) {

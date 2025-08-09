@@ -1,15 +1,46 @@
 <header class="header">
   <div class="container header__inner">
-    <img class="brand" src="logo.png" alt="Logo" />
+    <img class="brand" src="logo_W.png" alt="Logo" (click)="router.navigate(['/'])" />
 
     <button class="nav-toggle" aria-label="Menü umschalten" (click)="open = !open">
       ☰
     </button>
 
     <nav class="nav" [class.open]="open" aria-label="Hauptnavigation">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
-      <a routerLink="/about" routerLinkActive="active">Über uns</a>
-      <a routerLink="/contact" routerLinkActive="active">Kontakt</a>
+      <div class="btn-group" role="group" aria-label="Navigation radio toggle button group">
+        <input
+          type="radio"
+          class="btn-check"
+          name="navradio"
+          id="navradio-home"
+          autocomplete="off"
+          [checked]="router.url === '/'"
+          (change)="router.navigate(['/']); open = false"
+        />
+        <label class="btn btn-outline-light" for="navradio-home">Home</label>
+
+        <input
+          type="radio"
+          class="btn-check"
+          name="navradio"
+          id="navradio-about"
+          autocomplete="off"
+          [checked]="router.url === '/about'"
+          (change)="router.navigate(['/about']); open = false"
+        />
+        <label class="btn btn-outline-light" for="navradio-about">Über uns</label>
+
+        <input
+          type="radio"
+          class="btn-check"
+          name="navradio"
+          id="navradio-contact"
+          autocomplete="off"
+          [checked]="router.url === '/contact'"
+          (change)="router.navigate(['/contact']); open = false"
+        />
+        <label class="btn btn-outline-light" for="navradio-contact">Kontakt</label>
+      </div>
     </nav>
   </div>
 </header>

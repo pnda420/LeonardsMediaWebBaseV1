@@ -1,9 +1,9 @@
 <footer class="footer">
   <div class="container footer__inner">
-    <div>© {{ year }} Deine Firma</div>
+    <div style="color: white;">© {{ year }} Deine Firma</div>
     <nav class="footer-nav" aria-label="Footer-Navigation">
-      <a routerLink="/impressum">Impressum</a>
-      <a routerLink="/datenschutz">Datenschutz</a>
+      <a (click)="router.navigate(['/imprint'])" style="color: white;">Impressum</a>
+      <a (click)="router.navigate(['/policy'])" style="color: white;">Datenschutz</a>
     </nav>
   </div>
 </footer>

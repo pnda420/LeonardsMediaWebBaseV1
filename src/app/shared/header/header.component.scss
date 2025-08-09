@@ -1,4 +1,7 @@
 .header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   .header__inner {
     min-height: 64px;
     display: flex;
@@ -11,9 +14,15 @@
   .brand {
     font-weight: 700;
     text-decoration: none;
-    color: #0b0b0b;
+    color: #ffffff;
     width: 40px;
     height: 40px;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
   }
 
   .nav-toggle {
@@ -21,7 +30,7 @@
     border: 0;
     background: transparent;
     font-size: 24px;
-    color: #000000;
+    color: #ffffff;
     display: inline-flex;
     cursor: pointer;
 
@@ -53,8 +62,8 @@
       left: 0; right: 0;
       top: 64px;
       padding: 12px 16px;
-      background: #cacaca;
-      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: #525252;
+      border-bottom: 1px solid rgb(255, 255, 255);
     }
 
     @media (min-width: 900px) {
