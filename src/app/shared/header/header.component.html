@@ -1,6 +1,6 @@
 <header class="header">
   <div class="container header__inner">
-    <img class="brand" src="logo_W.png" alt="Logo" (click)="router.navigate(['/'])" />
+    <img class="brand" src="assets/logo_W.png" alt="Logo" (click)="router.navigate(['/'])" />
 
     <button class="nav-toggle" aria-label="Menü umschalten" (click)="open = !open">
       ☰
@@ -17,7 +17,7 @@
           [checked]="router.url === '/'"
           (change)="router.navigate(['/']); open = false"
         />
-        <label class="btn btn-outline-light" for="navradio-home">Home</label>
+        <label class="btn btn-outline-light" for="navradio-home">Dienstleistungen</label>
 
         <input
           type="radio"

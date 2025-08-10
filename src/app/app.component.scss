@@ -1,18 +1,18 @@
+@import './utils/shared-styles.scss';
+
 :host {
   display: block;
 }
 
-/* Grid-Rahmen: Header (auto) – Main (1fr) – Footer (auto) */
 .page {
-  min-height: 100svh; /* mobile Viewports korrekt berücksichtigen */
-  min-height: 100vh;  /* Fallback */
+  min-height: 100svh;
+  min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  background: #ffffff; /* dunkles Grundthema (optional) */
-  color: #000000;
+  background: $color-background-main;
+  color: $color-text-primary;
 }
 
-/* Max-Breite + Seitenabstand */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -20,29 +20,25 @@
   margin-inline: auto;
 }
 
-/* Header “sticky” mit leichtem Schatten */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 1000;
   backdrop-filter: saturate(150%) blur(6px);
-  background: #525252;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  background: rgba($color-brand-dark, 0.85);
+  box-shadow: 0 4px 12px $color-brand-dark;
 }
 
-/* Main flexibel, damit Footer unten bleibt */
 .site-main {
   padding-block: clamp(16px, 3vw, 32px);
 }
 
-/* Footer */
 .site-footer {
-  border-top: 1px solid rgba(255,255,255,.06);
-  background: #434343;
+  background: $color-brand-dark;
+  box-shadow: 0 -4px 12px $color-brand-dark;
+  color: $color-white; // Footer-Text gut lesbar
 }
 
-/* Hilfreich für iOS Safe Areas */
 .page,
 .site-header,
 .site-footer {

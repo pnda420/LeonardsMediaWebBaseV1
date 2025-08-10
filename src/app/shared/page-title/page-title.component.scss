@@ -1,0 +1,15 @@
+@import '../../utils/shared-styles.scss';
+
+
+.page-title {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #222;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    padding: 0.5em 0;
+}
