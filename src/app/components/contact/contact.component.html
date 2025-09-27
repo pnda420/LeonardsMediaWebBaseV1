@@ -47,9 +47,19 @@
       </div>
 
       <div class="field">
+        <label for="service">Interesse an (optional)</label>
+        <select id="service" name="service" [(ngModel)]="model.service">
+          <option value="" disabled>Bitte Service wählen</option>
+          <option *ngFor="let service of services" [value]="service.title">
+            {{ service.title }}
+          </option>
+        </select>
+      </div>
+
+      <div class="field">
         <label for="message">Worum geht’s? (optional)</label>
         <textarea id="message" name="message" rows="4" [(ngModel)]="model.message"
-          placeholder="2–3 Stichpunkte reichen."></textarea>
+          placeholder="2–3 Sätze reichen."></textarea>
       </div>
 
       <div class="field field--inline">

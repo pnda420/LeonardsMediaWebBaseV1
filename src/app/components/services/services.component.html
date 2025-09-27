@@ -11,7 +11,7 @@
                         <span *ngIf="s.price" class="badge bg-dark-subtle text-dark-emphasis">{{ s.price }}</span>
                     </h5>
                     <p class="card-text mb-4">{{ s.short }}</p>
-                    <a class="btn btn-primary mt-auto" [routerLink]="['/leistungen', s.slug]"
+                    <a class="btn btn-primary mt-auto" [routerLink]="['/services', s.slug]"
                         [attr.aria-label]="s.title + ' – ' + (s.cta || 'Mehr erfahren')">
                         {{ s.cta || 'Mehr erfahren' }}
                     </a>

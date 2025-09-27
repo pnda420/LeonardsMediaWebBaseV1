@@ -131,6 +131,19 @@ section{
   }
 }
 
+
+select {
+    width: 100%;
+    border: 1px solid $color-gray-light;
+    border-radius: 12px;
+    background: $color-white;
+    color: $color-text-primary;
+    padding: .6rem .75rem;
+    font: inherit;
+    transition: border-color 140ms ease, box-shadow 140ms ease;
+    
+}
+
 /* Reuse Buttons from Home (falls vorhanden) */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
