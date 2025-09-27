@@ -1,22 +1,71 @@
-<app-page-title title="Unsere Leistungen"></app-page-title>
-
-<div class="container">
-    <div class="row g-3 justify-content-center">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let s of services">
-            <div class="card h-100 service-card">
-                <img [src]="s.img" class="card-img-top service-thumb" [alt]="s.title" loading="lazy" decoding="async">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title d-flex justify-content-between align-items-start">
-                        <span>{{ s.title }}</span>
-                        <span *ngIf="s.price" class="badge bg-dark-subtle text-dark-emphasis">{{ s.price }}</span>
-                    </h5>
-                    <p class="card-text mb-4">{{ s.short }}</p>
-                    <a class="btn btn-primary mt-auto" [routerLink]="['/leistungen', s.slug]"
-                        [attr.aria-label]="s.title + ' – ' + (s.cta || 'Mehr erfahren')">
-                        {{ s.cta || 'Mehr erfahren' }}
-                    </a>
-                </div>
-            </div>
+<section class="hero" role="region" aria-label="Einführung">
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <h1>IT-Dienstleistungen, die einfach funktionieren</h1>
+        <p>Planbar, transparent und ohne unnötigen Ballast. Wir unterstützen Sie bei Systemintegration, Entwicklung und Betrieb – pragmatisch und zuverlässig.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" (click)="router.navigate(['/contact'])">Unverbindliches Gespräch</a>
+          <a class="btn btn--ghost" (click)="router.navigate(['/about'])">Mehr über uns</a>
         </div>
+      </div>
+      <div class="hero__visual" aria-hidden="true">
+        <img src="assets/services.jpg" alt="" />
+      </div>
     </div>
-</div>
+  </section>
+  
+  <section class="usp" role="region" aria-label="Werteversprechen">
+    <div class="container usp__grid">
+      <article class="usp__item" *ngFor="let u of usp">
+        <div class="usp__icon" [innerHTML]="u.icon"></div>
+        <h3>{{ u.title }}</h3>
+        <p>{{ u.text }}</p>
+      </article>
+    </div>
+  </section>
+  
+  <section class="services" role="region" aria-label="Leistungen">
+    <div class="container">
+      <header class="section-head">
+        <h2>Leistungen</h2>
+        <p>Konzentriert auf das, was Wirkung hat – nicht auf Buzzwords.</p>
+      </header>
+  
+      <div class="services__grid">
+        <article class="card" *ngFor="let s of services">
+          <h3>{{ s.title }}</h3>
+          <p>{{ s.text }}</p>
+          <a class="link" (click)="router.navigate([s.link])">Details</a>
+        </article>
+      </div>
+    </div>
+  </section>
+  
+  
+  <section class="testimonials" role="region" aria-label="Kundenstimmen">
+    <div class="container">
+      <header class="section-head">
+        <h2>Was Kunden sagen</h2>
+      </header>
+      <div class="testi__grid">
+        <figure class="testi" *ngFor="let t of testimonials">
+          <blockquote>“{{ t.quote }}”</blockquote>
+          <figcaption>
+            <span class="name">{{ t.name }}</span>
+            <span class="role">{{ t.role }}</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+  
+  <section class="cta" role="region" aria-label="Kontaktaufnahme">
+    <div class="container cta__inner">
+      <div class="cta__text">
+        <h2>Passt das zu Ihrem Vorhaben?</h2>
+        <p>Kurzes Erstgespräch, klare Einschätzung, kein Sales-Druck.</p>
+      </div>
+      <a class="btn btn--primary" (click)="router.navigate(['/contact'])">Termin anfragen</a>
+    </div>
+  </section>
+  

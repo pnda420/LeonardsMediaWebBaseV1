@@ -1,23 +1,23 @@
 // ===== Grundfarben =====
-$color-background-main: #F8FAFC;     // Sehr helles, klares Grau-Blau (ruhiger als reines Weiß)
-$color-text-primary: #0F172A;         // Tiefes Anthrazit-Blau, angenehmer als reines Schwarz
-$color-text-secondary: #475569;       // Gedämpftes Grau-Blau für weniger wichtige Texte
+$color-background-main: #F9FAFB;      // Fast Weiß, sehr neutral
+$color-text-primary: #111827;         // Tiefes Anthrazit, angenehmer als Schwarz
+$color-text-secondary: #6B7280;       // Mittelgrau, unaufdringlich
 
 // ===== Branding =====
-$color-brand-primary: #2563EB;        // Sattes Blau (seriös, modern)
-$color-brand-dark: #1E40AF;           // Tieferes Blau für Header/Footer
-$color-brand-light: #60A5FA;          // Helleres Blau für Hover/Highlights
-$color-brand-bg: #E0F2FE;             // Sehr helles Blau für subtile Hintergründe
+$color-brand-primary: #2563EB;        // Seriöses, kräftiges Blau
+$color-brand-dark: #1E3A8A;           // Dunkles Navy-Blau (Header/Footer)
+$color-brand-light: #3B82F6;          // Etwas helleres Blau für Hover
+$color-brand-bg: #EFF6FF;             // Sehr helles Blau für subtile Hintergründe
 
 // ===== Neutrale =====
 $color-white: #FFFFFF;
 $color-black: #000000;
-$color-gray-dark: #374151;            // Abgedunkeltes Grau für Flächen
-$color-gray: #6B7280;                 // Standard-Grau für Icons, Rahmen
-$color-gray-light: #E5E7EB;           // Helles Grau für Hintergründe & Hover
+$color-gray-dark: #374151;            // Dunkleres Grau für UI-Flächen
+$color-gray: #9CA3AF;                 // Dezentes Grau für Icons, Rahmen
+$color-gray-light: #E5E7EB;           // Helles Grau für Hintergrundflächen & Hover
 
 // ===== Statusfarben =====
-$color-success: #16A34A;              // Sattes Grün
-$color-warning: #F59E0B;              // Warmes Gelb-Orange
-$color-error: #DC2626;                // Etwas dunkleres Rot für bessere Lesbarkeit
-$color-info: #0EA5E9;                 // Klarer Cyan-Ton für Hinweise
+$color-success: #22C55E;              // Frisches Grün
+$color-warning: #FACC15;              // Dezentes Gelb, nicht zu grell
+$color-error: #DC2626;                // Klare, seriöse Fehlermeldung
+$color-info: #0EA5E9;                 // Sachliches Cyan

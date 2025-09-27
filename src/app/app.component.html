@@ -2,8 +2,8 @@
   <app-header class="site-header"></app-header>
 
   <main id="main" class="site-main" role="main">
-    <div class="container">
-      <router-outlet></router-outlet>
+    <div class="container" [@routeAnimations]="prepareRoute(outlet)">
+      <router-outlet #outlet="outlet"></router-outlet>
     </div>
   </main>
 

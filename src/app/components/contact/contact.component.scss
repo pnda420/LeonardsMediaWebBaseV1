@@ -1,1 +1,149 @@
 @import '../../utils/shared-styles.scss';
+
+.container {
+  margin-left: 2rem; margin-right: 2rem;
+  @media (min-width: 1200px) { margin-left: auto; margin-right: auto; max-width: 1000px; width: 100%; }
+}
+
+
+section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contact {
+  background: $color-white;
+
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding-block: 1.75rem;
+
+    @media (min-width: 960px) {
+      grid-template-columns: 0.9fr 1.1fr; // links Info, rechts Formular
+      align-items: start;
+    }
+  }
+
+  /* Quick contacts */
+  .contact__quick {
+    display: grid; gap: 1rem;
+
+    h2 { font-size: 1.25rem; color: $color-text-primary; }
+
+    .quick__list {
+      display: grid; gap: .5rem;
+    }
+
+    .quick__item {
+      display: grid; gap: .125rem;
+      padding: .75rem .9rem;
+      border: 1px solid $color-gray-light;
+      border-radius: 14px;
+      text-decoration: none;
+      background: $color-white;
+      cursor: pointer;
+
+      .quick__title { font-weight: 600; color: $color-text-primary; }
+      .quick__desc  { color: $color-text-secondary; font-size: .9rem; }
+      .quick__value { color: $color-brand-primary; font-weight: 600; }
+
+      &:hover { background: $color-background-main; }
+      &:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(37,99,235,.18); }
+    }
+
+    .contact__meta {
+      color: $color-text-secondary;
+      .hint { font-size: .9rem; }
+    }
+  }
+
+  /* Form */
+  .contact__form {
+    border: 1px solid $color-gray-light;
+    border-radius: 16px;
+    padding: 1rem;
+    background: $color-white;
+    display: grid; gap: .9rem;
+
+    h2 { font-size: 1.25rem; color: $color-text-primary; }
+
+    .field {
+      display: grid; gap: .35rem;
+
+      &--inline {
+        display: grid; gap: .5rem;
+        @media (min-width: 520px) {
+          grid-template-columns: 1fr 1fr;
+          align-items: center;
+        }
+      }
+
+      label { color: $color-text-primary; font-weight: 600; }
+      input, textarea {
+        width: 100%;
+        border: 1px solid $color-gray-light;
+        border-radius: 12px;
+        background: $color-white;
+        color: $color-text-primary;
+        padding: .6rem .75rem;
+        font: inherit;
+        transition: border-color 140ms ease, box-shadow 140ms ease;
+
+        &::placeholder { color: $color-gray; }
+        &:focus-visible {
+          outline: none;
+          border-color: $color-brand-primary;
+          box-shadow: 0 0 0 3px rgba(37,99,235,.18);
+        }
+      }
+
+      .error {
+        color: $color-error;
+        font-size: .85rem;
+      }
+    }
+
+    .switch {
+      display: inline-flex; align-items: center; gap: .5rem;
+      input { width: 18px; height: 18px; }
+    }
+
+    .form__actions {
+      display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+      .sla { color: $color-text-secondary; font-size: .9rem; }
+    }
+
+    .privacy {
+      color: $color-text-secondary;
+      font-size: .85rem;
+      a { color: $color-brand-primary; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+    }
+
+    .status {
+      margin-top: .25rem; font-weight: 600;
+      &--ok { color: $color-success; }
+      &--err { color: $color-error; }
+    }
+  }
+}
+
+/* Reuse Buttons from Home (falls vorhanden) */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 44px; padding: 0 16px; border-radius: 12px;
+  font-weight: 600; text-decoration: none; cursor: pointer;
+  border: 1px solid transparent; transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  &--primary {
+    background: $color-brand-primary; color: $color-white;
+    &:hover { background: $color-brand-dark; }
+    &:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(37,99,235,.18); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__form * { transition: none !important; }
+}

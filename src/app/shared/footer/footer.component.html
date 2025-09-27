@@ -1,9 +1,9 @@
-<footer class="footer">
+<footer class="site-footer" role="contentinfo">
   <div class="container footer__inner">
-    <div style="color: white;">© {{ year }} Deine Firma</div>
-    <nav class="footer-nav" aria-label="Footer-Navigation">
-      <a (click)="router.navigate(['/imprint'])" style="color: white;">Impressum</a>
-      <a (click)="router.navigate(['/policy'])" style="color: white;">Datenschutz</a>
+    <div class="footer__copy">© {{ year }} Leonards Media</div>
+    <nav class="footer__nav" aria-label="Footer-Navigation">
+      <a (click)="router.navigate(['/imprint'])">Impressum</a>
+      <a (click)="router.navigate(['/policy'])">Datenschutz</a>
     </nav>
   </div>
 </footer>

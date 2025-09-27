@@ -2,14 +2,6 @@ import { Component } from '@angular/core';
 import { PageTitleComponent } from "../../shared/page-title/page-title.component";
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-interface ServiceItem {
-  title: string;
-  slug: string;         // für routerLink
-  img: string;
-  short?: string;       // Make short optional by adding ?
-  price?: string;       // "ab 1.800 €" etc.
-  cta?: string;         // Button-Text
-}
 
 @Component({
   selector: 'app-home',
@@ -19,53 +11,23 @@ interface ServiceItem {
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  services: ServiceItem[] = [
-    {
-      title: 'Website One-Pager',
-      slug: 'one-pager',
-      img: 'assets/leistungen/onepager.jpg',
-      price: 'ab 1.800 €',
-      cta: 'Details & Beispiele'
-    },
-    {
-      title: 'Firmenwebsite (3–8 Seiten)',
-      slug: 'firmenwebsite',
-      img: 'assets/leistungen/firmenwebsite.jpg',
-      short: 'Strukturierte Inhalte, SEO-Basics, sauberer Code & DSGVO.',
-      price: 'ab 3.200 €',
-      cta: 'Details & Preise'
-    },
-    {
-      title: 'Relaunch & Performance',
-      slug: 'relaunch-performance',
-      img: 'assets/leistungen/performance.jpg',
-      short: 'Ladezeit, Core Web Vitals, Bild-/Asset-Optimierung, SEO-Fix.',
-      price: 'Pakete ab 1.200 €',
-      cta: 'Leistungspakete ansehen'
-    },
-    {
-      title: 'Web-App / Portal (Angular & NestJS)',
-      slug: 'webapp-portal',
-      img: 'assets/leistungen/webapp.jpg',
-      short: 'MVPs, Dashboards, interne Tools – sauber getrackt & getestet.',
-      price: 'individuell',
-      cta: 'Projekt anfragen'
-    },
-    {
-      title: 'Wartung & Betreuung',
-      slug: 'wartung',
-      img: 'assets/leistungen/wartung.jpg',
-      short: 'Updates, Backups, Monitoring, kleine Content-Änderungen.',
-      price: 'ab 69 €/Monat',
-      cta: 'Pakete vergleichen'
-    },
-    {
-      title: 'DSGVO & Tracking',
-      slug: 'dsgvo-tracking',
-      img: 'assets/leistungen/dsgvo.jpg',
-      short: 'Plausible/Matomo, Cookie-frei möglich, saubere Events.',
-      price: 'Setup ab 390 €',
-      cta: 'So setze ich das um'
-    }
+  constructor(public router: Router) {}
+
+  usp = [
+    { icon: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>`, title: 'Zuverlässig', text: 'Planbare Umsetzung ohne Überraschungen.' },
+    { icon: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10m0 0L8 14m4-4 4 4"/><circle cx="12" cy="6" r="2"/></svg>`, title: 'Skalierbar', text: 'Lösungen wachsen mit Ihrem Bedarf.' },
+    { icon: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18M3 12h18M3 17h18"/></svg>`, title: 'Transparent', text: 'Klare Angebote, klare Kommunikation.' },
+  ];
+
+  services = [
+    { title: 'Systemintegration', text: 'Netzwerke, Server, Cloud – stabil und sicher aufgesetzt.', link: '/services/integration' },
+    { title: 'Softwareentwicklung', text: 'Web & API – sauber, wartbar, testbar.', link: '/services/dev' },
+    { title: 'Betrieb & Support', text: 'Monitoring, Updates, Incident-Handling – ohne Theater.', link: '/services/ops' },
+  ];
+
+  testimonials = [
+    { quote: 'Schnelle, saubere Umsetzung. Kommunikation auf den Punkt.', name: 'M. Weber', role: 'GF, Weber & Co.' },
+    { quote: 'Stabile Systeme, nachvollziehbare Doku. Genau das gebraucht.', name: 'A. Krüger', role: 'IT-Leitung, KRG' },
+    { quote: 'Kein Overengineering. Termin gehalten, Budget eingehalten.', name: 'L. Hoffmann', role: 'Projektleitung, HM GmbH' },
   ];
 }

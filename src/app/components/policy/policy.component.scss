@@ -1,1 +1,48 @@
 @import '../../utils/shared-styles.scss';
+
+.container {
+  margin-left: 1rem; margin-right: 1rem;
+  @media (min-width: 600px) { margin-left: 1.5rem; margin-right: 1.5rem; }
+  @media (min-width: 1200px) { margin-left: auto; margin-right: auto; max-width: 800px; width: 100%; }
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.legal {
+  background: $color-white;
+
+  .legal__content {
+    display: grid;
+    gap: 1.25rem;
+    padding-block: 2rem;
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: .25rem;
+      color: $color-text-primary;
+      scroll-margin-top: 96px; // Anker + Header
+    }
+
+    p, ul, ol {
+      margin: 0;
+      color: $color-text-secondary;
+      line-height: 1.6;
+    }
+
+    a {
+      color: $color-brand-primary;
+      text-decoration: none;
+      &:hover { text-decoration: underline; }
+      &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37,99,235,.18);
+        border-radius: 6px;
+      }
+    }
+  }
+}

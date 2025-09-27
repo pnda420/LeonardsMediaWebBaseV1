@@ -1,1 +1,101 @@
 @import '../../utils/shared-styles.scss';
+
+.container {
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    @media (min-width: 1200px) {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1000px;
+        width: 100%;
+    }
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.about {
+    background: $color-white;
+
+    h2 {
+        font-size: 1.4rem;
+        margin-bottom: .75rem;
+        color: $color-text-primary;
+    }
+
+    p {
+        color: $color-text-secondary;
+        line-height: 1.6;
+        max-width: 65ch;
+    }
+
+    .about__intro,
+    .about__approach {
+        padding-block: 1.75rem;
+        border-bottom: 1px solid $color-gray-light;
+    }
+
+    .about__values {
+        padding-block: 1.75rem;
+
+        .values__grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr;
+
+            @media (min-width: 760px) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .value {
+            background: $color-background-main;
+            border: 1px solid $color-gray-light;
+            border-radius: 14px;
+            padding: 1rem;
+
+            h3 {
+                font-size: 1.1rem;
+                color: $color-text-primary;
+            }
+
+            p {
+                font-size: .95rem;
+                color: $color-text-secondary;
+            }
+        }
+    }
+
+    .about__cta {
+        padding-block: 2rem;
+        text-align: center;
+
+        p {
+            margin-bottom: 1rem;
+        }
+    }
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background: $color-brand-primary;
+    color: $color-white;
+    transition: background-color 160ms ease;
+
+    &:hover {
+        background: $color-brand-dark;
+    }
+}

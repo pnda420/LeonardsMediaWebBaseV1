@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PageTitleComponent } from "../../shared/page-title/page-title.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-about',
@@ -10,4 +11,9 @@ import { PageTitleComponent } from "../../shared/page-title/page-title.component
 })
 export class AboutComponent {
 
+  constructor(private router: Router) {}
+
+  navigateToContact() {
+    this.router.navigate(['/contact']);
+  }
 }

@@ -1,46 +1,38 @@
-<header class="header">
+<header class="site-header" role="banner">
   <div class="container header__inner">
-    <img class="brand" src="assets/logo_W.png" alt="Logo" (click)="router.navigate(['/'])" />
-
-    <button class="nav-toggle" aria-label="Menü umschalten" (click)="open = !open">
-      ☰
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-label="Menü öffnen"
+      aria-controls="primary-nav"
+      [attr.aria-expanded]="open ? 'true' : 'false'"
+      (click)="open = !open"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
     </button>
 
-    <nav class="nav" [class.open]="open" aria-label="Hauptnavigation">
-      <div class="btn-group" role="group" aria-label="Navigation radio toggle button group">
-        <input
-          type="radio"
-          class="btn-check"
-          name="navradio"
-          id="navradio-home"
-          autocomplete="off"
-          [checked]="router.url === '/'"
-          (change)="router.navigate(['/']); open = false"
-        />
-        <label class="btn btn-outline-light" for="navradio-home">Dienstleistungen</label>
+    <img
+      class="brand"
+      src="assets/LM_Logos/Logo1.png"
+      alt="Logo"
+      (click)="routeTo('/')"
+    />
 
-        <input
-          type="radio"
-          class="btn-check"
-          name="navradio"
-          id="navradio-about"
-          autocomplete="off"
-          [checked]="router.url === '/about'"
-          (change)="router.navigate(['/about']); open = false"
-        />
-        <label class="btn btn-outline-light" for="navradio-about">Über uns</label>
-
-        <input
-          type="radio"
-          class="btn-check"
-          name="navradio"
-          id="navradio-contact"
-          autocomplete="off"
-          [checked]="router.url === '/contact'"
-          (change)="router.navigate(['/contact']); open = false"
-        />
-        <label class="btn btn-outline-light" for="navradio-contact">Kontakt</label>
-      </div>
+    <nav
+      id="primary-nav"
+      class="nav"
+      [class.open]="open"
+      aria-label="Hauptnavigation"
+    >
+      <a (click)="routeTo('/')" routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Startseite</a>
+      <a (click)="routeTo('/services')" routerLink="/services" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Dienstleistungen</a>
+      <a (click)="routeTo('/about')" routerLink="/about" routerLinkActive="is-active">Über uns</a>
+      <a (click)="routeTo('/contact')" routerLink="/contact" routerLinkActive="is-active">Kontakt</a>
     </nav>
   </div>
+
+  <!-- Backdrop für Mobile -->
+  <button class="backdrop" type="button" aria-hidden="true" *ngIf="open" (click)="open=false"></button>
 </header>
