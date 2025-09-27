@@ -8,10 +8,10 @@ import { ServicesComponent } from './components/services/services.component';
 
 const pageMainName = 'Leonards Media';
 export const routes: Routes = [
-    { path: '', component: HomeComponent, title: pageMainName, data: { animation: 'home' } },
-    { path: 'services', component: ServicesComponent, title: pageMainName + ' | Dienstleistungen', data: { animation: 'services' } },
-    { path: 'about', component: AboutComponent, title: pageMainName + ' | Über uns', data: { animation: 'about' } },
-    { path: 'contact', component: ContactComponent, title: pageMainName + ' | Kontakt', data: { animation: 'contact' } },
-    { path: 'imprint', component: ImprintComponent, title: pageMainName + ' | Impressum', data: { animation: 'imprint' } },
-    { path: 'policy', component: PolicyComponent, title: pageMainName + ' | Datenschutz', data: { animation: 'policy' } }
+    { path: '', component: HomeComponent, title: pageMainName },
+    { path: 'services', component: ServicesComponent, title: pageMainName + ' | Dienstleistungen' },
+    { path: 'about', component: AboutComponent, title: pageMainName + ' | Über uns' },
+    { path: 'contact', component: ContactComponent, title: pageMainName + ' | Kontakt' },
+    { path: 'imprint', component: ImprintComponent, title: pageMainName + ' | Impressum' },
+    { path: 'policy', component: PolicyComponent, title: pageMainName + ' | Datenschutz' }
 ];
