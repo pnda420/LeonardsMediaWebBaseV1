@@ -91,6 +91,8 @@ section {
 .hero {
   background: $color-white;
   border-bottom: 1px solid $color-gray-light;
+  border-radius: 15px;
+
 
   .hero__inner {
     display: grid;
@@ -98,6 +100,7 @@ section {
     gap: 1rem;
     align-items: center;
     padding-block: 2rem;
+
 
     @media (min-width: 960px) {
       grid-template-columns: 1.1fr .9fr;
