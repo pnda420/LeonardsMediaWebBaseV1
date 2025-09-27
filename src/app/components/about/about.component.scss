@@ -1,101 +1,129 @@
 @import '../../utils/shared-styles.scss';
 
 .container {
-    margin-left: 2rem;
-    margin-right: 2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 
-    @media (min-width: 1200px) {
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 1000px;
-        width: 100%;
-    }
+  @media (min-width: 600px) {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
+
+  @media (min-width: 1200px) {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1000px;
+    width: 100%;
+  }
 }
 
-section {
+section { display: flex; flex-direction: column; align-items: center; }
+
+.about--single {
+  background: $color-white;
+
+  .profile {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding-block: 1.75rem;
+    align-items: start;
+
+    @media (min-width: 900px) {
+      grid-template-columns: 0.9fr 1.1fr; // Bild | Inhalt
+      gap: 1.5rem;
+    }
+  }
+
+  .profile__media {
+    justify-self: center;
+    width: 100%;
+    max-width: 320px;
+
+    @media (min-width: 900px) {
+      justify-self: start;
+    }
+  }
+
+  .avatar {
+    margin: 0;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 1px solid $color-gray-light;
+    }
+
+    .avatar__ph {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 16px;
+      border: 1px dashed $color-gray-light;
+      background: $color-background-main;
+      color: $color-gray;
+      font-size: 0.95rem;
+      user-select: none;
+    }
+  }
+
+  .profile__content {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .profile__name {
+    font-size: clamp(1.3rem, 1.2vw + 1rem, 1.6rem);
+    color: $color-text-primary;
+    margin: 0;
+  }
+
+  .facts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: .5rem;
+
+    li {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: .5rem;
+      align-items: start;
+
+      @media (max-width: 399px) {
+        grid-template-columns: 1fr;
+      }
+
+      .k { color: $color-text-secondary; }
+      .v { color: $color-text-primary; font-weight: 600; }
+    }
+  }
+
+  .bio {
+    color: $color-text-secondary;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .profile__actions {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    gap: .75rem;
+    flex-wrap: wrap;
 
-.about {
-    background: $color-white;
-
-    h2 {
-        font-size: 1.4rem;
-        margin-bottom: .75rem;
-        color: $color-text-primary;
+    a{
+        border-radius: 16px;
+        width: 100%;
+        border: 1px solid $color-gray;
     }
 
-    p {
-        color: $color-text-secondary;
-        line-height: 1.6;
-        max-width: 65ch;
+    @media (max-width: 599px) {
+      .btn { width: 100%; }
     }
-
-    .about__intro,
-    .about__approach {
-        padding-block: 1.75rem;
-        border-bottom: 1px solid $color-gray-light;
-    }
-
-    .about__values {
-        padding-block: 1.75rem;
-
-        .values__grid {
-            display: grid;
-            gap: 1rem;
-            grid-template-columns: 1fr;
-
-            @media (min-width: 760px) {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        .value {
-            background: $color-background-main;
-            border: 1px solid $color-gray-light;
-            border-radius: 14px;
-            padding: 1rem;
-
-            h3 {
-                font-size: 1.1rem;
-                color: $color-text-primary;
-            }
-
-            p {
-                font-size: .95rem;
-                color: $color-text-secondary;
-            }
-        }
-    }
-
-    .about__cta {
-        padding-block: 2rem;
-        text-align: center;
-
-        p {
-            margin-bottom: 1rem;
-        }
-    }
-}
-
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 44px;
-    padding: 0 16px;
-    border-radius: 12px;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    border: 1px solid transparent;
-    background: $color-brand-primary;
-    color: $color-white;
-    transition: background-color 160ms ease;
-
-    &:hover {
-        background: $color-brand-dark;
-    }
+  }
 }

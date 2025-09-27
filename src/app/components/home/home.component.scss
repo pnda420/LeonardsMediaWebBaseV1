@@ -18,6 +18,10 @@
   }
 }
 
+.hero__logo {
+  width: 100%;
+  max-width: 100px;
+}
 
 section {
  display: flex;
@@ -140,7 +144,6 @@ section {
       width: 100%;
       height: auto;
       display: block;
-      aspect-ratio: 16 / 9;   /* verhindert Layout-Shift */
       object-fit: cover;
       border-radius: 14px;
     }

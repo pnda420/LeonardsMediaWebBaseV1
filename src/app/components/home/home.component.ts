@@ -2,32 +2,56 @@ import { Component } from '@angular/core';
 import { PageTitleComponent } from "../../shared/page-title/page-title.component";
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { IconComponent } from "../../shared/icon/icon.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PageTitleComponent, RouterLink, CommonModule],
+  imports: [PageTitleComponent, RouterLink, CommonModule, IconComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  constructor(public router: Router) {}
+  constructor(public router: Router) { }
 
   usp = [
-    { icon: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>`, title: 'Zuverlässig', text: 'Planbare Umsetzung ohne Überraschungen.' },
-    { icon: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10m0 0L8 14m4-4 4 4"/><circle cx="12" cy="6" r="2"/></svg>`, title: 'Skalierbar', text: 'Lösungen wachsen mit Ihrem Bedarf.' },
-    { icon: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18M3 12h18M3 17h18"/></svg>`, title: 'Transparent', text: 'Klare Angebote, klare Kommunikation.' },
+    { icon: 'filter_alt', title: 'Pragmatisch', text: 'Fokus auf das Nötige. Keine Spielereien, kein Overengineering.' },
+    { icon: 'schema',     title: 'Wartbar',     text: 'Saubere Architektur, klare Schnittstellen und nachvollziehbare Doku.' },
+    { icon: 'gpp_good',   title: 'Verlässlich', text: 'Realistische Zusagen. Termine und Budget im Blick.' }
   ];
+  
 
   services = [
-    { title: 'Systemintegration', text: 'Netzwerke, Server, Cloud – stabil und sicher aufgesetzt.', link: '/services/integration' },
-    { title: 'Softwareentwicklung', text: 'Web & API – sauber, wartbar, testbar.', link: '/services/dev' },
-    { title: 'Betrieb & Support', text: 'Monitoring, Updates, Incident-Handling – ohne Theater.', link: '/services/ops' },
+    {
+      title: 'Frontend (Angular & TypeScript)',
+      text: 'SPAs, Komponenten, Routing, Reactive Forms, State, Performance.',
+      link: '/services/frontend'
+    },
+    {
+      title: 'Backend (NestJS / Node.js)',
+      text: 'REST-APIs, Auth/Autorisierung, Validation, Testing, Logging.',
+      link: '/services/backend'
+    },
+    {
+      title: 'Datenbank & Betrieb',
+      text: 'PostgreSQL-Schema & Migrations, Docker, CI/CD, Deployment.',
+      link: '/services/ops'
+    }
   ];
 
   testimonials = [
-    { quote: 'Schnelle, saubere Umsetzung. Kommunikation auf den Punkt.', name: 'M. Weber', role: 'GF, Weber & Co.' },
-    { quote: 'Stabile Systeme, nachvollziehbare Doku. Genau das gebraucht.', name: 'A. Krüger', role: 'IT-Leitung, KRG' },
-    { quote: 'Kein Overengineering. Termin gehalten, Budget eingehalten.', name: 'L. Hoffmann', role: 'Projektleitung, HM GmbH' },
+    {
+      quote: 'Saubere Umsetzung, klarer Code. Übergabe war problemlos.',
+      name: 'M. Weber', role: 'GF, Weber & Co.'
+    },
+    {
+      quote: 'Termin gehalten, Budget eingehalten. Kommunikation auf den Punkt.',
+      name: 'A. Krüger', role: 'IT-Leitung, KRG'
+    },
+    {
+      quote: 'Schnelle Reaktion, pragmatische Lösungen – ohne Overhead.',
+      name: 'L. Hoffmann', role: 'Projektleitung, HM GmbH'
+    }
   ];
+
 }

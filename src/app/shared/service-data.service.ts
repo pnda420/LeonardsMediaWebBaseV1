@@ -23,7 +23,7 @@ export class ServiceDataService {
     {
       title: 'Website One-Pager',
       slug: 'one-pager',
-      img: 'assets/services.jpg',
+      img: 'assets/cards/1.png',
       short: 'Einfache Website mit modernem Design und moderner Technologie.',
       price: 'ab 1.800 €',
       cta: 'Details & Beispiele',
@@ -35,7 +35,7 @@ export class ServiceDataService {
     {
       title: 'All-in-One-Lösung',
       slug: 'all-in-one',
-      img: 'assets/services.jpg',
+      img: 'assets/cards/2.png',
       short: 'Hosting, Domain, Website - Alles in einem Paket.',
       price: 'ab 2.500 €',
       cta: 'Details & Beispiele',
@@ -47,7 +47,7 @@ export class ServiceDataService {
     {
       title: 'Große Website (3–8 Seiten)',
       slug: 'large-website',
-      img: 'assets/services.jpg',
+      img: 'assets/cards/3.png',
       short: 'Strukturierte Inhalte, SEO-Basics & DSGVO.',
       price: 'ab 3.200 €',
       cta: 'Details & Preise',
@@ -59,9 +59,9 @@ export class ServiceDataService {
     {
       title: 'SEO Optimierung',
       slug: 'seo-optimization',
-      img: 'assets/services.jpg',
+      img: 'assets/cards/4.png',
       short: 'Optimierung für Google & Co.',
-      price: 'Pakete ab 490€',
+      price: 'ab 490€',
       cta: 'Leistungspakete ansehen',
       details: {
         description: 'Eine schöne Website ist nur die halbe Miete. Damit Sie von potenziellen Kunden auch gefunden werden, optimieren wir Ihre Seite für Suchmaschinen wie Google. Wir analysieren Ihre Zielgruppe und Keywords und setzen technische sowie inhaltliche Maßnahmen um.',
@@ -71,7 +71,7 @@ export class ServiceDataService {
     {
       title: 'Full Back & Frontend Web-Entwicklung',
       slug: 'full-stack-development',
-      img: 'assets/services.jpg',
+      img: 'assets/cards/5.png',
       short: 'Komplette Web-Anwendung mit moderner Frontend- und Backend-Technologie.',
       price: 'ab 5.000 €',
       cta: 'Details & Preise',

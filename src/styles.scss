@@ -19,3 +19,39 @@
     padding-right: 2rem;
   }
 }
+
+/* Material Symbols (Google Icons) helpers */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: var(--ms-size, 24px);
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings:
+    'FILL' var(--ms-fill, 0),
+    'wght' var(--ms-wght, 400),
+    'GRAD' var(--ms-grad, 0),
+    'opsz' var(--ms-opsz, 24);
+}
+
+/* Utilities to tweak icon appearance */
+.ms-fill { --ms-fill: 1; }
+.ms-wght-300 { --ms-wght: 300; }
+.ms-wght-400 { --ms-wght: 400; }
+.ms-wght-600 { --ms-wght: 600; }
+.ms-wght-700 { --ms-wght: 700; }
+.ms-size-20 { --ms-size: 20px; }
+.ms-size-24 { --ms-size: 24px; }
+.ms-size-32 { --ms-size: 32px; }
+.ms-size-40 { --ms-size: 40px; }

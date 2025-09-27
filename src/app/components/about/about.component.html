@@ -1,43 +1,43 @@
 <app-page-title title="Über uns"></app-page-title>
 
-<section class="about">
-  <div class="container about__intro">
-    <h2>Wer wir sind</h2>
-    <p>
-      Wir sind ein Team aus Fachinformatikern für Systemintegration und Anwendungsentwicklung. 
-      Unser Ansatz: pragmatische Lösungen, saubere Umsetzung und klare Kommunikation – ohne Marketing-Floskeln.
-    </p>
-  </div>
+<section class="about about--single">
+  <div class="container profile">
 
-  <div class="container about__values">
-    <h2>Werte, die uns leiten</h2>
-    <div class="values__grid">
-      <article class="value">
-        <h3>Zuverlässigkeit</h3>
-        <p>Wir liefern, was wir zusagen – termingerecht und transparent.</p>
-      </article>
-      <article class="value">
-        <h3>Klarheit</h3>
-        <p>Keine Buzzwords, keine versteckten Kosten – sondern verständliche Lösungen.</p>
-      </article>
-      <article class="value">
-        <h3>Partnerschaft</h3>
-        <p>Wir sehen Kunden nicht als Auftraggeber, sondern als langfristige Partner.</p>
-      </article>
+    <div class="profile__media" aria-hidden="false">
+      <figure class="avatar">
+        <img src="assets/TLE1.1.png" alt="Portrait von Tom Leonards">
+      </figure>
     </div>
-  </div>
 
-  <div class="container about__approach">
-    <h2>Unser Arbeitsansatz</h2>
-    <p>
-      Ob Systemintegration, Entwicklung oder Support – wir arbeiten strukturiert, dokumentiert 
-      und mit Fokus auf Nachhaltigkeit. So bleibt Ihr IT-Betrieb auch in Zukunft stabil.
-    </p>
-  </div>
+    <div class="profile__content">
+      <h2 class="profile__name">Tom Leonards</h2>
 
-  <div class="container about__cta">
-    <h2>Passt das zu Ihnen?</h2>
-    <p>Lernen Sie uns in einem kurzen Gespräch kennen – unkompliziert und unverbindlich.</p>
-    <a class="btn btn--primary" (click)="navigateToContact()">Kontakt aufnehmen</a>
+      <ul class="facts">
+        <li><span class="k">Rolle</span><span class="v">Geschäftsführer & Softwareentwickler</span></li>
+        <li><span class="k">Schwerpunkt</span><span class="v">Webentwicklung (Frontend & Backend)</span></li>
+        <li><span class="k">Erfahrung</span><span class="v">1 Jahr Berufserfahrung in der Softwareentwicklung</span>
+        </li>
+        <li><span class="k">Ausbildung</span><span class="v">Fachinformatiker für Anwendungsentwicklung</span>
+        </li>
+        <li><span class="k">Abschluss</span><span class="v">Fachabitur Informatik</span></li>
+        <li><span class="k">Alter</span><span class="v">21 Jahre</span></li>
+        <li><span class="k">Stack (Kern)</span>
+          <span class="v">Angular · NestJS · TypeScript · PostgreSQL · HTML/SCSS · Docker · Git</span>
+        </li>
+      </ul>
+
+
+      <p class="bio">
+        Ich plane und baue schlanke Webanwendungen mit Angular und NestJS – verständlich, wartbar und zuverlässig im
+        Betrieb.
+      </p>
+
+
+
+      <div class="profile__actions">
+        <a class="btn btn--primary" (click)="navigateToContact()">Kontakt aufnehmen</a>
+      </div>
+    </div>
+
   </div>
 </section>
