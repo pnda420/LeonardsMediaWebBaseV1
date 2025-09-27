@@ -9,11 +9,11 @@ import { ServiceDetailComponent } from './components/service-detail/service-deta
 
 const pageMainName = 'Leonards Media';
 export const routes: Routes = [
-    { path: '', component: HomeComponent, title: pageMainName },
-    { path: 'services', component: ServicesComponent, title: pageMainName + ' | Dienstleistungen' },
-    { path: 'about', component: AboutComponent, title: pageMainName + ' | Über uns' },
-    { path: 'contact', component: ContactComponent, title: pageMainName + ' | Kontakt' },
-    { path: 'imprint', component: ImprintComponent, title: pageMainName + ' | Impressum' },
-    { path: 'policy', component: PolicyComponent, title: pageMainName + ' | Datenschutz' },
-    { path: 'services/:slug', component: ServiceDetailComponent } 
+    { path: '', component: HomeComponent, title: pageMainName, data: { description: 'IT-Dienstleistungen, Webentwicklung und SEO – pragmatisch, transparent und zuverlässig. Leonards Media hilft Ihnen bei Konzeption, Entwicklung und Betrieb.' } },
+    { path: 'services', component: ServicesComponent, title: pageMainName + ' | Dienstleistungen', data: { description: 'Übersicht unserer Leistungen: Websites, All-in-One-Pakete, Full-Stack-Entwicklung und SEO-Optimierung. Klar strukturiert und wirkungsorientiert.' } },
+    { path: 'about', component: AboutComponent, title: pageMainName + ' | Über uns', data: { description: 'Erfahren Sie mehr über Leonards Media: Werte, Arbeitsweise und warum wir Technologie pragmatisch und zielorientiert einsetzen.' } },
+    { path: 'contact', component: ContactComponent, title: pageMainName + ' | Kontakt', data: { description: 'Kontaktieren Sie Leonards Media für ein unverbindliches Erstgespräch. Schnelle Einschätzung ohne Sales-Druck.' } },
+    { path: 'imprint', component: ImprintComponent, title: pageMainName + ' | Impressum', data: { description: 'Impressum von Leonards Media.' } },
+    { path: 'policy', component: PolicyComponent, title: pageMainName + ' | Datenschutz', data: { description: 'Datenschutzerklärung von Leonards Media.' } },
+    { path: 'services/:slug', component: ServiceDetailComponent }
 ];

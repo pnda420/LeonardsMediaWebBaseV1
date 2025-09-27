@@ -6,7 +6,7 @@
       aria-label="Menü öffnen"
       aria-controls="primary-nav"
       [attr.aria-expanded]="open ? 'true' : 'false'"
-      (click)="open = !open"
+      (click)="toggle()"
     >
       <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
@@ -16,7 +16,8 @@
     <img
       class="brand"
       src="assets/LM_Logos/Logo1.png"
-      alt="Logo"
+      alt="Leonards Media"
+      decoding="async"
       (click)="routeTo('/')"
     />
 
@@ -34,5 +35,5 @@
   </div>
 
   <!-- Backdrop für Mobile -->
-  <button class="backdrop" type="button" aria-hidden="true" *ngIf="open" (click)="open=false"></button>
+  <button class="backdrop" type="button" aria-hidden="true" *ngIf="open" (click)="toggle()"></button>
 </header>

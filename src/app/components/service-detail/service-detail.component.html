@@ -11,7 +11,7 @@
       <h1 class="display-5 fw-bold mb-3">{{ service.title }}</h1>
 
       <!-- Service Image -->
-      <img [src]="service.img" [alt]="service.title" class="img-fluid rounded mb-4">
+      <img [src]="service.img" [alt]="service.title" class="img-fluid rounded mb-4" loading="lazy" decoding="async">
 
       <!-- Service Price -->
       <p class="lead text-muted">{{ service.price }}</p>
