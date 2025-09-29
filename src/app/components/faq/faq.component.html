@@ -1,0 +1,53 @@
+<app-page-title title="FAQ"></app-page-title>
+
+<section class="faq">
+    <div class="flex">
+        <div class="container faq__intro">
+            <h2>Häufige Fragen</h2>
+            <p>Kurze, ehrliche Antworten. Wenn etwas fehlt, melden Sie sich.</p>
+
+            <div class="faq__tools">
+                <label class="search">
+                    <input type="search" [(ngModel)]="q" placeholder="In Fragen suchen …"
+                        aria-label="FAQ durchsuchen" />
+                </label>
+                <div class="toggles">
+                    <button class="btn btn--ghost btn--sm" type="button" (click)="setAll(true)">Alle öffnen</button>
+                    <button class="btn btn--ghost btn--sm" type="button" (click)="setAll(false)">Alle schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="flex">
+        <div class="container faq__list" *ngIf="filtered.length; else nohits">
+            <details class="item" *ngFor="let f of filtered; trackBy: trackById" [attr.open]="expandAll ? '' : null">
+                <summary class="q">{{ f.q }}</summary>
+                <div class="a">
+                    <p *ngFor="let p of f.a">{{ p }}</p>
+                    <ul *ngIf="f.list?.length">
+                        <li *ngFor="let li of f.list">{{ li }}</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="flex">
+        <ng-template #nohits>
+            <div class="container faq__nohits">
+                Keine Treffer. Kurze Mail reicht: <a (click)="router.navigate(['/contact'])">Kontakt</a>.
+            </div>
+        </ng-template>
+
+        <div class="container faq__cta">
+            <div class="cta__box">
+                <h3>Nicht fündig geworden?</h3>
+                <p>Kurzes Erstgespräch, klare Einschätzung, kein Sales-Druck.</p>
+                <button style="border: 1px solid #000;" class="btn btn--primary"
+                    (click)="router.navigate(['/contact'])">Frage stellen</button>
+            </div>
+        </div>
+    </div>
+</section>

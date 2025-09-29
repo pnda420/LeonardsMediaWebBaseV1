@@ -55,3 +55,12 @@
 .ms-size-24 { --ms-size: 24px; }
 .ms-size-32 { --ms-size: 32px; }
 .ms-size-40 { --ms-size: 40px; }
+
+
+:root {
+  scrollbar-gutter: stable;
+}
+
+html {
+  overflow-y: scroll; /* erzwingt permanenten Scrollbar-Platz */
+}

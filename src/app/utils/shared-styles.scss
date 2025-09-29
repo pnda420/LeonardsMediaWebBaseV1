@@ -21,3 +21,71 @@ $color-success: #22C55E;              // Frisches Grün
 $color-warning: #FACC15;              // Dezentes Gelb, nicht zu grell
 $color-error: #DC2626;                // Klare, seriöse Fehlermeldung
 $color-info: #0EA5E9;                 // Sachliches Cyan
+
+
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn{
+    background: $color-brand-primary;
+    color: $color-white;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: .6rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+  
+    &:hover {
+      background: $color-brand-dark;
+    }
+  
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .18);
+    }
+  
+    &--primary {
+      background: $color-brand-primary;
+      color: $color-white;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: .6rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+  
+      &:hover {
+        background: $color-brand-dark;
+      }
+  
+      &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .18);
+      }
+    }
+  
+    &--ghost {
+      background: transparent;
+      color: $color-brand-primary;
+      border: 1px solid $color-brand-primary;
+      border-radius: 12px;
+      padding: .6rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+  
+      &:hover {
+        background: $color-brand-primary !important;
+        color: $color-white;
+      }
+  
+      &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .18);
+      }
+    }
+  
+    
+  }

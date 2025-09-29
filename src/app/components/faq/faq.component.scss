@@ -1,0 +1,211 @@
+@import '../../utils/shared-styles.scss';
+
+.container {
+    margin-left: 1rem;
+    margin-right: 1rem;
+
+    @media (min-width: 600px) {
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+    }
+
+    @media (min-width: 1200px) {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1000px;
+        width: 100%;
+    }
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.faq {
+    background: $color-white;
+
+    .faq__intro {
+        padding-block: 1.5rem;
+        border-bottom: 1px solid $color-gray-light;
+
+        h2 {
+            font-size: 1.4rem;
+            color: $color-text-primary;
+            margin: 0 0 .35rem;
+        }
+
+        p {
+            color: $color-text-secondary;
+            margin: 0;
+        }
+    }
+
+    .faq__tools {
+        margin-top: .9rem;
+        display: flex;
+        gap: .75rem;
+        flex-wrap: wrap;
+        align-items: center;
+
+        .search input {
+            width: min(520px, 100%);
+            height: 42px;
+            padding: 0 .9rem;
+            border: 1px solid $color-gray-light;
+            border-radius: 12px;
+            background: $color-white;
+            color: $color-text-primary;
+
+            &::placeholder {
+                color: $color-gray;
+            }
+
+            &:focus-visible {
+                outline: none;
+                border-color: $color-brand-primary;
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, .18);
+            }
+        }
+
+        .toggles {
+            display: inline-flex;
+            gap: .5rem;
+        }
+    }
+
+    .faq__list {
+        padding-block: 1rem;
+
+        .item {
+            border: 1px solid $color-gray-light;
+            border-radius: 14px;
+            padding: .5rem .75rem;
+            background: $color-white;
+
+            &:not(:last-child) {
+                margin-bottom: .75rem;
+            }
+
+            summary.q {
+                list-style: none;
+                cursor: pointer;
+                font-weight: 600;
+                color: $color-text-primary;
+                padding: .5rem;
+                border-radius: 10px;
+                outline: none;
+            }
+
+            summary.q::-webkit-details-marker {
+                display: none;
+            }
+
+            /* eigener Pfeil */
+            summary.q::after {
+                content: '▾';
+                float: right;
+                transform: rotate(-90deg);
+                transition: transform 160ms ease;
+                opacity: .7;
+            }
+
+            &[open] summary.q::after {
+                transform: rotate(0deg);
+            }
+
+            .a {
+                padding: .25rem .5rem .5rem;
+
+                p {
+                    margin: .25rem 0;
+                    color: $color-text-secondary;
+                    line-height: 1.6;
+                }
+
+                ul {
+                    margin: .25rem 0 0 1rem;
+                    color: $color-text-secondary;
+                }
+            }
+
+            &:focus-within summary.q {
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, .18);
+            }
+
+            summary.q:hover {
+                background: $color-background-main;
+            }
+        }
+    }
+
+    .faq__nohits {
+        padding-block: 1.25rem;
+        color: $color-text-secondary;
+
+        a {
+            color: $color-brand-primary;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .faq__cta {
+        padding-block: 1.25rem 2rem;
+
+        .cta__box {
+            border: 1px solid $color-gray-light;
+            border-radius: 16px;
+            background: $color-brand-bg;
+            padding: 1rem;
+            display: grid;
+            gap: .35rem;
+            text-align: center;
+
+            h3 {
+                margin: 0;
+                color: $color-text-primary;
+            }
+
+            p {
+                margin: 0;
+                color: $color-text-secondary;
+            }
+
+            .btn {
+                justify-self: center;
+                margin-top: .35rem;
+            }
+
+            @media (max-width: 599px) {
+                .btn {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+/* kleine Ghost-Buttons */
+.btn.btn--ghost.btn--sm {
+    height: 36px;
+    padding: 0 .6rem;
+    border-radius: 10px;
+    font-size: .9rem;
+    background: $color-white;
+    color: $color-text-primary;
+    border: 1px solid $color-gray-light;
+
+    &:hover {
+        background: $color-background-main;
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .18);
+    }
+}

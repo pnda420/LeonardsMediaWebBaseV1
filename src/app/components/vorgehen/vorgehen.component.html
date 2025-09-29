@@ -1,0 +1,54 @@
+<app-page-title title="Vorgehen"></app-page-title>
+
+<section class="process">
+  <div class="container process__intro">
+    <h2>So läuft ein Projekt ab</h2>
+    <p>Transparenter Ablauf ohne Spielereien. Klare Zuständigkeiten, realistische Zusagen, saubere Übergabe.</p>
+  </div>
+<div class="flex">
+  <div class="container timeline">
+    <article class="step" *ngFor="let s of steps; trackBy: trackById">
+      <div class="step__marker">
+        <div class="dot" [class.done]="s.done"></div>
+      </div>
+
+      <div class="step__content">
+        <header class="step__head">
+            <app-icon [icon]="s.icon" [size]="'28'"></app-icon>
+          <h3>{{ s.title }}</h3>
+          <div class="step__meta">
+            <span class="chip" *ngIf="s.duration">Dauer: {{ s.duration }}</span>
+            <span class="chip chip--muted" *ngIf="s.output">Ergebnis: {{ s.output }}</span>
+          </div>
+        </header>
+
+        <p class="step__summary">{{ s.summary }}</p>
+
+        <div class="step__lists" *ngIf="s.you?.length || s.me?.length">
+          <div class="col" *ngIf="s.you?.length">
+            <h4>Sie liefern</h4>
+            <ul>
+              <li *ngFor="let item of s.you">{{ item }}</li>
+            </ul>
+          </div>
+          <div class="col" *ngIf="s.me?.length">
+            <h4>Ich liefere</h4>
+            <ul>
+              <li *ngFor="let item of s.me">{{ item }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+<div class="flex">
+    <div class="container process__cta ">
+    <div class="cta__box">
+      <h2>Klingt passend?</h2>
+      <p>Kurzes Erstgespräch, klare Einschätzung, kein Sales-Druck.</p>
+      <button style="border: 1px solid #000;" class="btn btn--primary" (click)="router.navigate(['/contact'])">Termin anfragen</button>
+    </div>
+  </div>
+</div>
+</section>

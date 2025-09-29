@@ -1,34 +1,22 @@
 <header class="site-header" role="banner">
   <div class="container header__inner">
-    <button
-      class="nav-toggle"
-      type="button"
-      aria-label="Menü öffnen"
-      aria-controls="primary-nav"
-      [attr.aria-expanded]="open ? 'true' : 'false'"
-      (click)="toggle()"
-    >
+    <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-controls="primary-nav"
+      [attr.aria-expanded]="open ? 'true' : 'false'" (click)="toggle()">
       <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
       </svg>
     </button>
 
-    <img
-      class="brand"
-      src="assets/LM_Logos/Logo1.png"
-      alt="Leonards Media"
-      decoding="async"
-      (click)="routeTo('/')"
-    />
+    <img class="brand" src="assets/LM_Logos/Logo1.png" alt="Leonards Media" decoding="async" (click)="routeTo('/')" />
 
-    <nav
-      id="primary-nav"
-      class="nav"
-      [class.open]="open"
-      aria-label="Hauptnavigation"
-    >
-      <a (click)="routeTo('/')" routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Startseite</a>
-      <a (click)="routeTo('/services')" routerLink="/services" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Dienstleistungen</a>
+    <nav id="primary-nav" class="nav" [class.open]="open" aria-label="Hauptnavigation">
+      <a (click)="routeTo('/')" routerLink="/" routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }">Startseite</a>
+      <a (click)="routeTo('/services')" routerLink="/services" routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: false }">Dienstleistungen</a>
+      <a (click)="routeTo('/process')" routerLink="/process" routerLinkActive="is-active">Vorgehen</a>
+      <a (click)="routeTo('/server-status')" routerLink="/server-status" routerLinkActive="is-active">Systemstatus</a>
+      <a (click)="routeTo('/faq')" routerLink="/faq" routerLinkActive="is-active">FAQ</a>
       <a (click)="routeTo('/about')" routerLink="/about" routerLinkActive="is-active">Über uns</a>
       <a (click)="routeTo('/contact')" routerLink="/contact" routerLinkActive="is-active">Kontakt</a>
     </nav>

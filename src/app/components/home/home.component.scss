@@ -29,49 +29,6 @@ section {
  align-items: center;
 }
 
-/* Buttons: mobile full-width, ausreichende Tap-Ziele */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  height: 44px;
-  padding: 0 16px;
-  border-radius: 12px;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
-
-  @media (max-width: 599px) {
-    width: 100%;
-  }
-
-  &--primary {
-    background: $color-brand-primary;
-    color: $color-white;
-
-    &:hover { background: $color-brand-dark; }
-    &:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, .18);
-    }
-  }
-
-  &--ghost {
-    background: $color-white;
-    color: $color-text-primary;
-    border-color: $color-gray-light;
-
-    &:hover { background: $color-background-main; }
-    &:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, .18);
-    }
-  }
-}
 
 /* Section Head */
 .section-head {
@@ -285,6 +242,7 @@ section {
 /* CTA */
 .cta {
   background: $color-brand-bg;
+  border-radius: 15px;
 
   .cta__inner {
     padding-block: 1.5rem;

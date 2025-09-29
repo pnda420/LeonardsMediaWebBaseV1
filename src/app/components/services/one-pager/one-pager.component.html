@@ -1,0 +1,171 @@
+<app-page-title title="Website One-Pager"></app-page-title>
+
+<section class="op">
+    <!-- HERO -->
+
+    <div class="flex">
+        <div class="container hero">
+            <div class="hero__content">
+                <h2>Schlanke Website, schnell einsatzbereit</h2>
+                <p>Ein kompakter One-Pager: klarer Aufbau, modernes Layout, saubere Umsetzung. Geeignet für klare
+                    Angebote, lokale Dienstleistungen oder MVPs.</p>
+
+                <div class="hero__facts">
+                    <span class="chip">Preis: ab 1.800&nbsp;€</span>
+                    <span class="chip chip--muted">Umsetzung: 1–3&nbsp;Wochen (je nach Umfang)</span>
+                </div>
+
+                <div class="hero__actions">
+                    <a class="btn btn--primary" (click)="router.navigate(['/contact'])">Projekt anfragen</a>
+                    <a class="btn btn--ghost" (click)="scrollTo('examples')">Beispiele ansehen</a>
+                </div>
+            </div>
+
+            <figure class="hero__visual" aria-hidden="true">
+                <img [src]="img" alt="" loading="lazy" />
+            </figure>
+        </div>
+    </div>
+
+    <!-- PASST / PASST NICHT -->
+    <div class="flex">
+        <div class="container fit">
+            <div class="section-head">
+                <h2>Wann es passt – und wann nicht</h2>
+                <p>Kurze Orientierung, damit wir keine Zeit auf das Falsche setzen.</p>
+            </div>
+
+            <div class="fit__grid">
+                <article class="card">
+                    <h3>Geeignet</h3>
+                    <ul>
+                        <li>Klarer Fokus (1 Produkt/Leistung)</li>
+                        <li>Schneller Go-Live gewünscht</li>
+                        <li>Überschaubarer Content (1–5 Abschnitte)</li>
+                        <li>Kontakt/Termin als Hauptziel</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Nicht ideal</h3>
+                    <ul>
+                        <li>Viele Unterseiten / komplexe IA</li>
+                        <li>Mehrsprachigkeit + Rollen/Rechte</li>
+                        <li>Shop / komplexe Formulare</li>
+                        <li>Individuelle Integrationen breit gestreut</li>
+                    </ul>
+                    <div class="note">
+                        In diesen Fällen ist
+                        <a (click)="router.navigate(['/services/large-website'])">„Große Website“</a>
+                        oder das
+                        <a (click)="router.navigate(['/services/all-in-one'])">All-in-One-Paket</a>
+                        sinnvoller.
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEISTUNGSUMFANG -->
+    <div class="flex">
+        <div class="container scope">
+            <div class="section-head">
+                <h2>Leistungsumfang</h2>
+                <p>Was enthalten ist – ohne Marketing-Floskeln.</p>
+            </div>
+
+            <div class="scope__grid">
+                <article class="card" *ngFor="let i of includes">
+                    <h3 [innerHTML]="i.title"></h3>
+                    <p>{{ i.text }}</p>
+                </article>
+            </div>
+
+            <div class="scope__addons">
+                <h3>Optionen</h3>
+                <div class="addons">
+                    <button type="button" class="pill"
+                        (click)="router.navigate(['/services/seo-optimization'])">SEO-Optimierung</button>
+                    <button type="button" class="pill" (click)="router.navigate(['/services/all-in-one'])">All-in-One
+                        (Content & Betreuung)</button>
+                    <button type="button" class="pill" (click)="router.navigate(['/services/large-website'])">Skalierung
+                        zur
+                        großen Website</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MINI-PROZESS -->
+    <div class="flex">
+        <div class="container process">
+            <div class="section-head">
+                <h2>Ablauf</h2>
+                <p>Schlank gehalten. Realistische Zusagen, klare Übergaben.</p>
+            </div>
+
+            <ol class="steps">
+                <li><span class="k">Kickoff</span><span class="v">Ziele, Inhalte, Beispiele. 30–45&nbsp;Min.</span></li>
+                <li><span class="k">Entwurf</span><span class="v">Start mit Wireframe, 1–2 Designrunden.</span></li>
+                <li><span class="k">Umsetzung</span><span class="v">Saubere Komponenten, responsive, Basis-SEO.</span>
+                </li>
+                <li><span class="k">Go-Live</span><span class="v">Deployment & Checks, Übergabedoku.</span></li>
+                <li><span class="k">Support</span><span class="v">Bugfixes, kleine Anpassungen nach Bedarf.</span></li>
+            </ol>
+
+            <a class="link" (click)="router.navigate(['/process'])">Detailliertes Vorgehen ansehen →</a>
+        </div>
+    </div>
+
+    <!-- BEISPIELE -->
+    <div class="flex">
+        <div class="container examples" id="examples">
+            <div class="section-head">
+                <h2>Beispiele</h2>
+                <p>Echte Layout-Ausschnitte. Keine Stock-Mockups.</p>
+            </div>
+
+            <div class="grid">
+                <figure class="shot" *ngFor="let e of examples">
+                    <img [src]="e.src" [alt]="e.alt" loading="lazy" />
+                    <figcaption>
+                        <strong>{{ e.title }}</strong>
+                        <span class="meta">{{ e.meta }}</span>
+                    </figcaption>
+                </figure>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ MINI -->
+    <div class="flex">
+        <div class="container faq">
+            <div class="section-head">
+                <h2>FAQ zum One-Pager</h2>
+            </div>
+
+            <details class="qa" *ngFor="let f of faq">
+                <summary>{{ f.q }}</summary>
+                <div class="a">
+                    <p *ngFor="let p of f.a">{{ p }}</p>
+                </div>
+            </details>
+
+            <a class="link" (click)="router.navigate(['/faq'])">Mehr Fragen & Antworten →</a>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="flex">
+        <div class="container cta">
+            <div class="cta__box">
+                <h2>Passt das zu Ihrem Vorhaben?</h2>
+                <p>Kurzes Erstgespräch, klare Einschätzung, kein Sales-Druck.</p>
+                <div class="cta__actions">
+                    <a class="btn btn--primary" (click)="router.navigate(['/contact'])">Projekt anfragen</a>
+                    <a class="btn btn--ghost" (click)="router.navigate(['/services'])">Weitere Leistungen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
