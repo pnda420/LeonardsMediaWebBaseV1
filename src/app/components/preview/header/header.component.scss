@@ -1,0 +1,188 @@
+@import '../../../utils/shared-styles.scss';
+
+:host {
+    --header-bg: var(--header-bg, #{$color-white});
+    --header-fg: var(--header-fg, #{$color-text-primary});
+    --header-border: var(--header-border, #{$color-gray-light});
+    --header-h: var(--header-h, 64px);
+    display: block;
+}
+
+.site-header {
+    position: relative;
+    background: var(--header-bg);
+    color: var(--header-fg);
+    border-bottom: 1px solid var(--header-border);
+
+    &.is-transparent {
+        background: transparent;
+        border-bottom-color: transparent;
+    }
+
+    :host(.is-sticky) & {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .header__inner {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: 1rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+
+        @media (min-width: 1200px) {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 1200px;
+        }
+    }
+
+    .brand {
+        order: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        cursor: pointer;
+        text-decoration: none;
+
+        img {
+            height: calc(var(--header-h) - 24px);
+            width: auto;
+            display: block;
+            -webkit-user-drag: none;
+            user-select: none;
+        }
+
+        .brand__text {
+            font-weight: 700;
+            color: var(--header-fg);
+        }
+    }
+
+    .nav-toggle {
+        order: 0;
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid $color-gray-light;
+        border-radius: 10px;
+        background: $color-white;
+        color: $color-text-primary;
+
+        @media (min-width: 900px) {
+            display: none;
+        }
+    }
+
+    .nav {
+        order: 2;
+        display: none;
+        gap: .25rem;
+        align-items: center;
+        justify-content: flex-end;
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            height: 40px;
+            padding: 0 12px;
+            border-radius: 10px;
+            font-weight: 500;
+            color: $color-text-primary;
+            text-decoration: none;
+
+            &:hover {
+                background: $color-background-main;
+            }
+
+            &.is-active {
+                background: rgba(37, 99, 235, .10);
+                color: $color-brand-dark;
+            }
+        }
+
+        .btn {
+            height: 40px;
+            margin-left: .25rem;
+        }
+
+        .btn--primary {
+            background: $color-brand-primary;
+            color: $color-white;
+            border: 1px solid transparent;
+
+            &:hover {
+                background: $color-brand-dark;
+            }
+        }
+
+        .btn--ghost {
+            background: $color-white;
+            color: $color-text-primary;
+            border: 1px solid $color-gray-light;
+
+            &:hover {
+                background: $color-background-main;
+            }
+        }
+
+        /* Desktop sichtbar */
+        @media (min-width: 900px) {
+            display: inline-flex;
+        }
+    }
+
+    /* Mobile Drawer */
+    .nav.open {
+        display: grid;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: var(--header-h);
+        background: var(--header-bg);
+        border-bottom: 1px solid var(--header-border);
+        padding: .75rem 1rem;
+        gap: .35rem;
+
+        a {
+            height: 44px;
+            border-radius: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            height: 44px;
+        }
+    }
+}
+
+/* Dark Theme */
+:host(.theme-dark) {
+    --header-bg: #{$color-brand-dark};
+    --header-fg: #{$color-white};
+    --header-border: rgba(255, 255, 255, 0.12);
+
+    .nav a {
+        color: $color-white;
+
+        &:hover {
+            background: rgba(255, 255, 255, .08);
+        }
+
+        &.is-active {
+            background: rgba(96, 165, 250, .24);
+            color: $color-white;
+        }
+    }
+
+    .nav-toggle {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.12);
+        color: $color-white;
+    }
+}

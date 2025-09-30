@@ -1,5 +1,7 @@
 <div class="page">
+  @if(router.url !== '/preview') {
   <app-header class="site-header"></app-header>
+
 
   <main id="main" class="site-main" role="main">
     <div class="container">
@@ -8,4 +10,8 @@
   </main>
 
   <app-footer class="site-footer"></app-footer>
+
+  }@else {
+  <router-outlet></router-outlet>
+  }
 </div>

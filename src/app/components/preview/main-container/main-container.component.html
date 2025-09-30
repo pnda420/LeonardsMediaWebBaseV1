@@ -1,0 +1,33 @@
+<aside class="preview-banner" role="region" aria-label="Vorschauhinweis">
+    <div class="container preview-banner__inner">
+        <div class="preview-banner__info">
+            <svg class="preview-banner__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+                <path d="M12 8h.01M12 12v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <p class="preview-banner__text">
+                <strong>Vorschau.</strong> Änderungen werden automatisch gespeichert.
+                <span class="muted">Sie können jederzeit zurück.</span>
+            </p>
+        </div>
+
+        <div class="preview-banner__actions">
+            <button class="btn btn--ghost" type="button" (click)="goBack()">← Zurück</button>
+        </div>
+    </div>
+</aside>
+
+
+
+<app-preview-header [brandImg]="'assets/preview/company-logo.png'" brandAlt="Leonards Media" [brandText]="'Maier & Partner'"
+    [brandRoute]="'/'" [nav]="[
+    { label: 'Öffnungszeiten'},
+    { label: 'Kontakt'},
+    { label: 'Impressum'},
+    { label: 'Datenschutz'}
+  ]" [cta]="{ label: 'Kontakt', route: '/contact', kind: 'primary' }" theme="light" [sticky]="true"
+    [transparent]="false" [collapseAt]="900" [headerHeight]="64">
+</app-preview-header>
+
+
+<app-preview-content [model]="contentExample2"></app-preview-content>

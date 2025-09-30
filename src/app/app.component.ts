@@ -3,13 +3,14 @@ import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/ro
 import { HeaderComponent } from "./shared/header/header.component";
 import { FooterComponent } from "./shared/footer/footer.component";
 import { SeoService } from './shared/seo.service';
-import { DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { filter } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit {
   title = 'WebsiteBaseV2';
 
   constructor(
-    private router: Router,
+    public router: Router,
     private route: ActivatedRoute,
     private seo: SeoService,
     @Inject(DOCUMENT) private doc: Document
@@ -42,11 +43,19 @@ export class AppComponent implements OnInit {
       });
   }
 
+
+
   private getDeepest(route: ActivatedRoute): ActivatedRoute {
     let current = route;
     while (current.firstChild) {
       current = current.firstChild;
     }
     return current;
+  }
+
+  checkIfOnRoute(route: string){
+    
+
+
   }
 }

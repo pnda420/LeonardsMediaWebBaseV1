@@ -12,6 +12,7 @@ import { OnePagerComponent } from './components/services/one-pager/one-pager.com
 import { AllInOneComponent } from './components/services/all-in-one/all-in-one.component';
 import { LargeWebsiteComponent } from './components/services/large-website/large-website.component';
 import { SeoOptimizationComponent } from './components/services/seo-optimization/seo-optimization.component';
+import { MainContainerComponent } from './components/preview/main-container/main-container.component';
 
 const pageMainName = 'Leonards Media';
 export const routes: Routes = [
@@ -28,4 +29,5 @@ export const routes: Routes = [
     { path: 'services/all-in-one', component: AllInOneComponent, title: pageMainName + ' | All-in-One-Lösung', data: { description: 'All-in-One-Lösung von Leonards Media.' } },
     { path: 'services/large-website', component: LargeWebsiteComponent, title: pageMainName + ' | Große Website', data: { description: 'Große Website von Leonards Media.' } },
     { path: 'services/seo-optimization', component: SeoOptimizationComponent, title: pageMainName + ' | SEO Optimierung', data: { description: 'SEO Optimierung von Leonards Media.' } },
+    { path: 'preview', component: MainContainerComponent, title: pageMainName + ' | Preview', data: { description: 'Preview von Leonards Media.' } },
 ];

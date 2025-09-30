@@ -1,0 +1,92 @@
+@import '../../../utils/shared-styles.scss';
+
+.preview-banner {
+    position: sticky;
+    top: 0; // Wenn unter einem sticky Header: top: var(--header-h, 64px);
+    z-index: 1200;
+    width: 100%;
+    background: $color-brand-dark;
+    color: $color-white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+
+    .preview-banner__inner {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: .75rem;
+        padding: .6rem 1rem;
+
+        // Gleiche Container-Breite wie restliche Seite
+        margin-left: 1rem;
+        margin-right: 1rem;
+
+        @media (min-width: 1200px) {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 1200px;
+        }
+    }
+
+    .preview-banner__info {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: .6rem;
+    }
+
+    .preview-banner__icon {
+        width: 20px;
+        height: 20px;
+        color: $color-brand-light;
+        opacity: .95;
+    }
+
+    .preview-banner__text {
+        margin: 0;
+        line-height: 1.4;
+
+        strong {
+            font-weight: 700;
+        }
+
+        .muted {
+            opacity: .9;
+        }
+    }
+
+    .preview-banner__actions {
+        display: inline-flex;
+        gap: .5rem;
+        align-items: center;
+
+        .btn.btn--ghost {
+            background: transparent;
+            color: $color-white;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            &:focus-visible {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(96, 165, 250, .35);
+            }
+        }
+    }
+
+    @media (max-width: 640px) {
+        .preview-banner__inner {
+            grid-template-columns: 1fr;
+            padding: .65rem .9rem;
+        }
+
+        .preview-banner__actions {
+            justify-self: start;
+
+            .btn {
+                width: 100%;
+            }
+        }
+    }
+}
