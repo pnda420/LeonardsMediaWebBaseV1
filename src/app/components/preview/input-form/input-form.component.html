@@ -1,68 +1,342 @@
-<div class="form-wrapper">
-    <h1>Vorschau Formular</h1>
+<div class="form-container">
+    <div class="form-header">
+        <h1>One-Pager Generator</h1>
+        <p class="subtitle">Erstellen Sie Ihre professionelle One-Pager Seite in wenigen Schritten</p>
+    </div>
+
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-        <!-- Email -->
-        <div class="form-group">
-            <label for="email">E-Mail *</label>
-            <input id="email" type="email" formControlName="email" placeholder="your@email.com" />
-            <div class="error" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
-                Bitte eine gültige E-Mail eingeben.
+        <!-- Progress Indicator -->
+        <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
+        </div>
+
+        <!-- Section: Kontaktdaten -->
+        <section class="form-section">
+            <h2 class="section-title">
+                <span class="section-number">01</span>
+                Kontaktdaten
+            </h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">
+                        Vorname
+                        <span class="required">*</span>
+                    </label>
+                    <input id="firstName" type="text" formControlName="firstName" placeholder="Max"
+                        [class.error-input]="isFieldInvalid('firstName')" />
+                    <span class="error-message" *ngIf="isFieldInvalid('firstName')">
+                        <i class="error-icon">!</i>
+                        Vorname ist erforderlich
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">
+                        Nachname
+                        <span class="required">*</span>
+                    </label>
+                    <input id="lastName" type="text" formControlName="lastName" placeholder="Mustermann"
+                        [class.error-input]="isFieldInvalid('lastName')" />
+                    <span class="error-message" *ngIf="isFieldInvalid('lastName')">
+                        <i class="error-icon">!</i>
+                        Nachname ist erforderlich
+                    </span>
+                </div>
             </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">
+                        E-Mail
+                        <span class="required">*</span>
+                    </label>
+                    <div class="input-with-icon">
+                        <i class="input-icon">✉</i>
+                        <input id="email" type="email" formControlName="email" placeholder="your@email.com"
+                            [class.error-input]="isFieldInvalid('email')" />
+                    </div>
+                    <span class="error-message" *ngIf="isFieldInvalid('email')">
+                        <i class="error-icon">!</i>
+                        Bitte geben Sie eine gültige E-Mail-Adresse ein
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">
+                        Telefon
+                        <span class="optional">(optional)</span>
+                    </label>
+                    <div class="input-with-icon">
+                        <i class="input-icon">📱</i>
+                        <input id="phone" type="tel" formControlName="phone" placeholder="+49 123 456789" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Firmendaten -->
+        <section class="form-section">
+            <h2 class="section-title">
+                <span class="section-number">02</span>
+                Firmendaten
+            </h2>
+
+            <div class="form-group">
+                <label for="companyName">
+                    Firmenname
+                    <span class="required">*</span>
+                </label>
+                <input id="companyName" type="text" formControlName="companyName" placeholder="Meine Firma GmbH"
+                    [class.error-input]="isFieldInvalid('companyName')" />
+                <span class="error-message" *ngIf="isFieldInvalid('companyName')">
+                    <i class="error-icon">!</i>
+                    Firmenname ist erforderlich
+                </span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="industry">
+                        Branche
+                        <span class="required">*</span>
+                    </label>
+                    <select id="industry" formControlName="industry" [class.error-input]="isFieldInvalid('industry')">
+                        <option value="">Bitte wählen...</option>
+                        <option value="tech">Technologie & IT</option>
+                        <option value="health">Gesundheit & Medizin</option>
+                        <option value="finance">Finanzen & Versicherungen</option>
+                        <option value="retail">Handel & E-Commerce</option>
+                        <option value="consulting">Beratung & Dienstleistungen</option>
+                        <option value="manufacturing">Produktion & Industrie</option>
+                        <option value="education">Bildung & Training</option>
+                        <option value="gastro">Gastronomie & Hotellerie</option>
+                        <option value="creative">Kreativ & Design</option>
+                        <option value="real-estate">Immobilien</option>
+                        <option value="other">Sonstige</option>
+                    </select>
+                    <span class="error-message" *ngIf="isFieldInvalid('industry')">
+                        <i class="error-icon">!</i>
+                        Bitte wählen Sie eine Branche
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="companySize">
+                        Unternehmensgröße
+                    </label>
+                    <select id="companySize" formControlName="companySize">
+                        <option value="">Bitte wählen...</option>
+                        <option value="1">Einzelunternehmer</option>
+                        <option value="2-10">2-10 Mitarbeiter</option>
+                        <option value="11-50">11-50 Mitarbeiter</option>
+                        <option value="51-200">51-200 Mitarbeiter</option>
+                        <option value="200+">200+ Mitarbeiter</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Logo Upload -->
+            <div class="form-group">
+                <div class="switch-container">
+                    <label class="switch">
+                        <input type="checkbox" formControlName="useCompanyImage" />
+                        <span class="slider"></span>
+                    </label>
+                    <span class="switch-label">Firmenlogo verwenden</span>
+                </div>
+            </div>
+
+            <div class="logo-upload" *ngIf="form.get('useCompanyImage')?.value">
+                <div class="form-group">
+                    <label for="companyImage">
+                        Logo hochladen
+                    </label>
+                    <div class="file-upload">
+                        <input id="companyImageFile" type="file" accept="image/*" (change)="onFileSelected($event)"
+                            class="file-input" />
+                        <label for="companyImageFile" class="file-label">
+                            <i class="upload-icon">📁</i>
+                            <span>Datei auswählen oder hierher ziehen</span>
+                            <span class="file-info">PNG, JPG, SVG bis 5MB</span>
+                        </label>
+                    </div>
+                    <div class="divider">oder</div>
+                    <input id="companyImage" type="url" formControlName="companyImage"
+                        placeholder="https://example.com/logo.png" />
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Design -->
+        <section class="form-section">
+            <h2 class="section-title">
+                <span class="section-number">03</span>
+                Design & Stil
+            </h2>
+
+            <div class="form-group">
+                <label>Farbschema</label>
+                <div class="color-picker-group">
+                    <div class="color-item">
+                        <input id="primaryColor" type="color" formControlName="primaryColor" class="color-input" />
+                        <label for="primaryColor" class="color-label">
+                            Primärfarbe
+                            <span class="color-value">{{ form.get('primaryColor')?.value }}</span>
+                        </label>
+                    </div>
+                    <div class="color-item">
+                        <input id="secondaryColor" type="color" formControlName="secondaryColor" class="color-input" />
+                        <label for="secondaryColor" class="color-label">
+                            Sekundärfarbe
+                            <span class="color-value">{{ form.get('secondaryColor')?.value }}</span>
+                        </label>
+                    </div>
+                    <div class="color-item">
+                        <input id="accentColor" type="color" formControlName="accentColor" class="color-input" />
+                        <label for="accentColor" class="color-label">
+                            Akzentfarbe
+                            <span class="color-value">{{ form.get('accentColor')?.value }}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="designStyle">
+                        Design-Stil
+                        <span class="required">*</span>
+                    </label>
+                    <select id="designStyle" formControlName="designStyle"
+                        [class.error-input]="isFieldInvalid('designStyle')">
+                        <option value="">Bitte wählen...</option>
+                        <option value="modern">Modern & Minimalistisch</option>
+                        <option value="corporate">Corporate & Professionell</option>
+                        <option value="playful">Verspielt & Kreativ</option>
+                        <option value="elegant">Elegant & Luxuriös</option>
+                        <option value="tech">Tech & Futuristisch</option>
+                        <option value="organic">Organisch & Natural</option>
+                        <option value="bold">Bold & Auffällig</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="fontStyle">
+                        Schriftart-Stil
+                    </label>
+                    <select id="fontStyle" formControlName="fontStyle">
+                        <option value="">Standard</option>
+                        <option value="serif">Serif (klassisch)</option>
+                        <option value="sans-serif">Sans-Serif (modern)</option>
+                        <option value="display">Display (auffällig)</option>
+                        <option value="handwritten">Handschrift</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Website-Details -->
+        <section class="form-section">
+            <h2 class="section-title">
+                <span class="section-number">04</span>
+                Website-Details
+            </h2>
+
+            <div class="form-group">
+                <label for="typeOfWebsite">
+                    Art der Website
+                    <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                    <label class="radio-card" *ngFor="let type of websiteTypes">
+                        <input type="radio" name="typeOfWebsite" [value]="type.value" formControlName="typeOfWebsite" />
+                        <div class="radio-card-content">
+                            <i class="radio-icon">{{ type.icon }}</i>
+                            <span class="radio-title">{{ type.label }}</span>
+                            <span class="radio-description">{{ type.description }}</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="targetAudience">
+                        Zielgruppe
+                        <span class="required">*</span>
+                    </label>
+                    <input id="targetAudience" type="text" formControlName="targetAudience"
+                        placeholder="z.B. Junge Erwachsene, Unternehmen, Familien"
+                        [class.error-input]="isFieldInvalid('targetAudience')" />
+                </div>
+
+                <div class="form-group">
+                    <label for="language">
+                        Sprache
+                    </label>
+                    <select id="language" formControlName="language">
+                        <option value="de">Deutsch</option>
+                        <option value="en">Englisch</option>
+                        <option value="multi">Mehrsprachig</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="form-group">
+                <label>Gewünschte Funktionen</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item" *ngFor="let feature of features">
+                        <input type="checkbox" [value]="feature.value"
+                            (change)="onFeatureChange($event, feature.value)" />
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">{{ feature.label }}</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="form-group">
+                <label for="contentInformation">
+                    Inhaltsbeschreibung
+                    <span class="required">*</span>
+                    <span class="char-count">{{ getCharCount() }}/1000</span>
+                </label>
+                <textarea id="contentInformation" rows="6" formControlName="contentInformation"
+                    placeholder="Beschreiben Sie Ihr Projekt, Ihre Ziele und was die Website erreichen soll..."
+                    [class.error-input]="isFieldInvalid('contentInformation')" maxlength="1000"></textarea>
+                <span class="error-message" *ngIf="isFieldInvalid('contentInformation')">
+                    <i class="error-icon">!</i>
+                    Bitte beschreiben Sie Ihr Projekt (min. 20 Zeichen)
+                </span>
+            </div>
+
+        </section>
+
+    
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="onReset()">
+                Zurücksetzen
+            </button>
+            <button type="submit" class="btn-primary" [disabled]="loading || form.invalid" [class.loading]="loading">
+                <span class="btn-text" *ngIf="!loading">
+                    Website generieren
+                </span>
+                <span class="btn-text" *ngIf="loading">
+                    <i class="spinner"></i>
+                    Wird generiert...
+                </span>
+            </button>
         </div>
 
-        <!-- Firmenname -->
-        <div class="form-group">
-            <label for="companyName">Firmenname *</label>
-            <input id="companyName" type="text" formControlName="companyName" placeholder="Meine Firma GmbH" />
+        <!-- Form Summary -->
+        <div class="form-summary" *ngIf="form.valid">
+            <div class="summary-icon">✓</div>
+            <p>Alle erforderlichen Felder ausgefüllt. Bereit zur Generierung!</p>
         </div>
-
-        <!-- Firmenlogo -->
-        <div class="form-group checkbox">
-            <label>
-                <input type="checkbox" formControlName="useCompanyImage" />
-                Firmenlogo verwenden?
-            </label>
-        </div>
-        <div class="form-group" *ngIf="form.get('useCompanyImage')?.value">
-            <label for="companyImage">Logo-URL</label>
-            <input id="companyImage" type="text" formControlName="companyImage" placeholder="https://..." />
-        </div>
-
-        <!-- Farben -->
-        <div class="form-group">
-            <label for="primaryColor">Primärfarbe *</label>
-            <input id="primaryColor" type="color" formControlName="primaryColor" />
-        </div>
-        <div class="form-group">
-            <label for="secondaryColor">Sekundärfarbe *</label>
-            <input id="secondaryColor" type="color" formControlName="secondaryColor" />
-        </div>
-
-        <!-- Website Typ -->
-        <div class="form-group">
-            <label for="typeOfWebsite">Art der Website</label>
-            <select id="typeOfWebsite" formControlName="typeOfWebsite">
-                <option value="">Bitte wählen...</option>
-                <option value="praesentation">Vorstellung (z. B. Portfolio, Künstler, Firma)</option>
-                <option value="verkauf">Verkauf (z. B. Produkt, Online-Shop, App)</option>
-                <option value="landing">Landing Page (z. B. Anmeldung, Termin, Coming Soon)</option>
-                <option value="event">Event/Info (z. B. Veranstaltung, Restaurant, Aktion)</option>
-                <option value="wissen">Infos/Service (z. B. FAQ, Hilfe, Erklärseite)</option>
-            </select>
-        </div>
-
-
-        <!-- Beschreibung -->
-        <div class="form-group">
-            <label for="contentInformation">Inhalt / Beschreibung *</label>
-            <textarea id="contentInformation" rows="5" formControlName="contentInformation"
-                placeholder="Beschreibe dein Projekt..."></textarea>
-        </div>
-
-        <!-- Submit -->
-        <button type="submit" [disabled]="loading || form.invalid">
-            {{ loading ? 'Lädt…' : 'Generieren' }}
-        </button>
     </form>
 </div>

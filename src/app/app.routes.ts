@@ -31,5 +31,5 @@ export const routes: Routes = [
     { path: 'services/large-website', component: LargeWebsiteComponent, title: pageMainName + ' | Große Website', data: { description: 'Große Website von Leonards Media.' } },
     { path: 'services/seo-optimization', component: SeoOptimizationComponent, title: pageMainName + ' | SEO Optimierung', data: { description: 'SEO Optimierung von Leonards Media.' } },
     { path: 'preview', component: MainContainerComponent, title: pageMainName + ' | Preview', data: { description: 'Preview von Leonards Media.' } },
-    { path: 'preview2', component: InputFormComponent, title: pageMainName + ' | Preview2', data: { description: 'Preview2 von Leonards Media.' } },
+    { path: 'preview-form', component: InputFormComponent, title: pageMainName + ' | Preview2', data: { description: 'Preview2 von Leonards Media.' } },
 ];

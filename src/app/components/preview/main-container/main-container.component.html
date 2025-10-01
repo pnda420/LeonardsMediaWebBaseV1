@@ -11,13 +11,19 @@
             </p>
         </div>
 
+        x{{getPreviewsAmount()}}
+
         <div class="preview-banner__actions">
             <button class="btn btn--ghost" type="button" (click)="goBack()">← Zurück</button>
         </div>
     </div>
 </aside>
 
-<div *ngIf="htmlSafe; else empty" [innerHTML]="htmlSafe"></div>
+<iframe #previewFrame sandbox="allow-same-origin" style="width:100%; border:0;" (load)="resizeFrame()"></iframe>
+
+
+
 <ng-template #empty>
-    <div class="placeholder">Noch kein Preview vorhanden.</div>
+    <div class="ghh">Noch kein Preview vorhanden.</div>
+
 </ng-template>
