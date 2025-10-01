@@ -13,6 +13,7 @@ import { AllInOneComponent } from './components/services/all-in-one/all-in-one.c
 import { LargeWebsiteComponent } from './components/services/large-website/large-website.component';
 import { SeoOptimizationComponent } from './components/services/seo-optimization/seo-optimization.component';
 import { MainContainerComponent } from './components/preview/main-container/main-container.component';
+import { InputFormComponent } from './components/preview/input-form/input-form.component';
 
 const pageMainName = 'Leonards Media';
 export const routes: Routes = [
@@ -30,4 +31,5 @@ export const routes: Routes = [
     { path: 'services/large-website', component: LargeWebsiteComponent, title: pageMainName + ' | Große Website', data: { description: 'Große Website von Leonards Media.' } },
     { path: 'services/seo-optimization', component: SeoOptimizationComponent, title: pageMainName + ' | SEO Optimierung', data: { description: 'SEO Optimierung von Leonards Media.' } },
     { path: 'preview', component: MainContainerComponent, title: pageMainName + ' | Preview', data: { description: 'Preview von Leonards Media.' } },
+    { path: 'preview2', component: InputFormComponent, title: pageMainName + ' | Preview2', data: { description: 'Preview2 von Leonards Media.' } },
 ];

@@ -1,0 +1,68 @@
+<div class="form-wrapper">
+    <h1>Vorschau Formular</h1>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <!-- Email -->
+        <div class="form-group">
+            <label for="email">E-Mail *</label>
+            <input id="email" type="email" formControlName="email" placeholder="your@email.com" />
+            <div class="error" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                Bitte eine gültige E-Mail eingeben.
+            </div>
+        </div>
+
+        <!-- Firmenname -->
+        <div class="form-group">
+            <label for="companyName">Firmenname *</label>
+            <input id="companyName" type="text" formControlName="companyName" placeholder="Meine Firma GmbH" />
+        </div>
+
+        <!-- Firmenlogo -->
+        <div class="form-group checkbox">
+            <label>
+                <input type="checkbox" formControlName="useCompanyImage" />
+                Firmenlogo verwenden?
+            </label>
+        </div>
+        <div class="form-group" *ngIf="form.get('useCompanyImage')?.value">
+            <label for="companyImage">Logo-URL</label>
+            <input id="companyImage" type="text" formControlName="companyImage" placeholder="https://..." />
+        </div>
+
+        <!-- Farben -->
+        <div class="form-group">
+            <label for="primaryColor">Primärfarbe *</label>
+            <input id="primaryColor" type="color" formControlName="primaryColor" />
+        </div>
+        <div class="form-group">
+            <label for="secondaryColor">Sekundärfarbe *</label>
+            <input id="secondaryColor" type="color" formControlName="secondaryColor" />
+        </div>
+
+        <!-- Website Typ -->
+        <div class="form-group">
+            <label for="typeOfWebsite">Art der Website</label>
+            <select id="typeOfWebsite" formControlName="typeOfWebsite">
+                <option value="">Bitte wählen...</option>
+                <option value="praesentation">Vorstellung (z. B. Portfolio, Künstler, Firma)</option>
+                <option value="verkauf">Verkauf (z. B. Produkt, Online-Shop, App)</option>
+                <option value="landing">Landing Page (z. B. Anmeldung, Termin, Coming Soon)</option>
+                <option value="event">Event/Info (z. B. Veranstaltung, Restaurant, Aktion)</option>
+                <option value="wissen">Infos/Service (z. B. FAQ, Hilfe, Erklärseite)</option>
+            </select>
+        </div>
+
+
+        <!-- Beschreibung -->
+        <div class="form-group">
+            <label for="contentInformation">Inhalt / Beschreibung *</label>
+            <textarea id="contentInformation" rows="5" formControlName="contentInformation"
+                placeholder="Beschreibe dein Projekt..."></textarea>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" [disabled]="loading || form.invalid">
+            {{ loading ? 'Lädt…' : 'Generieren' }}
+        </button>
+    </form>
+</div>

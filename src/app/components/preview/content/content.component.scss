@@ -1,43 +1,13 @@
-/* Enhanced Professional Styles for Preview Component */
-@import '../../../utils/shared-styles.scss';
+/* Enhanced Professional Styles with Dynamic Color Support */
 
-/* CSS Variables for Theming */
-:root {
-    --primary: #5B63FF;
-    --primary-dark: #4952E6;
-    --primary-light: #E8E9FF;
-    --secondary: #1A1F36;
-    --accent: #FF5E84;
-    --success: #22C55E;
-    --warning: #F59E0B;
-    --danger: #EF4444;
 
-    --text-primary: #1A1F36;
-    --text-secondary: #64748B;
-    --text-muted: #94A3B8;
+/* 
+ * CSS Variables are now dynamically set by the component
+ * These are fallback values if no palette is provided
+ */
 
-    --bg-white: #FFFFFF;
-    --bg-light: #F8FAFC;
-    --bg-dark: #0F172A;
-    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
-    --border-light: #E2E8F0;
-    --border-default: #CBD5E1;
-
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-
-    --radius-sm: 0.375rem;
-    --radius-md: 0.75rem;
-    --radius-lg: 1rem;
-    --radius-xl: 1.5rem;
-
-    --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Global Styles */
+/* Global Styles - Now using CSS variables */
 * {
     box-sizing: border-box;
 }
@@ -76,15 +46,15 @@ section {
 }
 
 .section-light {
-    background: var(--bg-light);
+    background: var(--bg-surface);
 }
 
 .section-dark {
     background: var(--bg-dark);
-    color: var(--bg-white);
+    color: var(--text-inverse);
 
     .section-title {
-        color: var(--bg-white);
+        color: var(--text-inverse);
     }
 }
 
@@ -112,22 +82,19 @@ section {
 }
 
 /* Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     line-height: 1.2;
     margin: 0;
+    color: var(--text-primary);
 }
 
 p {
     margin: 0.5rem 0;
+    color: var(--text-secondary);
 }
 
-/* Buttons */
+/* Buttons - Using dynamic colors */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -146,7 +113,7 @@ p {
 
     &:focus {
         outline: none;
-        box-shadow: 0 0 0 3px rgba(91, 99, 255, 0.2);
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 91, 99, 255), 0.2);
     }
 
     .btn-arrow {
@@ -161,7 +128,8 @@ p {
 
 .btn-primary {
     background: var(--primary);
-    color: white;
+    color: var(--text-inverse);
+    border-color: var(--primary);
 
     &:hover {
         background: var(--primary-dark);
@@ -175,12 +143,12 @@ p {
 }
 
 .btn-secondary {
-    background: white;
+    background: var(--bg-white);
     color: var(--primary);
     border-color: var(--border-default);
 
     &:hover {
-        background: var(--bg-light);
+        background: var(--bg-surface);
         border-color: var(--primary);
         transform: translateY(-2px);
         box-shadow: var(--shadow-md);
@@ -196,14 +164,14 @@ p {
     width: 100%;
 }
 
-/* Hero Section */
+/* Hero Section - Dynamic gradient */
 .hero-section {
     min-height: 600px;
     display: flex;
     align-items: center;
     position: relative;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: var(--bg-gradient);
+    color: var(--text-inverse);
     overflow: hidden;
 
     @media (min-width: 768px) {
@@ -247,10 +215,7 @@ p {
         font-weight: 800;
         line-height: 1.1;
         margin-bottom: 1.5rem;
-
-        background: linear-gradient(to right, white, rgba(255, 255, 255, 0.9));
-        -webkit-background-clip: text;
-        background-clip: text;
+        color: var(--text-inverse);
     }
 
     .hero-subtitle {
@@ -259,6 +224,7 @@ p {
         line-height: 1.6;
         margin-bottom: 2rem;
         max-width: 600px;
+        color: var(--text-inverse);
     }
 
     .event-info {
@@ -275,6 +241,7 @@ p {
             background: rgba(255, 255, 255, 0.15);
             border-radius: var(--radius-md);
             backdrop-filter: blur(10px);
+            color: var(--text-inverse);
 
             i {
                 font-size: 1.25rem;
@@ -314,7 +281,7 @@ p {
     }
 }
 
-/* Value Props */
+/* Value Props - Using dynamic colors */
 .value-grid {
     display: grid;
     gap: 2rem;
@@ -331,7 +298,7 @@ p {
 .value-card {
     text-align: center;
     padding: 2rem;
-    background: white;
+    background: var(--bg-white);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-light);
     transition: var(--transition-base);
@@ -343,6 +310,8 @@ p {
 
         .value-icon {
             transform: scale(1.1);
+            background: var(--primary);
+            color: var(--text-inverse);
         }
     }
 
@@ -357,7 +326,7 @@ p {
         color: var(--primary);
         border-radius: var(--radius-md);
         font-size: 1.5rem;
-        transition: transform 0.3s ease;
+        transition: var(--transition-base);
     }
 
     .value-title {
@@ -372,7 +341,7 @@ p {
     }
 }
 
-/* Features */
+/* Features - Dark section with inverse text */
 .features-grid {
     display: grid;
     gap: 2rem;
@@ -426,7 +395,7 @@ p {
         padding: 1.5rem;
 
         h3 {
-            color: white;
+            color: var(--text-inverse);
             font-size: 1.25rem;
             margin-bottom: 0.75rem;
         }
@@ -440,7 +409,7 @@ p {
 
 /* Social Proof */
 .social-section {
-    background: var(--bg-light);
+    background: var(--bg-surface);
 
     .logos-wrapper {
         text-align: center;
@@ -492,7 +461,7 @@ p {
     }
 
     .testimonial-card {
-        background: white;
+        background: var(--bg-white);
         padding: 2rem;
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow-sm);
@@ -551,7 +520,7 @@ p {
     }
 }
 
-/* Pricing */
+/* Pricing - Using dynamic accent colors */
 .pricing-section {
     background: var(--bg-white);
 
@@ -570,7 +539,7 @@ p {
     }
 
     .pricing-card {
-        background: white;
+        background: var(--bg-white);
         border: 2px solid var(--border-light);
         border-radius: var(--radius-lg);
         padding: 2rem;
@@ -580,6 +549,7 @@ p {
         &:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-xl);
+            border-color: var(--primary);
         }
 
         &.featured {
@@ -594,7 +564,7 @@ p {
                 left: 50%;
                 transform: translateX(-50%);
                 background: var(--primary);
-                color: white;
+                color: var(--text-inverse);
                 padding: 0.25rem 1rem;
                 border-radius: 999px;
                 font-size: 0.75rem;
@@ -651,9 +621,9 @@ p {
     }
 }
 
-/* Lead Capture */
+/* Lead Capture - Using dynamic gradients */
 .lead-section {
-    background: linear-gradient(135deg, var(--primary-light), white);
+    background: linear-gradient(135deg, var(--primary-light), var(--bg-white));
 
     .lead-wrapper {
         display: grid;
@@ -679,7 +649,7 @@ p {
     }
 
     .lead-form {
-        background: white;
+        background: var(--bg-white);
         padding: 2rem;
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow-lg);
@@ -719,6 +689,8 @@ p {
                 border-radius: var(--radius-md);
                 font-size: 1rem;
                 transition: var(--transition-base);
+                background: var(--bg-white);
+                color: var(--text-primary);
 
                 &:focus {
                     outline: none;
@@ -735,9 +707,204 @@ p {
     }
 }
 
+/* Contact Section - Dynamic gradient background */
+.contact-section {
+    background: var(--bg-gradient);
+    color: var(--text-inverse);
+
+    .contact-wrapper {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+
+        .section-title {
+            color: var(--text-inverse);
+            margin-bottom: 1rem;
+        }
+
+        .contact-text {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            color: var(--text-inverse);
+        }
+
+        .contact-channels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+
+            .contact-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 1rem 2rem;
+                background: rgba(255, 255, 255, 0.1);
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: var(--radius-lg);
+                color: var(--text-inverse);
+                text-decoration: none;
+                font-weight: 600;
+                backdrop-filter: blur(10px);
+                transition: var(--transition-base);
+
+                &:hover {
+                    background: var(--bg-white);
+                    color: var(--primary);
+                    transform: translateY(-3px);
+                    box-shadow: var(--shadow-xl);
+                }
+
+                .contact-icon {
+                    font-size: 1.25rem;
+                }
+            }
+        }
+    }
+}
+
+/* CTA Section - Dynamic gradient */
+.cta-section {
+    background: var(--bg-gradient);
+    padding: 6rem 0;
+
+    .cta-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border-radius: var(--radius-xl);
+        padding: 4rem;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+        @media (max-width: 768px) {
+            padding: 2rem;
+        }
+    }
+
+    .cta-content {
+        margin-bottom: 2.5rem;
+
+        .cta-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            color: var(--text-inverse);
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-inverse);
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    }
+
+    .cta-actions {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .btn-lg {
+            min-width: 180px;
+        }
+    }
+}
+
+/* FAQ Section */
+.faq-section {
+    background: var(--bg-surface);
+
+    .faq-list {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .faq-item {
+        background: var(--bg-white);
+        border-radius: var(--radius-lg);
+        margin-bottom: 1rem;
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
+        transition: var(--transition-base);
+
+        &[open] {
+            box-shadow: var(--shadow-md);
+
+            summary {
+                color: var(--primary);
+
+                .faq-icon::after {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+
+        summary {
+            padding: 1.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition-base);
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+
+            &:hover {
+                color: var(--primary);
+                background: var(--bg-surface);
+            }
+
+            .faq-icon {
+                position: relative;
+                width: 24px;
+                height: 24px;
+                flex-shrink: 0;
+
+                &::after {
+                    content: '▼';
+                    position: absolute;
+                    right: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    transition: transform 0.3s ease;
+                    color: var(--primary);
+                }
+            }
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+
+            p {
+                color: var(--text-secondary);
+                line-height: 1.6;
+                margin-bottom: 1rem;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+/* Additional dynamic color implementations for all other sections */
+
 /* Skills */
 .skills-section {
-    background: var(--bg-light);
+    background: var(--bg-surface);
 
     .skills-cloud {
         display: flex;
@@ -747,7 +914,7 @@ p {
 
         .skill-tag {
             padding: 0.75rem 1.5rem;
-            background: white;
+            background: var(--bg-white);
             border: 2px solid var(--border-light);
             border-radius: 999px;
             font-weight: 600;
@@ -759,6 +926,7 @@ p {
                 color: var(--primary);
                 transform: scale(1.05);
                 box-shadow: var(--shadow-md);
+                background: var(--primary-light);
             }
         }
     }
@@ -780,15 +948,17 @@ p {
     }
 
     .project-card {
-        background: white;
+        background: var(--bg-white);
         border-radius: var(--radius-lg);
         overflow: hidden;
         box-shadow: var(--shadow-md);
         transition: var(--transition-base);
+        border: 1px solid var(--border-light);
 
         &:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-xl);
+            border-color: var(--primary-light);
 
             .project-overlay {
                 opacity: 1;
@@ -810,7 +980,8 @@ p {
             .project-overlay {
                 position: absolute;
                 inset: 0;
-                background: rgba(91, 99, 255, 0.9);
+                background: rgba(var(--primary-rgb, 91, 99, 255), 0.9);
+                background: var(--primary);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -820,7 +991,7 @@ p {
 
                 .project-link {
                     padding: 0.5rem 1rem;
-                    background: white;
+                    background: var(--bg-white);
                     color: var(--primary);
                     border-radius: var(--radius-md);
                     text-decoration: none;
@@ -856,10 +1027,11 @@ p {
 
                 .project-tag {
                     padding: 0.25rem 0.75rem;
-                    background: var(--bg-light);
+                    background: var(--bg-surface);
                     border-radius: 999px;
                     font-size: 0.875rem;
                     color: var(--text-secondary);
+                    border: 1px solid var(--border-light);
                 }
             }
         }
@@ -1412,7 +1584,6 @@ p {
 
 /* CTA Section */
 .cta-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 6rem 0;
 
     .cta-wrapper {

@@ -1,17 +1,37 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-/* ========= Gemeinsame Primitives ========= */
+/* ========= Color Palette Interface ========= */
+export interface ColorPalette {
+  primary?: string;
+  secondary?: string;
+  background?: string;
+  surface?: string;
+  text?: {
+    primary?: string;
+    secondary?: string;
+    inverse?: string;
+  };
+  accent?: string;
+  border?: string;
+  status?: {
+    error?: string;
+    success?: string;
+    warning?: string;
+  };
+}
+
+/* ========= Existing Interfaces (unchanged) ========= */
 
 export type MainType = 'landing' | 'portfolio' | 'event';
 export type CtaKind = 'primary' | 'ghost';
 
 export interface SeoMeta {
-  title?: string;        // <= ~70 Zeichen
-  description?: string;  // <= ~160 Zeichen
+  title?: string;
+  description?: string;
 }
 
 export interface ImageRef {
@@ -21,8 +41,8 @@ export interface ImageRef {
 
 export interface Cta {
   label: string;
-  route?: string;   // interne Route
-  href?: string;    // externe URL, mailto:, tel:
+  route?: string;
+  href?: string;
   kind?: CtaKind;
 }
 
@@ -32,43 +52,34 @@ export interface LinkRef {
   href?: string;
 }
 
-/* ========= Block-Basis ========= */
-
 interface BlockBase<T extends string> {
   type: T;
   enabled?: boolean;
 }
 
-/* ========= Gemeinsame Blöcke (mehrfach verwendbar) ========= */
-
-// HERO (für alle Typen; Event kann datetime/location zusätzlich setzen)
+// [All other existing block interfaces remain the same...]
 export interface HeroBlock extends BlockBase<'hero'> {
   title: string;
   subtitle?: string;
   image?: ImageRef;
   ctas?: Cta[];
-  // Event-spezifische Felder (optional, ignorierbar bei anderen Typen)
-  datetime?: { start: string; end?: string }; // ISO 8601
+  datetime?: { start: string; end?: string };
   location?: { name: string; address?: string };
 }
 
-// Value Props (Landing)
 export interface ValuePropsBlock extends BlockBase<'valueProps'> {
   items: Array<{ icon?: string; title: string; text: string }>;
 }
 
-// Features (Landing, optional)
 export interface FeaturesBlock extends BlockBase<'features'> {
   items: Array<{ title: string; text: string; icon?: string; image?: ImageRef }>;
 }
 
-// Social Proof (Landing/Portfolio optional)
 export interface SocialProofBlock extends BlockBase<'socialProof'> {
   logos?: ImageRef[];
   testimonials?: Array<{ quote: string; name: string; role?: string }>;
 }
 
-// Pricing (Landing/Event: Tickets ist separater Block)
 export interface PricingBlock extends BlockBase<'pricing'> {
   note?: string;
   plans: Array<{
@@ -80,7 +91,6 @@ export interface PricingBlock extends BlockBase<'pricing'> {
   }>;
 }
 
-// Lead Capture (Landing optional)
 export interface LeadCaptureBlock extends BlockBase<'leadCapture'> {
   headline: string;
   intro?: string;
@@ -90,19 +100,17 @@ export interface LeadCaptureBlock extends BlockBase<'leadCapture'> {
       label: string;
       type: 'text' | 'email' | 'tel' | 'textarea' | 'select';
       required?: boolean;
-      options?: string[]; // für select
+      options?: string[];
       placeholder?: string;
     }>;
-    submit: Cta; // route oder href
+    submit: Cta;
   };
 }
 
-// FAQ (alle Typen optional)
 export interface FaqBlock extends BlockBase<'faq'> {
   items: Array<{ q: string; a: string[] }>;
 }
 
-// Abschluss-CTA (alle Typen)
 export interface CtaSectionBlock extends BlockBase<'cta'> {
   title: string;
   subtitle?: string;
@@ -110,10 +118,8 @@ export interface CtaSectionBlock extends BlockBase<'cta'> {
   secondary?: Cta;
 }
 
-/* ========= Portfolio-spezifische Blöcke ========= */
-
 export interface SkillsBlock extends BlockBase<'skills'> {
-  items: string[]; // kurze Stichworte
+  items: string[];
 }
 
 export interface ProjectsBlock extends BlockBase<'projects'> {
@@ -142,11 +148,9 @@ export interface ContactBlock extends BlockBase<'contact'> {
   channels: Array<{
     type: 'tel' | 'mail' | 'link';
     label: string;
-    value: string; // Nummer, E-Mail oder URL
+    value: string;
   }>;
 }
-
-/* ========= Event-spezifische Blöcke ========= */
 
 export interface ScheduleBlock extends BlockBase<'schedule'> {
   items: Array<{ time: string; title: string; desc?: string; track?: string }>;
@@ -172,11 +176,9 @@ export interface TicketsBlock extends BlockBase<'tickets'> {
     name: string;
     price: string;
     desc?: string;
-    cta: Cta; // typischerweise href zu Ticketseite
+    cta: Cta;
   }>;
 }
-
-/* ========= Block-Unions pro Seitentyp ========= */
 
 export type LandingBlock =
   | HeroBlock
@@ -214,8 +216,6 @@ export type AnyBlock =
   | SkillsBlock | ProjectsBlock | AboutBlock | ServicesBlock | ContactBlock
   | ScheduleBlock | SpeakersBlock | VenueBlock | TicketsBlock;
 
-/* ========= Main-Root (discriminated union) ========= */
-
 export interface MainLanding {
   type: 'landing';
   blocks: LandingBlock[];
@@ -243,8 +243,9 @@ export type MainContent = MainLanding | MainPortfolio | MainEvent;
   templateUrl: './content.component.html',
   styleUrl: './content.component.scss'
 })
-export class ContentComponent {
+export class ContentComponent implements OnInit {
   @Input({ required: true }) model!: MainContent;
+  @Input() colorPalette?: ColorPalette;
 
   is = {
     hero: (b: AnyBlock): b is HeroBlock => b.type === 'hero',
@@ -255,13 +256,11 @@ export class ContentComponent {
     leadCapture: (b: AnyBlock): b is LeadCaptureBlock => b.type === 'leadCapture',
     faq: (b: AnyBlock): b is FaqBlock => b.type === 'faq',
     cta: (b: AnyBlock): b is CtaSectionBlock => b.type === 'cta',
-
     skills: (b: AnyBlock): b is SkillsBlock => b.type === 'skills',
     projects: (b: AnyBlock): b is ProjectsBlock => b.type === 'projects',
     about: (b: AnyBlock): b is AboutBlock => b.type === 'about',
     services: (b: AnyBlock): b is ServicesBlock => b.type === 'services',
     contact: (b: AnyBlock): b is ContactBlock => b.type === 'contact',
-
     schedule: (b: AnyBlock): b is ScheduleBlock => b.type === 'schedule',
     speakers: (b: AnyBlock): b is SpeakersBlock => b.type === 'speakers',
     venue: (b: AnyBlock): b is VenueBlock => b.type === 'venue',
@@ -276,20 +275,127 @@ export class ContentComponent {
   toLead(b: AnyBlock): LeadCaptureBlock | null { return this.is.leadCapture(b) ? b : null; }
   toFaq(b: AnyBlock): FaqBlock | null { return this.is.faq(b) ? b : null; }
   toCta(b: AnyBlock): CtaSectionBlock | null { return this.is.cta(b) ? b : null; }
-
   toSkills(b: AnyBlock): SkillsBlock | null { return this.is.skills(b) ? b : null; }
   toProjects(b: AnyBlock): ProjectsBlock | null { return this.is.projects(b) ? b : null; }
   toAbout(b: AnyBlock): AboutBlock | null { return this.is.about(b) ? b : null; }
   toServices(b: AnyBlock): ServicesBlock | null { return this.is.services(b) ? b : null; }
   toContact(b: AnyBlock): ContactBlock | null { return this.is.contact(b) ? b : null; }
-
   toSchedule(b: AnyBlock): ScheduleBlock | null { return this.is.schedule(b) ? b : null; }
   toSpeakers(b: AnyBlock): SpeakersBlock | null { return this.is.speakers(b) ? b : null; }
   toVenue(b: AnyBlock): VenueBlock | null { return this.is.venue(b) ? b : null; }
   toTickets(b: AnyBlock): TicketsBlock | null { return this.is.tickets(b) ? b : null; }
 
-
   constructor(public router: Router, private san: DomSanitizer) { }
+
+  ngOnInit(): void {
+    this.applyColorPalette();
+  }
+
+  ngOnChanges(): void {
+    this.applyColorPalette();
+  }
+
+  private applyColorPalette(): void {
+    const palette = { ...this.colorPalette };
+
+    // Apply colors as CSS custom properties
+    const root = document.documentElement;
+
+    // Main colors
+    if (palette.primary) {
+      root.style.setProperty('--primary', palette.primary);
+      root.style.setProperty('--primary-dark', this.darkenColor(palette.primary, 10));
+      root.style.setProperty('--primary-light', this.lightenColor(palette.primary, 90));
+    }
+
+    if (palette.secondary) {
+      root.style.setProperty('--secondary', palette.secondary);
+    }
+
+    if (palette.background) {
+      root.style.setProperty('--bg-white', palette.background);
+    }
+
+    if (palette.surface) {
+      root.style.setProperty('--bg-light', palette.surface);
+    }
+
+    if (palette.accent) {
+      root.style.setProperty('--accent', palette.accent);
+    }
+
+    if (palette.border) {
+      root.style.setProperty('--border-light', palette.border);
+      root.style.setProperty('--border-default', this.darkenColor(palette.border, 10));
+    }
+
+    // Text colors
+    if (palette.text?.primary) {
+      root.style.setProperty('--text-primary', palette.text.primary);
+    }
+
+    if (palette.text?.secondary) {
+      root.style.setProperty('--text-secondary', palette.text.secondary);
+      root.style.setProperty('--text-muted', this.lightenColor(palette.text.secondary, 20));
+    }
+
+    // Status colors
+    if (palette.status?.error) {
+      root.style.setProperty('--danger', palette.status.error);
+    }
+
+    if (palette.status?.success) {
+      root.style.setProperty('--success', palette.status.success);
+    }
+
+    if (palette.status?.warning) {
+      root.style.setProperty('--warning', palette.status.warning);
+    }
+
+    // Update gradients based on primary color
+    if (palette.primary) {
+      const gradient = `linear-gradient(135deg, ${palette.primary} 0%, ${this.darkenColor(palette.primary, 20)} 100%)`;
+      root.style.setProperty('--bg-gradient', gradient);
+    }
+  }
+
+  private hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+
+  private rgbToHex(r: number, g: number, b: number): string {
+    return '#' + [r, g, b].map(x => {
+      const hex = x.toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+    }).join('');
+  }
+
+  private lightenColor(color: string, percent: number): string {
+    const rgb = this.hexToRgb(color);
+    if (!rgb) return color;
+
+    const r = Math.min(255, Math.round(rgb.r + (255 - rgb.r) * (percent / 100)));
+    const g = Math.min(255, Math.round(rgb.g + (255 - rgb.g) * (percent / 100)));
+    const b = Math.min(255, Math.round(rgb.b + (255 - rgb.b) * (percent / 100)));
+
+    return this.rgbToHex(r, g, b);
+  }
+
+  private darkenColor(color: string, percent: number): string {
+    const rgb = this.hexToRgb(color);
+    if (!rgb) return color;
+
+    const r = Math.max(0, Math.round(rgb.r * (1 - percent / 100)));
+    const g = Math.max(0, Math.round(rgb.g * (1 - percent / 100)));
+    const b = Math.max(0, Math.round(rgb.b * (1 - percent / 100)));
+
+    return this.rgbToHex(r, g, b);
+  }
 
   get blocks(): ReadonlyArray<AnyBlock> {
     return (this.model?.blocks ?? []) as AnyBlock[];
@@ -307,7 +413,6 @@ export class ContentComponent {
 
   trackByIdx = (_: number, __: unknown) => _;
 
-  // Provide a consistently typed iterable for the template to avoid array-of-unions issue
   get allBlocks(): AnyBlock[] {
     return (this.model?.blocks ?? []) as AnyBlock[];
   }

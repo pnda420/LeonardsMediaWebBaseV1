@@ -17,17 +17,7 @@
     </div>
 </aside>
 
-
-
-<app-preview-header [brandImg]="'assets/preview/company-logo.png'" brandAlt="Leonards Media" [brandText]="'Maier & Partner'"
-    [brandRoute]="'/'" [nav]="[
-    { label: 'Öffnungszeiten'},
-    { label: 'Kontakt'},
-    { label: 'Impressum'},
-    { label: 'Datenschutz'}
-  ]" [cta]="{ label: 'Kontakt', route: '/contact', kind: 'primary' }" theme="light" [sticky]="true"
-    [transparent]="false" [collapseAt]="900" [headerHeight]="64">
-</app-preview-header>
-
-
-<app-preview-content [model]="contentExample1"></app-preview-content>
+<div *ngIf="htmlSafe; else empty" [innerHTML]="htmlSafe"></div>
+<ng-template #empty>
+    <div class="placeholder">Noch kein Preview vorhanden.</div>
+</ng-template>

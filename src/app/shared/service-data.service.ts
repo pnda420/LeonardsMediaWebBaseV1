@@ -25,24 +25,24 @@ export class ServiceDataService {
       cta: 'Details & Beispiele',
       route: 'one-pager',
     },
-    {
-      title: 'All-in-One-Lösung',
-      slug: 'all-in-one',
-      img: 'assets/cards/2.png',
-      short: 'Hosting, Domain, Website - Alles in einem Paket.',
-      price: 'ab 2.500 €',
-      route: 'all-in-one',
-      cta: 'Details & Beispiele',
-    },
-    {
-      title: 'Große Website (3-8 Seiten)',
-      slug: 'large-website',
-      img: 'assets/cards/3.png',
-      short: 'Strukturierte Inhalte, SEO-Basics & DSGVO.',
-      price: 'ab 3.200 €',
-      route: 'large-website',
-      cta: 'Details & Preise'
-    },
+    // {
+    //   title: 'All-in-One-Lösung',
+    //   slug: 'all-in-one',
+    //   img: 'assets/cards/2.png',
+    //   short: 'Hosting, Domain, Website - Alles in einem Paket.',
+    //   price: 'ab 2.500 €',
+    //   route: 'all-in-one',
+    //   cta: 'Details & Beispiele',
+    // },
+    // {
+    //   title: 'Große Website (3-8 Seiten)',
+    //   slug: 'large-website',
+    //   img: 'assets/cards/3.png',
+    //   short: 'Strukturierte Inhalte, SEO-Basics & DSGVO.',
+    //   price: 'ab 3.200 €',
+    //   route: 'large-website',
+    //   cta: 'Details & Preise'
+    // },
     {
       title: 'SEO Optimierung',
       slug: 'seo-optimization',

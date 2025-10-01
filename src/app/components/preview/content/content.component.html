@@ -1,486 +1,473 @@
-<!-- Enhanced Preview Template with Professional Design -->
-<ng-container *ngIf="allBlocks as blocks" >
-    
-    <!-- === HERO SECTION === -->
-    <ng-container *ngFor="let b of blocks; trackBy: trackByIdx" [ngSwitch]="b.type">
-        
-        <!-- HERO -->
-        <ng-container *ngSwitchCase="'hero'">
-            <section *ngIf="toHero(b) as h" class="hero-section">
-                <div class="hero-bg-overlay"></div>
-                <div class="container">
-                    <div class="hero-grid">
-                        <div class="hero-content" data-aos="fade-up">
-                            <span class="hero-badge" *ngIf="model.type">{{ model.type | uppercase }}</span>
-                            <h1 class="hero-title">{{ h.title }}</h1>
-                            <p class="hero-subtitle" *ngIf="h.subtitle">{{ h.subtitle }}</p>
-                            
-                            <!-- Event Info -->
-                            <div class="event-info" *ngIf="h.datetime || h.location">
-                                <div class="event-badge" *ngIf="h.datetime?.start">
-                                    <i class="icon-calendar"></i>
-                                    <span>{{ h.datetime?.start | date:'MMMM d, y' }}</span>
-                                    <span *ngIf="h.datetime?.end"> – {{ h.datetime?.end | date:'MMMM d, y' }}</span>
+<!-- Enhanced Preview Template with Dynamic Color Support -->
+<div class="preview-container" [attr.data-theme]="model.type">
+    <ng-container *ngIf="allBlocks as blocks">
+
+        <!-- === HERO SECTION === -->
+        <ng-container *ngFor="let b of blocks; trackBy: trackByIdx" [ngSwitch]="b.type">
+
+            <!-- HERO -->
+            <ng-container *ngSwitchCase="'hero'">
+                <section *ngIf="toHero(b) as h" class="hero-section">
+                    <div class="hero-bg-overlay"></div>
+                    <div class="container">
+                        <div class="hero-grid">
+                            <div class="hero-content" data-aos="fade-up">
+                                <span class="hero-badge" *ngIf="model.type">{{ model.type | uppercase }}</span>
+                                <h1 class="hero-title">{{ h.title }}</h1>
+                                <p class="hero-subtitle" *ngIf="h.subtitle">{{ h.subtitle }}</p>
+
+                                <!-- Event Info -->
+                                <div class="event-info" *ngIf="h.datetime || h.location">
+                                    <div class="event-badge" *ngIf="h.datetime?.start">
+                                        <i class="icon-calendar"></i>
+                                        <span>{{ h.datetime?.start | date:'MMMM d, y' }}</span>
+                                        <span *ngIf="h.datetime?.end"> – {{ h.datetime?.end | date:'MMMM d, y' }}</span>
+                                    </div>
+                                    <div class="event-badge" *ngIf="h.location?.name">
+                                        <i class="icon-location"></i>
+                                        <span>{{ h.location?.name }}<span *ngIf="h.location?.address">, {{
+                                                h.location?.address }}</span></span>
+                                    </div>
                                 </div>
-                                <div class="event-badge" *ngIf="h.location?.name">
-                                    <i class="icon-location"></i>
-                                    <span>{{ h.location?.name }}<span *ngIf="h.location?.address">, {{ h.location?.address }}</span></span>
+
+                                <div class="hero-actions" *ngIf="h.ctas?.length">
+                                    <button *ngFor="let c of h.ctas" class="btn"
+                                        [class.btn-primary]="c.kind==='primary' || !c.kind"
+                                        [class.btn-secondary]="c.kind==='ghost'" (click)="navigate(c)">
+                                        {{ c.label }}
+                                        <span class="btn-arrow">→</span>
+                                    </button>
                                 </div>
                             </div>
-                            
-                            <div class="hero-actions" *ngIf="h.ctas?.length">
-                                <button *ngFor="let c of h.ctas" 
-                                    class="btn" 
-                                    [class.btn-primary]="c.kind==='primary'"
-                                    [class.btn-secondary]="c.kind!=='primary'" 
-                                    (click)="navigate(c)">
-                                    {{ c.label }}
+
+                            <div class="hero-visual" *ngIf="h.image?.src" data-aos="fade-left">
+                                <div class="hero-image-wrapper">
+                                    <img [src]="h.image?.src" [alt]="h.image?.alt || ''" loading="eager">
+                                    <div class="hero-image-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- VALUE PROPS -->
+            <ng-container *ngSwitchCase="'valueProps'">
+                <section *ngIf="toValueProps(b) as vp" class="section-light">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Why Choose Us</h2>
+                        </div>
+                        <div class="value-grid">
+                            <article class="value-card" *ngFor="let i of vp.items; let idx = index"
+                                [attr.data-aos]="'fade-up'" [attr.data-aos-delay]="idx * 100">
+                                <div class="value-icon" *ngIf="i.icon">
+                                    <span>{{ i.icon }}</span>
+                                </div>
+                                <h3 class="value-title">{{ i.title }}</h3>
+                                <p class="value-text">{{ i.text }}</p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- FEATURES -->
+            <ng-container *ngSwitchCase="'features'">
+                <section *ngIf="toFeatures(b) as f" class="section-dark">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Features</h2>
+                        </div>
+                        <div class="features-grid">
+                            <article class="feature-card" *ngFor="let i of f.items; let idx = index"
+                                [attr.data-aos]="'zoom-in'" [attr.data-aos-delay]="idx * 100">
+                                <div class="feature-image" *ngIf="i.image?.src">
+                                    <img [src]="i.image?.src" [alt]="i.image?.alt || ''" loading="lazy">
+                                    <div class="feature-overlay"></div>
+                                </div>
+                                <div class="feature-content">
+                                    <h3>{{ i.title }}</h3>
+                                    <p>{{ i.text }}</p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- SOCIAL PROOF -->
+            <ng-container *ngSwitchCase="'socialProof'">
+                <section *ngIf="toSocialProof(b) as sp" class="social-section">
+                    <div class="container">
+                        <div class="logos-wrapper" *ngIf="sp.logos?.length">
+                            <p class="logos-title">Trusted by Industry Leaders</p>
+                            <div class="logos-grid">
+                                <div class="logo-item" *ngFor="let l of sp.logos" data-aos="fade-up">
+                                    <img [src]="l.src" [alt]="l.alt || 'Partner Logo'" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="testimonials-wrapper" *ngIf="sp.testimonials?.length">
+                            <div class="testimonials-grid">
+                                <div class="testimonial-card" *ngFor="let t of sp.testimonials" data-aos="fade-up">
+                                    <div class="quote-icon">"</div>
+                                    <blockquote>{{ t.quote }}</blockquote>
+                                    <div class="testimonial-author">
+                                        <div class="author-avatar">{{ t.name.charAt(0) }}</div>
+                                        <div class="author-info">
+                                            <strong>{{ t.name }}</strong>
+                                            <span *ngIf="t.role">{{ t.role }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- PRICING -->
+            <ng-container *ngSwitchCase="'pricing'">
+                <section *ngIf="toPricing(b) as pr" class="pricing-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Choose Your Plan</h2>
+                            <p class="section-note" *ngIf="pr.note">{{ pr.note }}</p>
+                        </div>
+                        <div class="pricing-grid">
+                            <article class="pricing-card" *ngFor="let p of pr.plans; let idx = index"
+                                [class.featured]="idx === 1" [attr.data-aos]="'fade-up'"
+                                [attr.data-aos-delay]="idx * 100">
+                                <div class="pricing-header">
+                                    <h3 class="plan-name">{{ p.name }}</h3>
+                                    <div class="plan-price">
+                                        <span class="price-value">{{ p.price }}</span>
+                                    </div>
+                                    <p class="plan-desc" *ngIf="p.desc">{{ p.desc }}</p>
+                                </div>
+                                <ul class="plan-features" *ngIf="p.features?.length">
+                                    <li *ngFor="let f of p.features">
+                                        <i class="check-icon">✓</i>
+                                        {{ f }}
+                                    </li>
+                                </ul>
+                                <button *ngIf="p.cta" class="btn btn-block" [class.btn-primary]="idx === 1"
+                                    [class.btn-secondary]="idx !== 1" (click)="navigate(p.cta)">
+                                    {{ p.cta.label }}
+                                </button>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- LEAD CAPTURE -->
+            <ng-container *ngSwitchCase="'leadCapture'">
+                <section *ngIf="toLead(b) as lc" class="lead-section">
+                    <div class="container">
+                        <div class="lead-wrapper">
+                            <div class="lead-content" data-aos="fade-right">
+                                <h2 class="lead-title">{{ lc.headline }}</h2>
+                                <p class="lead-intro" *ngIf="lc.intro">{{ lc.intro }}</p>
+                            </div>
+                            <form class="lead-form" (submit)="$event.preventDefault(); navigate(lc.form?.submit)"
+                                data-aos="fade-left">
+                                <div class="form-grid">
+                                    <div class="form-group" *ngFor="let f of lc.form?.fields"
+                                        [class.full-width]="f.type === 'textarea'">
+                                        <label>
+                                            {{ f.label }}
+                                            <span class="required" *ngIf="f.required">*</span>
+                                        </label>
+                                        <ng-container [ngSwitch]="f.type">
+                                            <input *ngSwitchCase="'text'" type="text" [placeholder]="f.placeholder">
+                                            <input *ngSwitchCase="'email'" type="email" [placeholder]="f.placeholder">
+                                            <input *ngSwitchCase="'tel'" type="tel" [placeholder]="f.placeholder">
+                                            <textarea *ngSwitchCase="'textarea'" rows="4"
+                                                [placeholder]="f.placeholder"></textarea>
+                                            <select *ngSwitchCase="'select'">
+                                                <option value="">Choose...</option>
+                                                <option *ngFor="let o of f.options" [value]="o">{{ o }}</option>
+                                            </select>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    {{ lc.form?.submit?.label || 'Submit' }}
                                     <span class="btn-arrow">→</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- SKILLS -->
+            <ng-container *ngSwitchCase="'skills'">
+                <section *ngIf="toSkills(b) as sk" class="skills-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Skills & Expertise</h2>
+                        </div>
+                        <div class="skills-cloud">
+                            <span class="skill-tag" *ngFor="let s of sk.items; let idx = index"
+                                [attr.data-aos]="'zoom-in'" [attr.data-aos-delay]="idx * 50">
+                                {{ s }}
+                            </span>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- PROJECTS -->
+            <ng-container *ngSwitchCase="'projects'">
+                <section *ngIf="toProjects(b) as pj" class="projects-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Featured Projects</h2>
+                        </div>
+                        <div class="projects-grid">
+                            <article class="project-card" *ngFor="let p of pj.items" data-aos="fade-up">
+                                <div class="project-image" *ngIf="p.image?.src">
+                                    <img [src]="p.image?.src" [alt]="p.image?.alt || ''" loading="lazy">
+                                    <div class="project-overlay">
+                                        <div class="project-links" *ngIf="p.links?.length">
+                                            <a *ngFor="let l of p.links" class="project-link"
+                                                [attr.href]="l.href || null"
+                                                (click)="l.route && router.navigate([l.route])">
+                                                {{ l.label }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="project-content">
+                                    <h3>{{ p.title }}</h3>
+                                    <p>{{ p.summary }}</p>
+                                    <div class="project-tags" *ngIf="p.tags?.length">
+                                        <span class="project-tag" *ngFor="let t of p.tags">{{ t }}</span>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- ABOUT -->
+            <ng-container *ngSwitchCase="'about'">
+                <section *ngIf="toAbout(b) as ab" class="about-section">
+                    <div class="container">
+                        <div class="about-grid">
+                            <div class="about-content" data-aos="fade-right">
+                                <h2 class="section-title" *ngIf="ab.title">{{ ab.title }}</h2>
+                                <p class="about-text">{{ ab.text }}</p>
+                            </div>
+                            <div class="about-facts" *ngIf="ab.facts?.length" data-aos="fade-left">
+                                <dl class="facts-list">
+                                    <div class="fact-item" *ngFor="let f of ab.facts">
+                                        <dt>{{ f.k }}</dt>
+                                        <dd>{{ f.v }}</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- SERVICES -->
+            <ng-container *ngSwitchCase="'services'">
+                <section *ngIf="toServices(b) as sv" class="services-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Our Services</h2>
+                        </div>
+                        <div class="services-grid">
+                            <article class="service-card" *ngFor="let i of sv.items; let idx = index"
+                                [attr.data-aos]="'flip-left'" [attr.data-aos-delay]="idx * 100">
+                                <div class="service-number">{{ (idx + 1).toString().padStart(2, '0') }}</div>
+                                <h3>{{ i.title }}</h3>
+                                <p>{{ i.text }}</p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- CONTACT -->
+            <ng-container *ngSwitchCase="'contact'">
+                <section *ngIf="toContact(b) as ct" class="contact-section">
+                    <div class="container">
+                        <div class="contact-wrapper">
+                            <h2 class="section-title">{{ ct.headline }}</h2>
+                            <p class="contact-text" *ngIf="ct.text">{{ ct.text }}</p>
+                            <div class="contact-channels">
+                                <a *ngFor="let c of ct.channels" class="contact-btn" [class.email]="c.type === 'mail'"
+                                    [class.phone]="c.type === 'tel'"
+                                    [href]="c.type==='mail' ? ('mailto:'+c.value) : c.type==='tel' ? ('tel:'+c.value) : null"
+                                    (click)="c.type==='link' && navigate({label: c.label, href: c.value})"
+                                    data-aos="zoom-in">
+                                    <i class="contact-icon" [ngClass]="{
+                                        'icon-mail': c.type === 'mail',
+                                        'icon-phone': c.type === 'tel',
+                                        'icon-link': c.type === 'link'
+                                    }"></i>
+                                    <span>{{ c.label }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- SCHEDULE -->
+            <ng-container *ngSwitchCase="'schedule'">
+                <section *ngIf="toSchedule(b) as sc" class="schedule-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Event Schedule</h2>
+                        </div>
+                        <div class="schedule-timeline">
+                            <div class="timeline-item" *ngFor="let i of sc.items" data-aos="fade-up">
+                                <div class="timeline-time">{{ i.time }}</div>
+                                <div class="timeline-content">
+                                    <h3>{{ i.title }}</h3>
+                                    <p *ngIf="i.desc">{{ i.desc }}</p>
+                                    <span class="timeline-track" *ngIf="i.track">{{ i.track }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- SPEAKERS -->
+            <ng-container *ngSwitchCase="'speakers'">
+                <section *ngIf="toSpeakers(b) as spk" class="speakers-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Featured Speakers</h2>
+                        </div>
+                        <div class="speakers-grid">
+                            <article class="speaker-card" *ngFor="let s of spk.items" data-aos="fade-up">
+                                <div class="speaker-avatar" *ngIf="s.photo?.src">
+                                    <img [src]="s.photo?.src" [alt]="s.photo?.alt || s.name" loading="lazy">
+                                </div>
+                                <div class="speaker-avatar speaker-placeholder" *ngIf="!s.photo?.src">
+                                    {{ s.name.charAt(0) }}
+                                </div>
+                                <h3>{{ s.name }}</h3>
+                                <p class="speaker-role" *ngIf="s.role">{{ s.role }}</p>
+                                <p class="speaker-bio" *ngIf="s.bio">{{ s.bio }}</p>
+                                <div class="speaker-links" *ngIf="s.links?.length">
+                                    <a *ngFor="let l of s.links" class="speaker-link" [attr.href]="l.href || null"
+                                        (click)="l.route && router.navigate([l.route])">
+                                        {{ l.label }}
+                                    </a>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- VENUE -->
+            <ng-container *ngSwitchCase="'venue'">
+                <section *ngIf="toVenue(b) as vn" class="venue-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Event Location</h2>
+                        </div>
+                        <div class="venue-wrapper">
+                            <div class="venue-map" *ngIf="vn.map?.embedUrl" data-aos="fade-up">
+                                <iframe [src]="safeUrl(vn.map?.embedUrl)" loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
+                            </div>
+                            <div class="venue-image" *ngIf="!vn.map?.embedUrl && vn.map?.staticImg?.src">
+                                <img [src]="vn.map?.staticImg?.src" [alt]="vn.map?.staticImg?.alt || 'Venue Map'"
+                                    loading="lazy">
+                            </div>
+                            <p class="venue-notes" *ngIf="vn.notes">{{ vn.notes }}</p>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- TICKETS -->
+            <ng-container *ngSwitchCase="'tickets'">
+                <section *ngIf="toTickets(b) as tk" class="tickets-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Get Your Tickets</h2>
+                        </div>
+                        <div class="tickets-grid">
+                            <article class="ticket-card" *ngFor="let p of tk.plans; let idx = index"
+                                [class.featured]="idx === 1" [attr.data-aos]="'fade-up'"
+                                [attr.data-aos-delay]="idx * 100">
+                                <div class="ticket-badge" *ngIf="idx === 1">Most Popular</div>
+                                <h3>{{ p.name }}</h3>
+                                <div class="ticket-price">{{ p.price }}</div>
+                                <p class="ticket-desc" *ngIf="p.desc">{{ p.desc }}</p>
+                                <button class="btn btn-block" [class.btn-primary]="idx === 1"
+                                    [class.btn-secondary]="idx !== 1" (click)="navigate(p.cta)">
+                                    {{ p.cta.label }}
+                                </button>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- FAQ -->
+            <ng-container *ngSwitchCase="'faq'">
+                <section *ngIf="toFaq(b) as fq" class="faq-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Frequently Asked Questions</h2>
+                        </div>
+                        <div class="faq-list">
+                            <details class="faq-item" *ngFor="let f of fq.items; let idx = index"
+                                [attr.data-aos]="'fade-up'" [attr.data-aos-delay]="idx * 50">
+                                <summary>
+                                    {{ f.q }}
+                                    <span class="faq-icon"></span>
+                                </summary>
+                                <div class="faq-answer">
+                                    <p *ngFor="let a of f.a">{{ a }}</p>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+
+            <!-- CTA -->
+            <ng-container *ngSwitchCase="'cta'">
+                <section *ngIf="toCta(b) as cta" class="cta-section">
+                    <div class="container">
+                        <div class="cta-wrapper" data-aos="zoom-in">
+                            <div class="cta-content">
+                                <h2 class="cta-title">{{ cta.title }}</h2>
+                                <p class="cta-subtitle" *ngIf="cta.subtitle">{{ cta.subtitle }}</p>
+                            </div>
+                            <div class="cta-actions">
+                                <button class="btn btn-primary btn-lg" (click)="navigate(cta.primary)">
+                                    {{ cta.primary.label }}
+                                    <span class="btn-arrow">→</span>
+                                </button>
+                                <button *ngIf="cta.secondary" class="btn btn-secondary btn-lg"
+                                    (click)="navigate(cta.secondary)">
+                                    {{ cta.secondary.label }}
                                 </button>
                             </div>
                         </div>
-                        
-                        <div class="hero-visual" *ngIf="h.image?.src" data-aos="fade-left">
-                            <div class="hero-image-wrapper">
-                                <img [src]="h.image?.src" [alt]="h.image?.alt || ''" loading="eager">
-                                <div class="hero-image-decoration"></div>
-                            </div>
-                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </ng-container>
+
         </ng-container>
-        
-        <!-- VALUE PROPS -->
-        <ng-container *ngSwitchCase="'valueProps'">
-            <section *ngIf="toValueProps(b) as vp" class="section-light">
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Why Choose Us</h2>
-                    </div>
-                    <div class="value-grid">
-                        <article class="value-card" *ngFor="let i of vp.items; let idx = index" 
-                            [attr.data-aos]="'fade-up'" 
-                            [attr.data-aos-delay]="idx * 100">
-                            <div class="value-icon" *ngIf="i.icon">
-                                <span>{{ i.icon }}</span>
-                            </div>
-                            <h3 class="value-title">{{ i.title }}</h3>
-                            <p class="value-text">{{ i.text }}</p>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- FEATURES -->
-        <ng-container *ngSwitchCase="'features'">
-            <section *ngIf="toFeatures(b) as f" class="section-dark">
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Features</h2>
-                    </div>
-                    <div class="features-grid">
-                        <article class="feature-card" *ngFor="let i of f.items; let idx = index"
-                            [attr.data-aos]="'zoom-in'"
-                            [attr.data-aos-delay]="idx * 100">
-                            <div class="feature-image" *ngIf="i.image?.src">
-                                <img [src]="i.image?.src" [alt]="i.image?.alt || ''" loading="lazy">
-                                <div class="feature-overlay"></div>
-                            </div>
-                            <div class="feature-content">
-                                <h3>{{ i.title }}</h3>
-                                <p>{{ i.text }}</p>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- SOCIAL PROOF -->
-        <ng-container *ngSwitchCase="'socialProof'">
-            <section *ngIf="toSocialProof(b) as sp" class="social-section">
-                <div class="container">
-                    <div class="logos-wrapper" *ngIf="sp.logos?.length">
-                        <p class="logos-title">Trusted by Industry Leaders</p>
-                        <div class="logos-grid">
-                            <div class="logo-item" *ngFor="let l of sp.logos" data-aos="fade-up">
-                                <img [src]="l.src" [alt]="l.alt || 'Partner Logo'" loading="lazy">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="testimonials-wrapper" *ngIf="sp.testimonials?.length">
-                        <div class="testimonials-grid">
-                            <div class="testimonial-card" *ngFor="let t of sp.testimonials" data-aos="fade-up">
-                                <div class="quote-icon">"</div>
-                                <blockquote>{{ t.quote }}</blockquote>
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">{{ t.name.charAt(0) }}</div>
-                                    <div class="author-info">
-                                        <strong>{{ t.name }}</strong>
-                                        <span *ngIf="t.role">{{ t.role }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- PRICING -->
-        <ng-container *ngSwitchCase="'pricing'">
-            <section *ngIf="toPricing(b) as pr" class="pricing-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Choose Your Plan</h2>
-                        <p class="section-note" *ngIf="pr.note">{{ pr.note }}</p>
-                    </div>
-                    <div class="pricing-grid">
-                        <article class="pricing-card" *ngFor="let p of pr.plans; let idx = index"
-                            [class.featured]="idx === 1"
-                            [attr.data-aos]="'fade-up'"
-                            [attr.data-aos-delay]="idx * 100">
-                            <div class="pricing-header">
-                                <h3 class="plan-name">{{ p.name }}</h3>
-                                <div class="plan-price">
-                                    <span class="price-value">{{ p.price }}</span>
-                                </div>
-                                <p class="plan-desc" *ngIf="p.desc">{{ p.desc }}</p>
-                            </div>
-                            <ul class="plan-features" *ngIf="p.features?.length">
-                                <li *ngFor="let f of p.features">
-                                    <i class="check-icon">✓</i>
-                                    {{ f }}
-                                </li>
-                            </ul>
-                            <button *ngIf="p.cta" class="btn btn-block"
-                                [class.btn-primary]="idx === 1"
-                                [class.btn-secondary]="idx !== 1"
-                                (click)="navigate(p.cta)">
-                                {{ p.cta.label }}
-                            </button>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- LEAD CAPTURE -->
-        <ng-container *ngSwitchCase="'leadCapture'">
-            <section *ngIf="toLead(b) as lc" class="lead-section">
-                <div class="container">
-                    <div class="lead-wrapper">
-                        <div class="lead-content" data-aos="fade-right">
-                            <h2 class="lead-title">{{ lc.headline }}</h2>
-                            <p class="lead-intro" *ngIf="lc.intro">{{ lc.intro }}</p>
-                        </div>
-                        <form class="lead-form" (submit)="$event.preventDefault(); navigate(lc.form?.submit)" data-aos="fade-left">
-                            <div class="form-grid">
-                                <div class="form-group" *ngFor="let f of lc.form?.fields"
-                                    [class.full-width]="f.type === 'textarea'">
-                                    <label>
-                                        {{ f.label }}
-                                        <span class="required" *ngIf="f.required">*</span>
-                                    </label>
-                                    <ng-container [ngSwitch]="f.type">
-                                        <input *ngSwitchCase="'text'" type="text" [placeholder]="f.placeholder">
-                                        <input *ngSwitchCase="'email'" type="email" [placeholder]="f.placeholder">
-                                        <input *ngSwitchCase="'tel'" type="tel" [placeholder]="f.placeholder">
-                                        <textarea *ngSwitchCase="'textarea'" rows="4" [placeholder]="f.placeholder"></textarea>
-                                        <select *ngSwitchCase="'select'">
-                                            <option value="">Choose...</option>
-                                            <option *ngFor="let o of f.options" [value]="o">{{ o }}</option>
-                                        </select>
-                                    </ng-container>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">
-                                {{ lc.form?.submit?.label || 'Submit' }}
-                                <span class="btn-arrow">→</span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- SKILLS -->
-        <ng-container *ngSwitchCase="'skills'">
-            <section *ngIf="toSkills(b) as sk" class="skills-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Skills & Expertise</h2>
-                    </div>
-                    <div class="skills-cloud">
-                        <span class="skill-tag" *ngFor="let s of sk.items; let idx = index"
-                            [attr.data-aos]="'zoom-in'"
-                            [attr.data-aos-delay]="idx * 50">
-                            {{ s }}
-                        </span>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- PROJECTS -->
-        <ng-container *ngSwitchCase="'projects'">
-            <section *ngIf="toProjects(b) as pj" class="projects-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Featured Projects</h2>
-                    </div>
-                    <div class="projects-grid">
-                        <article class="project-card" *ngFor="let p of pj.items" data-aos="fade-up">
-                            <div class="project-image" *ngIf="p.image?.src">
-                                <img [src]="p.image?.src" [alt]="p.image?.alt || ''" loading="lazy">
-                                <div class="project-overlay">
-                                    <div class="project-links" *ngIf="p.links?.length">
-                                        <a *ngFor="let l of p.links" class="project-link"
-                                            [attr.href]="l.href || null"
-                                            (click)="l.route && router.navigate([l.route])">
-                                            {{ l.label }}
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="project-content">
-                                <h3>{{ p.title }}</h3>
-                                <p>{{ p.summary }}</p>
-                                <div class="project-tags" *ngIf="p.tags?.length">
-                                    <span class="project-tag" *ngFor="let t of p.tags">{{ t }}</span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- ABOUT -->
-        <ng-container *ngSwitchCase="'about'">
-            <section *ngIf="toAbout(b) as ab" class="about-section">
-                <div class="container">
-                    <div class="about-grid">
-                        <div class="about-content" data-aos="fade-right">
-                            <h2 class="section-title" *ngIf="ab.title">{{ ab.title }}</h2>
-                            <p class="about-text">{{ ab.text }}</p>
-                        </div>
-                        <div class="about-facts" *ngIf="ab.facts?.length" data-aos="fade-left">
-                            <dl class="facts-list">
-                                <div class="fact-item" *ngFor="let f of ab.facts">
-                                    <dt>{{ f.k }}</dt>
-                                    <dd>{{ f.v }}</dd>
-                                </div>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- SERVICES -->
-        <ng-container *ngSwitchCase="'services'">
-            <section *ngIf="toServices(b) as sv" class="services-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Our Services</h2>
-                    </div>
-                    <div class="services-grid">
-                        <article class="service-card" *ngFor="let i of sv.items; let idx = index"
-                            [attr.data-aos]="'flip-left'"
-                            [attr.data-aos-delay]="idx * 100">
-                            <div class="service-number">{{ (idx + 1).toString().padStart(2, '0') }}</div>
-                            <h3>{{ i.title }}</h3>
-                            <p>{{ i.text }}</p>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- CONTACT -->
-        <ng-container *ngSwitchCase="'contact'">
-            <section *ngIf="toContact(b) as ct" class="contact-section">
-                <div class="container">
-                    <div class="contact-wrapper">
-                        <h2 class="section-title">{{ ct.headline }}</h2>
-                        <p class="contact-text" *ngIf="ct.text">{{ ct.text }}</p>
-                        <div class="contact-channels">
-                            <a *ngFor="let c of ct.channels" 
-                                class="contact-btn"
-                                [class.email]="c.type === 'mail'"
-                                [class.phone]="c.type === 'tel'"
-                                [href]="c.type==='mail' ? ('mailto:'+c.value) : c.type==='tel' ? ('tel:'+c.value) : null"
-                                (click)="c.type==='link' && navigate({label: c.label, href: c.value})"
-                                data-aos="zoom-in">
-                                <i class="contact-icon" [ngClass]="{
-                                    'icon-mail': c.type === 'mail',
-                                    'icon-phone': c.type === 'tel',
-                                    'icon-link': c.type === 'link'
-                                }"></i>
-                                <span>{{ c.label }}</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- SCHEDULE -->
-        <ng-container *ngSwitchCase="'schedule'">
-            <section *ngIf="toSchedule(b) as sc" class="schedule-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Event Schedule</h2>
-                    </div>
-                    <div class="schedule-timeline">
-                        <div class="timeline-item" *ngFor="let i of sc.items" data-aos="fade-up">
-                            <div class="timeline-time">{{ i.time }}</div>
-                            <div class="timeline-content">
-                                <h3>{{ i.title }}</h3>
-                                <p *ngIf="i.desc">{{ i.desc }}</p>
-                                <span class="timeline-track" *ngIf="i.track">{{ i.track }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- SPEAKERS -->
-        <ng-container *ngSwitchCase="'speakers'">
-            <section *ngIf="toSpeakers(b) as spk" class="speakers-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Featured Speakers</h2>
-                    </div>
-                    <div class="speakers-grid">
-                        <article class="speaker-card" *ngFor="let s of spk.items" data-aos="fade-up">
-                            <div class="speaker-avatar" *ngIf="s.photo?.src">
-                                <img [src]="s.photo?.src" [alt]="s.photo?.alt || s.name" loading="lazy">
-                            </div>
-                            <div class="speaker-avatar speaker-placeholder" *ngIf="!s.photo?.src">
-                                {{ s.name.charAt(0) }}
-                            </div>
-                            <h3>{{ s.name }}</h3>
-                            <p class="speaker-role" *ngIf="s.role">{{ s.role }}</p>
-                            <p class="speaker-bio" *ngIf="s.bio">{{ s.bio }}</p>
-                            <div class="speaker-links" *ngIf="s.links?.length">
-                                <a *ngFor="let l of s.links" class="speaker-link"
-                                    [attr.href]="l.href || null"
-                                    (click)="l.route && router.navigate([l.route])">
-                                    {{ l.label }}
-                                </a>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- VENUE -->
-        <ng-container *ngSwitchCase="'venue'">
-            <section *ngIf="toVenue(b) as vn" class="venue-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Event Location</h2>
-                    </div>
-                    <div class="venue-wrapper">
-                        <div class="venue-map" *ngIf="vn.map?.embedUrl" data-aos="fade-up">
-                            <iframe [src]="safeUrl(vn.map?.embedUrl)" 
-                                loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
-                        </div>
-                        <div class="venue-image" *ngIf="!vn.map?.embedUrl && vn.map?.staticImg?.src">
-                            <img [src]="vn.map?.staticImg?.src" 
-                                [alt]="vn.map?.staticImg?.alt || 'Venue Map'" 
-                                loading="lazy">
-                        </div>
-                        <p class="venue-notes" *ngIf="vn.notes">{{ vn.notes }}</p>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- TICKETS -->
-        <ng-container *ngSwitchCase="'tickets'">
-            <section *ngIf="toTickets(b) as tk" class="tickets-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Get Your Tickets</h2>
-                    </div>
-                    <div class="tickets-grid">
-                        <article class="ticket-card" *ngFor="let p of tk.plans; let idx = index"
-                            [class.featured]="idx === 1"
-                            [attr.data-aos]="'fade-up'"
-                            [attr.data-aos-delay]="idx * 100">
-                            <div class="ticket-badge" *ngIf="idx === 1">Most Popular</div>
-                            <h3>{{ p.name }}</h3>
-                            <div class="ticket-price">{{ p.price }}</div>
-                            <p class="ticket-desc" *ngIf="p.desc">{{ p.desc }}</p>
-                            <button class="btn btn-block"
-                                [class.btn-primary]="idx === 1"
-                                [class.btn-secondary]="idx !== 1"
-                                (click)="navigate(p.cta)">
-                                {{ p.cta.label }}
-                            </button>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- FAQ -->
-        <ng-container *ngSwitchCase="'faq'">
-            <section *ngIf="toFaq(b) as fq" class="faq-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h2 class="section-title">Frequently Asked Questions</h2>
-                    </div>
-                    <div class="faq-list">
-                        <details class="faq-item" *ngFor="let f of fq.items; let idx = index"
-                            [attr.data-aos]="'fade-up'"
-                            [attr.data-aos-delay]="idx * 50">
-                            <summary>
-                                {{ f.q }}
-                                <span class="faq-icon"></span>
-                            </summary>
-                            <div class="faq-answer">
-                                <p *ngFor="let a of f.a">{{ a }}</p>
-                            </div>
-                        </details>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
-        <!-- CTA -->
-        <ng-container *ngSwitchCase="'cta'">
-            <section *ngIf="toCta(b) as cta" class="cta-section">
-                <div class="container">
-                    <div class="cta-wrapper" data-aos="zoom-in">
-                        <div class="cta-content">
-                            <h2 class="cta-title">{{ cta.title }}</h2>
-                            <p class="cta-subtitle" *ngIf="cta.subtitle">{{ cta.subtitle }}</p>
-                        </div>
-                        <div class="cta-actions">
-                            <button class="btn btn-primary btn-lg" (click)="navigate(cta.primary)">
-                                {{ cta.primary.label }}
-                                <span class="btn-arrow">→</span>
-                            </button>
-                            <button *ngIf="cta.secondary" class="btn btn-secondary btn-lg" 
-                                (click)="navigate(cta.secondary)">
-                                {{ cta.secondary.label }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </ng-container>
-        
     </ng-container>
-</ng-container>
+</div>
