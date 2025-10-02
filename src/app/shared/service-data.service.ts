@@ -19,7 +19,7 @@ export class ServiceDataService {
     {
       title: 'Website One-Pager',
       slug: 'one-pager',
-      img: 'assets/cards/1.png',
+      img: 'assets/cards/1-min.png',
       short: 'Eine übersichtliche Website auf nur einer Seite. Ideal für ein Angebot, eine Dienstleistung oder ein Projekt.',
       price: 'ab 1.800 €',
       cta: 'Mehr erfahren',
@@ -47,7 +47,7 @@ export class ServiceDataService {
     {
       title: 'SEO Optimierung',
       slug: 'seo-optimization',
-      img: 'assets/cards/4.png',
+      img: 'assets/cards/4-min.png',
       short: 'Optimierung für Google & Co.',
       price: 'ab 490€',
       route: 'seo-optimization',

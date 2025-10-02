@@ -16,7 +16,7 @@ export class OnePagerComponent {
   // aus deiner Card-Quelle
   title = 'Website One-Pager';
   slug = 'one-pager';
-  img  = 'assets/cards/1.png';
+  img  = 'assets/cards/1-min.png';
   price = 'ab 1.800 €';
 
   includes = [
@@ -29,7 +29,7 @@ export class OnePagerComponent {
   ];
 
   examples = [
-    { src: 'assets/cards/1.png', alt: 'One-Pager Beispiel 1', title: 'One-Pager A', meta: 'Services · Kontaktfokus' },
+    { src: 'assets/cards/1-min.png', alt: 'One-Pager Beispiel 1', title: 'One-Pager A', meta: 'Services · Kontaktfokus' },
     { src: 'assets/cards/2.png', alt: 'One-Pager Beispiel 2', title: 'One-Pager B', meta: 'Produkt · CTA oben' },
     { src: 'assets/cards/3.png', alt: 'One-Pager Beispiel 3', title: 'One-Pager C', meta: 'Local · Termine' }
   ];

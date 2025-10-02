@@ -21,7 +21,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="firstName">Vorname <span class="required">*</span></label>
-                    <input id="firstName" type="text" formControlName="firstName" placeholder="z. B. Max"
+                    <input id="firstName" type="text" formControlName="firstName" placeholder=""
                         [class.error-input]="isFieldInvalid('firstName')" />
                     <p class="help">Wie sollen wir dich/Sie ansprechen?</p>
                     <span class="error-message" *ngIf="isFieldInvalid('firstName')"><i class="error-icon">!</i>Vorname
@@ -30,7 +30,7 @@
 
                 <div class="form-group">
                     <label for="lastName">Nachname <span class="required">*</span></label>
-                    <input id="lastName" type="text" formControlName="lastName" placeholder="z. B. Mustermann"
+                    <input id="lastName" type="text" formControlName="lastName" placeholder=""
                         [class.error-input]="isFieldInvalid('lastName')" />
                     <p class="help">Familienname.</p>
                     <span class="error-message" *ngIf="isFieldInvalid('lastName')"><i class="error-icon">!</i>Nachname
@@ -43,7 +43,7 @@
                     <label for="email">E‑Mail <span class="required">*</span></label>
                     <div class="input-with-icon">
                         <i class="input-icon" aria-hidden="true">✉</i>
-                        <input id="email" type="email" formControlName="email" placeholder="name@beispiel.de"
+                        <input id="email" type="email" formControlName="email" placeholder="name@domain.de"
                             [class.error-input]="isFieldInvalid('email')" />
                     </div>
                     <p class="help">Für Rückfragen und die Entwürfe.</p>
@@ -71,30 +71,24 @@
             <div class="form-group">
                 <label for="projectName">Titel oder Name <span class="optional">(optional)</span></label>
                 <input id="projectName" type="text" formControlName="projectName"
-                    placeholder="z. B. Hochzeit 2026, Fußballverein Musterstadt, Hausmeister‑Service" />
+                    placeholder="z. B. Name, Firmenname, Projektname" />
                 <p class="help">Wie dürfen wir das Vorhaben nennen?</p>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="role">Für wen ist die Seite? <span class="required">*</span></label>
-                    <select id="role" formControlName="role" [class.error-input]="isFieldInvalid('role')">
-                        <option value="">Bitte wählen…</option>
-                        <option value="private">Privat</option>
-                        <option value="club">Verein / Gruppe</option>
-                        <option value="business">Unternehmen / Selbstständig</option>
-                        <option value="nonprofit">Gemeinnützig</option>
-                    </select>
-                    <span class="error-message" *ngIf="isFieldInvalid('role')"><i class="error-icon">!</i>Bitte
-                        wählen.</span>
-                </div>
 
-                <div class="form-group">
-                    <label for="organisation">Organisation/Projekt <span class="optional">(optional)</span></label>
-                    <input id="organisation" type="text" formControlName="organisation"
-                        placeholder="z. B. FC Musterstadt e. V., Meine Firma GmbH" />
-                </div>
+            <div class="form-group">
+                <label for="role">Für wen ist die Seite? <span class="required">*</span></label>
+                <select id="role" formControlName="role" [class.error-input]="isFieldInvalid('role')">
+                    <option value="">Bitte wählen…</option>
+                    <option value="private">Privat</option>
+                    <option value="club">Verein / Gruppe</option>
+                    <option value="business">Unternehmen / Selbstständig</option>
+                    <option value="nonprofit">Gemeinnützig</option>
+                </select>
+                <span class="error-message" *ngIf="isFieldInvalid('role')"><i class="error-icon">!</i>Bitte
+                    wählen.</span>
             </div>
+
 
             <div class="form-group">
                 <div class="switch-container">
@@ -106,21 +100,13 @@
                 </div>
             </div>
 
+            <!-- NUR Link, KEIN Upload -->
             <div class="logo-upload" *ngIf="form.get('useImage')?.value">
                 <div class="form-group">
-                    <label for="projectImage">Bild/Logo hochladen oder verlinken</label>
-                    <div class="file-upload">
-                        <input id="projectImageFile" type="file" accept="image/*" (change)="onFileSelected($event)"
-                            class="file-input" />
-                        <label for="projectImageFile" class="file-label">
-                            <i class="upload-icon" aria-hidden="true">📁</i>
-                            <span>Datei auswählen oder hierher ziehen</span>
-                            <span class="file-info">PNG, JPG, SVG bis 5 MB</span>
-                        </label>
-                    </div>
-                    <div class="divider">oder</div>
+                    <label for="projectImage">Bild/Logo verlinken</label>
                     <input id="projectImage" type="url" formControlName="projectImage"
                         placeholder="https://example.com/bild.png" />
+                    <p class="help">Nur Links (PNG, JPG, SVG). Kein Upload.</p>
                 </div>
             </div>
         </section>
@@ -152,32 +138,20 @@
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="designStyle">Stil <span class="required">*</span></label>
-                    <select id="designStyle" formControlName="designStyle"
-                        [class.error-input]="isFieldInvalid('designStyle')">
-                        <option value="">Bitte wählen…</option>
-                        <option value="modern">Modern & minimal</option>
-                        <option value="friendly">Freundlich & klar</option>
-                        <option value="elegant">Elegant</option>
-                        <option value="playful">Verspielt</option>
-                        <option value="bold">Auffällig</option>
-                    </select>
-                    <span class="error-message" *ngIf="isFieldInvalid('designStyle')"><i class="error-icon">!</i>Bitte
-                        Stil wählen.</span>
-                </div>
 
-                <div class="form-group">
-                    <label for="fontStyle">Schrift</label>
-                    <select id="fontStyle" formControlName="fontStyle">
-                        <option value="">Standard</option>
-                        <option value="serif">Serif (klassisch)</option>
-                        <option value="sans-serif">Sans‑Serif (modern)</option>
-                        <option value="display">Display (markant)</option>
-                        <option value="handwritten">Handschrift</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label for="designStyle">Stil <span class="required">*</span></label>
+                <select id="designStyle" formControlName="designStyle"
+                    [class.error-input]="isFieldInvalid('designStyle')">
+                    <option value="">Bitte wählen…</option>
+                    <option value="modern">Modern & minimal</option>
+                    <option value="friendly">Freundlich & klar</option>
+                    <option value="elegant">Elegant</option>
+                    <option value="playful">Verspielt</option>
+                    <option value="bold">Auffällig</option>
+                </select>
+                <span class="error-message" *ngIf="isFieldInvalid('designStyle')"><i class="error-icon">!</i>Bitte
+                    Stil wählen.</span>
             </div>
         </section>
 
@@ -219,6 +193,7 @@
                         <option value="en">Englisch</option>
                         <option value="multi">Mehrsprachig</option>
                     </select>
+                    <p class="help">Welche Sprache soll verwendet werden?</p>
                 </div>
             </div>
 
@@ -252,8 +227,12 @@
             <button type="button" class="btn btn--ghost" (click)="onReset()">Zurücksetzen</button>
             <button type="submit" class="btn btn--primary" [disabled]="loading || form.invalid"
                 [class.loading]="loading">
-                <span class="btn-text" *ngIf="!loading">Absenden</span>
-                <span class="btn-text" *ngIf="loading"><i class="spinner" aria-hidden="true"></i> Wird gesendet…</span>
+                @if (loading === false) {
+                <span class="btn-text">Absenden</span>
+                }
+                @if (loading === true) {
+                <span class="btn-text"><i class="spinner" aria-hidden="true"></i>Bitte warten...</span>
+                }
             </button>
         </div>
 

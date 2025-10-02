@@ -3,7 +3,6 @@ import { Injectable, computed, signal } from '@angular/core';
 export interface Preview {
   id: number;
   html: string;
-  css: string;
   form: any;
   createdAt: number;
 }
@@ -24,12 +23,11 @@ export class PreviewService {
     // null, wenn nichts ausgewählt
   });
 
-  add(input: { html: string; css: string; form?: any }): number {
+  add(input: { html: string; form?: any }): number {
     const id = Date.now();
     const item: Preview = {
       id,
       html: input.html,
-      css: input.css,
       form: input.form ?? null,
       createdAt: Date.now()
     };
@@ -39,6 +37,10 @@ export class PreviewService {
     if (this._selectedIndex() === -1) this._selectedIndex.set(0);
 
     return id;
+  }	
+
+  setCurrentActivePreview(id: number) {
+    this._selectedIndex.set(id);
   }
 
   selectByIndex(index: number) {
