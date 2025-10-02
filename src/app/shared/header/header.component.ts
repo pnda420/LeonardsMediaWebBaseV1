@@ -1,6 +1,7 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { PreviewService } from '../../state/preview.service';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class HeaderComponent {
   open = false;
-  constructor(@Inject(DOCUMENT) private doc: Document, public router: Router  ) {}
+  constructor(@Inject(DOCUMENT) private doc: Document, public router: Router, private previewService: PreviewService) { }
 
   toggle() {
     this.open = !this.open;
@@ -25,5 +26,14 @@ export class HeaderComponent {
     this.doc.body.style.overflow = '';
     this.doc.body.style.touchAction = '';
   }
+
+  getPreviewAmmount(): number {
+    return this.previewService.previews().length;
+  }
+
+    ngAfterViewInit(): void {
+      this.previewService.loadPreviewsFromLocalStorage();
+  }
+
 
 }

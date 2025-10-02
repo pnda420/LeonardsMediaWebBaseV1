@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, effect, Renderer2 } from '@angular/core';
+import { Component, ElementRef, ViewChild, effect, Renderer2, AfterViewInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { PreviewService } from '../../../state/preview.service';
 import { CommonModule } from '@angular/common';
@@ -18,26 +18,61 @@ export class MainContainerComponent {
   private headStyleEl?: HTMLStyleElement;
 
   constructor(
-    private previews: PreviewService,
+    private previewService: PreviewService,
     private router: Router,
     private sanitizer: DomSanitizer,
     private renderer: Renderer2
   ) {
     effect(() => {
-      const list = this.previews.previews();
-      const latest = list.length ? list[list.length - 1] : null;
-      const raw = latest?.html ?? '';
+      const list = this.previewService.previews();
+      const selected =
+        (typeof this.previewService.selected === 'function' ? this.previewService.selected() : null) ??
+        (list.length ? list[list.length - 1] : null);
+
+      const raw = selected?.html ?? '';
 
       const css = this.collectStyles(raw);
       const bodyOnly = raw.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
 
-      // Body sicher einfügen
       this.sanitizedBody = this.sanitizer.bypassSecurityTrustHtml(bodyOnly);
 
-      // CSS scopen und stabil in <head> setzen (wird nicht von innerHTML überschrieben)
       const scoped = this.scopeCss(css, '.preview-host');
       this.applyStylesToHead(scoped);
     });
+  }
+
+
+
+  getCurrentScreenWidth(): number {
+    return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  }
+
+  onPreviewChange(ev: Event) {
+    const target = ev.target as HTMLSelectElement;
+    const idx = Number(target.value);
+    if (!Number.isNaN(idx)) {
+      this.selectCurrentPreview(idx);
+    }
+  }
+
+  trackByIndex(index: number) { return index; }
+
+  getSelectedIndex(): number {
+    const list = this.previewService.previews();
+    if (typeof this.previewService.selectedIndex === 'function') {
+      // @ts-ignore
+      const i = this.previewService.selectedIndex();
+      if (typeof i === 'number' && i >= 0 && i < list.length) return i;
+    }
+    return Math.max(0, list.length - 1);
+  }
+
+  getAllPreviews() {
+    return this.previewService.previews();
+  }
+
+  selectCurrentPreview(index: number) {
+    this.previewService.selectByIndex(index);
   }
 
   private collectStyles(html: string): string {
@@ -45,13 +80,6 @@ export class MainContainerComponent {
     return blocks.map(m => m[1]).join('\n');
   }
 
-  /**
-   * Robustere Scoping-Variante:
-   * - ersetzt :root/html/body durch den Scope
-   * - prefixed Selektoren außerhalb von @-Regeln
-   * - verarbeitet @media/@supports und prefix't deren innere Selektoren
-   *  (einfacher Heuristik-Ansatz, kein vollständiger CSS-Parser)
-   */
   private scopeCss(css: string, scope: string): string {
     if (!css) return '';
 

@@ -17,13 +17,31 @@ export class ServiceDataService {
 
   private services: ServiceItem[] = [
     {
-      title: 'Website One-Pager',
+      title: 'Einfache Website',
       slug: 'one-pager',
-      img: 'assets/cards/1-min.png',
-      short: 'Eine übersichtliche Website auf nur einer Seite. Ideal für ein Angebot, eine Dienstleistung oder ein Projekt.',
-      price: 'ab 1.800 €',
-      cta: 'Mehr erfahren',
+      img: 'assets/cards/simple-min.png',
+      short: 'Eine einzelne Seite mit den wichtigsten Informationen. Der geringste Aufwand.',
+      price: 'ab 1.799 €',
+      cta: 'Zum Paket',
       route: 'one-pager',
+    },
+    {
+      title: 'Standard Webseite',
+      slug: 'standard-website',
+      img: 'assets/cards/standard-min.png',
+      short: 'Eine Website mit mehreren Seiten für mehr Inhalte und Struktur. Mittlerer Aufwand.',
+      price: 'ab 3.499 €',
+      cta: 'Zum Paket',
+      route: 'standard-website',
+    },
+    {
+      title: 'Individual Webseite',
+      slug: 'individual-website',
+      img: 'assets/cards/individual-min.png',
+      short: 'Eine individuell entwickelte Website mit erweitertem Funktionsumfang. Höchster Aufwand.',
+      price: 'ab 4.999 €',
+      cta: 'Zum Paket',
+      route: 'individual-website',
     },
 
     // {

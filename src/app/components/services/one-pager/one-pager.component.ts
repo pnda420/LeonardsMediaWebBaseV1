@@ -14,7 +14,7 @@ export class OnePagerComponent {
   constructor(public router: Router) {}
 
   // aus deiner Card-Quelle
-  title = 'Website One-Pager';
+  title = 'Einfache Website (One-Pager)';
   slug = 'one-pager';
   img  = 'assets/cards/1-min.png';
   price = 'ab 1.800 €';

@@ -36,8 +36,10 @@ export class PreviewService {
     // falls noch nichts ausgewählt, erstes Element wählen
     if (this._selectedIndex() === -1) this._selectedIndex.set(0);
 
+    this.addPreviewToLocalStorage();
+
     return id;
-  }	
+  }
 
   setCurrentActivePreview(id: number) {
     this._selectedIndex.set(id);
@@ -46,6 +48,24 @@ export class PreviewService {
   selectByIndex(index: number) {
     const len = this._previews().length;
     if (index >= 0 && index < len) this._selectedIndex.set(index);
+  }
+
+  addPreviewToLocalStorage() {
+    const data = this._previews();
+    localStorage.setItem('previews', JSON.stringify(data));
+  }
+
+  loadPreviewsFromLocalStorage() {
+    const raw = localStorage.getItem('previews');
+    if (raw) {
+      try {
+        const data = JSON.parse(raw) as Preview[];
+        this._previews.set(data);
+        this._selectedIndex.set(data.length ? 0 : -1);
+      } catch {
+        // ignore
+      }
+    }
   }
 
   clear() {

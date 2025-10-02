@@ -26,7 +26,7 @@ export const routes: Routes = [
     { path: 'process', component: VorgehenComponent, title: pageMainName + ' | Vorgehen', data: { description: 'Vorgehen von Leonards Media.' } },
     { path: 'faq', component: FaqComponent, title: pageMainName + ' | FAQ', data: { description: 'FAQ von Leonards Media.' } },
     { path: 'policy', component: PolicyComponent, title: pageMainName + ' | Datenschutz', data: { description: 'Datenschutzerklärung von Leonards Media.' } },
-    { path: 'services/one-pager', component: OnePagerComponent, title: pageMainName + ' | Website One-Pager', data: { description: 'Website One-Pager von Leonards Media.' } },
+    { path: 'services/one-pager', component: OnePagerComponent, title: pageMainName + ' | Einfache Website', data: { description: 'Einfache Webseite von Leonards Media.' } },
     { path: 'services/all-in-one', component: AllInOneComponent, title: pageMainName + ' | All-in-One-Lösung', data: { description: 'All-in-One-Lösung von Leonards Media.' } },
     { path: 'services/large-website', component: LargeWebsiteComponent, title: pageMainName + ' | Große Website', data: { description: 'Große Website von Leonards Media.' } },
     { path: 'services/seo-optimization', component: SeoOptimizationComponent, title: pageMainName + ' | SEO Optimierung', data: { description: 'SEO Optimierung von Leonards Media.' } },
