@@ -13,14 +13,14 @@
 
   .header__inner {
     min-height: var(--header-h);
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 1rem;
   }
 
   .brand {
-    order: 2; // Logo links auf Mobile
+    order: 1; // Logo ganz links auf Mobile
     height: 36px;
     cursor: pointer;
     user-select: none;
@@ -38,7 +38,7 @@
   }
 
   .nav-toggle {
-    order: 1; // Burger rechts auf Mobile
+    order: 2; // Burger ganz rechts auf Mobile
     display: inline-flex;
     align-items: center;
     justify-content: center;

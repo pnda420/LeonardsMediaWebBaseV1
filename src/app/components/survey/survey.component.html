@@ -1,0 +1,286 @@
+<section class="op" aria-label="Kurze Umfrage">
+    <div class="flex">
+        <div class="container hero">
+            <div class="hero__content">
+                <h2>Was brauchst du für deine Website?</h2>
+                <p>Kurze Fragen. Klare Sprache. Am Ende gibt’s eine Empfehlung und die Infos, die ich für ein Angebot
+                    brauche.</p>
+
+                <div class="hero__facts" aria-label="Status">
+                    <span class="chip">Schritt {{ step() + 1 }} / {{ steps.length }}</span>
+                    <span class="chip chip--muted">Dauer: ~1-2 Minuten</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stepper -->
+    <div class="flex">
+        <div class="container stepper" aria-label="Fortschritt">
+            <ol class="steps-inline">
+                <li *ngFor="let s of steps; let i = index" [class.active]="i === step()"
+                    [class.done]="i <= maxStepReached()" (click)="i <= maxStepReached() && goToStep(i)">
+                    <span class="num">{{ i + 1 }}</span>
+                    <span class="label">{{ s }}</span>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="flex">
+        <div class="container survey">
+            <!-- STEP 0: Projekt -->
+            <div *ngIf="step() === 0" class="card">
+                <h3>Was passt grob zu deinem Vorhaben?</h3>
+                <div class="choices">
+                    <button type="button" class="pill" [class.pill--sel]="form.value.projectType==='one'"
+                        (click)="form.patchValue({projectType: 'one'})">
+                        Eine einfache Seite
+                    </button>
+                    <button type="button" class="pill" [class.pill--sel]="form.value.projectType==='multi'"
+                        (click)="form.patchValue({projectType: 'multi'})">
+                        Mehrere Seiten
+                    </button>
+                    <button type="button" class="pill" [class.pill--sel]="form.value.projectType==='custom'"
+                        (click)="form.patchValue({projectType: 'custom'})">
+                        Etwas Individuelles, Komplexeres
+                    </button>
+                </div>
+                <div class="nav">
+                    <button class="btn btn--primary" [disabled]="!form.value.projectType"
+                        (click)="next()">Weiter</button>
+                </div>
+            </div>
+
+            <!-- STEP 1: Inhalte -->
+            <div *ngIf="step() === 1" class="card">
+                <h3>Wie viel Inhalt ist geplant?</h3>
+                <p class="muted">Grobe Einschätzung reicht.</p>
+                <div class="choices">
+                    <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='very-low'"
+                        (click)="form.patchValue({contentAmount: 'very-low'})">Sehr wenig</button>
+                    <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='low'"
+                        (click)="form.patchValue({contentAmount: 'low'})">Wenig</button>
+                    <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='medium'"
+                        (click)="form.patchValue({contentAmount: 'medium'})">Mittel</button>
+                    <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='high'"
+                        (click)="form.patchValue({contentAmount: 'high'})">Viel</button>
+                </div>
+                <div class="nav">
+                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
+                    <button class="btn btn--primary" [disabled]="!form.value.contentAmount"
+                        (click)="next()">Weiter</button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Domain -->
+            <div *ngIf="step() === 2" class="card">
+                <h3>Domain</h3>
+                <div class="choices">
+                    <button type="button" class="pill" [class.pill--sel]="form.value.hasDomain==='yes'"
+                        (click)="form.patchValue({hasDomain: 'yes'})">Ich habe schon eine Domain</button>
+                    <button type="button" class="pill" [class.pill--sel]="form.value.hasDomain==='no'"
+                        (click)="form.patchValue({hasDomain: 'no', domainName: ''})">Ich brauche eine Domain</button>
+                    <button type="button" class="pill" [class.pill--sel]="form.value.hasDomain==='unsure'"
+                        (click)="form.patchValue({hasDomain: 'unsure', domainName: ''})">Weiß ich noch nicht</button>
+                </div>
+
+                <div *ngIf="form.value.hasDomain==='yes' " class="field">
+                    <label for="domain">Wie lautet sie?</label>
+                    <input id="domain" type="text" [formControl]="$any(form.get('domainName'))"
+                        placeholder="z. B. meinefirma.de"
+                        [attr.data-invalid]="!$any(form.get('domainName'))?.valid && $any(form.get('domainName'))?.touched ? 'true' : null">
+                </div>
+
+                <div class="nav">
+                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
+                    <button class="btn btn--primary" [disabled]="!form.value.hasDomain" (click)="next()">Weiter</button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Hosting -->
+            <div *ngIf="step() === 3" class="card">
+                <h3>Hosting</h3>
+                <div class="choices">
+                    <button type="button" class="pill" [class.pill--sel]="form.value.hosting==='with-me'"
+                        (click)="form.patchValue({hosting: 'with-me', hostingProvider: ''})">Bitte bei dir
+                        hosten</button>
+                    <button type="button" class="pill" [class.pill--sel]="form.value.hosting==='self'"
+                        (click)="form.patchValue({hosting: 'self'})">Ich hoste selbst</button>
+                    <button type="button" class="pill" [class.pill--sel]="form.value.hosting==='unsure'"
+                        (click)="form.patchValue({hosting: 'unsure', hostingProvider: ''})">Weiß ich noch nicht</button>
+                </div>
+
+                <div *ngIf="form.value.hosting==='self'" class="field">
+                    <label for="provider">Bei wem?</label>
+                    <input id="provider" type="text" [formControl]="$any(form.get('hostingProvider'))"
+                        placeholder="z. B. IONOS, netcup, all-inkl">
+                </div>
+
+                <div class="nav">
+                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
+                    <button class="btn btn--primary" [disabled]="!form.value.hosting" (click)="next()">Weiter</button>
+                </div>
+            </div>
+
+            <!-- STEP 4: Funktionen -->
+            <div *ngIf="step() === 4" class="card">
+                <h3>Welche Funktionen brauchst du?</h3>
+                <p class="muted">Einfach ankreuzen. Nur was wirklich gebraucht wird.</p>
+
+                <div class="addons" [formGroup]="$any(featuresGroup)">
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="startSection"> Startbereich (großes Bild / Überschrift)
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="about"> Über mich / Über uns
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="services"> Leistungen / Angebote
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="gallery"> Bildergalerie / Projekte
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="team"> Teamvorstellung
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="testimonials"> Kundenstimmen / Bewertungen
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="contactForm"> Kontaktformular
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="map"> Standortkarte (Google Maps)
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="faq"> Häufige Fragen (FAQ)
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="pricing"> Preise / Tarife
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="blog"> Neuigkeiten / Blog
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="booking"> Terminbuchung
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="downloads"> Downloads (PDFs, Broschüren)
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="newsletter"> Newsletter-Anmeldung
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="multilingual"> Mehrsprachigkeit
+                    </label>
+                    <label class="pill pill--check">
+                        <input type="checkbox" formControlName="socialLinks"> Social Media Links
+                    </label>
+                </div>
+
+
+                <div class="nav">
+                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
+                    <button class="btn btn--primary" (click)="next()">Weiter</button>
+                </div>
+            </div>
+
+            <!-- STEP 5: Budget & Zeit -->
+            <div *ngIf="step() === 5" class="card">
+                <h3>Budget & Zeit</h3>
+                <div class="field">
+                    <label>Budgetrahmen</label>
+                    <div class="choices">
+                        <button type="button" class="pill" [class.pill--sel]="form.value.budget==='&lt;2k'"
+                            (click)="form.patchValue({budget: '<2k'})">unter 2.000 €</button>
+                        <button type="button" class="pill" [class.pill--sel]="form.value.budget==='2-4k'"
+                            (click)="form.patchValue({budget: '2-4k'})">2.000–4.000 €</button>
+                        <button type="button" class="pill" [class.pill--sel]="form.value.budget==='4-7k'"
+                            (click)="form.patchValue({budget: '4-7k'})">4.000–7.000 €</button>
+                        <button type="button" class="pill" [class.pill--sel]="form.value.budget==='&gt;7k'"
+                            (click)="form.patchValue({budget: '>7k'})">über 7.000 €</button>
+                        <button type="button" class="pill" [class.pill--sel]="form.value.budget==='unsure'"
+                            (click)="form.patchValue({budget: 'unsure'})">weiß ich nicht</button>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Zeitrahmen</label>
+                    <div class="choices">
+                        <button type="button" class="pill" [class.pill--sel]="form.value.timeframe==='fast'"
+                            (click)="form.patchValue({timeframe: 'fast'})">so schnell wie möglich</button>
+                        <button type="button" class="pill" [class.pill--sel]="form.value.timeframe==='normal'"
+                            (click)="form.patchValue({timeframe: 'normal'})">normal (4–8 Wochen)</button>
+                        <button type="button" class="pill" [class.pill--sel]="form.value.timeframe==='flex'"
+                            (click)="form.patchValue({timeframe: 'flex'})">flexibel</button>
+                    </div>
+                </div>
+
+                <div class="nav">
+                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
+                    <button class="btn btn--primary" [disabled]="!form.value.budget || !form.value.timeframe"
+                        (click)="next()">Weiter</button>
+                </div>
+            </div>
+
+            <!-- STEP 6: Kontakt & Zusammenfassung -->
+            <div *ngIf="step() === 6" class="card">
+                <h3>Fast fertig – wie kann ich dich erreichen?</h3>
+
+                <div class="field">
+                    <label for="name">Name</label>
+                    <input id="name" type="text" [formControl]="$any(form.get('contactName'))"
+                        placeholder="Vor- und Nachname"
+                        [attr.data-invalid]="$any(form.get('contactName'))?.invalid && $any(form.get('contactName'))?.touched ? 'true' : null">
+                </div>
+
+                <div class="field">
+                    <label for="email">E-Mail</label>
+                    <input id="email" type="email" [formControl]="$any(form.get('contactEmail'))"
+                        placeholder="name@beispiel.de"
+                        [attr.data-invalid]="$any(form.get('contactEmail'))?.invalid && $any(form.get('contactEmail'))?.touched ? 'true' : null">
+                </div>
+
+                <div class="field">
+                    <label for="notes">Gibt es noch etwas Wichtiges?</label>
+                    <textarea id="notes" rows="3" [formControl]="$any(form.get('notes'))"
+                        placeholder="Optional"></textarea>
+                </div>
+
+                <!-- Empfehlung -->
+                <div class="recommendation">
+                    <h4>Meine Empfehlung</h4>
+                    <ng-container *ngIf="recommendation().pkg as rec">
+                        <div class="rec-card" role="region" aria-label="Empfohlenes Paket">
+                            <img [src]="rec.img" [alt]="rec.title" loading="lazy">
+                            <div class="rec-meta">
+                                <strong>{{ rec.title }}</strong>
+                                <span class="meta">{{ rec.short }}</span>
+                                <span class="price">{{ rec.price }}</span>
+                                <div class="why">
+                                    <span class="badge">Begründung</span>
+                                    <ul>
+                                        <li *ngFor="let r of recommendation().reasons">{{ r }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="rec-actions">
+                                <button class="btn btn--ghost" (click)="router.navigate(['/', rec.route])">Details
+                                    ansehen</button>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <p *ngIf="!recommendation().pkg" class="muted">Ich kann nach einem kurzen Gespräch sauber
+                        einschätzen, was passt.</p>
+                </div>
+
+                <div class="nav">
+                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
+                    <button class="btn btn--primary" (click)="submit()">Absenden & Beratung starten</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -14,6 +14,7 @@ import { LargeWebsiteComponent } from './components/services/large-website/large
 import { SeoOptimizationComponent } from './components/services/seo-optimization/seo-optimization.component';
 import { MainContainerComponent } from './components/preview/main-container/main-container.component';
 import { InputFormComponent } from './components/preview/input-form/input-form.component';
+import { SurveyComponent } from './components/survey/survey.component';
 
 const pageMainName = 'Leonards Media';
 export const routes: Routes = [
@@ -30,6 +31,7 @@ export const routes: Routes = [
     { path: 'services/all-in-one', component: AllInOneComponent, title: pageMainName + ' | All-in-One-Lösung', data: { description: 'All-in-One-Lösung von Leonards Media.' } },
     { path: 'services/large-website', component: LargeWebsiteComponent, title: pageMainName + ' | Große Website', data: { description: 'Große Website von Leonards Media.' } },
     { path: 'services/seo-optimization', component: SeoOptimizationComponent, title: pageMainName + ' | SEO Optimierung', data: { description: 'SEO Optimierung von Leonards Media.' } },
+    { path: 'survey', component: SurveyComponent, title: pageMainName + ' | Umfrage', data: { description: 'Umfrage von Leonards Media.' } },
     { path: 'preview', component: MainContainerComponent, title: pageMainName + ' | Preview', data: { description: 'Preview von Leonards Media.' } },
     { path: 'preview-form', component: InputFormComponent, title: pageMainName + ' | Preview2', data: { description: 'Preview2 von Leonards Media.' } },
 ];
