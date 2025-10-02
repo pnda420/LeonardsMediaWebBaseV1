@@ -20,11 +20,12 @@ export class ServiceDataService {
       title: 'Website One-Pager',
       slug: 'one-pager',
       img: 'assets/cards/1.png',
-      short: 'Einfache Website mit modernem Design und moderner Technologie.',
+      short: 'Eine übersichtliche Website auf nur einer Seite. Ideal für ein Angebot, eine Dienstleistung oder ein Projekt.',
       price: 'ab 1.800 €',
-      cta: 'Details & Beispiele',
+      cta: 'Mehr erfahren',
       route: 'one-pager',
     },
+
     // {
     //   title: 'All-in-One-Lösung',
     //   slug: 'all-in-one',

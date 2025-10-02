@@ -1,30 +1,45 @@
 <app-page-title title="Website One-Pager"></app-page-title>
 
-<section class="op">
+<section class="op" aria-label="Angebot: One-Pager Website">
     <!-- HERO -->
-
     <div class="flex">
         <div class="container hero">
             <div class="hero__content">
-                <h2>Schlanke Website, schnell einsatzbereit</h2>
-                <p>Ein kompakter One-Pager: klarer Aufbau, modernes Layout, saubere Umsetzung. Geeignet für klare
-                    Angebote, lokale Dienstleistungen oder MVPs.</p>
+                <h2>Eine Seite. Übersichtlich. Schnell online.</h2>
+                <p>
+                    Eine klare Website auf <strong>einer Seite</strong>. Gut lesbar, einfache Navigation, ohne Ballast.
+                    Ideal für ein Angebot, eine Dienstleistung oder den Start eines Projekts.
+                </p>
 
-                <div class="hero__facts">
+                <div class="hero__facts" aria-label="Rahmendaten">
                     <span class="chip">Preis: ab 1.800&nbsp;€</span>
                     <span class="chip chip--muted">Umsetzung: 1–3&nbsp;Wochen (je nach Umfang)</span>
                 </div>
 
-                <div class="hero__actions">
+                <div class="hero__actions" aria-label="Aktionen">
                     <a class="btn btn--primary" (click)="router.navigate(['/contact'])">Projekt anfragen</a>
-                    <a class="btn btn--primary " (click)="router.navigate(['/preview-form'])">Ki Vorschau erstellen</a>
                     <a class="btn btn--ghost" (click)="scrollTo('examples')">Beispiele ansehen</a>
+                    <a class="btn btn--primary" (click)="router.navigate(['/preview-form'])"
+                        aria-label="KI Vorschau testen">
+                        ✨ KI‑Vorschau testen
+                    </a>
                 </div>
             </div>
 
             <figure class="hero__visual" aria-hidden="true">
-                <img [src]="img" alt="" loading="lazy" />
+                <img [src]="img" alt="Beispielansicht eines One-Pagers" loading="lazy" />
             </figure>
+        </div>
+    </div>
+
+    <!-- KI VORSCHAU KURZ -->
+    <div class="flex">
+        <div class="container ki-preview" aria-label="Kurzinfo KI-Vorschau">
+            <div class="section-head">
+                <h2>Optional: KI‑Vorschau</h2>
+                <p>Beschreiben Sie in 2–3 Sätzen Ihr Angebot. Sie erhalten eine einfache Vorschau mit Textvorschlägen.
+                    Das hilft bei der ersten Einschätzung. Danach klären wir alles im Gespräch.</p>
+            </div>
         </div>
     </div>
 
@@ -32,34 +47,34 @@
     <div class="flex">
         <div class="container fit">
             <div class="section-head">
-                <h2>Wann es passt – und wann nicht</h2>
-                <p>Kurze Orientierung, damit wir keine Zeit auf das Falsche setzen.</p>
+                <h2>Passt das zu mir?</h2>
+                <p>Kurze Orientierung.</p>
             </div>
 
             <div class="fit__grid">
                 <article class="card">
-                    <h3>Geeignet</h3>
+                    <h3>Gut geeignet</h3>
                     <ul>
-                        <li>Klarer Fokus (1 Produkt/Leistung)</li>
-                        <li>Schneller Go-Live gewünscht</li>
-                        <li>Überschaubarer Content (1–5 Abschnitte)</li>
-                        <li>Kontakt/Termin als Hauptziel</li>
+                        <li>Ein klares Angebot (ein Produkt oder eine Leistung)</li>
+                        <li>Schneller Start ist wichtig</li>
+                        <li>Wenige Inhalte (1–5 Abschnitte)</li>
+                        <li>Ziel: Kontaktaufnahme oder Termin</li>
                     </ul>
                 </article>
 
                 <article class="card">
-                    <h3>Nicht ideal</h3>
+                    <h3>Weniger geeignet</h3>
                     <ul>
-                        <li>Viele Unterseiten / komplexe IA</li>
-                        <li>Mehrsprachigkeit + Rollen/Rechte</li>
-                        <li>Shop / komplexe Formulare</li>
-                        <li>Individuelle Integrationen breit gestreut</li>
+                        <li>Viele Unterseiten</li>
+                        <li>Mehrsprachigkeit oder unterschiedliche Nutzer‑Rollen</li>
+                        <li>Shop oder sehr umfangreiche Formulare</li>
+                        <li>Viele spezielle Anbindungen</li>
                     </ul>
                     <div class="note">
                         In diesen Fällen ist
                         <a (click)="router.navigate(['/services/large-website'])">„Große Website“</a>
                         oder das
-                        <a (click)="router.navigate(['/services/all-in-one'])">All-in-One-Paket</a>
+                        <a (click)="router.navigate(['/services/all-in-one'])">All‑in‑One‑Paket</a>
                         sinnvoller.
                     </div>
                 </article>
@@ -71,8 +86,8 @@
     <div class="flex">
         <div class="container scope">
             <div class="section-head">
-                <h2>Leistungsumfang</h2>
-                <p>Was enthalten ist – ohne Marketing-Floskeln.</p>
+                <h2>Was Sie bekommen</h2>
+                <p>Klare Liste. Verständlich formuliert.</p>
             </div>
 
             <div class="scope__grid">
@@ -81,68 +96,38 @@
                     <p>{{ i.text }}</p>
                 </article>
             </div>
-
-            <div class="scope__addons">
-                <h3>Optionen</h3>
-                <div class="addons">
-                    <button type="button" class="pill"
-                        (click)="router.navigate(['/services/seo-optimization'])">SEO-Optimierung</button>
-                    <button type="button" class="pill" (click)="router.navigate(['/services/all-in-one'])">All-in-One
-                        (Content & Betreuung)</button>
-                    <button type="button" class="pill" (click)="router.navigate(['/services/large-website'])">Skalierung
-                        zur
-                        großen Website</button>
-                </div>
-            </div>
         </div>
     </div>
 
-    <!-- MINI-PROZESS -->
+    <!-- ABLAUF -->
     <div class="flex">
         <div class="container process">
             <div class="section-head">
                 <h2>Ablauf</h2>
-                <p>Schlank gehalten. Realistische Zusagen, klare Übergaben.</p>
+                <p>Kurze Wege. Verlässliche Zusagen.</p>
             </div>
 
             <ol class="steps">
                 <li><span class="k">Kickoff</span><span class="v">Ziele, Inhalte, Beispiele. 30–45&nbsp;Min.</span></li>
-                <li><span class="k">Entwurf</span><span class="v">Start mit Wireframe, 1–2 Designrunden.</span></li>
-                <li><span class="k">Umsetzung</span><span class="v">Saubere Komponenten, responsive, Basis-SEO.</span>
-                </li>
-                <li><span class="k">Go-Live</span><span class="v">Deployment & Checks, Übergabedoku.</span></li>
-                <li><span class="k">Support</span><span class="v">Bugfixes, kleine Anpassungen nach Bedarf.</span></li>
+                <li><span class="k">Entwurf</span><span class="v">Einfache Skizze, 1–2 Designrunden.</span></li>
+                <li><span class="k">Umsetzung</span><span class="v">Saubere Umsetzung, mobil gut lesbar,
+                        Basis‑SEO.</span></li>
+                <li><span class="k">Go‑Live</span><span class="v">Veröffentlichung & letzte Checks. Kurze
+                        Übergabe.</span></li>
+                <li><span class="k">Support</span><span class="v">Fehlerbehebung und kleine Anpassungen nach
+                        Bedarf.</span></li>
             </ol>
 
-            <a class="link" (click)="router.navigate(['/process'])">Detailliertes Vorgehen ansehen →</a>
+            <a class="link" (click)="router.navigate(['/process'])">Detaillierter Ablauf →</a>
         </div>
     </div>
 
-    <!-- BEISPIELE -->
-    <div class="flex">
-        <div class="container examples" id="examples">
-            <div class="section-head">
-                <h2>Beispiele</h2>
-                <p>Echte Layout-Ausschnitte. Keine Stock-Mockups.</p>
-            </div>
 
-            <div class="grid">
-                <figure class="shot" *ngFor="let e of examples">
-                    <img [src]="e.src" [alt]="e.alt" loading="lazy" />
-                    <figcaption>
-                        <strong>{{ e.title }}</strong>
-                        <span class="meta">{{ e.meta }}</span>
-                    </figcaption>
-                </figure>
-            </div>
-        </div>
-    </div>
-
-    <!-- FAQ MINI -->
+    <!-- FAQ -->
     <div class="flex">
         <div class="container faq">
             <div class="section-head">
-                <h2>FAQ zum One-Pager</h2>
+                <h2>Häufige Fragen</h2>
             </div>
 
             <details class="qa" *ngFor="let f of faq">
@@ -152,16 +137,16 @@
                 </div>
             </details>
 
-            <a class="link" (click)="router.navigate(['/faq'])">Mehr Fragen & Antworten →</a>
+            <a class="link" (click)="router.navigate(['/faq'])">Weitere Fragen →</a>
         </div>
     </div>
 
     <!-- CTA -->
     <div class="flex">
         <div class="container cta">
-            <div class="cta__box">
+            <div class="cta__box" role="region" aria-label="Abschluss">
                 <h2>Passt das zu Ihrem Vorhaben?</h2>
-                <p>Kurzes Erstgespräch, klare Einschätzung, kein Sales-Druck.</p>
+                <p>Kurzes Erstgespräch. Klare Einschätzung. Kein Druck.</p>
                 <div class="cta__actions">
                     <a class="btn btn--primary" (click)="router.navigate(['/contact'])">Projekt anfragen</a>
                     <a class="btn btn--ghost" (click)="router.navigate(['/services'])">Weitere Leistungen</a>

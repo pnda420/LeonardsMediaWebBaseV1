@@ -94,8 +94,9 @@ export class InputFormComponent implements OnInit {
 
   private http = inject(HttpClient);
   private previews = inject(PreviewService);
+  
 
-  constructor(private router: Router) { }
+  constructor(public router: Router) { }
 
   ngOnInit(): void {
     this.initializeForm();
