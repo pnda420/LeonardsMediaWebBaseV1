@@ -59,13 +59,25 @@
                 <p class="muted">Grobe Einschätzung reicht.</p>
                 <div class="choices">
                     <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='very-low'"
-                        (click)="form.patchValue({contentAmount: 'very-low'})">Sehr wenig</button>
+                        (click)="form.patchValue({contentAmount: 'very-low'})">
+                        Sehr wenig<br>
+                        <span class="muted">(1–2 Absätze, z. B. Startseite mit Kontaktdaten)</span>
+                    </button>
                     <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='low'"
-                        (click)="form.patchValue({contentAmount: 'low'})">Wenig</button>
+                        (click)="form.patchValue({contentAmount: 'low'})">
+                        Wenig<br>
+                        <span class="muted">(3–5 Abschnitte, z. B. Start, Über mich, Leistungen, Kontakt)</span>
+                    </button>
                     <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='medium'"
-                        (click)="form.patchValue({contentAmount: 'medium'})">Mittel</button>
+                        (click)="form.patchValue({contentAmount: 'medium'})">
+                        Mittel<br>
+                        <span class="muted">(6–10 Abschnitte oder Seiten, z. B. Portfolio, Team, FAQ)</span>
+                    </button>
                     <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='high'"
-                        (click)="form.patchValue({contentAmount: 'high'})">Viel</button>
+                        (click)="form.patchValue({contentAmount: 'high'})">
+                        Viel<br>
+                        <span class="muted">(mehr als 10 Seiten, z. B. Blog, viele Unterseiten)</span>
+                    </button>
                 </div>
                 <div class="nav">
                     <button class="btn btn--ghost" (click)="prev()">Zurück</button>
