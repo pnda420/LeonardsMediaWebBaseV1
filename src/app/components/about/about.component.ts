@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class AboutComponent {
 
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
 
   navigateToContact() {
     this.router.navigate(['/contact']);

@@ -1,4 +1,4 @@
-<app-page-title title="Über uns"></app-page-title>
+<app-page-title title="Über mich"></app-page-title>
 
 <section class="about about--single">
   <div class="container profile">
@@ -11,31 +11,140 @@
 
     <div class="profile__content">
       <h2 class="profile__name">Tom Leonards</h2>
+      <p class="profile__tagline">Webentwickler mit Fokus auf pragmatische Lösungen</p>
 
-      <ul class="facts">
-        <li><span class="k">Alter</span><span class="v">21 Jahre</span></li>
-        <li><span class="k">Rolle</span><span class="v">Geschäftsführer & Softwareentwickler</span></li>
-        <li><span class="k">Schwerpunkt</span><span class="v">Webentwicklung (Frontend & Backend)</span></li>
-        <li><span class="k">Ausbildung</span><span class="v">Fachinformatiker für Anwendungsentwicklung</span>
-        </li>
-        <li><span class="k">Abschluss</span><span class="v">Fachabitur Informatik</span></li>
-        <li><span class="k">Stack (Kern)</span>
-          <span class="v">Angular · NestJS · TypeScript · PostgreSQL · HTML/SCSS · Docker · Git</span>
-        </li>
-      </ul>
+      <div class="profile__story">
+        <p>
+          Ich entwickle <strong>moderne Webanwendungen</strong>, die funktionieren - ohne unnötige Komplexität.
+          Mein Fokus liegt auf klarem Code, sauberer Architektur und Lösungen, die langfristig wartbar bleiben.
+        </p>
+        <p>
+          Seit ich mit 16 meine erste Website gebaut habe, hat mich die Webentwicklung nicht mehr losgelassen.
+          Was als Hobby-Projekt begann, wurde zur Leidenschaft: <strong>Projekte von der Idee bis zum Launch
+            umsetzen</strong> -
+          technisch solide, visuell ansprechend, nutzerfreundlich.
+        </p>
+        <p>
+          Neben meinen Kundenprojekten entwickle ich regelmäßig eigene Tools und Anwendungen -
+          um neue Technologien zu lernen, Workflows zu verbessern und einfach weil ich es liebe, Dinge zu bauen.
+        </p>
+      </div>
 
+      <div class="profile__approach">
+        <h3>Mein Ansatz</h3>
+        <div class="approach__grid">
+          <div class="approach__item">
+            <div class="approach__icon">🎯</div>
+            <strong>Pragmatisch</strong>
+            <p>Fokus auf das, was wirklich gebraucht wird. Keine Over-Engineering.</p>
+          </div>
+          <div class="approach__item">
+            <div class="approach__icon">💬</div>
+            <strong>Direkt</strong>
+            <p>Klare Kommunikation ohne Tech-Jargon. Du verstehst immer, worum es geht.</p>
+          </div>
+          <div class="approach__item">
+            <div class="approach__icon">⚡</div>
+            <strong>Effizient</strong>
+            <p>Schnelle Umsetzung durch schlanke Prozesse. Kein Agentur-Overhead.</p>
+          </div>
+        </div>
+      </div>
 
-      <p class="bio">
-        Ich plane und baue schlanke Webanwendungen mit Angular und NestJS – verständlich, wartbar und zuverlässig im
-        Betrieb.
-      </p>
+      <div class="profile__tech">
+        <h3>Technologie-Stack</h3>
+        <div class="tech__categories">
+          <div class="tech__category">
+            <span class="tech__label">Frontend:</span>
+            <span class="tech__values">Angular, TypeScript, HTML/SCSS</span>
+          </div>
+          <div class="tech__category">
+            <span class="tech__label">Backend:</span>
+            <span class="tech__values">Node.js, NestJS, REST APIs</span>
+          </div>
+          <div class="tech__category">
+            <span class="tech__label">Datenbank:</span>
+            <span class="tech__values">PostgreSQL, TypeORM</span>
+          </div>
+          <div class="tech__category">
+            <span class="tech__label">DevOps:</span>
+            <span class="tech__values">Docker, Git, CI/CD</span>
+          </div>
+        </div>
+      </div>
 
-
+      <div class="profile__facts">
+        <h3>Hintergrund</h3>
+        <ul class="facts">
+          <li>
+            <span class="k">Ausbildung</span>
+            <span class="v">Fachinformatiker Anwendungsentwicklung + Fachabitur Informatik</span>
+          </li>
+          <li>
+            <span class="k">Alter</span>
+            <span class="v">21 Jahre</span>
+          </li>
+          <li>
+            <span class="k">Schwerpunkt</span>
+            <span class="v">Full-Stack Webentwicklung (Frontend & Backend)</span>
+          </li>
+          <li>
+            <span class="k">Standort</span>
+            <span class="v">Remote (Deutschland)</span>
+          </li>
+        </ul>
+      </div>
 
       <div class="profile__actions">
-        <a class="btn btn--primary" (click)="navigateToContact()">Kontakt aufnehmen</a>
+        <a class="btn btn--primary" (click)="navigateToContact()">Projekt besprechen</a>
+        <a class="btn btn--ghost" (click)="router.navigate(['/services'])">Leistungen ansehen</a>
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- Optional: Why Work With Me Section -->
+<section class="why-me">
+  <div class="container">
+    <h2>Warum mit mir arbeiten?</h2>
+
+    <div class="why-me__grid">
+      <div class="why-me__item">
+        <h4>🚀 Keine langen Wartezeiten</h4>
+        <p>Als Einzelentwickler ohne Agentur-Struktur kann ich schnell reagieren und umsetzen. Deine Anfrage landet
+          direkt bei mir - nicht in einer Warteschlange.</p>
+      </div>
+
+      <div class="why-me__item">
+        <h4>💰 Faire Preise</h4>
+        <p>Kein Overhead durch große Teams oder Büros. Du zahlst für Entwicklung, nicht für Projektmanager,
+          Account-Manager und Vertriebler.</p>
+      </div>
+
+      <div class="why-me__item">
+        <h4>🎨 Full-Stack Know-how</h4>
+        <p>Von Design bis Deployment - alles aus einer Hand. Keine Abstimmung zwischen Frontend-, Backend- und
+          DevOps-Teams nötig.</p>
+      </div>
+
+      <div class="why-me__item">
+        <h4>📚 Stetig am Lernen</h4>
+        <p>Durch eigene Projekte und kontinuierliches Lernen bleibe ich auf dem neuesten Stand. Neue Technologien und
+          Best Practices fließen direkt in meine Arbeit ein.</p>
+      </div>
+
+      <div class="why-me__item">
+        <h4>🤝 Direkter Draht</h4>
+        <p>Du arbeitest mit mir persönlich zusammen - nicht mit wechselnden Ansprechpartnern. Feedback landet sofort
+          beim Entwickler.</p>
+      </div>
+
+      <div class="why-me__item">
+        <h4>✅ Ehrliche Beratung</h4>
+        <p>Wenn etwas nicht passt oder zu komplex wird, sag ich das offen. Lieber ehrlich ablehnen als ein schlechtes
+          Projekt durchziehen.</p>
+      </div>
+    </div>
   </div>
 </section>

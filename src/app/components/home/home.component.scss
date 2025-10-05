@@ -50,7 +50,6 @@ section {
 /* HERO */
 .hero {
   background: $color-white;
-  border-bottom: 1px solid $color-gray-light;
   border-radius: 15px;
 
   .hero__inner {
@@ -182,7 +181,8 @@ section {
 /* Tech Stack */
 .tech-stack {
   background: $color-white;
-  border-bottom: 1px solid $color-gray-light;
+  border-radius: 15px;
+  border: 1px solid $color-gray-light;
   padding-block: 1.5rem;
 
   .tech-stack__label {

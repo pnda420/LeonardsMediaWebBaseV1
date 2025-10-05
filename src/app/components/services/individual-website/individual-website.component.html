@@ -1,1 +1,337 @@
-<p>individual-website works!</p>
+<app-page-title title="Individual Website"></app-page-title>
+
+<section class="op" aria-label="Angebot: Individual Website">
+    <!-- HERO -->
+    <div class="flex">
+        <div class="container hero">
+            <div class="hero__content">
+                <div class="hero__badge">
+                    💎 Premium-Lösung für komplexe Anforderungen
+                </div>
+                <h2>Maßgeschneidert. Skalierbar. Einzigartig.</h2>
+                <p>
+                    Eine <strong>komplett individuelle Web-Anwendung</strong> nach deinen spezifischen Anforderungen.
+                    Custom Features, API-Integrationen, Datenbanken, Mitgliederbereiche. Für Projekte, die mehr als eine
+                    Standard-Website brauchen.
+                </p>
+
+                <div class="hero__facts" aria-label="Rahmendaten">
+                    <span class="chip">Ab 5.000&nbsp;€</span>
+                    <span class="chip chip--muted">Projektdauer nach Umfang</span>
+                    <span class="chip chip--muted">✓ Unbegrenzte Möglichkeiten</span>
+                </div>
+
+                <div class="hero__actions" aria-label="Aktionen">
+                    <a class="btn btn--primary" (click)="router.navigate(['/contact'])">Beratung anfragen</a>
+                    <a class="btn btn--ghost" (click)="router.navigate(['/process'])">
+                        Projektablauf ansehen
+                    </a>
+                </div>
+
+                <p class="hero__guarantee">
+                    ✓ Festpreis nach Konzeptphase · Premium-Support inklusive
+                </p>
+            </div>
+
+            <figure class="hero__visual" aria-hidden="true">
+                <img [src]="img" alt="Beispielansicht einer individuellen Web-Anwendung" loading="lazy" />
+            </figure>
+        </div>
+    </div>
+
+    <!-- UNTERSCHIED ZU ANDEREN PAKETEN -->
+    <div class="flex">
+        <div class="container comparison">
+            <div class="comparison__box">
+                <h3>🔄 Unterschied zu anderen Paketen</h3>
+                <div class="comparison__grid">
+                    <div class="comparison__item">
+                        <strong>Standard Website (3.500 €)</strong>
+                        <ul>
+                            <li>3-8 vordefinierte Seiten</li>
+                            <li>Standard-Features</li>
+                            <li>Templates & bewährte Patterns</li>
+                        </ul>
+                    </div>
+                    <div class="comparison__item comparison__item--highlight">
+                        <strong>Individual Website (ab 5.000 €)</strong>
+                        <ul>
+                            <li>Unbegrenzte Funktionen</li>
+                            <li>Eigene Datenbank-Strukturen</li>
+                            <li>Custom APIs & Integrationen</li>
+                            <li>Login-Systeme & Benutzerrollen</li>
+                            <li>Komplett nach deinen Specs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASST / PASST NICHT -->
+    <div class="flex">
+        <div class="container fit">
+            <div class="section-head">
+                <h2>Ist das das Richtige für dich?</h2>
+                <p>Schnelle Orientierungshilfe</p>
+            </div>
+
+            <div class="fit__grid">
+                <article class="card card--good">
+                    <div class="card__icon">✅</div>
+                    <h3>Perfekt geeignet</h3>
+                    <ul>
+                        <li>Du brauchst <strong>spezielle Features</strong>, die es nicht von der Stange gibt</li>
+                        <li><strong>Datenbank-getriebene</strong> Anwendungen (CRM, Verwaltungssysteme)</li>
+                        <li><strong>Login-Bereiche</strong> mit verschiedenen Nutzerrollen</li>
+                        <li><strong>API-Integrationen</strong> zu externen Systemen</li>
+                        <li>Komplexe <strong>Buchungs- oder Reservierungssysteme</strong></li>
+                        <li><strong>Skalierbare Lösungen</strong> für wachsende Anforderungen</li>
+                    </ul>
+                </article>
+
+                <article class="card card--bad">
+                    <div class="card__icon">⚠️</div>
+                    <h3>Eher nicht geeignet</h3>
+                    <ul>
+                        <li>Du brauchst nur eine <strong>einfache Präsenz</strong> im Web</li>
+                        <li>Standard-Features reichen völlig aus</li>
+                        <li>Budget unter 5.000 €</li>
+                        <li>Projekt muss in 2-3 Wochen fertig sein</li>
+                        <li>Keine technischen Anforderungen bekannt</li>
+                    </ul>
+                    <div class="note">
+                        💡 Für einfachere Projekte:
+                        <a (click)="router.navigate(['/services/one-pager'])">Einfache Website</a>
+                        oder
+                        <a (click)="router.navigate(['/services/standard-website'])">Standard Website</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <!-- ANWENDUNGSFÄLLE -->
+    <div class="flex">
+        <div class="container use-cases">
+            <div class="section-head">
+                <h2>Typische Anwendungsfälle</h2>
+                <p>Was andere Kunden mit Individual Websites umsetzen</p>
+            </div>
+
+            <div class="use-cases__grid">
+                <div class="use-case">
+                    <div class="use-case__icon">🏋️</div>
+                    <h4>Buchungssysteme</h4>
+                    <p>Fitnessstudio-Buchungen, Terminvergabe, Raumbuchungen mit Kalenderintegration und automatischen
+                        Benachrichtigungen</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case__icon">👥</div>
+                    <h4>Mitgliederplattformen</h4>
+                    <p>Geschützte Bereiche, verschiedene Nutzerrollen, Dokumentenverwaltung, Forum oder
+                        Community-Features</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case__icon">📊</div>
+                    <h4>Verwaltungstools</h4>
+                    <p>Interne Tools für Kundenverwaltung, Projekttracking, Zeiterfassung oder Ressourcenplanung</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case__icon">🔗</div>
+                    <h4>System-Integrationen</h4>
+                    <p>Anbindung an Warenwirtschaft, CRM, Payment-Provider oder andere externe Dienste via API</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case__icon">📱</div>
+                    <h4>Portale & Dashboards</h4>
+                    <p>Kundenportale mit individuellen Dashboards, Reports und Datenvisualisierungen</p>
+                </div>
+                <div class="use-case">
+                    <div class="use-case__icon">🛒</div>
+                    <h4>Custom E-Commerce</h4>
+                    <p>Spezielle Shop-Lösungen mit individueller Logik (Abo-Modelle, Konfiguratoren, B2B-Preise)</p>
+                </div>
+            </div>
+
+            <p class="use-cases__note">
+                💡 <strong>Unsicher, was möglich ist?</strong> Im kostenlosen Erstgespräch klären wir deine Idee und
+                finden die beste technische Lösung.
+            </p>
+        </div>
+    </div>
+
+    <!-- TECHNOLOGIE-STACK -->
+    <div class="flex">
+        <div class="container tech-stack">
+            <div class="section-head">
+                <h2>Technologie-Stack</h2>
+                <p>Moderne, bewährte Tools für skalierbare Lösungen</p>
+            </div>
+
+            <div class="tech-categories">
+                <div class="tech-category">
+                    <h4>Frontend</h4>
+                    <div class="tech-badges">
+                        <span class="tech-badge">Angular</span>
+                        <span class="tech-badge">TypeScript</span>
+                        <span class="tech-badge">Responsive Design</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h4>Backend</h4>
+                    <div class="tech-badges">
+                        <span class="tech-badge">Node.js</span>
+                        <span class="tech-badge">NestJS</span>
+                        <span class="tech-badge">REST APIs</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h4>Datenbank</h4>
+                    <div class="tech-badges">
+                        <span class="tech-badge">PostgreSQL</span>
+                        <span class="tech-badge">TypeORM</span>
+                        <span class="tech-badge">Redis Cache</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h4>Infrastruktur</h4>
+                    <div class="tech-badges">
+                        <span class="tech-badge">Docker</span>
+                        <span class="tech-badge">CI/CD</span>
+                        <span class="tech-badge">Cloud Hosting</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEISTUNGSUMFANG -->
+    <div class="flex">
+        <div class="container scope">
+            <div class="section-head">
+                <h2>Was du bekommst</h2>
+                <p>Premium-Leistungen für anspruchsvolle Projekte</p>
+            </div>
+
+            <div class="scope__grid">
+                <article class="card" *ngFor="let i of includes">
+                    <div class="card__check">✓</div>
+                    <div>
+                        <h3 [innerHTML]="i.title"></h3>
+                        <p>{{ i.text }}</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABLAUF -->
+    <div class="flex">
+        <div class="container process">
+            <div class="section-head">
+                <h2>So läuft's ab</h2>
+                <p>Strukturiert, transparent, mit klaren Meilensteinen</p>
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step__number">1</div>
+                    <div class="step__content">
+                        <h3>Discovery-Phase</h3>
+                        <p>Ausführliche Analyse deiner Anforderungen. User Stories, Datenmodelle, technische
+                            Architektur. Dauer: 1-2 Wochen.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step__number">2</div>
+                    <div class="step__content">
+                        <h3>Konzept & Angebot</h3>
+                        <p>Detailliertes Konzept mit Festpreis. Mockups, Datenbank-Schema, API-Spezifikation. Klare
+                            Phasen und Timelines.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step__number">3</div>
+                    <div class="step__content">
+                        <h3>Design & Prototyping</h3>
+                        <p>UX/UI-Design für alle wichtigen Views. Klickbarer Prototyp zum Testen der User Journey.
+                            Feedback-Schleifen.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step__number">4</div>
+                    <div class="step__content">
+                        <h3>Iterative Entwicklung</h3>
+                        <p>Umsetzung in Sprints (2-3 Wochen). Regelmäßige Demos und Reviews. Schrittweise Integration
+                            aller Features.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step__number">5</div>
+                    <div class="step__content">
+                        <h3>Testing & QA</h3>
+                        <p>Umfangreiche Tests (Funktional, Performance, Security). Bug-Fixing und Optimierung. User
+                            Acceptance Tests.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step__number">6</div>
+                    <div class="step__content">
+                        <h3>Launch & Übergabe</h3>
+                        <p>Deployment in Production. Monitoring-Setup. Dokumentation und Schulung. Optional:
+                            Maintenance-Vertrag.</p>
+                    </div>
+                </div>
+            </div>
+
+            <a class="link" (click)="router.navigate(['/process'])">Detaillierten Projektablauf ansehen →</a>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="flex">
+        <div class="container faq">
+            <div class="section-head">
+                <h2>Häufige Fragen</h2>
+                <p>Alles, was Kunden normalerweise wissen wollen</p>
+            </div>
+
+            <details class="qa" *ngFor="let f of faq">
+                <summary>{{ f.q }}</summary>
+                <div class="a">
+                    <p *ngFor="let p of f.a">{{ p }}</p>
+                </div>
+            </details>
+
+            <a class="link" (click)="router.navigate(['/faq'])">Alle FAQ ansehen →</a>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="flex">
+        <div class="container cta">
+            <div class="cta__box" role="region" aria-label="Abschluss">
+                <h2>Bereit für dein individuelles Projekt?</h2>
+                <p>Kostenloses Erstgespräch - wir analysieren deine Anforderungen und entwickeln ein maßgeschneidertes
+                    Konzept.</p>
+                <ul class="cta__benefits">
+                    <li>✓ 60 Min Discovery-Gespräch</li>
+                    <li>✓ Technische Machbarkeitsanalyse</li>
+                    <li>✓ Grobe Aufwandsschätzung</li>
+                    <li>✓ Keine Verpflichtung, kein Sales-Druck</li>
+                </ul>
+                <div class="cta__actions">
+                    <a class="btn btn--primary btn--large" (click)="router.navigate(['/contact'])">Beratungsgespräch
+                        anfragen</a>
+                    <a class="btn btn--ghost" (click)="router.navigate(['/services'])">Andere Pakete ansehen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
