@@ -24,24 +24,27 @@
 }
 
 section {
- display: flex;
- flex-direction: column;
- align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
 
 /* Section Head */
 .section-head {
   display: grid;
   gap: .25rem;
   margin-bottom: 1.25rem;
+  text-align: center;
 
   h2 {
     font-size: clamp(1.25rem, 2.2vw + 1rem, 1.5rem);
     line-height: 1.2;
     color: $color-text-primary;
   }
-  p { color: $color-text-secondary; }
+
+  p {
+    color: $color-text-secondary;
+  }
 }
 
 /* HERO */
@@ -50,7 +53,6 @@ section {
   border-bottom: 1px solid $color-gray-light;
   border-radius: 15px;
 
-
   .hero__inner {
     display: grid;
     grid-template-columns: 1fr;
@@ -58,12 +60,24 @@ section {
     align-items: center;
     padding-block: 2rem;
 
-
     @media (min-width: 960px) {
       grid-template-columns: 1.1fr .9fr;
       gap: 1.25rem;
       padding-block: 3rem;
     }
+  }
+
+  /* Launch Badge */
+  .hero__badge {
+    display: inline-block;
+    background: linear-gradient(135deg, $color-brand-primary 0%, darken($color-brand-primary, 8%) 100%);
+    color: white;
+    padding: .4rem .9rem;
+    border-radius: 20px;
+    font-size: .85rem;
+    font-weight: 600;
+    margin-bottom: .75rem;
+    box-shadow: 0 2px 8px rgba($color-brand-primary, .25);
   }
 
   h1 {
@@ -90,13 +104,21 @@ section {
     }
   }
 
+  /* Garantie-Text unter Buttons */
+  .hero__guarantee {
+    margin-top: .6rem;
+    font-size: .9rem;
+    color: $color-text-secondary;
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+  }
+
   .hero__visual {
-    order: -1; /* Bild über dem Text auf kleinen Screens */
+    order: -1;
     justify-self: center;
     width: 100%;
     max-width: 520px;
-
-   
 
     @media (min-width: 960px) {
       order: unset;
@@ -109,8 +131,6 @@ section {
       object-fit: cover;
       border-radius: 14px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-      border-color: black !important;
-      
     }
   }
 }
@@ -128,6 +148,7 @@ section {
     @media (min-width: 600px) {
       grid-template-columns: repeat(2, 1fr);
     }
+
     @media (min-width: 900px) {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -145,7 +166,11 @@ section {
       font-size: 1.05rem;
       color: $color-text-primary;
     }
-    p { color: $color-text-secondary; }
+
+    p {
+      color: $color-text-secondary;
+    }
+
     .usp__icon {
       width: 28px;
       height: 28px;
@@ -154,7 +179,210 @@ section {
   }
 }
 
-/* Services */
+/* Tech Stack */
+.tech-stack {
+  background: $color-white;
+  border-bottom: 1px solid $color-gray-light;
+  padding-block: 1.5rem;
+
+  .tech-stack__label {
+    text-align: center;
+    color: $color-text-secondary;
+    font-size: .95rem;
+    margin-bottom: .9rem;
+  }
+
+  .tech-stack__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .tech-badge {
+    display: inline-block;
+    padding: .4rem .8rem;
+    background: $color-background-main;
+    border: 1px solid $color-gray-light;
+    border-radius: 20px;
+    font-size: .85rem;
+    font-weight: 500;
+    color: $color-text-primary;
+    transition: all .2s ease;
+
+    &:hover {
+      cursor: pointer;
+      background: lighten($color-brand-primary, 45%);
+      border-color: lighten($color-brand-primary, 30%);
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* Expertise Section */
+.expertise {
+  background: $color-background-main;
+  padding-block: 2rem;
+
+  .expertise__grid {
+    display: grid;
+    gap: .9rem;
+    padding-bottom: 1rem;
+    grid-template-columns: 1fr;
+
+    @media (min-width: 600px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .expertise__item {
+    background: $color-white;
+    border: 1px solid $color-gray-light;
+    border-radius: 14px;
+    padding: 1rem;
+    display: grid;
+    gap: .5rem;
+    transition: transform .2s ease, box-shadow .2s ease;
+
+    &:hover {
+      cursor: pointer;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .expertise__icon {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      color: $color-text-primary;
+      margin-top: .2rem;
+    }
+
+    p {
+      color: $color-text-secondary;
+      font-size: .95rem;
+      line-height: 1.5;
+    }
+  }
+}
+
+/* Target Audience */
+.target-audience {
+  background: $color-white;
+  padding-block: 2rem;
+
+  .target__grid {
+    display: grid;
+    gap: .9rem;
+    padding-bottom: 1rem;
+    grid-template-columns: 1fr;
+
+    @media (min-width: 700px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .target__item {
+    border: 1px solid $color-gray-light;
+    border-radius: 14px;
+    padding: 1rem;
+    background: $color-white;
+    transition: transform .2s ease, box-shadow .2s ease;
+
+    &:hover {
+      cursor: pointer;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      color: $color-text-primary;
+      margin-bottom: .5rem;
+    }
+
+    p {
+      color: $color-text-secondary;
+      line-height: 1.5;
+    }
+  }
+}
+
+/* Process Preview */
+.process-preview {
+  background: $color-background-main;
+  padding-block: 2rem;
+
+  .process__steps {
+    display: grid;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    grid-template-columns: 1fr;
+
+    @media (min-width: 600px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .process__step {
+    background: $color-white;
+    border: 1px solid $color-gray-light;
+    border-radius: 14px;
+    padding: 1rem;
+    display: grid;
+    gap: .5rem;
+    position: relative;
+
+    .process__number {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, $color-brand-primary 0%, darken($color-brand-primary, 8%) 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: .3rem;
+    }
+
+    h3 {
+      font-size: 1rem;
+      color: $color-text-primary;
+    }
+
+    p {
+      color: $color-text-secondary;
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+  }
+
+  .process__cta {
+    text-align: center;
+    margin-top: .5rem;
+  }
+}
+
+/* Services (falls du später brauchst) */
 .services {
   background: $color-white;
 
@@ -167,6 +395,7 @@ section {
     @media (min-width: 700px) {
       grid-template-columns: repeat(2, 1fr);
     }
+
     @media (min-width: 1024px) {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -185,14 +414,20 @@ section {
       color: $color-text-primary;
     }
 
-    p { color: $color-text-secondary; }
+    p {
+      color: $color-text-secondary;
+    }
 
     .link {
       color: $color-brand-primary;
       text-decoration: none;
       font-weight: 600;
 
-      &:hover { text-decoration: underline; }
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
       &:focus-visible {
         outline: none;
         box-shadow: 0 0 0 3px rgba(37, 99, 235, .18);
@@ -202,7 +437,7 @@ section {
   }
 }
 
-/* Testimonials */
+/* Testimonials (falls du später brauchst) */
 .testimonials {
   background: $color-white;
 
@@ -215,6 +450,7 @@ section {
     @media (min-width: 700px) {
       grid-template-columns: repeat(2, 1fr);
     }
+
     @media (min-width: 1024px) {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -230,12 +466,14 @@ section {
       color: $color-text-primary;
       line-height: 1.5;
     }
+
     .name {
       display: block;
       margin-top: .75rem;
       font-weight: 600;
       color: $color-text-primary;
     }
+
     .role {
       display: block;
       color: $color-text-secondary;
@@ -244,7 +482,87 @@ section {
   }
 }
 
-/* CTA */
+/* CTA Main (neue, erweiterte Version) */
+.cta-main {
+  background: $color-brand-bg;
+  border-radius: 15px;
+  padding-block: 2rem;
+
+  .cta__inner {
+    display: grid;
+    gap: 1.5rem;
+    align-items: start;
+    grid-template-columns: 1fr;
+
+    @media (min-width: 900px) {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+  }
+
+  .cta__text {
+    h2 {
+      font-size: clamp(1.3rem, 1.8vw + 1rem, 1.6rem);
+      color: $color-text-primary;
+      margin-bottom: .6rem;
+    }
+
+    p {
+      color: $color-text-primary;
+      font-weight: 600;
+      margin-bottom: .5rem;
+    }
+  }
+
+  .cta__benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: .4rem;
+
+    li {
+      color: $color-text-secondary;
+      font-size: .95rem;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+  }
+
+  .cta__actions {
+    display: grid;
+    gap: .6rem;
+    justify-items: start;
+
+    @media (max-width: 899px) {
+      width: 100%;
+
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+
+  .cta__alternative {
+    color: $color-text-secondary;
+    font-size: .9rem;
+    text-align: center;
+
+    .link {
+      color: $color-brand-primary;
+      text-decoration: none;
+      font-weight: 600;
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+/* Original CTA (falls du noch irgendwo verwendest) */
 .cta {
   background: $color-brand-bg;
   border-radius: 15px;
@@ -261,7 +579,9 @@ section {
     }
 
     @media (max-width: 899px) {
-      a.btn { width: 100%; }
+      a.btn {
+        width: 100%;
+      }
     }
   }
 
@@ -270,11 +590,39 @@ section {
       font-size: clamp(1.2rem, 1.6vw + 1rem, 1.4rem);
       color: $color-text-primary;
     }
-    p { color: $color-text-secondary; }
+
+    p {
+      color: $color-text-secondary;
+    }
+  }
+}
+
+/* Button Varianten */
+.btn--large {
+  padding: .75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.btn--secondary {
+  background: $color-white;
+  color: $color-brand-primary;
+  border: 1px solid $color-brand-primary;
+
+  &:hover {
+    cursor: pointer;
+    background: lighten($color-brand-primary, 50%);
   }
 }
 
 /* Motion respect */
 @media (prefers-reduced-motion: reduce) {
-  .btn, .card, .usp__item { transition: none !important; }
+
+  .btn,
+  .card,
+  .usp__item,
+  .expertise__item,
+  .target__item,
+  .tech-badge {
+    transition: none !important;
+  }
 }

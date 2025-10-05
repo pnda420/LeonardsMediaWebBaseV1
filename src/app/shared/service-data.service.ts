@@ -5,6 +5,8 @@ export interface ServiceItem {
   slug: string;
   img: string;
   short?: string;
+  features?: string[];
+  badge?: string
   price?: string;
   cta?: string;
   route: string;
@@ -20,56 +22,69 @@ export class ServiceDataService {
       title: 'Einfache Website',
       slug: 'one-pager',
       img: 'assets/cards/simple-min.png',
-      short: 'Eine einzelne Seite mit den wichtigsten Informationen. Der geringste Aufwand.',
-      price: 'ab 1.799 €',
-      cta: 'Zum Paket',
+      short: 'Eine einzelne Seite mit allen wichtigen Infos. Perfekt für den schnellen Start.',
+      features: [
+        'Live in 1-3 Wochen',
+        'Bis zu 5 Abschnitte',
+        'Mobil optimiert',
+        'Kontaktformular inklusive',
+        'Basis-SEO & DSGVO'
+      ],
+      badge: '🚀 Beliebt',
+      price: 'ab 1.800 €',
+      cta: 'Jetzt ansehen',
       route: 'one-pager',
     },
     {
-      title: 'Standard Webseite',
+      title: 'Standard Website',
       slug: 'standard-website',
       img: 'assets/cards/standard-min.png',
-      short: 'Eine Website mit mehreren Seiten für mehr Inhalte und Struktur. Mittlerer Aufwand.',
-      price: 'ab 3.499 €',
-      cta: 'Zum Paket',
+      short: 'Mehrere Unterseiten für strukturierte Inhalte. Ideal für etablierte Angebote.',
+      features: [
+        '3-8 Unterseiten',
+        'Navigation & Footer',
+        'Blog-System (optional)',
+        'Erweiterte SEO',
+        'Kontakt & Formulare'
+      ],
+      badge: '⭐ Empfohlen',
+      price: 'ab 3.500 €',
+      cta: 'Jetzt ansehen',
       route: 'standard-website',
     },
     {
-      title: 'Individual Webseite',
+      title: 'Individual Website',
       slug: 'individual-website',
       img: 'assets/cards/individual-min.png',
-      short: 'Eine individuell entwickelte Website mit erweitertem Funktionsumfang. Höchster Aufwand.',
-      price: 'ab 4.999 €',
-      cta: 'Zum Paket',
+      short: 'Maßgeschneiderte Lösung mit speziellen Features. Für komplexe Anforderungen.',
+      features: [
+        'Unbegrenzte Seiten',
+        'Custom Features',
+        'API-Integrationen',
+        'Mitgliederbereiche',
+        'Premium-Support'
+      ],
+      badge: '💎 Premium',
+      price: 'ab 5.000 €',
+      cta: 'Beratung anfragen',
       route: 'individual-website',
     },
-
-    // {
-    //   title: 'All-in-One-Lösung',
-    //   slug: 'all-in-one',
-    //   img: 'assets/cards/2.png',
-    //   short: 'Hosting, Domain, Website - Alles in einem Paket.',
-    //   price: 'ab 2.500 €',
-    //   route: 'all-in-one',
-    //   cta: 'Details & Beispiele',
-    // },
-    // {
-    //   title: 'Große Website (3-8 Seiten)',
-    //   slug: 'large-website',
-    //   img: 'assets/cards/3.png',
-    //   short: 'Strukturierte Inhalte, SEO-Basics & DSGVO.',
-    //   price: 'ab 3.200 €',
-    //   route: 'large-website',
-    //   cta: 'Details & Preise'
-    // },
     {
       title: 'SEO Optimierung',
       slug: 'seo-optimization',
       img: 'assets/cards/4-min.png',
-      short: 'Optimierung für Google & Co.',
-      price: 'ab 490€',
+      short: 'Bestehende Website für Google optimieren. Bessere Rankings, mehr Besucher.',
+      features: [
+        'Technisches SEO',
+        'Keyword-Analyse',
+        'Content-Optimierung',
+        'Performance-Boost',
+        'Monatliches Reporting'
+      ],
+      badge: '🔥 Neu',
+      price: 'ab 490 €/Monat',
       route: 'seo-optimization',
-      cta: 'Leistungspakete ansehen'
+      cta: 'Pakete ansehen'
     },
   ];
 

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LargeWebsiteComponent } from './large-website.component';
+import { StandardWebsiteComponent } from './standard-website.component';
 
-describe('LargeWebsiteComponent', () => {
-  let component: LargeWebsiteComponent;
-  let fixture: ComponentFixture<LargeWebsiteComponent>;
+describe('StandardWebsiteComponent', () => {
+  let component: StandardWebsiteComponent;
+  let fixture: ComponentFixture<StandardWebsiteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LargeWebsiteComponent]
+      imports: [StandardWebsiteComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LargeWebsiteComponent);
+    fixture = TestBed.createComponent(StandardWebsiteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

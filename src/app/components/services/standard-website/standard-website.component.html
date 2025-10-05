@@ -1,0 +1,288 @@
+<app-page-title title="Standard Website"></app-page-title>
+
+<section class="op" aria-label="Angebot: Standard Website">
+    <!-- HERO -->
+    <div class="flex">
+        <div class="container hero">
+            <div class="hero__content">
+                <div class="hero__badge">
+                    ⭐ Empfohlen für etablierte Angebote
+                </div>
+                <h2>Mehrere Seiten. Strukturiert. Professionell.</h2>
+                <p>
+                    Eine <strong>vollständige Website</strong> mit mehreren Unterseiten für strukturierte Inhalte.
+                    Professionelle Navigation, Blog-Option, erweiterte SEO. Ideal für etablierte Businesses, die mehr
+                    zeigen wollen.
+                </p>
+
+                <div class="hero__facts" aria-label="Rahmendaten">
+                    <span class="chip">Ab 3.500&nbsp;€</span>
+                    <span class="chip chip--muted">Live in 3–6&nbsp;Wochen</span>
+                    <span class="chip chip--muted">✓ 3–8 Unterseiten</span>
+                </div>
+
+                <div class="hero__actions" aria-label="Aktionen">
+                    <a class="btn btn--primary" (click)="router.navigate(['/contact'])">Jetzt anfragen</a>
+                    <a class="btn btn--ghost" (click)="router.navigate(['/preview-form'])"
+                        aria-label="KI Vorschau testen">
+                        ✨ Kostenlose Vorschau generieren
+                    </a>
+                </div>
+
+                <p class="hero__guarantee">
+                    ✓ Keine versteckten Kosten · 14 Tage Zufriedenheitsgarantie
+                </p>
+            </div>
+
+            <figure class="hero__visual" aria-hidden="true">
+                <img [src]="'assets/cards/standard-min.png'" alt="Beispielansicht einer mehrseitigen Website" loading="lazy" />
+            </figure>
+        </div>
+    </div>
+
+    <!-- UNTERSCHIED ZU ONE-PAGER -->
+    <div class="flex">
+        <div class="container comparison">
+            <div class="comparison__box">
+                <h3>🔄 Unterschied zur einfachen Website</h3>
+                <div class="comparison__grid">
+                    <div class="comparison__item">
+                        <strong>Einfache Website (1.800 €)</strong>
+                        <ul>
+                            <li>Eine Seite, 3-6 Abschnitte</li>
+                            <li>Schneller Start (1-3 Wochen)</li>
+                            <li>Basis-Funktionen</li>
+                        </ul>
+                    </div>
+                    <div class="comparison__item comparison__item--highlight">
+                        <strong>Standard Website (3.500 €)</strong>
+                        <ul>
+                            <li>3-8 separate Unterseiten</li>
+                            <li>Navigation & Footer</li>
+                            <li>Blog-System (optional)</li>
+                            <li>Erweiterte SEO & Analytics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASST / PASST NICHT -->
+    <div class="flex">
+        <div class="container fit">
+            <div class="section-head">
+                <h2>Ist das das Richtige für dich?</h2>
+                <p>Schnelle Orientierungshilfe</p>
+            </div>
+
+            <div class="fit__grid">
+                <article class="card card--good">
+                    <div class="card__icon">✅</div>
+                    <h3>Perfekt geeignet</h3>
+                    <ul>
+                        <li>Du hast <strong>mehrere Themenbereiche</strong> (Über uns, Leistungen, Referenzen, etc.)
+                        </li>
+                        <li>Du willst <strong>regelmäßig Content</strong> veröffentlichen (Blog, News)</li>
+                        <li>Du brauchst <strong>gute Auffindbarkeit</strong> bei Google</li>
+                        <li>Professioneller Auftritt ist wichtig</li>
+                        <li>Mittleres bis großes Budget</li>
+                    </ul>
+                </article>
+
+                <article class="card card--bad">
+                    <div class="card__icon">⚠️</div>
+                    <h3>Eher nicht geeignet</h3>
+                    <ul>
+                        <li>Du brauchst nur <strong>eine einfache Visitenkarte</strong> online</li>
+                        <li><strong>Online-Shop</strong> mit Warenwirtschaft</li>
+                        <li>Komplexe Web-Anwendungen mit Login</li>
+                        <li>Mehrsprachige Versionen</li>
+                        <li>Sehr knappes Budget (unter 3.000 €)</li>
+                    </ul>
+                    <div class="note">
+                        💡 Für einfachere Projekte:
+                        <a (click)="router.navigate(['/services/one-pager'])">Einfache Website</a>
+                        <br>
+                        Für komplexere Anforderungen:
+                        <a (click)="router.navigate(['/services/individual-website'])">Individual Website</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <!-- TYPISCHE SEITEN -->
+    <div class="flex">
+        <div class="container typical-pages">
+            <div class="section-head">
+                <h2>Typische Seitenstruktur</h2>
+                <p>Beispiel-Aufbau einer Standard Website</p>
+            </div>
+
+            <div class="pages-grid">
+                <div class="page-item">
+                    <div class="page-icon">🏠</div>
+                    <h4>Startseite</h4>
+                    <p>Übersicht, Highlights, Call-to-Actions</p>
+                </div>
+                <div class="page-item">
+                    <div class="page-icon">👤</div>
+                    <h4>Über uns</h4>
+                    <p>Team, Geschichte, Werte</p>
+                </div>
+                <div class="page-item">
+                    <div class="page-icon">⚡</div>
+                    <h4>Leistungen</h4>
+                    <p>Detaillierte Services</p>
+                </div>
+                <div class="page-item">
+                    <div class="page-icon">💼</div>
+                    <h4>Referenzen</h4>
+                    <p>Projekte, Portfolio</p>
+                </div>
+                <div class="page-item">
+                    <div class="page-icon">📝</div>
+                    <h4>Blog/News</h4>
+                    <p>Artikel, Updates (optional)</p>
+                </div>
+                <div class="page-item">
+                    <div class="page-icon">📧</div>
+                    <h4>Kontakt</h4>
+                    <p>Formular, Anfahrt, Daten</p>
+                </div>
+            </div>
+
+            <p class="pages-note">
+                💡 <strong>Flexibel anpassbar:</strong> Die Struktur wird an deine Anforderungen angepasst. Du
+                entscheidest, welche Seiten du brauchst.
+            </p>
+        </div>
+    </div>
+
+    <!-- LEISTUNGSUMFANG -->
+    <div class="flex">
+        <div class="container scope">
+            <div class="section-head">
+                <h2>Was du bekommst</h2>
+                <p>Alles inklusive - keine versteckten Kosten</p>
+            </div>
+
+            <div class="scope__grid">
+                <article class="card" *ngFor="let i of includes">
+                    <div class="card__check">✓</div>
+                    <div>
+                        <h3 [innerHTML]="i.title"></h3>
+                        <p>{{ i.text }}</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABLAUF -->
+    <div class="flex">
+        <div class="container process">
+            <div class="section-head">
+                <h2>So läuft's ab</h2>
+                <p>Transparent, planbar, ohne Überraschungen</p>
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step__number">1</div>
+                    <div class="step__content">
+                        <h3>Strategie-Workshop</h3>
+                        <p>60–90 Min: Ziele definieren, Zielgruppe analysieren, Seitenstruktur planen. Content-Strategie
+                            entwickeln.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step__number">2</div>
+                    <div class="step__content">
+                        <h3>Design-Konzept</h3>
+                        <p>Wireframes und Mockups für wichtige Seiten. 2–3 Feedback-Runden inklusive, bis alles passt.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step__number">3</div>
+                    <div class="step__content">
+                        <h3>Content-Erstellung</h3>
+                        <p>Du lieferst Texte und Bilder (oder ich unterstütze bei der Erstellung). Gemeinsame Abstimmung
+                            der Inhalte.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step__number">4</div>
+                    <div class="step__content">
+                        <h3>Entwicklung</h3>
+                        <p>Professionelle Umsetzung mit modernem Code. Responsiv, schnell, suchmaschinenoptimiert.
+                            Regelmäßige Updates.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step__number">5</div>
+                    <div class="step__content">
+                        <h3>Testing & Launch</h3>
+                        <p>Ausführliche Tests auf allen Geräten. SEO-Check, Performance-Optimierung. Danach Go-Live mit
+                            Übergabe.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step__number">6</div>
+                    <div class="step__content">
+                        <h3>Schulung & Support</h3>
+                        <p>Einweisung ins Content-Management (falls Blog). Optional: laufender Support und Wartung.</p>
+                    </div>
+                </div>
+            </div>
+
+            <a class="link" (click)="router.navigate(['/process'])">Detaillierten Projektablauf ansehen →</a>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="flex">
+        <div class="container faq">
+            <div class="section-head">
+                <h2>Häufige Fragen</h2>
+                <p>Alles, was Kunden normalerweise wissen wollen</p>
+            </div>
+
+            <details class="qa" *ngFor="let f of faq">
+                <summary>{{ f.q }}</summary>
+                <div class="a">
+                    <p *ngFor="let p of f.a">{{ p }}</p>
+                </div>
+            </details>
+
+            <a class="link" (click)="router.navigate(['/faq'])">Alle FAQ ansehen →</a>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="flex">
+        <div class="container cta">
+            <div class="cta__box" role="region" aria-label="Abschluss">
+                <h2>Bereit für deine Website?</h2>
+                <p>Kostenloses Erstgespräch - wir klären, ob das Paket zu deinem Projekt passt.</p>
+                <ul class="cta__benefits">
+                    <li>✓ 30 Min unverbindliches Gespräch</li>
+                    <li>✓ Klare Einschätzung von Aufwand & Kosten</li>
+                    <li>✓ Keine Verpflichtung, kein Sales-Druck</li>
+                </ul>
+                <div class="cta__actions">
+                    <a class="btn btn--primary btn--large" (click)="router.navigate(['/contact'])">Jetzt Projekt
+                        anfragen</a>
+                    <a class="btn btn--ghost" (click)="router.navigate(['/services'])">Andere Pakete ansehen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

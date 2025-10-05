@@ -5,50 +5,59 @@
 
     <!-- Sofort-Kontakt -->
     <aside class="contact__quick">
-      <h2>So erreichen Sie uns</h2>
+      <h2>Lass uns sprechen</h2>
+      <p class="contact__intro">Kostenloses Erstgespräch - keine Verpflichtung, kein Sales-Druck.</p>
+
       <div class="quick__list">
         <a class="quick__item" href="tel:+49-175-5580966">
-          <span class="quick__title">Telefon</span>
+          <span class="quick__title">📞 Anrufen</span>
           <span class="quick__desc">Mo–Fr, 9–17 Uhr</span>
           <span class="quick__value">+49&nbsp;175&nbsp;5580966</span>
         </a>
-        <a class="quick__item" href="mailto:hi@leonardsmedia.de">
-          <span class="quick__title">E-Mail</span>
-          <span class="quick__value">hi&#64;leonardsmedia.de</span>
+        <a class="quick__item" href="mailto:tom@leonardsmedia.de">
+          <span class="quick__title">✉️ E-Mail schreiben</span>
+          <span class="quick__value">tom&#64;leonardsmedia.de</span>
+          <span class="quick__desc">Antwort in ~24h</span>
         </a>
-        <!-- <a class="quick__item" (click)="router.navigate(['/booking'])">
-          <span class="quick__title">Termin buchen</span>
-          <span class="quick__desc">15-Min. Erstgespräch</span>
-          <span class="quick__value">Kalender öffnen →</span>
-        </a> -->
+        <a class="quick__item" (click)="router.navigate(['/booking'])">
+          <span class="quick__title">📅 Termin buchen</span>
+          <span class="quick__desc">30 Min Erstgespräch</span>
+          <span class="quick__value">Zum Kalender →</span>
+        </a>
       </div>
 
       <div class="contact__meta">
-        <!-- <p><strong>Kurz & bündig:</strong> Schreiben Sie 1–2 Sätze zu Ihrem Anliegen. Wir melden uns mit einer konkreten Einschätzung.</p> -->
-        <p class="hint">Kein Sales-Druck. Keine Newsletter.</p>
+        <h3>Was passiert als Nächstes?</h3>
+        <ul class="next-steps">
+          <li>✓ Ich melde mich innerhalb von 24h</li>
+          <li>✓ Wir klären deine Anforderungen</li>
+          <li>✓ Du bekommst eine ehrliche Einschätzung</li>
+          <li>✓ Keine Verpflichtung, keine versteckten Kosten</li>
+        </ul>
       </div>
     </aside>
 
     <!-- Kurzes Formular -->
     <form class="contact__form" (ngSubmit)="submit()" #f="ngForm" novalidate>
-      <h2>Kurze Nachricht</h2>
+      <h2>Schnelle Nachricht</h2>
+      <p class="form__subtitle">2–3 Sätze reichen völlig aus</p>
 
       <div class="field">
-        <label for="name">Ihr Name</label>
-        <input id="name" name="name" type="text" [(ngModel)]="model.name" required />
-        <small *ngIf="f.submitted && !model.name" class="error">Bitte Namen angeben.</small>
+        <label for="name">Dein Name *</label>
+        <input id="name" name="name" type="text" [(ngModel)]="model.name" placeholder="Max Mustermann" required />
+        <small *ngIf="f.submitted && !model.name" class="error">Bitte Namen angeben</small>
       </div>
 
       <div class="field">
-        <label for="email">E-Mail</label>
-        <input id="email" name="email" type="email" [(ngModel)]="model.email" required />
-        <small *ngIf="f.submitted && !model.email" class="error">Bitte E-Mail angeben.</small>
+        <label for="email">E-Mail *</label>
+        <input id="email" name="email" type="email" [(ngModel)]="model.email" placeholder="max@beispiel.de" required />
+        <small *ngIf="f.submitted && !model.email" class="error">Bitte E-Mail angeben</small>
       </div>
 
       <div class="field">
-        <label for="service">Interesse an (optional)</label>
+        <label for="service">Was brauchst du?</label>
         <select id="service" name="service" [(ngModel)]="model.service">
-          <option value="" disabled>Bitte Service wählen</option>
+          <option value="">Noch nicht sicher / Beratung gewünscht</option>
           <option *ngFor="let service of services" [value]="service.title">
             {{ service.title }}
           </option>
@@ -56,31 +65,36 @@
       </div>
 
       <div class="field">
-        <label for="message">Worum geht’s? (optional)</label>
+        <label for="message">Worum geht's?</label>
         <textarea id="message" name="message" rows="4" [(ngModel)]="model.message"
-          placeholder="2–3 Sätze reichen."></textarea>
+          placeholder="z.B. 'Ich brauche eine Buchungsplattform für mein Studio' oder 'Wir wollen unsere Excel-Liste in eine Web-App umwandeln'"></textarea>
       </div>
 
       <div class="field field--inline">
-        <label  class="switch">
-          <input style="cursor: pointer;"  type="checkbox" [(ngModel)]="model.callback" name="callback" />
-          <span>Bitte um Rückruf</span>
+        <label class="switch">
+          <input style="cursor: pointer;" type="checkbox" [(ngModel)]="model.callback" name="callback" />
+          <span>Lieber Rückruf statt E-Mail?</span>
         </label>
-        <input *ngIf="model.callback" type="tel" name="phone" [(ngModel)]="model.phone" placeholder="Telefonnummer (optional)" />
+        <input *ngIf="model.callback" type="tel" name="phone" [(ngModel)]="model.phone"
+          placeholder="Deine Telefonnummer" />
       </div>
 
       <div class="form__actions">
-        <button class="btn btn--primary" type="submit">Abschicken</button>
-        <span class="sla">In der Regel antworten wir innerhalb von 24 Stunden.</span>
+        <button class="btn btn--primary" type="submit">Nachricht senden</button>
+        <span class="sla">📬 Antwort in der Regel innerhalb von 24 Stunden</span>
       </div>
 
       <p class="privacy">
-        Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Daten zur Bearbeitung Ihrer Anfrage zu.
-        <a style="cursor: pointer;" (click)="router.navigate(['/policy'])">Datenschutzhinweise</a>.
+        Mit dem Absenden stimmst du der Verarbeitung deiner Daten zur Bearbeitung deiner Anfrage zu.
+        <a style="cursor: pointer;" (click)="router.navigate(['/policy'])">Datenschutz</a>
       </p>
 
-      <p *ngIf="state==='success'" class="status status--ok">Danke! Wir melden uns zeitnah.</p>
-      <p *ngIf="state==='error'" class="status status--err">Das hat nicht geklappt. Bitte per E-Mail/Telefon melden.</p>
+      <p *ngIf="state==='success'" class="status status--ok">
+        ✅ Danke! Nachricht ist angekommen. Ich melde mich zeitnah bei dir.
+      </p>
+      <p *ngIf="state==='error'" class="status status--err">
+        ❌ Das hat leider nicht geklappt. Schreib mir bitte direkt eine E-Mail oder ruf an.
+      </p>
     </form>
 
   </div>

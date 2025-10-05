@@ -9,5 +9,6 @@ import { PageTitleComponent } from "../../shared/page-title/page-title.component
   styleUrl: './policy.component.scss'
 })
 export class PolicyComponent {
+  currentYear = new Date().getFullYear();
 
 }

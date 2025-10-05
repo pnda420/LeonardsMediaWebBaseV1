@@ -1,24 +1,32 @@
+<!-- Hero Section mit Launch-Angebot -->
 <section class="hero" role="region" aria-label="Einführung">
   <div class="container hero__inner">
     <div class="hero__content">
-      <!-- <img class="hero__logo" src="assets/LM_Logos/Logo2.png" alt="Logo von Leonards Media"> -->
-      <h1>Webentwicklung - einfach umgesetzt</h1>
-      <p>Wir planen und bauen schlanke Webanwendungen: klare Architektur, saubere APIs und wartbarer Code ohne unnötige Komplexität.</p>
-      <div class="hero__actions">
-        <a class="btn btn--primary" (click)="router.navigate(['/services'])">Leistungspakete</a>
-        <a class="btn btn--primary" (click)="router.navigate(['/survey'])">✨ Finde heraus, was du brauchst</a>
-        <a class="btn btn--ghost" (click)="router.navigate(['/process'])">So läuft ein Projekt ab</a>
-        <a class="btn btn--ghost" (click)="router.navigate(['/contact'])">Kontakt</a>
-
+      <div class="hero__badge">
+        🚀 Launch-Angebot: Erste 3 Kunden erhalten 20% Rabatt
       </div>
+      <h1>Webentwicklung - einfach umgesetzt</h1>
+      <p>Moderne Webanwendungen entwickeln - mit klarem Fokus auf deine Anforderungen. Kein Agentur-Overhead, direkte
+        Kommunikation, faire Preise.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" (click)="router.navigate(['/contact'])">
+          Kostenloses Erstgespräch
+        </a>
+        <a class="btn btn--secondary" (click)="router.navigate(['/services'])">
+          Leistungen ansehen
+        </a>
+      </div>
+      <p class="hero__guarantee">
+        ✅ 30 Min Erstgespräch · Keine Verpflichtung · Kein Sales-Druck
+      </p>
     </div>
     <div class="hero__visual" aria-hidden="true">
-      <img src="assets/company.png" alt="" loading="lazy"
-           sizes="(max-width: 959px) 92vw, 520px" />
+      <img src="assets/company.png" alt="" loading="eager" sizes="(max-width: 959px) 92vw, 520px" />
     </div>
   </div>
 </section>
 
+<!-- USP Section -->
 <section class="usp" role="region" aria-label="Werteversprechen">
   <div class="container usp__grid">
     <article class="usp__item" *ngFor="let u of usp">
@@ -31,46 +39,162 @@
   </div>
 </section>
 
-<!-- <section class="services" role="region" aria-label="Leistungen">
+<!-- Tech Stack Section -->
+<section class="tech-stack" role="region" aria-label="Technologie-Stack">
+  <div class="container">
+    <p class="tech-stack__label">Technologien, mit denen ich arbeite:</p>
+    <div class="tech-stack__badges">
+      <span class="tech-badge">Angular</span>
+      <span class="tech-badge">TypeScript</span>
+      <span class="tech-badge">Node.js</span>
+      <span class="tech-badge">PostgreSQL</span>
+      <span class="tech-badge">REST APIs</span>
+      <span class="tech-badge">Git</span>
+      <span class="tech-badge">Docker</span>
+      <span class="tech-badge">Cloud Hosting</span>
+    </div>
+  </div>
+</section>
+
+<!-- Expertise / Mein Ansatz -->
+<section class="expertise" role="region" aria-label="Arbeitsweise">
   <div class="container">
     <header class="section-head">
-      <h2>Leistungen</h2>
-      <p>Konzentriert auf das, was wirklich hilft – kein Overengineering.</p>
+      <h2>Mein Ansatz</h2>
+      <p>Fokussiert auf pragmatische Lösungen statt Overengineering</p>
     </header>
-
-    <div class="services__grid">
-      <article class="card" *ngFor="let s of services">
-        <h3>{{ s.title }}</h3>
-        <p>{{ s.text }}</p>
-        <a class="link" (click)="router.navigate([s.link])">Details</a>
+    <div class="expertise__grid">
+      <article class="expertise__item">
+        <div class="expertise__icon">🎯</div>
+        <h3>Klare Kommunikation</h3>
+        <p>Kein Tech-Geschwurbel. Du verstehst immer, was gebaut wird und warum. Regelmäßige Updates und transparente
+          Dokumentation.</p>
+      </article>
+      <article class="expertise__item">
+        <div class="expertise__icon">⚡</div>
+        <h3>Schnelle Umsetzung</h3>
+        <p>Lean Development: Schnell zum MVP, dann iterieren basierend auf echtem Feedback. Keine monatelangen
+          Planungsphasen.</p>
+      </article>
+      <article class="expertise__item">
+        <div class="expertise__icon">🛠</div>
+        <h3>Wartbarer Code</h3>
+        <p>Saubere Architektur, durchdachte Struktur, klare APIs. Dein Projekt bleibt flexibel für zukünftige
+          Anpassungen.</p>
+      </article>
+      <article class="expertise__item">
+        <div class="expertise__icon">💰</div>
+        <h3>Faire Preise</h3>
+        <p>Transparente Kalkulation, keine versteckten Kosten. Als Einzelentwickler ohne Agentur-Overhead kann ich
+          günstigere Konditionen bieten.</p>
+      </article>
+      <article class="expertise__item">
+        <div class="expertise__icon">🔒</div>
+        <h3>Zufriedenheitsgarantie</h3>
+        <p>14 Tage Geld-zurück-Garantie bei Unzufriedenheit. Dein Risiko ist minimal, deine Zufriedenheit meine
+          Priorität.</p>
+      </article>
+      <article class="expertise__item">
+        <div class="expertise__icon">🚀</div>
+        <h3>Moderner Stack</h3>
+        <p>Aktuelle, bewährte Technologien für zukunftssichere Lösungen. Keine veralteten Frameworks oder
+          experimentellen Tools.</p>
       </article>
     </div>
   </div>
-</section> -->
+</section>
 
-<!-- <section class="testimonials" role="region" aria-label="Kundenstimmen">
+<!-- Zielgruppe -->
+<section class="target-audience" role="region" aria-label="Zielgruppe">
   <div class="container">
     <header class="section-head">
-      <h2>Was Kunden sagen</h2>
+      <h2>Perfekt für</h2>
+      <p>Diese Projekte setze ich besonders gern um</p>
     </header>
-    <div class="testi__grid">
-      <figure class="testi" *ngFor="let t of testimonials">
-        <blockquote>“{{ t.quote }}”</blockquote>
-        <figcaption>
-          <span class="name">{{ t.name }}</span>
-          <span class="role">{{ t.role }}</span>
-        </figcaption>
-      </figure>
+    <div class="target__grid">
+      <article class="target__item">
+        <h3>💡 Startups & Gründer</h3>
+        <p>MVP schnell und kosteneffizient umsetzen. Von der ersten Idee bis zum lauffähigen Prototyp - ohne unnötige
+          Features, die noch niemand braucht.</p>
+      </article>
+      <article class="target__item">
+        <h3>🏢 Kleine Unternehmen</h3>
+        <p>Bestehende Prozesse digitalisieren und automatisieren. Interne Tools, Verwaltungssysteme oder
+          Kundenschnittstellen - maßgeschneidert für deine Abläufe.</p>
+      </article>
+      <article class="target__item">
+        <h3>🏪 Lokale Händler & Dienstleister</h3>
+        <p>Professionelle Online-Präsenz aufbauen. Buchungssysteme, Produktkataloge oder Kundenverwaltung - einfach
+          bedienbar, ohne IT-Abteilung.</p>
+      </article>
     </div>
   </div>
-</section> -->
+</section>
 
-<section class="cta" role="region" aria-label="Kontaktaufnahme">
+<!-- Prozess-Überblick -->
+<section class="process-preview" role="region" aria-label="Ablauf">
+  <div class="container">
+    <header class="section-head">
+      <h2>So läuft's ab</h2>
+      <p>Von der ersten Idee bis zum Launch</p>
+    </header>
+    <div class="process__steps">
+      <div class="process__step">
+        <div class="process__number">1</div>
+        <h3>Erstgespräch (kostenlos)</h3>
+        <p>Wir klären deine Anforderungen, Ziele und technischen Möglichkeiten. Du bekommst eine erste Einschätzung zu
+          Aufwand und Kosten.</p>
+      </div>
+      <div class="process__step">
+        <div class="process__number">2</div>
+        <h3>Angebot & Planung</h3>
+        <p>Detailliertes Angebot mit Festpreis oder Stundensatz. Gemeinsame Planung von Features, Meilensteinen und
+          Timeline.</p>
+      </div>
+      <div class="process__step">
+        <div class="process__number">3</div>
+        <h3>Entwicklung & Feedback</h3>
+        <p>Iterative Umsetzung mit regelmäßigen Check-ins. Du siehst den Fortschritt und kannst frühzeitig Feedback
+          geben.</p>
+      </div>
+      <div class="process__step">
+        <div class="process__number">4</div>
+        <h3>Launch & Support</h3>
+        <p>Deployment, Testing und Go-Live. Optional: Wartung, Updates und technischer Support nach dem Launch.</p>
+      </div>
+    </div>
+    <div class="process__cta">
+      <a class="btn btn--secondary" (click)="router.navigate(['/process'])">
+        Detaillierter Projektablauf
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-main" role="region" aria-label="Kontaktaufnahme">
   <div class="container cta__inner">
     <div class="cta__text">
-      <h2>Passt das zu Ihrem Projekt?</h2>
-      <p>Kurzes Erstgespräch, klare Einschätzung, kein Sales-Druck.</p>
+      <h2>Lass uns über dein Projekt sprechen</h2>
+      <p><strong>Kostenloses Erstgespräch (30 Min):</strong></p>
+      <ul class="cta__benefits">
+        <li>✓ Klärung deiner Anforderungen & Ziele</li>
+        <li>✓ Einschätzung von Aufwand & Kosten</li>
+        <li>✓ Konkrete nächste Schritte & Timeline</li>
+        <li>✓ Keine Verpflichtung, kein Sales-Druck</li>
+      </ul>
     </div>
-    <a class="btn btn--primary" (click)="router.navigate(['/contact'])">Termin anfragen</a>
+    <div class="cta__actions">
+      <a class="btn btn--primary btn--large" (click)="router.navigate(['/contact'])">
+        Termin vereinbaren
+      </a>
+      <p class="cta__alternative">
+        Oder nutze den
+        <a class="link" (click)="router.navigate(['/survey'])">
+          Projekt-Finder ✨
+        </a>
+        um herauszufinden, welches Leistungspaket zu dir passt
+      </p>
+    </div>
   </div>
 </section>

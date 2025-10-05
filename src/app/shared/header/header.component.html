@@ -16,11 +16,11 @@
         [routerLinkActiveOptions]="{ exact: false }">Leistungspakete</a>
       <!-- <a (click)="routeTo('/survey')" routerLink="/survey" routerLinkActive="is-active">Umfrage</a> -->
       <!-- <a (click)="routeTo('/process')" routerLink="/process" routerLinkActive="is-active">Projektablauf</a> -->
-      <a (click)="routeTo('/server-status')" routerLink="/server-status" routerLinkActive="is-active">Systemstatus</a>
+      <!-- <a (click)="routeTo('/server-status')" routerLink="/server-status" routerLinkActive="is-active">Systemstatus</a> -->
       <a (click)="routeTo('/faq')" routerLink="/faq" routerLinkActive="is-active">FAQ</a>
       <a (click)="routeTo('/about')" routerLink="/about" routerLinkActive="is-active">Über uns</a>
       <a (click)="routeTo('/contact')" routerLink="/contact" routerLinkActive="is-active">Kontakt</a>
-      <a *ngIf="getPreviewAmmount() > 0" style="font-weight: 500; background-color: #245ee6; border: 3px solid rgb(0, 84, 210); color: white;" (click)="routeTo('/preview')" routerLink="/preview" routerLinkActive="is-active">
+      <a *ngIf="getPreviewAmmount() > 2" style="font-weight: 500; background-color: #245ee6; border: 3px solid rgb(0, 84, 210); color: white;" (click)="routeTo('/preview')" routerLink="/preview" routerLinkActive="is-active">
         ✨ Ki Vorschauübersicht öffnen
       </a>
     </nav>

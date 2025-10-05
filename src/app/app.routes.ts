@@ -9,12 +9,12 @@ import { ServerStatusComponent } from './components/server-status/server-status.
 import { VorgehenComponent } from './components/vorgehen/vorgehen.component';
 import { FaqComponent } from './components/faq/faq.component';
 import { OnePagerComponent } from './components/services/one-pager/one-pager.component';
-import { AllInOneComponent } from './components/services/all-in-one/all-in-one.component';
-import { LargeWebsiteComponent } from './components/services/large-website/large-website.component';
 import { SeoOptimizationComponent } from './components/services/seo-optimization/seo-optimization.component';
 import { MainContainerComponent } from './components/preview/main-container/main-container.component';
 import { InputFormComponent } from './components/preview/input-form/input-form.component';
 import { SurveyComponent } from './components/survey/survey.component';
+import { StandardWebsiteComponent } from './components/services/standard-website/standard-website.component';
+import { IndividualWebsiteComponent } from './components/services/individual-website/individual-website.component';
 
 const pageMainName = 'Leonards Media';
 export const routes: Routes = [
@@ -28,8 +28,8 @@ export const routes: Routes = [
     { path: 'faq', component: FaqComponent, title: pageMainName + ' | FAQ', data: { description: 'FAQ von Leonards Media.' } },
     { path: 'policy', component: PolicyComponent, title: pageMainName + ' | Datenschutz', data: { description: 'Datenschutzerklärung von Leonards Media.' } },
     { path: 'services/one-pager', component: OnePagerComponent, title: pageMainName + ' | Einfache Website', data: { description: 'Einfache Webseite von Leonards Media.' } },
-    { path: 'services/all-in-one', component: AllInOneComponent, title: pageMainName + ' | All-in-One-Lösung', data: { description: 'All-in-One-Lösung von Leonards Media.' } },
-    { path: 'services/large-website', component: LargeWebsiteComponent, title: pageMainName + ' | Große Website', data: { description: 'Große Website von Leonards Media.' } },
+    { path: 'services/standard-website', component: StandardWebsiteComponent, title: pageMainName + ' | Standard Website', data: { description: 'Standard Website von Leonards Media.' } },
+    { path: 'services/individual-website', component: IndividualWebsiteComponent, title: pageMainName + ' | Individuelle Website', data: { description: 'Individuelle Website von Leonards Media.' } },
     { path: 'services/seo-optimization', component: SeoOptimizationComponent, title: pageMainName + ' | SEO Optimierung', data: { description: 'SEO Optimierung von Leonards Media.' } },
     { path: 'survey', component: SurveyComponent, title: pageMainName + ' | Umfrage', data: { description: 'Umfrage von Leonards Media.' } },
     { path: 'preview', component: MainContainerComponent, title: pageMainName + ' | Preview', data: { description: 'Preview von Leonards Media.' } },
