@@ -1,0 +1,238 @@
+// under-construction.component.scss
+@import '../../utils/shared-styles.scss';
+
+.page {
+  min-height: 100vh;
+  background: $color-background-main;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 800px;
+  width: 100%;
+  background: $color-white;
+  border-radius: 15px;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+
+  @media (max-width: 600px) {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, $color-brand-primary 0%, darken($color-brand-primary, 8%) 100%);
+  color: white;
+  padding: .4rem .9rem;
+  border-radius: 20px;
+  font-size: .85rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba($color-brand-primary, .25);
+}
+
+h1 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.15;
+  color: $color-text-primary;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: $color-text-secondary;
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.6;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.feature {
+  background: $color-background-main;
+  border: 1px solid $color-gray-light;
+  border-radius: 14px;
+  padding: 1.5rem 1rem;
+  transition: transform .2s ease, box-shadow .2s ease;
+
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .icon {
+    font-size: 2rem;
+    margin-bottom: .5rem;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    color: $color-text-primary;
+    margin-bottom: .3rem;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: .9rem;
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}
+
+.notify-box {
+  background: $color-brand-bg;
+  border-radius: 14px;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+
+  h2 {
+    font-size: 1.4rem;
+    color: $color-text-primary;
+    margin-bottom: .5rem;
+    font-weight: 600;
+  }
+
+  p {
+    color: $color-text-secondary;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.email-form {
+  display: flex;
+  gap: .5rem;
+  max-width: 500px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.email-input {
+  flex: 1 1 250px;
+  padding: .75rem 1rem;
+  border: 1px solid $color-gray-light;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color .2s;
+
+  &:focus {
+    border-color: $color-brand-primary;
+  }
+
+  @media (max-width: 600px) {
+    flex: 1 1 auto;
+  }
+}
+
+.btn {
+  padding: .75rem 1.5rem;
+  background: $color-brand-primary;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+
+  &:hover {
+    background: darken($color-brand-primary, 8%);
+  }
+}
+
+.success-message {
+  background: #10b981;
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.tech-stack {
+  margin-bottom: 2rem;
+}
+
+.tech-label {
+  color: $color-text-secondary;
+  font-size: .95rem;
+  margin-bottom: 1rem;
+}
+
+.tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  justify-content: center;
+}
+
+.tech-badge {
+  display: inline-block;
+  padding: .4rem .8rem;
+  background: $color-background-main;
+  border: 1px solid $color-gray-light;
+  border-radius: 20px;
+  font-size: .85rem;
+  font-weight: 500;
+  color: $color-text-primary;
+  transition: all .2s;
+
+  &:hover {
+    cursor: pointer;
+    background: lighten($color-brand-primary, 45%);
+    border-color: lighten($color-brand-primary, 30%);
+    transform: translateY(-1px);
+  }
+}
+
+.contact {
+  padding-top: 2rem;
+  border-top: 1px solid $color-gray-light;
+}
+
+.contact-text {
+  color: $color-text-secondary;
+  font-size: .95rem;
+}
+
+.link {
+  color: $color-brand-primary;
+  text-decoration: none;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($color-brand-primary, .18);
+    border-radius: 4px;
+  }
+}
+
+/* Motion respect */
+@media (prefers-reduced-motion: reduce) {
+  .feature,
+  .tech-badge,
+  .btn,
+  .email-input {
+    transition: none !important;
+  }
+}

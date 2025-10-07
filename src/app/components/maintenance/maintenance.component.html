@@ -1,0 +1,74 @@
+<!-- under-construction.component.html -->
+
+<div class="page">
+    <div class="container">
+
+        <!-- Logo -->
+        <div class="logo-section">
+            <img src="assets/LM_Logos/Logo2.png" alt="LeonardsMedia Logo" class="logo" />
+            <h2 class="brand-name">LeonardsMedia</h2>
+        </div>
+
+        <!-- Launch Badge -->
+        <div class="badge">
+            🚧 Wir bauen gerade etwas Großartiges
+        </div>
+
+        <!-- Main Heading -->
+        <h1>Under Construction</h1>
+
+        <!-- Description -->
+        <p class="description">
+            Unsere neue Website entsteht gerade. Moderne Webanwendungen entwickeln - mit klarem Fokus auf deine
+            Anforderungen. Bald sind wir zurück!
+        </p>
+
+        <!-- Features Grid -->
+        <div class="features-grid">
+            <article class="feature" *ngFor="let feature of features">
+                <div class="icon">{{ feature.icon }}</div>
+                <h3>{{ feature.title }}</h3>
+                <p>{{ feature.description }}</p>
+            </article>
+        </div>
+
+        <!-- Email Notification -->
+        <div class="notify-box">
+            <h2>Bleib auf dem Laufenden</h2>
+            <p>Erfahre als Erster, wenn wir live gehen</p>
+
+            <div class="email-form" *ngIf="!submitted">
+                <input type="email" class="email-input" placeholder="deine@email.de" [(ngModel)]="email"
+                    (keyup.enter)="onSubmit()" required />
+                <button class="btn" (click)="onSubmit()">
+                    Benachrichtigen
+                </button>
+            </div>
+
+            <div class="success-message" *ngIf="submitted">
+                ✅ Danke! Wir melden uns bei dir.
+            </div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="tech-stack">
+            <p class="tech-label">Technologien, mit denen ich arbeite:</p>
+            <div class="tech-badges">
+                <span class="tech-badge" *ngFor="let tech of techStack">
+                    {{ tech }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="contact">
+            <p class="contact-text">
+                Dringende Anfragen?
+                <a href="mailto:tom@leonardsmedia.de" class="link">
+                    tom&#64;leonardsmedia.de
+                </a>
+            </p>
+        </div>
+
+    </div>
+</div>

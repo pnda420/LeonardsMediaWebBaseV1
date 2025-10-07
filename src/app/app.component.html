@@ -1,4 +1,11 @@
-<div class="page">
+<!-- UNDER CONSTRUCTION SEITE -->
+<div class="page" *ngIf="isUnderConstruction;">
+  <app-maintenance></app-maintenance>
+</div>
+
+<!-- NORMALE SEITE -->
+
+<div class="page" *ngIf="!isUnderConstruction;">
   @if(router.url !== '/preview') {
   <app-header class="site-header"></app-header>
 
@@ -14,4 +21,4 @@
   }@else {
   <router-outlet></router-outlet>
   }
-</div>
+</div>f

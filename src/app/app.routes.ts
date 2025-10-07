@@ -15,6 +15,7 @@ import { InputFormComponent } from './components/preview/input-form/input-form.c
 import { SurveyComponent } from './components/survey/survey.component';
 import { StandardWebsiteComponent } from './components/services/standard-website/standard-website.component';
 import { IndividualWebsiteComponent } from './components/services/individual-website/individual-website.component';
+import { MaintenanceComponent } from './components/maintenance/maintenance.component';
 
 const pageMainName = 'Leonards Media';
 export const routes: Routes = [

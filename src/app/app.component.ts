@@ -6,26 +6,42 @@ import { SeoService } from './shared/seo.service';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
+import { MaintenanceComponent } from "./components/maintenance/maintenance.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule, FormsModule],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule, FormsModule, MaintenanceComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   title = 'WebsiteBaseV2';
+  isUnderConstruction = true; // standardmäßig aktiv
+  private readonly accessPassword = 'lm'; // Passwort hier definieren
 
   constructor(
     public router: Router,
     private route: ActivatedRoute,
     private seo: SeoService,
     @Inject(DOCUMENT) private doc: Document
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    // Update SEO on each successful navigation
+    // Passwortcheck
+    this.route.queryParams.subscribe(params => {
+      const access = params['pw'];
+      if (access === this.accessPassword) {
+        this.isUnderConstruction = false;
+        this.router.navigate([], { queryParams: { pw: null }, queryParamsHandling: 'merge' });
+        // optional: Flag im localStorage merken (damit nicht jedes Mal in URL nötig)
+        sessionStorage.setItem('hasAccess', 'true');
+      } else if (sessionStorage.getItem('hasAccess') === 'true') {
+        this.isUnderConstruction = false;
+      }
+    });
+
+    // SEO-Update bei Navigation
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe(() => {
@@ -35,27 +51,13 @@ export class AppComponent implements OnInit {
         const title = typeof routeTitle === 'string' ? routeTitle : 'Leonards Media';
         const url = this.doc.location.href;
 
-        this.seo.update({
-          title,
-          description,
-          url,
-        });
+        this.seo.update({ title, description, url });
       });
   }
 
-
-
   private getDeepest(route: ActivatedRoute): ActivatedRoute {
     let current = route;
-    while (current.firstChild) {
-      current = current.firstChild;
-    }
+    while (current.firstChild) current = current.firstChild;
     return current;
-  }
-
-  checkIfOnRoute(route: string){
-    
-
-
   }
 }
