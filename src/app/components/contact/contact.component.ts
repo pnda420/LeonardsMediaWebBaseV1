@@ -4,18 +4,24 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ServiceDataService, ServiceItem } from '../../shared/service-data.service';
+import { ApiService, ServiceType, CreateContactRequestDto } from '../../api/api.service';
 
-type State = 'idle' | 'success' | 'error';
+
+type State = 'idle' | 'loading' | 'success' | 'error';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [PageTitleComponent, RouterLink, CommonModule, FormsModule],
+  imports: [PageTitleComponent, CommonModule, FormsModule],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
 export class ContactComponent implements OnInit {
-    constructor(public router: Router, private serviceData: ServiceDataService) {}
+  constructor(
+    public router: Router,
+    private serviceData: ServiceDataService,
+    private api: ApiService
+  ) { }
 
   state: State = 'idle';
   services: ServiceItem[] = [];
@@ -33,13 +39,65 @@ export class ContactComponent implements OnInit {
   }
 
   submit() {
-    // TODO: echten Versand per Service integrieren
-    // Pragmatik: wir simulieren Erfolg – setz hier deinen HTTP-Call ein.
-    try {
-      // await this.contactService.send(this.model).toPromise();
-      this.state = 'success';
-    } catch {
-      this.state = 'error';
+    // Validierung
+    if (!this.model.name || !this.model.email) {
+      return;
     }
+
+    this.state = 'loading';
+
+    // ServiceType mapping
+    const serviceTypeMap: { [key: string]: ServiceType } = {
+      'Einfache Website': ServiceType.SIMPLE_WEBSITE,
+      'Standard Website': ServiceType.STANDARD_WEBSITE,
+      'Individual Website': ServiceType.INDIVIDUAL_WEBSITE,
+      'SEO Optimierung': ServiceType.SEO
+    };
+
+    // DTO zusammenbauen
+    const contactRequest: CreateContactRequestDto = {
+      name: this.model.name,
+      email: this.model.email,
+      message: this.model.message || 'Keine Nachricht angegeben',
+      serviceType: this.model.service
+        ? serviceTypeMap[this.model.service] || ServiceType.NOT_SURE
+        : ServiceType.NOT_SURE,
+      prefersCallback: this.model.callback,
+      phoneNumber: this.model.callback ? this.model.phone : undefined
+    };
+
+    // API Call
+    this.api.createContactRequest(contactRequest).subscribe({
+      next: (response) => {
+        console.log('✅ Kontaktanfrage erfolgreich gesendet:', response);
+        this.state = 'success';
+
+        // Formular zurücksetzen nach 3 Sekunden
+        setTimeout(() => {
+          this.resetForm();
+        }, 3000);
+      },
+      error: (error) => {
+        console.error('❌ Fehler beim Senden der Kontaktanfrage:', error);
+        this.state = 'error';
+
+        // Error-State nach 5 Sekunden zurücksetzen
+        setTimeout(() => {
+          this.state = 'idle';
+        }, 5000);
+      }
+    });
   }
-}
+
+  private resetForm() {
+    this.model = {
+      name: '',
+      email: '',
+      message: '',
+      callback: false,
+      phone: '',
+      service: ''
+    };
+    this.state = 'idle';
+  }
+} 

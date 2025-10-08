@@ -1,0 +1,127 @@
+<app-page-title title="Kontaktanfragen"></app-page-title>
+
+<section class="admin-requests">
+    <div class="container">
+
+        <!-- Header mit Stats -->
+        <div class="requests__header">
+            <div class="header__info">
+                <h2>Kontaktanfragen</h2>
+                <p class="subtitle">Verwalte alle eingehenden Anfragen</p>
+            </div>
+            <div class="header__badges">
+                <div class="badge badge--primary">
+                    <span class="count">{{ unprocessedRequests.length }}</span>
+                    <span class="label">Offen</span>
+                </div>
+                <div class="badge badge--secondary">
+                    <span class="count">{{ processedRequests.length }}</span>
+                    <span class="label">Bearbeitet</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab" [class.tab--active]="activeTab === 'unprocessed'" (click)="switchTab('unprocessed')">
+                Offen ({{ unprocessedRequests.length }})
+            </button>
+            <button class="tab" [class.tab--active]="activeTab === 'processed'" (click)="switchTab('processed')">
+                Bearbeitet ({{ processedRequests.length }})
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="loading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Lade Anfragen...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="error && !loading" class="error-state">
+            <p>❌ {{ error }}</p>
+            <button class="btn btn--secondary" (click)="loadRequests()">Erneut versuchen</button>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!loading && !error && currentRequests.length === 0" class="empty-state">
+            <div class="empty__icon">
+                <span *ngIf="activeTab === 'unprocessed'">🎉</span>
+                <span *ngIf="activeTab === 'processed'">📭</span>
+            </div>
+            <h3 *ngIf="activeTab === 'unprocessed'">Keine offenen Anfragen</h3>
+            <h3 *ngIf="activeTab === 'processed'">Noch keine bearbeiteten Anfragen</h3>
+            <p *ngIf="activeTab === 'unprocessed'">Alle Anfragen wurden bearbeitet!</p>
+            <p *ngIf="activeTab === 'processed'">Bearbeitete Anfragen erscheinen hier.</p>
+        </div>
+
+        <!-- Requests List -->
+        <div *ngIf="!loading && !error && currentRequests.length > 0" class="requests__list">
+            <article *ngFor="let request of currentRequests" class="request-card">
+
+                <!-- Header -->
+                <div class="card__header">
+                    <div class="header__left">
+                        <h3>{{ request.name }}</h3>
+                        <span class="time">{{ formatDate(request.createdAt) }}</span>
+                    </div>
+                    <span class="service-badge">{{ getServiceLabel(request.serviceType) }}</span>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="card__contact">
+                    <div class="contact__item" (click)="copyEmail(request.email)">
+                        <span class="icon">✉️</span>
+                        <span class="value">{{ request.email }}</span>
+                        <span class="copy-hint">Klicken zum Kopieren</span>
+                    </div>
+                    <div *ngIf="request.phoneNumber" class="contact__item" (click)="copyPhone(request.phoneNumber)">
+                        <span class="icon">📞</span>
+                        <span class="value">{{ request.phoneNumber }}</span>
+                        <span class="copy-hint">Klicken zum Kopieren</span>
+                    </div>
+                </div>
+
+                <!-- Callback Badge -->
+                <div *ngIf="request.prefersCallback" class="callback-badge">
+                    🔔 Rückruf gewünscht
+                </div>
+
+                <!-- Message -->
+                <div class="card__message">
+                    <p class="message__label">Nachricht:</p>
+                    <p class="message__text">{{ request.message }}</p>
+                </div>
+
+                <!-- Actions -->
+                <div class="card__actions">
+                    <a class="btn btn--primary"
+                        href="mailto:{{ request.email }}?subject=Re: Deine Anfrage bei LeonardsMedia">
+                        E-Mail schreiben
+                    </a>
+                    <a *ngIf="request.phoneNumber" class="btn btn--secondary" href="tel:{{ request.phoneNumber }}">
+                        Anrufen
+                    </a>
+
+                    <!-- Unprocessed Actions -->
+                    <button *ngIf="activeTab === 'unprocessed'" class="btn btn--ghost"
+                        (click)="markAsProcessed(request.id)">
+                        ✓ Als bearbeitet markieren
+                    </button>
+
+                    <!-- Processed Actions -->
+                    <button *ngIf="activeTab === 'processed'" class="btn btn--ghost"
+                        (click)="markAsUnprocessed(request.id)">
+                        ↶ Wieder öffnen
+                    </button>
+                    <button *ngIf="activeTab === 'processed'" class="btn btn--danger"
+                        (click)="deleteRequest(request.id)">
+                        🗑️ Löschen
+                    </button>
+                </div>
+
+            </article>
+        </div>
+
+    </div>
+</section>

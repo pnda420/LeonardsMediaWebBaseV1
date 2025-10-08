@@ -44,19 +44,21 @@
 
       <div class="field">
         <label for="name">Dein Name *</label>
-        <input id="name" name="name" type="text" [(ngModel)]="model.name" placeholder="Max Mustermann" required />
+        <input id="name" name="name" type="text" [(ngModel)]="model.name" placeholder="Max Mustermann" required
+          [disabled]="state === 'loading'" />
         <small *ngIf="f.submitted && !model.name" class="error">Bitte Namen angeben</small>
       </div>
 
       <div class="field">
         <label for="email">E-Mail *</label>
-        <input id="email" name="email" type="email" [(ngModel)]="model.email" placeholder="max@beispiel.de" required />
+        <input id="email" name="email" type="email" [(ngModel)]="model.email" placeholder="max@beispiel.de" required
+          [disabled]="state === 'loading'" />
         <small *ngIf="f.submitted && !model.email" class="error">Bitte E-Mail angeben</small>
       </div>
 
       <div class="field">
         <label for="service">Was brauchst du?</label>
-        <select id="service" name="service" [(ngModel)]="model.service">
+        <select id="service" name="service" [(ngModel)]="model.service" [disabled]="state === 'loading'">
           <option value="">Noch nicht sicher / Beratung gewünscht</option>
           <option *ngFor="let service of services" [value]="service.title">
             {{ service.title }}
@@ -67,20 +69,25 @@
       <div class="field">
         <label for="message">Worum geht's?</label>
         <textarea id="message" name="message" rows="4" [(ngModel)]="model.message"
-          placeholder="z.B. 'Ich brauche eine Buchungsplattform für mein Studio' oder 'Wir wollen unsere Excel-Liste in eine Web-App umwandeln'"></textarea>
+          placeholder="z.B. 'Ich brauche eine Buchungsplattform für mein Studio' oder 'Wir wollen unsere Excel-Liste in eine Web-App umwandeln'"
+          [disabled]="state === 'loading'"></textarea>
       </div>
 
       <div class="field field--inline">
         <label class="switch">
-          <input style="cursor: pointer;" type="checkbox" [(ngModel)]="model.callback" name="callback" />
+          <input style="cursor: pointer;" type="checkbox" [(ngModel)]="model.callback" name="callback"
+            [disabled]="state === 'loading'" />
           <span>Lieber Rückruf statt E-Mail?</span>
         </label>
         <input *ngIf="model.callback" type="tel" name="phone" [(ngModel)]="model.phone"
-          placeholder="Deine Telefonnummer" />
+          placeholder="Deine Telefonnummer" [disabled]="state === 'loading'" />
       </div>
 
       <div class="form__actions">
-        <button class="btn btn--primary" type="submit">Nachricht senden</button>
+        <button class="btn btn--primary" type="submit" [disabled]="state === 'loading'">
+          <span *ngIf="state !== 'loading'">Nachricht senden</span>
+          <span *ngIf="state === 'loading'">Wird gesendet...</span>
+        </button>
         <span class="sla">📬 Antwort in der Regel innerhalb von 24 Stunden</span>
       </div>
 
@@ -89,10 +96,10 @@
         <a style="cursor: pointer;" (click)="router.navigate(['/policy'])">Datenschutz</a>
       </p>
 
-      <p *ngIf="state==='success'" class="status status--ok">
+      <p *ngIf="state === 'success'" class="status status--ok">
         ✅ Danke! Nachricht ist angekommen. Ich melde mich zeitnah bei dir.
       </p>
-      <p *ngIf="state==='error'" class="status status--err">
+      <p *ngIf="state === 'error'" class="status status--err">
         ❌ Das hat leider nicht geklappt. Schreib mir bitte direkt eine E-Mail oder ruf an.
       </p>
     </form>

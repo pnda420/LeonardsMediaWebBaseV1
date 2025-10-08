@@ -16,6 +16,7 @@ import { SurveyComponent } from './components/survey/survey.component';
 import { StandardWebsiteComponent } from './components/services/standard-website/standard-website.component';
 import { IndividualWebsiteComponent } from './components/services/individual-website/individual-website.component';
 import { MaintenanceComponent } from './components/maintenance/maintenance.component';
+import { AdminRequestsComponent } from './components/admin-requests/admin-requests.component';
 
 const pageMainName = 'LeonardsMedia';
 export const routes: Routes = [
@@ -35,4 +36,5 @@ export const routes: Routes = [
     { path: 'survey', component: SurveyComponent, title: pageMainName + ' | Umfrage', data: { description: 'Umfrage von LeonardsMedia.' } },
     { path: 'preview', component: MainContainerComponent, title: pageMainName + ' | Preview', data: { description: 'Preview von LeonardsMedia.' } },
     { path: 'preview-form', component: InputFormComponent, title: pageMainName + ' | Preview2', data: { description: 'Preview2 von LeonardsMedia.' } },
+    { path: 'admin/requests', component: AdminRequestsComponent, title: pageMainName + ' | Admin Requests', data: { description: 'Admin Requests von LeonardsMedia.' } },
 ];

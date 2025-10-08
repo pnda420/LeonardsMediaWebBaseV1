@@ -7,7 +7,7 @@ import { IconComponent } from "../../shared/icon/icon.component";
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PageTitleComponent, RouterLink, CommonModule, IconComponent],
+  imports: [CommonModule, IconComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -51,22 +51,5 @@ export class HomeComponent {
     }
   ];
 
-  testimonials = [
-    {
-      quote: 'Projekt wurde schneller fertig als erwartet. Code ist sauber strukturiert und gut dokumentiert.',
-      name: 'M. Weber',
-      role: 'Geschäftsführer, Weber & Co.'
-    },
-    {
-      quote: 'Endlich mal jemand, der verständlich erklärt statt mit Fachbegriffen um sich zu werfen. Top Kommunikation.',
-      name: 'A. Krüger',
-      role: 'IT-Leitung, KRG Systems'
-    },
-    {
-      quote: 'Budget eingehalten, keine bösen Überraschungen. Genau so sollte ein Projekt laufen.',
-      name: 'L. Hoffmann',
-      role: 'Projektleitung, HM Digital'
-    }
-  ];
 
 }

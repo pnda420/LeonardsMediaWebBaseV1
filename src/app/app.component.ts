@@ -17,8 +17,8 @@ import { MaintenanceComponent } from "./components/maintenance/maintenance.compo
 })
 export class AppComponent implements OnInit {
   title = 'WebsiteBaseV2';
-  isUnderConstruction = true; // standardmäßig aktiv
-  private readonly accessPassword = 'lm'; // Passwort hier definieren
+  isUnderConstruction = false;
+  private readonly accessPassword = 'lm';
 
   constructor(
     public router: Router,
@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Passwortcheck
     this.route.queryParams.subscribe(params => {
       const access = params['pw'];
       if (access === this.accessPassword) {
