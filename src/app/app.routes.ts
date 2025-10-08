@@ -17,22 +17,22 @@ import { StandardWebsiteComponent } from './components/services/standard-website
 import { IndividualWebsiteComponent } from './components/services/individual-website/individual-website.component';
 import { MaintenanceComponent } from './components/maintenance/maintenance.component';
 
-const pageMainName = 'Leonards Media';
+const pageMainName = 'LeonardsMedia';
 export const routes: Routes = [
-    { path: '', component: HomeComponent, title: pageMainName, data: { description: 'IT-Dienstleistungen, Webentwicklung und SEO – pragmatisch, transparent und zuverlässig. Leonards Media hilft Ihnen bei Konzeption, Entwicklung und Betrieb.' } },
+    { path: '', component: HomeComponent, title: pageMainName, data: { description: 'IT-Dienstleistungen, Webentwicklung und SEO – pragmatisch, transparent und zuverlässig. LeonardsMedia hilft Ihnen bei Konzeption, Entwicklung und Betrieb.' } },
     { path: 'services', component: ServicesComponent, title: pageMainName + ' | Dienstleistungen', data: { description: 'Übersicht unserer Leistungen: Websites, All-in-One-Pakete, Full-Stack-Entwicklung und SEO-Optimierung. Klar strukturiert und wirkungsorientiert.' } },
-    { path: 'about', component: AboutComponent, title: pageMainName + ' | Über uns', data: { description: 'Erfahren Sie mehr über Leonards Media: Werte, Arbeitsweise und warum wir Technologie pragmatisch und zielorientiert einsetzen.' } },
-    { path: 'contact', component: ContactComponent, title: pageMainName + ' | Kontakt', data: { description: 'Kontaktieren Sie Leonards Media für ein unverbindliches Erstgespräch. Schnelle Einschätzung ohne Sales-Druck.' } },
-    { path: 'imprint', component: ImprintComponent, title: pageMainName + ' | Impressum', data: { description: 'Impressum von Leonards Media.' } },
-    { path: 'server-status', component: ServerStatusComponent, title: pageMainName + ' | Systemstatus', data: { description: 'Systemstatus von Leonards Media.' } },
-    { path: 'process', component: VorgehenComponent, title: pageMainName + ' | Vorgehen', data: { description: 'Vorgehen von Leonards Media.' } },
-    { path: 'faq', component: FaqComponent, title: pageMainName + ' | FAQ', data: { description: 'FAQ von Leonards Media.' } },
-    { path: 'policy', component: PolicyComponent, title: pageMainName + ' | Datenschutz', data: { description: 'Datenschutzerklärung von Leonards Media.' } },
-    { path: 'services/one-pager', component: OnePagerComponent, title: pageMainName + ' | Einfache Website', data: { description: 'Einfache Webseite von Leonards Media.' } },
-    { path: 'services/standard-website', component: StandardWebsiteComponent, title: pageMainName + ' | Standard Website', data: { description: 'Standard Website von Leonards Media.' } },
-    { path: 'services/individual-website', component: IndividualWebsiteComponent, title: pageMainName + ' | Individuelle Website', data: { description: 'Individuelle Website von Leonards Media.' } },
-    { path: 'services/seo-optimization', component: SeoOptimizationComponent, title: pageMainName + ' | SEO Optimierung', data: { description: 'SEO Optimierung von Leonards Media.' } },
-    { path: 'survey', component: SurveyComponent, title: pageMainName + ' | Umfrage', data: { description: 'Umfrage von Leonards Media.' } },
-    { path: 'preview', component: MainContainerComponent, title: pageMainName + ' | Preview', data: { description: 'Preview von Leonards Media.' } },
-    { path: 'preview-form', component: InputFormComponent, title: pageMainName + ' | Preview2', data: { description: 'Preview2 von Leonards Media.' } },
+    { path: 'about', component: AboutComponent, title: pageMainName + ' | Über uns', data: { description: 'Erfahren Sie mehr über LeonardsMedia: Werte, Arbeitsweise und warum wir Technologie pragmatisch und zielorientiert einsetzen.' } },
+    { path: 'contact', component: ContactComponent, title: pageMainName + ' | Kontakt', data: { description: 'Kontaktieren Sie LeonardsMedia für ein unverbindliches Erstgespräch. Schnelle Einschätzung ohne Sales-Druck.' } },
+    { path: 'imprint', component: ImprintComponent, title: pageMainName + ' | Impressum', data: { description: 'Impressum von LeonardsMedia.' } },
+    { path: 'server-status', component: ServerStatusComponent, title: pageMainName + ' | Systemstatus', data: { description: 'Systemstatus von LeonardsMedia.' } },
+    { path: 'process', component: VorgehenComponent, title: pageMainName + ' | Vorgehen', data: { description: 'Vorgehen von LeonardsMedia.' } },
+    { path: 'faq', component: FaqComponent, title: pageMainName + ' | FAQ', data: { description: 'FAQ von LeonardsMedia.' } },
+    { path: 'policy', component: PolicyComponent, title: pageMainName + ' | Datenschutz', data: { description: 'Datenschutzerklärung von LeonardsMedia.' } },
+    { path: 'services/one-pager', component: OnePagerComponent, title: pageMainName + ' | Einfache Website', data: { description: 'Einfache Webseite von LeonardsMedia.' } },
+    { path: 'services/standard-website', component: StandardWebsiteComponent, title: pageMainName + ' | Standard Website', data: { description: 'Standard Website von LeonardsMedia.' } },
+    { path: 'services/individual-website', component: IndividualWebsiteComponent, title: pageMainName + ' | Individuelle Website', data: { description: 'Individuelle Website von LeonardsMedia.' } },
+    { path: 'services/seo-optimization', component: SeoOptimizationComponent, title: pageMainName + ' | SEO Optimierung', data: { description: 'SEO Optimierung von LeonardsMedia.' } },
+    { path: 'survey', component: SurveyComponent, title: pageMainName + ' | Umfrage', data: { description: 'Umfrage von LeonardsMedia.' } },
+    { path: 'preview', component: MainContainerComponent, title: pageMainName + ' | Preview', data: { description: 'Preview von LeonardsMedia.' } },
+    { path: 'preview-form', component: InputFormComponent, title: pageMainName + ' | Preview2', data: { description: 'Preview2 von LeonardsMedia.' } },
 ];
