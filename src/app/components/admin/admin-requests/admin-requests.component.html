@@ -1,5 +1,4 @@
-<app-page-title title="Kontaktanfragen"></app-page-title>
-
+<app-admin-header></app-admin-header>
 <section class="admin-requests">
     <div class="container">
 
@@ -106,13 +105,13 @@
                     <!-- Unprocessed Actions -->
                     <button *ngIf="activeTab === 'unprocessed'" class="btn btn--ghost"
                         (click)="markAsProcessed(request.id)">
-                        ✓ Als bearbeitet markieren
+                        ✅ Als bearbeitet markieren
                     </button>
 
                     <!-- Processed Actions -->
                     <button *ngIf="activeTab === 'processed'" class="btn btn--ghost"
                         (click)="markAsUnprocessed(request.id)">
-                        ↶ Wieder öffnen
+                        ↩️ Wieder öffnen
                     </button>
                     <button *ngIf="activeTab === 'processed'" class="btn btn--danger"
                         (click)="deleteRequest(request.id)">

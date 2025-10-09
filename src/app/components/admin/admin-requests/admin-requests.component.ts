@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageTitleComponent } from "../../../shared/page-title/page-title.component";
 import { ContactRequest, ApiService, ServiceType } from '../../../api/api.service';
+import { AdminHeaderComponent } from "../admin-header/admin-header.component";
 
 type Tab = 'unprocessed' | 'processed';
 
 @Component({
   selector: 'app-admin-requests',
   standalone: true,
-  imports: [CommonModule, PageTitleComponent],
+  imports: [CommonModule, PageTitleComponent, AdminHeaderComponent],
   templateUrl: './admin-requests.component.html',
   styleUrl: './admin-requests.component.scss'
 })
@@ -148,14 +149,10 @@ export class AdminRequestsComponent implements OnInit {
   }
 
   copyEmail(email: string) {
-    navigator.clipboard.writeText(email).then(() => {
-      alert('E-Mail kopiert!');
-    });
+    navigator.clipboard.writeText(email);
   }
 
   copyPhone(phone: string) {
-    navigator.clipboard.writeText(phone).then(() => {
-      alert('Telefonnummer kopiert!');
-    });
+    navigator.clipboard.writeText(phone);
   }
 }

@@ -1,0 +1,11 @@
+<div class="admin-header">
+    <div class="container">
+        <nav class="nav">
+            <div *ngFor="let route of routes" (click)="routeTo('/' + route.path)" routerLinkActive="nav__link--active"
+                class="nav__link">
+                {{ route.label }}
+            </div>
+        </nav>
+    </div>
+
+</div>

@@ -712,6 +712,8 @@ section {
                 color: $color-text-primary;
                 line-height: 1.6;
                 white-space: pre-wrap;
+                word-break: break-word;
+                overflow-wrap: anywhere;
             }
         }
 
@@ -773,7 +775,7 @@ section {
 
             &:hover {
                 background: $color-background-main;
-                color: $color-text-primary;
+                color: $color-white;
             }
         }
     }

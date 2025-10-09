@@ -1,0 +1,53 @@
+@import '../../../utils/shared-styles.scss';
+
+.admin-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .container {
+        @extend .container;
+        padding-block: 0.75rem;
+    }
+
+    .nav {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+
+        @media (min-width: 960px) {
+            gap: 1.5rem;
+        }
+
+        .nav__link {
+            color: $color-text-secondary;
+            font-weight: 500;
+            font-size: .95rem;
+            padding: .4rem .6rem;
+            border-radius: 8px;
+            transition: color .2s ease, background .2s ease, transform .15s ease;
+            background: $color-brand-primary;
+            color: $color-white;
+
+            &:hover {
+                cursor: pointer;
+                color: $color-brand-primary;
+                background: lighten($color-brand-primary, 45%);
+                transform: translateY(-1px);
+            }
+
+            &:focus-visible {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba($color-brand-primary, .25);
+            }
+
+            &.nav__link--active {
+                color: $color-brand-primary;
+                background: lighten($color-brand-primary, 45%);
+                font-weight: 600;
+            }
+        }
+    }
+}

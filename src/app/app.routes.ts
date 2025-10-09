@@ -22,6 +22,9 @@ import { authGuard } from './guards/auth.guard';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AdminUsersComponent } from './components/admin/admin-users/admin-users.component';
+import { AdminGenPagesComponent } from './components/admin/admin-gen-pages/admin-gen-pages.component';
+import { AdminSettingsComponent } from './components/admin/admin-settings/admin-settings.component';
 
 const pageMainName = 'LeonardsMedia';
 export const routes: Routes = [
@@ -41,9 +44,12 @@ export const routes: Routes = [
     { path: 'survey', component: SurveyComponent, title: pageMainName + ' | Umfrage', data: { description: 'Umfrage von LeonardsMedia.' } },
     { path: 'preview', component: MainContainerComponent, title: pageMainName + ' | Preview', data: { description: 'Preview von LeonardsMedia.' } },
     { path: 'preview-form', component: InputFormComponent, title: pageMainName + ' | Preview2', data: { description: 'Preview2 von LeonardsMedia.' } },
-    { path: 'admin/requests', component: AdminRequestsComponent,  canActivate: [authGuard, adminGuard],  title: pageMainName + ' | Admin Requests', data: { description: 'Admin Requests von LeonardsMedia.' } },
     { path: 'login', component: LoginComponent, title: pageMainName + ' | Login', data: { description: 'Login von LeonardsMedia.' } },
     { path: 'profile', component: ProfileComponent, title: pageMainName + ' | Profil', data: { description: 'Profil von LeonardsMedia.' } },
     { path: 'register', component: RegisterComponent, title: pageMainName + ' | Register', data: { description: 'Register von LeonardsMedia.' } },
-
+    
+    { path: 'admin/requests', component: AdminRequestsComponent,  canActivate: [authGuard, adminGuard],  title: pageMainName + ' | Admin Requests', data: { description: 'Admin Requests von LeonardsMedia.' } },
+    { path: 'admin/users', component: AdminUsersComponent,  canActivate: [authGuard, adminGuard],  title: pageMainName + ' | Admin Users', data: { description: 'Admin Users von LeonardsMedia.' } },
+    { path: 'admin/gen-pages', component: AdminGenPagesComponent,  canActivate: [authGuard, adminGuard],  title: pageMainName + ' | Admin Gen Pages', data: { description: 'Admin Gen Pages von LeonardsMedia.' } },
+    { path: 'admin/settings', component: AdminSettingsComponent,  canActivate: [authGuard, adminGuard],  title: pageMainName + ' | Admin Settings', data: { description: 'Admin Settings von LeonardsMedia.' } },
 ];

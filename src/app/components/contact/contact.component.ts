@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ServiceDataService, ServiceItem } from '../../shared/service-data.service';
 import { ApiService, ServiceType, CreateContactRequestDto } from '../../api/api.service';
+import { finalize } from 'rxjs';
 
 
 type State = 'idle' | 'loading' | 'success' | 'error';
@@ -24,6 +25,7 @@ export class ContactComponent implements OnInit {
   ) { }
 
   state: State = 'idle';
+  busy = false;
   services: ServiceItem[] = [];
   model = {
     name: '',
@@ -40,9 +42,12 @@ export class ContactComponent implements OnInit {
 
   submit() {
     // Validierung
-    if (!this.model.name || !this.model.email) {
+
+    if (this.busy || this.state === 'loading' || !this.model.name || !this.model.email) {
       return;
     }
+
+    this.busy = true;
 
     this.state = 'loading';
 
@@ -67,26 +72,28 @@ export class ContactComponent implements OnInit {
     };
 
     // API Call
-    this.api.createContactRequest(contactRequest).subscribe({
-      next: (response) => {
-        console.log('✅ Kontaktanfrage erfolgreich gesendet:', response);
-        this.state = 'success';
+    this.api.createContactRequest(contactRequest)
+      .pipe(finalize(() => { this.busy = false; }))
+      .subscribe({
+        next: (response) => {
+          console.log('✅ Kontaktanfrage erfolgreich gesendet:', response);
+          this.state = 'success';
 
-        // Formular zurücksetzen nach 3 Sekunden
-        setTimeout(() => {
-          this.resetForm();
-        }, 3000);
-      },
-      error: (error) => {
-        console.error('❌ Fehler beim Senden der Kontaktanfrage:', error);
-        this.state = 'error';
+        },
+        error: (error) => {
+          console.error('❌ Fehler beim Senden der Kontaktanfrage:', error);
+          this.state = 'error';
 
-        // Error-State nach 5 Sekunden zurücksetzen
-        setTimeout(() => {
-          this.state = 'idle';
-        }, 5000);
-      }
-    });
+          // Error-State nach 5 Sekunden zurücksetzen
+          setTimeout(() => {
+            this.state = 'idle';
+          }, 5000);
+        }
+      });
+  }
+
+  newMessage() {
+    this.resetForm();
   }
 
   private resetForm() {

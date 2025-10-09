@@ -9,11 +9,11 @@
       <p class="contact__intro">Kostenloses Erstgespräch - keine Verpflichtung, kein Sales-Druck.</p>
 
       <div class="quick__list">
-        <a class="quick__item" href="tel:+49-175-5580966">
+        <!-- <a class="quick__item" href="tel:+49-175-5580966">
           <span class="quick__title">📞 Anrufen</span>
           <span class="quick__desc">Mo–Fr, 9–17 Uhr</span>
           <span class="quick__value">+49&nbsp;175&nbsp;5580966</span>
-        </a>
+        </a> -->
         <a class="quick__item" href="mailto:tom@leonardsmedia.de">
           <span class="quick__title">✉️ E-Mail schreiben</span>
           <span class="quick__value">tom&#64;leonardsmedia.de</span>
@@ -37,72 +37,113 @@
       </div>
     </aside>
 
-    <!-- Kurzes Formular -->
-    <form class="contact__form" (ngSubmit)="submit()" #f="ngForm" novalidate>
-      <h2>Schnelle Nachricht</h2>
-      <p class="form__subtitle">2–3 Sätze reichen völlig aus</p>
-
-      <div class="field">
-        <label for="name">Dein Name *</label>
-        <input id="name" name="name" type="text" [(ngModel)]="model.name" placeholder="Max Mustermann" required
-          [disabled]="state === 'loading'" />
-        <small *ngIf="f.submitted && !model.name" class="error">Bitte Namen angeben</small>
+    <!-- Erfolgsansicht -->
+    <ng-container *ngIf="state === 'success'; else formTpl">
+      <div class="success-card" role="status" aria-live="polite">
+        <h2>Danke! Nachricht angekommen.</h2>
+        <p>Ich melde mich innerhalb von 24&nbsp;Stunden bei dir.</p>
+        <button class="btn btn--secondary" type="button" (click)="newMessage()">Neue Nachricht senden</button>
       </div>
+    </ng-container>
 
-      <div class="field">
-        <label for="email">E-Mail *</label>
-        <input id="email" name="email" type="email" [(ngModel)]="model.email" placeholder="max@beispiel.de" required
-          [disabled]="state === 'loading'" />
-        <small *ngIf="f.submitted && !model.email" class="error">Bitte E-Mail angeben</small>
-      </div>
+    <!-- Formular -->
+    <ng-template #formTpl>
+      <form class="contact__form"
+            (ngSubmit)="submit()"
+            #f="ngForm"
+            novalidate
+            [class.is-locked]="busy"
+            [attr.aria-busy]="busy">
 
-      <div class="field">
-        <label for="service">Was brauchst du?</label>
-        <select id="service" name="service" [(ngModel)]="model.service" [disabled]="state === 'loading'">
-          <option value="">Noch nicht sicher / Beratung gewünscht</option>
-          <option *ngFor="let service of services" [value]="service.title">
-            {{ service.title }}
-          </option>
-        </select>
-      </div>
+        <h2>Schnelle Nachricht</h2>
+        <p class="form__subtitle">2–3 Sätze reichen völlig aus</p>
 
-      <div class="field">
-        <label for="message">Worum geht's?</label>
-        <textarea id="message" name="message" rows="4" [(ngModel)]="model.message"
-          placeholder="z.B. 'Ich brauche eine Buchungsplattform für mein Studio' oder 'Wir wollen unsere Excel-Liste in eine Web-App umwandeln'"
-          [disabled]="state === 'loading'"></textarea>
-      </div>
+        <div class="field">
+          <label for="name">Dein Name *</label>
+          <input id="name"
+                 name="name"
+                 type="text"
+                 [(ngModel)]="model.name"
+                 placeholder="Max Mustermann"
+                 required
+                 [disabled]="busy"
+                 autocomplete="name" />
+          <small *ngIf="f.submitted && !model.name" class="error">Bitte Namen angeben</small>
+        </div>
 
-      <div class="field field--inline">
-        <label class="switch">
-          <input style="cursor: pointer;" type="checkbox" [(ngModel)]="model.callback" name="callback"
-            [disabled]="state === 'loading'" />
-          <span>Lieber Rückruf statt E-Mail?</span>
-        </label>
-        <input *ngIf="model.callback" type="tel" name="phone" [(ngModel)]="model.phone"
-          placeholder="Deine Telefonnummer" [disabled]="state === 'loading'" />
-      </div>
+        <div class="field">
+          <label for="email">E-Mail *</label>
+          <input id="email"
+                 name="email"
+                 type="email"
+                 [(ngModel)]="model.email"
+                 placeholder="max@beispiel.de"
+                 required
+                 [disabled]="busy"
+                 autocomplete="email"
+                 inputmode="email" />
+          <small *ngIf="f.submitted && !model.email" class="error">Bitte E-Mail angeben</small>
+        </div>
 
-      <div class="form__actions">
-        <button class="btn btn--primary" type="submit" [disabled]="state === 'loading'">
-          <span *ngIf="state !== 'loading'">Nachricht senden</span>
-          <span *ngIf="state === 'loading'">Wird gesendet...</span>
-        </button>
-        <span class="sla">📬 Antwort in der Regel innerhalb von 24 Stunden</span>
-      </div>
+        <div class="field">
+          <label for="service">Was brauchst du?</label>
+          <select id="service"
+                  name="service"
+                  [(ngModel)]="model.service"
+                  [disabled]="busy">
+            <option value="">Noch nicht sicher / Beratung gewünscht</option>
+            <option *ngFor="let service of services" [value]="service.title">
+              {{ service.title }}
+            </option>
+          </select>
+        </div>
 
-      <p class="privacy">
-        Mit dem Absenden stimmst du der Verarbeitung deiner Daten zur Bearbeitung deiner Anfrage zu.
-        <a style="cursor: pointer;" (click)="router.navigate(['/policy'])">Datenschutz</a>
-      </p>
+        <div class="field">
+          <label for="message">Worum geht's?</label>
+          <textarea id="message"
+                    name="message"
+                    rows="4"
+                    [(ngModel)]="model.message"
+                    placeholder="z.B. 'Ich brauche eine Buchungsplattform für mein Studio' oder 'Wir wollen unsere Excel-Liste in eine Web-App umwandeln'"
+                    [disabled]="busy"></textarea>
+        </div>
 
-      <p *ngIf="state === 'success'" class="status status--ok">
-        ✅ Danke! Nachricht ist angekommen. Ich melde mich zeitnah bei dir.
-      </p>
-      <p *ngIf="state === 'error'" class="status status--err">
-        ❌ Das hat leider nicht geklappt. Schreib mir bitte direkt eine E-Mail oder ruf an.
-      </p>
-    </form>
+        <div class="field field--inline">
+          <label class="switch">
+            <input type="checkbox"
+                   [(ngModel)]="model.callback"
+                   name="callback"
+                   [disabled]="busy" />
+            <span>Lieber Rückruf statt E-Mail?</span>
+          </label>
+          <input *ngIf="model.callback"
+                 type="tel"
+                 name="phone"
+                 [(ngModel)]="model.phone"
+                 placeholder="Deine Telefonnummer"
+                 [disabled]="busy"
+                 inputmode="tel"
+                 autocomplete="tel" />
+        </div>
+
+        <div class="form__actions">
+          <button class="btn btn--primary" type="submit" [disabled]="busy">
+            <span *ngIf="!busy">Nachricht senden</span>
+            <span *ngIf="busy">Wird gesendet…</span>
+          </button>
+          <span class="sla">📬 Antwort in der Regel innerhalb von 24 Stunden</span>
+        </div>
+
+        <p class="privacy">
+          Mit dem Absenden stimmst du der Verarbeitung deiner Daten zur Bearbeitung deiner Anfrage zu.
+          <a (click)="router.navigate(['/policy'])" style="cursor: pointer;">Datenschutz</a>
+        </p>
+
+        <p *ngIf="state === 'error'" class="status status--err">
+          ❌ Das hat leider nicht geklappt. Schreib mir bitte direkt eine E-Mail oder ruf an.
+        </p>
+      </form>
+    </ng-template>
 
   </div>
 </section>
