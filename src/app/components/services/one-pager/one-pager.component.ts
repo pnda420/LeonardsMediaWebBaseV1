@@ -16,7 +16,7 @@ export class OnePagerComponent {
   // aus deiner Card-Quelle
   title = 'Einfache Website (One-Pager)';
   slug = 'one-pager';
-  img  = 'assets/cards/1-min.png';
+  img  = 'assets/cards/simple-min.png';
   price = 'ab 1.800 €';
 
   includes = [

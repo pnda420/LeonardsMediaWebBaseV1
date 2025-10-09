@@ -7,11 +7,13 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 import { MaintenanceComponent } from "./components/maintenance/maintenance.component";
+import { ToastContainerComponent } from "./shared/toasts/toast-container.component";
+import { ToastService } from './shared/toasts/toast.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule, FormsModule, MaintenanceComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule, FormsModule, MaintenanceComponent, ToastContainerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -24,7 +26,8 @@ export class AppComponent implements OnInit {
     public router: Router,
     private route: ActivatedRoute,
     private seo: SeoService,
-    @Inject(DOCUMENT) private doc: Document
+    @Inject(DOCUMENT) private doc: Document,
+    private toasts: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +42,8 @@ export class AppComponent implements OnInit {
         this.isUnderConstruction = false;
       }
     });
+
+
 
     // SEO-Update bei Navigation
     this.router.events

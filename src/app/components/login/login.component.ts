@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { PageTitleComponent } from '../../shared/page-title/page-title.component';
+import { ToastService } from '../../shared/toasts/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toasts: ToastService
   ) {}
 
   login() {
@@ -37,6 +39,8 @@ export class LoginComponent {
       next: (response) => {
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
         this.router.navigate([returnUrl]);
+        this.toasts.success('Erfolgreich eingeloggt.');
+        this.loading = false;
       },
       error: (err) => {
         this.error = err.error?.message || 'Login fehlgeschlagen. Überprüfe deine Zugangsdaten.';

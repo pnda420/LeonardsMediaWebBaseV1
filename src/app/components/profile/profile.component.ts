@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService, User, UserRole } from '../../services/auth.service';
 import { PageTitleComponent } from '../../shared/page-title/page-title.component';
+import { ToastService } from '../../shared/toasts/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +19,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toasts: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -27,6 +29,8 @@ export class ProfileComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.router.navigate(['/']);
+    this.toasts.info('Erfolgreich abgemeldet.');
   }
 
   routeTo(route: string) {

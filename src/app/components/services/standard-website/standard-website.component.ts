@@ -15,7 +15,7 @@ export class StandardWebsiteComponent {
 
   constructor(public router: Router) { }
 
-  img = 'assets/cards/2-min.png';
+  img = 'assets/cards/standard-min.png';
 
 
   // Standard Website - Includes

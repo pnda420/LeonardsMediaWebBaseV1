@@ -30,6 +30,10 @@ $color-info: #0EA5E9;                 // Sachliches Cyan
     align-items: center;
 }
 
+.pointer {
+    cursor: pointer !important;
+}
+
 .btn{
     background: $color-brand-primary;
     color: $color-white;

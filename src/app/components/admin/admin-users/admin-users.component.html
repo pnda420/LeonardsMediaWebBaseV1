@@ -1,2 +1,148 @@
 <app-admin-header></app-admin-header>
-<app-page-title title="Benutzer"></app-page-title>
+
+<section class="admin-users">
+    <div class="container">
+
+        <!-- Stats Cards -->
+        <div class="stats" *ngIf="stats && !loading">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ stats.totalUsers }}</div>
+                    <div class="stat-label">Gesamt Benutzer</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📧</div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ stats.newsletterSubscribers }}</div>
+                    <div class="stat-label">Newsletter</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-content">
+                    <div class="stat-value">{{ stats.subscriberRate }}%</div>
+                    <div class="stat-label">Anmelderate</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters & Search -->
+        <div class="filters-bar">
+            <div class="search-box">
+                <input type="text" [(ngModel)]="searchTerm" placeholder="Name oder E-Mail suchen..."
+                    class="search-input">
+            </div>
+
+            <div class="filter-group">
+                <select [(ngModel)]="filterRole" class="filter-select">
+                    <option value="all">Alle Rollen</option>
+                    <option value="admin">Nur Admins</option>
+                    <option value="user">Nur Benutzer</option>
+                </select>
+            </div>
+
+            <button *ngIf="searchTerm || filterRole !== 'all'" class="btn btn--ghost" (click)="clearFilters()">
+                Filter zurücksetzen
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="loading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Lade Benutzer...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="error && !loading" class="error-state">
+            <p>❌ {{ error }}</p>
+            <button class="btn btn--secondary" (click)="loadData()">Erneut versuchen</button>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!loading && !error && filteredUsers.length === 0" class="empty-state">
+            <div class="empty__icon">🔍</div>
+            <h3>Keine Benutzer gefunden</h3>
+            <p>Versuche andere Suchbegriffe oder Filter.</p>
+            <button class="btn btn--secondary" (click)="clearFilters()">Filter zurücksetzen</button>
+        </div>
+
+        <!-- Users Table -->
+        <div *ngIf="!loading && !error && filteredUsers.length > 0" class="users-table-wrapper">
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>Benutzer</th>
+                        <th>E-Mail</th>
+                        <th>Rolle</th>
+                        <th>Erstellt</th>
+                        <th class="actions-col">Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of filteredUsers" class="user-row">
+                        <!-- User Info -->
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    {{ user.name.charAt(0).toUpperCase() }}
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">{{ user.name }}</div>
+                                    <div class="user-id">ID: {{ user.id.substring(0, 8) }}...</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Email -->
+                        <td>
+                            <div class="email-cell" (click)="copyEmail(user.email)" title="Klicken zum Kopieren">
+                                {{ user.email }}
+                            </div>
+                        </td>
+
+                        <!-- Role -->
+                        <td>
+                            <span class="badge" [ngClass]="getRoleBadgeClass(user.role)">
+                                {{ getRoleLabel(user.role) }}
+                            </span>
+                        </td>
+
+                        <!-- Created Date -->
+                        <td class="date-col">
+                            {{ formatDate(user.createdAt) }}
+                        </td>
+
+                        <!-- Actions -->
+                        <td class="actions-col">
+                            <div class="action-buttons">
+                                <!-- Make/Remove Admin -->
+                                <button *ngIf="user.role === UserRole.USER" class="btn-action btn-action--primary"
+                                    (click)="makeAdmin(user)" title="Zum Admin machen">
+                                    👑 Zum Admin
+                                </button>
+                                <button *ngIf="user.role === UserRole.ADMIN" class="btn-action btn-action--warning"
+                                    (click)="removeAdmin(user)" title="Admin entfernen">
+                                    ⚠️ Admin entfernen
+                                </button>
+
+                                <!-- Delete -->
+                                <button class="btn-action btn-action--danger" (click)="deleteUser(user)"
+                                    title="Benutzer löschen">
+                                    🗑️ Löschen
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Results Count -->
+        <div class="results-footer" *ngIf="!loading && !error">
+            <p>{{ filteredUsers.length }} von {{ users.length }} Benutzern angezeigt</p>
+        </div>
+
+    </div>
+</section>

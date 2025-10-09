@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ServiceDataService, ServiceItem } from '../../shared/service-data.service';
 import { ApiService, ServiceType, CreateContactRequestDto } from '../../api/api.service';
 import { finalize } from 'rxjs';
+import { ToastService } from '../../shared/toasts/toast.service';
 
 
 type State = 'idle' | 'loading' | 'success' | 'error';
@@ -21,7 +22,8 @@ export class ContactComponent implements OnInit {
   constructor(
     public router: Router,
     private serviceData: ServiceDataService,
-    private api: ApiService
+    private api: ApiService,
+    private toasts: ToastService
   ) { }
 
   state: State = 'idle';
@@ -78,11 +80,12 @@ export class ContactComponent implements OnInit {
         next: (response) => {
           console.log('✅ Kontaktanfrage erfolgreich gesendet:', response);
           this.state = 'success';
-
+          this.toasts.success('Kontaktanfrage erfolgreich gesendet!', { duration: 5000 });
         },
         error: (error) => {
           console.error('❌ Fehler beim Senden der Kontaktanfrage:', error);
           this.state = 'error';
+          this.toasts.error('Fehler beim Senden der Kontaktanfrage.', {  duration: 5000 });
 
           // Error-State nach 5 Sekunden zurücksetzen
           setTimeout(() => {

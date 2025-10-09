@@ -1,244 +1,183 @@
-<div class="container form-wrap" aria-label="Formular für Einfache Website">
-    <header class="form-head">
-        <div class="head-actions">
-            <a class="btn btn--ghost" (click)="router.navigate(['/services/one-pager'])"
-                aria-label="Zurück zur Einfache Website">← Zurück</a>
+<div class="container form-wrap" aria-label="Website erstellen">
+
+    <!-- LOGIN REQUIRED MESSAGE -->
+    <div class="auth-required" *ngIf="!isLoggedIn">
+        <div class="auth-card">
+            <div class="auth-icon">🔒</div>
+            <h2>Anmeldung erforderlich</h2>
+            <p class="auth-message">
+                Um eine Website zu erstellen, musst du angemeldet sein.
+                So können wir deine Projekte speichern und verwalten.
+            </p>
+
+            <div class="auth-actions">
+                <a [routerLink]="['/login']" [queryParams]="{ returnUrl: currentUrl }" class="btn btn--primary">
+                    Jetzt anmelden
+                </a>
+                <a [routerLink]="['/register']" [queryParams]="{ returnUrl: currentUrl }" class="btn btn--ghost">
+                    Konto erstellen
+                </a>
+            </div>
+
+            <div class="auth-footer">
+                <p>Noch kein Konto?</p>
+                <a [routerLink]="['/register']" class="link">
+                    Kostenlos registrieren →
+                </a>
+            </div>
         </div>
-        <h1>Einfache Website Anfrage</h1>
-        <p class="subtitle">Für Privatpersonen, Vereine oder Unternehmen. Pflichtfelder sind mit * markiert.</p>
-        <div class="progress" aria-label="Fortschritt">
-            <div class="progress__bar" [style.width.%]="getProgressPercentage()"></div>
-        </div>
-    </header>
+    </div>
 
-    <form class="op-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-        <!-- Abschnitt: Kontakt -->
-        <section class="form-section cardlike" aria-labelledby="sec-contact">
-            <h2 id="sec-contact" class="section-title">
-                <span class="section-number">01</span> Kontakt
-            </h2>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="firstName">Vorname <span class="required">*</span></label>
-                    <input id="firstName" type="text" formControlName="firstName" placeholder=""
-                        [class.error-input]="isFieldInvalid('firstName')" />
-                    <p class="help">Wie sollen wir dich/Sie ansprechen?</p>
-                    <span class="error-message" *ngIf="isFieldInvalid('firstName')"><i class="error-icon">!</i>Vorname
-                        ist erforderlich.</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="lastName">Nachname <span class="required">*</span></label>
-                    <input id="lastName" type="text" formControlName="lastName" placeholder=""
-                        [class.error-input]="isFieldInvalid('lastName')" />
-                    <p class="help">Familienname.</p>
-                    <span class="error-message" *ngIf="isFieldInvalid('lastName')"><i class="error-icon">!</i>Nachname
-                        ist erforderlich.</span>
-                </div>
+    <!-- FORM (only visible when logged in) -->
+    <div *ngIf="isLoggedIn">
+        <header class="form-head">
+            <div class="head-actions">
+                <a class="btn btn--ghost" (click)="router.navigate(['/services/one-pager'])" aria-label="Zurück">←
+                    Zurück</a>
             </div>
+            <h1>Neue Website erstellen</h1>
+            <p class="subtitle">Beschreibe dein Projekt in wenigen Schritten.</p>
+            <div class="progress" aria-label="Fortschritt">
+                <div class="progress__bar" [style.width.%]="getProgressPercentage()"></div>
+            </div>
+        </header>
 
-            <div class="form-row">
+        <form class="op-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+            <!-- Projekt -->
+            <section class="form-section cardlike" aria-labelledby="sec-project">
+                <h2 id="sec-project" class="section-title">
+                    <span class="section-number">01</span> Projekt
+                </h2>
+
                 <div class="form-group">
-                    <label for="email">E‑Mail <span class="required">*</span></label>
-                    <div class="input-with-icon">
-                        <i class="input-icon" aria-hidden="true">✉</i>
-                        <input id="email" type="email" formControlName="email" placeholder="name@domain.de"
-                            [class.error-input]="isFieldInvalid('email')" />
+                    <label>Ich bin... <span class="required">*</span></label>
+                    <div class="radio-group-inline">
+                        <label class="radio-inline" *ngFor="let type of customerTypes">
+                            <input type="radio" name="customerType" [value]="type.value"
+                                formControlName="customerType" />
+                            <span class="radio-inline-content">
+                                <i class="radio-icon">{{ type.icon }}</i>
+                                {{ type.label }}
+                            </span>
+                        </label>
                     </div>
-                    <p class="help">Für Rückfragen und die Entwürfe.</p>
-                    <span class="error-message" *ngIf="isFieldInvalid('email')"><i class="error-icon">!</i>Bitte eine
-                        gültige E‑Mail-Adresse eingeben.</span>
+                    <span class="error-message" *ngIf="isFieldInvalid('customerType')">
+                        <i class="error-icon">!</i>Bitte wählen.
+                    </span>
+                </div>
+
+                <div class="form-group" *ngIf="form.get('customerType')?.value === 'business'">
+                    <label for="companyName">Firmenname <span class="required">*</span></label>
+                    <input id="companyName" type="text" formControlName="companyName"
+                        placeholder="z. B. Mustermann GmbH" [class.error-input]="isFieldInvalid('companyName')" />
+                    <p class="help">Offizieller Name deines Unternehmens</p>
+                    <span class="error-message" *ngIf="isFieldInvalid('companyName')">
+                        <i class="error-icon">!</i>Firmenname ist erforderlich.
+                    </span>
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Telefon <span class="optional">(optional)</span></label>
-                    <div class="input-with-icon">
-                        <i class="input-icon" aria-hidden="true">📱</i>
-                        <input id="phone" type="tel" formControlName="phone" placeholder="z. B. +49 123 456789" />
+                    <label for="projectName">Name deines Projekts <span class="required">*</span></label>
+                    <input id="projectName" type="text" formControlName="projectName"
+                        placeholder="z. B. Mein Café, Portfolio Max Mustermann"
+                        [class.error-input]="isFieldInvalid('projectName')" />
+                    <p class="help">Wie heißt deine Website?</p>
+                    <span class="error-message" *ngIf="isFieldInvalid('projectName')">
+                        <i class="error-icon">!</i>Projektname ist erforderlich.
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label>Art der Website <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-card" *ngFor="let type of websiteTypes">
+                            <input type="radio" name="typeOfWebsite" [value]="type.value"
+                                formControlName="typeOfWebsite" />
+                            <div class="radio-card-content">
+                                <i class="radio-icon" aria-hidden="true">{{ type.icon }}</i>
+                                <span class="radio-title">{{ type.label }}</span>
+                                <span class="radio-description">{{ type.description }}</span>
+                            </div>
+                        </label>
                     </div>
-                    <p class="help">Nur wenn Anruf gewünscht ist.</p>
+                    <span class="error-message" *ngIf="isFieldInvalid('typeOfWebsite')">
+                        <i class="error-icon">!</i>Bitte wählen.
+                    </span>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Abschnitt: Projekt/Infos -->
-        <section class="form-section cardlike" aria-labelledby="sec-project">
-            <h2 id="sec-project" class="section-title">
-                <span class="section-number">02</span> Projekt / Infos
-            </h2>
+            <!-- Design -->
+            <section class="form-section cardlike" aria-labelledby="sec-design">
+                <h2 id="sec-design" class="section-title">
+                    <span class="section-number">02</span> Design
+                </h2>
 
-            <div class="form-group">
-                <label for="projectName">Titel oder Name <span class="optional">(optional)</span></label>
-                <input id="projectName" type="text" formControlName="projectName"
-                    placeholder="z. B. Name, Firmenname, Projektname" />
-                <p class="help">Wie dürfen wir das Vorhaben nennen?</p>
-            </div>
-
-
-            <div class="form-group">
-                <label for="role">Für wen ist die Seite? <span class="required">*</span></label>
-                <select id="role" formControlName="role" [class.error-input]="isFieldInvalid('role')">
-                    <option value="">Bitte wählen…</option>
-                    <option value="private">Privat</option>
-                    <option value="club">Verein / Gruppe</option>
-                    <option value="business">Unternehmen / Selbstständig</option>
-                    <option value="nonprofit">Gemeinnützig</option>
-                </select>
-                <span class="error-message" *ngIf="isFieldInvalid('role')"><i class="error-icon">!</i>Bitte
-                    wählen.</span>
-            </div>
-
-
-            <div class="form-group">
-                <div class="switch-container">
-                    <label class="switch">
-                        <input type="checkbox" formControlName="useImage" />
-                        <span class="slider"></span>
-                    </label>
-                    <span class="switch-label">Bild/Logo verwenden (optional)</span>
-                </div>
-            </div>
-
-            <!-- NUR Link, KEIN Upload -->
-            <div class="logo-upload" *ngIf="form.get('useImage')?.value">
                 <div class="form-group">
-                    <label for="projectImage">Bild/Logo verlinken</label>
-                    <input id="projectImage" type="url" formControlName="projectImage"
-                        placeholder="https://example.com/bild.png" />
-                    <p class="help">Nur Links (PNG, JPG, SVG). Kein Upload.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Abschnitt: Design -->
-        <section class="form-section cardlike" aria-labelledby="sec-design">
-            <h2 id="sec-design" class="section-title">
-                <span class="section-number">03</span> Design & Stil
-            </h2>
-
-            <div class="form-group">
-                <label>Farben</label>
-                <div class="color-picker-group">
+                    <label for="primaryColor">Hauptfarbe</label>
                     <div class="color-item">
                         <input id="primaryColor" type="color" formControlName="primaryColor" class="color-input" />
-                        <label for="primaryColor" class="color-label">Primärfarbe <span class="color-value">{{
-                                form.get('primaryColor')?.value }}</span></label>
+                        <label for="primaryColor" class="color-label">
+                            Deine Markenfarbe
+                            <span class="color-value">{{ form.get('primaryColor')?.value }}</span>
+                        </label>
                     </div>
-                    <div class="color-item">
-                        <input id="secondaryColor" type="color" formControlName="secondaryColor" class="color-input" />
-                        <label for="secondaryColor" class="color-label">Sekundärfarbe <span class="color-value">{{
-                                form.get('secondaryColor')?.value }}</span></label>
-                    </div>
-                    <div class="color-item">
-                        <input id="accentColor" type="color" formControlName="accentColor" class="color-input" />
-                        <label for="accentColor" class="color-label">Akzentfarbe <span class="color-value">{{
-                                form.get('accentColor')?.value }}</span></label>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <label for="designStyle">Stil <span class="required">*</span></label>
-                <select id="designStyle" formControlName="designStyle"
-                    [class.error-input]="isFieldInvalid('designStyle')">
-                    <option value="">Bitte wählen…</option>
-                    <option value="modern">Modern & minimal</option>
-                    <option value="friendly">Freundlich & klar</option>
-                    <option value="elegant">Elegant</option>
-                    <option value="playful">Verspielt</option>
-                    <option value="bold">Auffällig</option>
-                </select>
-                <span class="error-message" *ngIf="isFieldInvalid('designStyle')"><i class="error-icon">!</i>Bitte
-                    Stil wählen.</span>
-            </div>
-        </section>
-
-        <!-- Abschnitt: Inhalte -->
-        <section class="form-section cardlike" aria-labelledby="sec-details">
-            <h2 id="sec-details" class="section-title">
-                <span class="section-number">04</span> Inhalte
-            </h2>
-
-            <div class="form-group">
-                <label>Art der Seite <span class="required">*</span></label>
-                <div class="radio-group">
-                    <label class="radio-card" *ngFor="let type of websiteTypes">
-                        <input type="radio" name="typeOfWebsite" [value]="type.value" formControlName="typeOfWebsite" />
-                        <div class="radio-card-content">
-                            <i class="radio-icon" aria-hidden="true">{{ type.icon }}</i>
-                            <span class="radio-title">{{ type.label }}</span>
-                            <span class="radio-description">{{ type.description }}</span>
-                        </div>
-                    </label>
-                </div>
-                <span class="error-message" *ngIf="isFieldInvalid('typeOfWebsite')"><i class="error-icon">!</i>Bitte
-                    wählen.</span>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="targetAudience">Zielgruppe <span class="required">*</span></label>
-                    <input id="targetAudience" type="text" formControlName="targetAudience"
-                        placeholder="z. B. Gäste, Familien, Vereinsmitglieder, Kundschaft"
-                        [class.error-input]="isFieldInvalid('targetAudience')" />
-                    <p class="help">Wer soll sich angesprochen fühlen?</p>
                 </div>
 
                 <div class="form-group">
-                    <label for="language">Sprache</label>
-                    <select id="language" formControlName="language">
-                        <option value="de">Deutsch</option>
-                        <option value="en">Englisch</option>
-                        <option value="multi">Mehrsprachig</option>
+                    <label for="designStyle">Stil</label>
+                    <select id="designStyle" formControlName="designStyle">
+                        <option value="modern">Modern & minimal</option>
+                        <option value="friendly">Freundlich & klar</option>
+                        <option value="elegant">Elegant</option>
+                        <option value="playful">Verspielt</option>
                     </select>
-                    <p class="help">Welche Sprache soll verwendet werden?</p>
                 </div>
-            </div>
+            </section>
 
-            <div class="form-group">
-                <label>Funktionen (optional)</label>
-                <div class="checkbox-group">
-                    <label class="checkbox-item" *ngFor="let feature of features">
-                        <input type="checkbox" [value]="feature.value"
-                            (change)="onFeatureChange($event, feature.value)" />
-                        <span class="checkbox-custom"></span>
-                        <span class="checkbox-label">{{ feature.label }}</span>
+            <!-- Inhalt -->
+            <section class="form-section cardlike" aria-labelledby="sec-content">
+                <h2 id="sec-content" class="section-title">
+                    <span class="section-number">03</span> Inhalt
+                </h2>
+
+                <div class="form-group">
+                    <label for="contentInformation">
+                        Beschreibe dein Projekt <span class="required">*</span>
+                        <span class="char-count">{{ getCharCount() }}/500</span>
                     </label>
+                    <textarea id="contentInformation" rows="8" formControlName="contentInformation"
+                        placeholder="Beispiel: Ein gemütliches Café im Herzen der Stadt. Wir servieren frischen Kaffee und hausgemachte Kuchen. Besucher sollen unsere Öffnungszeiten finden und Plätze reservieren können."
+                        [class.error-input]="isFieldInvalid('contentInformation')" maxlength="500"></textarea>
+                    <p class="help">Worum geht's? Was sollen Besucher tun können? (Min. 30 Zeichen)</p>
+                    <span class="error-message" *ngIf="isFieldInvalid('contentInformation')">
+                        <i class="error-icon">!</i>Bitte mindestens 30 Zeichen eingeben.
+                    </span>
                 </div>
+            </section>
+
+            <!-- Aktionen -->
+            <div class="form-actions">
+                <button type="button" class="btn btn--ghost" (click)="onReset()">
+                    Zurücksetzen
+                </button>
+                <button type="submit" class="btn btn--primary" [disabled]="loading || form.invalid"
+                    [class.loading]="loading">
+                    @if (!loading) {
+                    <span class="btn-text">Website generieren</span>
+                    }
+                    @if (loading) {
+                    <span class="btn-text">
+                        <i class="spinner" aria-hidden="true"></i>Wird erstellt...
+                    </span>
+                    }
+                </button>
             </div>
 
-            <div class="form-group">
-                <label for="contentInformation">Kurzbeschreibung & Ziel <span class="required">*</span>
-                    <span class="char-count">{{ getCharCount() }}/1000</span>
-                </label>
-                <textarea id="contentInformation" rows="6" formControlName="contentInformation"
-                    placeholder="In 3–5 Sätzen: Worum geht es? Was ist wichtig? Welche Aktion sollen Besucher ausführen (Anrufen, Termin, Formular, Spenden)?"
-                    [class.error-input]="isFieldInvalid('contentInformation')" maxlength="1000"></textarea>
-                <p class="help">Konkret ist besser als lang.</p>
-                <span class="error-message" *ngIf="isFieldInvalid('contentInformation')"><i
-                        class="error-icon">!</i>Bitte Ihr Vorhaben in mindestens 20 Zeichen beschreiben.</span>
+            <div class="form-summary ok" *ngIf="form.valid">
+                <div class="summary-icon" aria-hidden="true">✓</div>
+                <p>Bereit zum Absenden!</p>
             </div>
-        </section>
-
-        <!-- Aktionen -->
-        <div class="form-actions">
-            <button type="button" class="btn btn--ghost" (click)="onReset()">Zurücksetzen</button>
-            <button type="submit" class="btn btn--primary" [disabled]="loading || form.invalid"
-                [class.loading]="loading">
-                @if (loading === false) {
-                <span class="btn-text">Absenden</span>
-                }
-                @if (loading === true) {
-                <span class="btn-text"><i class="spinner" aria-hidden="true"></i>Bitte warten...</span>
-                }
-            </button>
-        </div>
-
-        <div class="form-summary ok" *ngIf="form.valid">
-            <div class="summary-icon" aria-hidden="true">✓</div>
-            <p>Alle Pflichtfelder sind ausgefüllt. Sie können absenden.</p>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>

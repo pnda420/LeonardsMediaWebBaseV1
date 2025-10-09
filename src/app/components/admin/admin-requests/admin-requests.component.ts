@@ -9,7 +9,7 @@ type Tab = 'unprocessed' | 'processed';
 @Component({
   selector: 'app-admin-requests',
   standalone: true,
-  imports: [CommonModule, PageTitleComponent, AdminHeaderComponent],
+  imports: [CommonModule, AdminHeaderComponent],
   templateUrl: './admin-requests.component.html',
   styleUrl: './admin-requests.component.scss'
 })

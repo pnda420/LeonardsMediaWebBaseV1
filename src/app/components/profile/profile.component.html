@@ -41,17 +41,6 @@
                 </div>
             </div>
 
-            <!-- Admin Section -->
-            <div class="profile__admin" *ngIf="user.role === UserRole.ADMIN">
-                <h3>🔧 Admin-Bereich</h3>
-                <p>Du hast Administrator-Rechte und kannst auf alle Admin-Funktionen zugreifen.</p>
-                <div class="admin__actions">
-                    <a class="btn btn--secondary" (click)="routeTo('/admin/requests')">
-                        Kontaktanfragen verwalten
-                    </a>
-                </div>
-            </div>
-
             <!-- Actions -->
             <div class="profile__actions">
                 <button class="btn btn--danger" (click)="logout()">

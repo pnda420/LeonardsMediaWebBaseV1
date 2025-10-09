@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { PageTitleComponent } from '../../shared/page-title/page-title.component';
+import { ToastService } from '../../shared/toasts/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -21,10 +22,12 @@ export class RegisterComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute,
+    private toasts: ToastService
+  ) { }
 
-  register() {
+  async register() {
     if (!this.name || !this.email || !this.password) {
       this.error = 'Bitte fülle alle Felder aus';
       return;
@@ -38,14 +41,15 @@ export class RegisterComponent {
     this.loading = true;
     this.error = '';
 
-    this.authService.register(this.email, this.name, this.password).subscribe({
-      next: (response) => {
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        this.error = err.error?.message || 'Registrierung fehlgeschlagen. Email bereits vergeben?';
-        this.loading = false;
-      }
-    });
+    try {
+      await this.authService.register(this.email, this.name, this.password);
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+      this.router.navigate([returnUrl]);
+      this.toasts.success('Erfolgreich registriert und eingeloggt.');
+      this.loading = false;
+    } catch (err: any) {
+      this.error = err?.error?.message || 'Registrierung fehlgeschlagen. Email bereits vergeben?';
+      this.loading = false;
+    }
   }
 }

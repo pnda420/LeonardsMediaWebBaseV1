@@ -16,7 +16,7 @@ export class IndividualWebsiteComponent {
   constructor(public router: Router) { }
 
   // Individual Website - Includes
-  img = 'assets/cards/2-min.png';
+  img = 'assets/cards/individual-min.png';
 
   includes = [
     {

@@ -17,6 +17,7 @@
       <a (click)="routeTo('/faq')" routerLink="/faq" routerLinkActive="is-active">FAQ</a>
       <a (click)="routeTo('/about')" routerLink="/about" routerLinkActive="is-active">Über uns</a>
       <a (click)="routeTo('/contact')" routerLink="/contact" routerLinkActive="is-active">Kontakt</a>
+      <a (click)="routeTo('/server-status')" routerLink="/server-status" routerLinkActive="is-active">Systemstatus</a>
 
       <!-- KI Preview (wenn vorhanden) -->
       <a *ngIf="getPreviewAmmount() > 0"
@@ -25,34 +26,30 @@
         ✨ Ki Vorschauübersicht öffnen
       </a>
 
-      <!-- WENN NICHT EINGELOGGT -->
       <ng-container *ngIf="!user">
         <a (click)="routeTo('/login')" routerLink="/login" routerLinkActive="is-active" class="nav-link--highlight">
           Login
         </a>
-        <!-- <a (click)="routeTo('/register')" routerLink="/register" routerLinkActive="is-active"
-          class="nav-link--secondary">
-          Registrieren
-        </a> -->
       </ng-container>
 
       <!-- WENN EINGELOGGT -->
       <ng-container *ngIf="user">
-        <!-- Admin Link (nur für Admins) -->
+        <!-- Admin Link -->
         <a *ngIf="user.role === UserRole.ADMIN" (click)="routeTo('/admin/requests')" routerLink="/admin/requests"
           routerLinkActive="is-active" class="nav-link--admin">
           🔧 Admin
         </a>
 
-        <!-- User Menu -->
+        <!-- User Profil - HERVORGEHOBEN -->
         <div class="user-menu">
           <a (click)="routeTo('/profile')" routerLink="/profile" routerLinkActive="is-active" class="user-menu__link">
-            <span class="user-name">Mein Account</span>
+            <app-icon [icon]="'account_circle'"></app-icon>
+            <span class="user-name">{{ user.name }}</span>
           </a>
         </div>
 
         <!-- Logout Button -->
-        <button class="nav-link nav-link--logout" type="button" (click)="logout()">
+        <button class="nav-link--logout" type="button" (click)="logout()">
           Ausloggen
         </button>
       </ng-container>

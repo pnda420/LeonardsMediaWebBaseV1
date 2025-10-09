@@ -15,6 +15,7 @@ export interface User {
   email: string;
   name: string;
   role: UserRole;
+  createdAt: Date;
 }
 
 export interface LoginResponse {
