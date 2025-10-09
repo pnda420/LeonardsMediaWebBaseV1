@@ -1,7 +1,9 @@
+// ==================== header.component.ts (UPDATED) ====================
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { PreviewService } from '../../state/preview.service';
+import { AuthService, User, UserRole } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -10,9 +12,28 @@ import { PreviewService } from '../../state/preview.service';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   open = false;
-  constructor(@Inject(DOCUMENT) private doc: Document, public router: Router, private previewService: PreviewService) { }
+  user: User | null = null;
+  UserRole = UserRole; // Für Template
+
+  constructor(
+    @Inject(DOCUMENT) private doc: Document,
+    public router: Router,
+    private previewService: PreviewService,
+    private authService: AuthService
+  ) { }
+
+  ngOnInit(): void {
+    // Subscribe zu User-Änderungen (wichtig!)
+    this.authService.currentUser$.subscribe(user => {
+      this.user = user;
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.previewService.loadPreviewsFromLocalStorage();
+  }
 
   toggle() {
     this.open = !this.open;
@@ -31,9 +52,22 @@ export class HeaderComponent {
     return this.previewService.previews().length;
   }
 
-    ngAfterViewInit(): void {
-      this.previewService.loadPreviewsFromLocalStorage();
+  logout() {
+      this.authService.logout();
+      this.open = false; // Menu schließen
+      this.doc.body.style.overflow = '';
+      this.doc.body.style.touchAction = '';
   }
 
+  getRoleBadgeClass(): string {
+    return this.user?.role === UserRole.ADMIN ? 'badge--admin' : 'badge--user';
+  }
 
+  getRoleLabel(): string {
+    return this.user?.role === UserRole.ADMIN ? 'Admin' : 'User';
+  }
+
+  isAdmin(): boolean {
+    return this.user?.role === UserRole.ADMIN;
+  }
 }

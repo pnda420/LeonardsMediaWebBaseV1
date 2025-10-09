@@ -10,20 +10,52 @@
     <img class="brand" src="assets/LM_Logos/Logo1.png" alt="LeonardsMedia" decoding="async" (click)="routeTo('/')" />
 
     <nav id="primary-nav" class="nav" [class.open]="open" aria-label="Hauptnavigation">
+      <!-- Öffentliche Links -->
       <a (click)="routeTo('/')" routerLink="/" routerLinkActive="is-active"
         [routerLinkActiveOptions]="{ exact: true }">Startseite</a>
-      <a (click)="routeTo('/services')" routerLink="/services" routerLinkActive="is-active"
-        [routerLinkActiveOptions]="{ exact: false }">Leistungspakete</a>
-      <!-- <a (click)="routeTo('/survey')" routerLink="/survey" routerLinkActive="is-active">Umfrage</a> -->
-      <!-- <a (click)="routeTo('/process')" routerLink="/process" routerLinkActive="is-active">Projektablauf</a> -->
-      <!-- <a (click)="routeTo('/server-status')" routerLink="/server-status" routerLinkActive="is-active">Systemstatus</a> -->
+      <a (click)="routeTo('/services')" routerLink="/services" routerLinkActive="is-active">Leistungspakete</a>
       <a (click)="routeTo('/faq')" routerLink="/faq" routerLinkActive="is-active">FAQ</a>
       <a (click)="routeTo('/about')" routerLink="/about" routerLinkActive="is-active">Über uns</a>
       <a (click)="routeTo('/contact')" routerLink="/contact" routerLinkActive="is-active">Kontakt</a>
-      <a (click)="routeTo('/admin/requests')" routerLink="/admin/requests" routerLinkActive="is-active">Kontaktanfragen</a>
-      <a *ngIf="getPreviewAmmount() > 2" style="font-weight: 500; background-color: #245ee6; border: 3px solid rgb(0, 84, 210); color: white;" (click)="routeTo('/preview')" routerLink="/preview" routerLinkActive="is-active">
+
+      <!-- KI Preview (wenn vorhanden) -->
+      <a *ngIf="getPreviewAmmount() > 2"
+        style="font-weight: 500; background-color: #245ee6; border: 3px solid rgb(0, 84, 210); color: white;"
+        (click)="routeTo('/preview')" routerLink="/preview" routerLinkActive="is-active">
         ✨ Ki Vorschauübersicht öffnen
       </a>
+
+      <!-- WENN NICHT EINGELOGGT -->
+      <ng-container *ngIf="!user">
+        <a (click)="routeTo('/login')" routerLink="/login" routerLinkActive="is-active" class="nav-link--highlight">
+          Login
+        </a>
+        <!-- <a (click)="routeTo('/register')" routerLink="/register" routerLinkActive="is-active"
+          class="nav-link--secondary">
+          Registrieren
+        </a> -->
+      </ng-container>
+
+      <!-- WENN EINGELOGGT -->
+      <ng-container *ngIf="user">
+        <!-- Admin Link (nur für Admins) -->
+        <a *ngIf="user.role === UserRole.ADMIN" (click)="routeTo('/admin/requests')" routerLink="/admin/requests"
+          routerLinkActive="is-active" class="nav-link--admin">
+          🔧 Admin
+        </a>
+
+        <!-- User Menu -->
+        <div class="user-menu">
+          <a (click)="routeTo('/profile')" routerLink="/profile" routerLinkActive="is-active" class="user-menu__link">
+            <span class="user-name">Mein Account</span>
+          </a>
+        </div>
+
+        <!-- Logout Button -->
+        <button class="nav-link nav-link--logout" type="button" (click)="logout()">
+          Ausloggen
+        </button>
+      </ng-container>
     </nav>
   </div>
 

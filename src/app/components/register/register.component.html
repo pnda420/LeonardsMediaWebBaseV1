@@ -1,0 +1,68 @@
+<app-page-title title="Registrieren"></app-page-title>
+
+<section class="auth">
+  <div class="container">
+    <div class="auth__card">
+      <h2>Account erstellen</h2>
+      <p class="subtitle">Erstelle deinen kostenlosen Account</p>
+
+      <form (ngSubmit)="register()" class="auth__form">
+        <div class="field">
+          <label for="name">Name</label>
+          <input 
+            id="name" 
+            type="text" 
+            [(ngModel)]="name" 
+            name="name"
+            placeholder="Max Mustermann"
+            [disabled]="loading"
+            required
+            autocomplete="name" />
+        </div>
+
+        <div class="field">
+          <label for="email">E-Mail</label>
+          <input 
+            id="email" 
+            type="email" 
+            [(ngModel)]="email" 
+            name="email"
+            placeholder="max@beispiel.de"
+            [disabled]="loading"
+            required
+            autocomplete="email" />
+        </div>
+
+        <div class="field">
+          <label for="password">Passwort</label>
+          <input 
+            id="password" 
+            type="password" 
+            [(ngModel)]="password" 
+            name="password"
+            placeholder="Mindestens 8 Zeichen"
+            [disabled]="loading"
+            required
+            autocomplete="new-password" />
+          <small class="field-hint">Mindestens 8 Zeichen</small>
+        </div>
+
+        <div *ngIf="error" class="error-message">
+          ❌ {{ error }}
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn btn--primary btn--full"
+          [disabled]="loading">
+          <span *ngIf="!loading">Registrieren</span>
+          <span *ngIf="loading">Wird erstellt...</span>
+        </button>
+      </form>
+
+      <div class="auth__footer">
+        <p>Bereits registriert? <a routerLink="/login">Jetzt anmelden</a></p>
+      </div>
+    </div>
+  </div>
+</section>

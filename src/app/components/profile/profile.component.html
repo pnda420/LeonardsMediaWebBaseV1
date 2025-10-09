@@ -1,0 +1,69 @@
+<app-page-title title="Mein Profil"></app-page-title>
+
+<section class="profile">
+    <div class="container">
+
+        <div class="profile__card" *ngIf="user">
+            <!-- Header mit Avatar -->
+            <div class="profile__header">
+                <div class="profile__avatar">
+                    {{ user.name.charAt(0).toUpperCase() }}
+                </div>
+                <div class="profile__info">
+                    <h2>{{ user.name }}</h2>
+                    <p class="profile__email">{{ user.email }}</p>
+                    <span class="badge" [ngClass]="getRoleBadgeClass()">
+                        {{ getRoleLabel() }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Details -->
+            <div class="profile__details">
+                <h3>Account-Details</h3>
+                <div class="detail__grid">
+                    <div class="detail__item">
+                        <span class="detail__label">Benutzer-ID</span>
+                        <span class="detail__value">{{ user.id }}</span>
+                    </div>
+                    <div class="detail__item">
+                        <span class="detail__label">E-Mail</span>
+                        <span class="detail__value">{{ user.email }}</span>
+                    </div>
+                    <div class="detail__item">
+                        <span class="detail__label">Name</span>
+                        <span class="detail__value">{{ user.name }}</span>
+                    </div>
+                    <div class="detail__item">
+                        <span class="detail__label">Rolle</span>
+                        <span class="detail__value">{{ getRoleLabel() }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Section -->
+            <div class="profile__admin" *ngIf="user.role === UserRole.ADMIN">
+                <h3>🔧 Admin-Bereich</h3>
+                <p>Du hast Administrator-Rechte und kannst auf alle Admin-Funktionen zugreifen.</p>
+                <div class="admin__actions">
+                    <a class="btn btn--secondary" (click)="routeTo('/admin/requests')">
+                        Kontaktanfragen verwalten
+                    </a>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="profile__actions">
+                <button class="btn btn--danger" (click)="logout()">
+                    Ausloggen
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="profile__card" *ngIf="!user">
+            <p>Lade Profil...</p>
+        </div>
+
+    </div>
+</section>

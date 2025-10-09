@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PageTitleComponent } from "../../shared/page-title/page-title.component";
-import { ContactRequest, ApiService, ServiceType } from '../../api/api.service';
+import { PageTitleComponent } from "../../../shared/page-title/page-title.component";
+import { ContactRequest, ApiService, ServiceType } from '../../../api/api.service';
 
 type Tab = 'unprocessed' | 'processed';
 

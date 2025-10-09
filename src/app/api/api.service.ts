@@ -2,19 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { User, UserRole } from '../services/auth.service';
 
 
 // ==================== INTERFACES ====================
-
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  wantsNewsletter: boolean;
-  isVerified: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 export interface CreateUserDto {
   email: string;

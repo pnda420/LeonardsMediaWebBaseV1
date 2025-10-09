@@ -1,0 +1,54 @@
+<app-page-title title="Login"></app-page-title>
+
+<section class="auth">
+  <div class="container">
+    <div class="auth__card">
+      <h2>Willkommen zurück</h2>
+      <p class="subtitle">Melde dich an, um fortzufahren</p>
+
+      <form (ngSubmit)="login()" class="auth__form">
+        <div class="field">
+          <label for="email">E-Mail</label>
+          <input 
+            id="email" 
+            type="email" 
+            [(ngModel)]="email" 
+            name="email"
+            placeholder="max@beispiel.de"
+            [disabled]="loading"
+            required
+            autocomplete="email" />
+        </div>
+
+        <div class="field">
+          <label for="password">Passwort</label>
+          <input 
+            id="password" 
+            type="password" 
+            [(ngModel)]="password" 
+            name="password"
+            placeholder="••••••••"
+            [disabled]="loading"
+            required
+            autocomplete="current-password" />
+        </div>
+
+        <div *ngIf="error" class="error-message">
+          ❌ {{ error }}
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn btn--primary btn--full"
+          [disabled]="loading">
+          <span *ngIf="!loading">Anmelden</span>
+          <span *ngIf="loading">Wird angemeldet...</span>
+        </button>
+      </form>
+
+      <div class="auth__footer">
+        <p>Noch kein Account? <a routerLink="/register">Jetzt registrieren</a></p>
+      </div>
+    </div>
+  </div>
+</section>
