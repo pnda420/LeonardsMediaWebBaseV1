@@ -20,11 +20,11 @@
       <a (click)="routeTo('/server-status')" routerLink="/server-status" routerLinkActive="is-active">Systemstatus</a>
 
       <!-- KI Preview (wenn vorhanden) -->
-      <a *ngIf="getPreviewAmmount() > 0"
+      <!-- <a *ngIf="getPreviewAmmount() > 0"
         style="font-weight: 500; background-color: #245ee6; border: 3px solid rgb(0, 84, 210); color: white;"
         (click)="routeTo('/preview')" routerLink="/preview" routerLinkActive="is-active">
         ✨ Ki Vorschauübersicht öffnen
-      </a>
+      </a> -->
 
       <ng-container *ngIf="!user">
         <a (click)="routeTo('/login')" routerLink="/login" routerLinkActive="is-active" class="nav-link--highlight">

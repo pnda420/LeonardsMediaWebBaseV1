@@ -1,17 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
 import { PreviewService } from '../../../state/preview.service';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-
-interface MockupResponse {
-  ok: boolean;
-  html: string;
-  css: string;
-}
+import { ApiService, PageAiMockupDto, PageAiMockupResponse } from '../../../core/api/api.service';
 
 interface WebsiteType {
   value: string;
@@ -33,9 +26,6 @@ export class InputFormComponent implements OnInit {
   isLoggedIn = false;
   currentUrl: string = '';
 
-  private readonly API_URL = 'http://api.xpnda.de/pocketgpt/audio/mockup';
-  private readonly API_KEY = 'jg83kf784jf94jdf984';
-
   websiteTypes: WebsiteType[] = [
     { value: 'praesentation', label: 'Präsentation', icon: '🎯', description: 'Portfolio, Firma', },
     { value: 'landing', label: 'Landingpage', icon: '🚀', description: 'Produkt/Dienstleistung', },
@@ -47,17 +37,14 @@ export class InputFormComponent implements OnInit {
     { value: 'business', label: 'Firma / Unternehmen', icon: '🏢' }
   ];
 
-  private http = inject(HttpClient);
+  private apiService = inject(ApiService);
   private previews = inject(PreviewService);
   public authService = inject(AuthService);
-
-  constructor(public router: Router) { }
+  public router = inject(Router);
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
-
     this.currentUrl = this.router.url.split('?')[0];
-
 
     if (this.isLoggedIn) {
       this.initializeForm();
@@ -100,7 +87,6 @@ export class InputFormComponent implements OnInit {
     const requiredFields = ['customerType', 'projectName', 'typeOfWebsite', 'contentInformation'];
     const customerType = this.form.get('customerType')?.value;
 
-    // Add companyName to required fields if business
     if (customerType === 'business') {
       requiredFields.push('companyName');
     }
@@ -137,45 +123,54 @@ export class InputFormComponent implements OnInit {
     }
 
     this.loading = true;
-    const headers = new HttpHeaders({
-      'x-api-key': this.API_KEY,
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.authService.getToken()}`
-    });
 
     try {
       const currentUser = this.authService.getCurrentUser();
-      const formData = {
-        ...this.form.value,
-        userId: currentUser?.id,
-        userEmail: currentUser?.email,
-        generatedAt: new Date().toISOString()
+
+      // Prepare DTO for API
+      const dto: PageAiMockupDto = {
+        form: {
+          ...this.form.value,
+          userId: currentUser?.id,
+          userEmail: currentUser?.email,
+          generatedAt: new Date().toISOString()
+        }
       };
 
-      const res = await firstValueFrom(
-        this.http.post<MockupResponse>(this.API_URL, { form: formData }, { headers })
-      );
+      // Call API via ApiService
+      this.apiService.generateWebsiteMockup(dto).subscribe({
+        next: (response: PageAiMockupResponse) => {
+          // Add to preview service
+          this.previews.add({
+            html: response.html,
+            form: dto.form
+          });
 
-      this.previews.add({
-        html: res?.html ?? '',
-        form: formData
+          // Navigate to preview
+          this.router.navigate(['/preview']);
+          this.loading = false;
+        },
+        error: (err: any) => {
+          console.error('[mockup] API call failed:', err);
+
+          let message = 'Ein Fehler ist aufgetreten.';
+          if (err.status === 401) {
+            message = 'Sitzung abgelaufen. Bitte erneut anmelden.';
+            this.authService.logout();
+          } else if (err.status === 0) {
+            message = 'Keine Verbindung zum Server.';
+          } else if (err.error?.message) {
+            message = err.error.message;
+          }
+
+          alert(message);
+          this.loading = false;
+        }
       });
 
-      await this.router.navigate(['/preview']);
-
     } catch (err: any) {
-      console.error('[mockup] API call failed:', err);
-
-      let message = 'Ein Fehler ist aufgetreten.';
-      if (err.status === 401) {
-        message = 'Sitzung abgelaufen. Bitte erneut anmelden.';
-        this.authService.logout();
-      } else if (err.status === 0) {
-        message = 'Keine Verbindung zum Server.';
-      }
-
-      alert(message);
-    } finally {
+      console.error('[mockup] Unexpected error:', err);
+      alert('Ein unerwarteter Fehler ist aufgetreten.');
       this.loading = false;
     }
   }

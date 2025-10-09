@@ -109,6 +109,28 @@ export interface UpdateContactRequestDto {
   notes?: string;
 }
 
+export interface PageAiMockupDto {
+  form?: any; // Das komplette Form-Objekt
+  customerType?: string;
+  projectName?: string;
+  companyName?: string;
+  typeOfWebsite?: string;
+  primaryColor?: string;
+  designStyle?: string;
+  contentInformation?: string;
+  userId?: string;
+  userEmail?: string;
+  generatedAt?: string;
+}
+
+export interface PageAiMockupResponse {
+  ok: boolean;
+  html: string;
+  rawLength: number;
+  pageId?: string; // NEU: ID der gespeicherten Page
+  savedPage?: GeneratedPage; // NEU: Optional komplettes Page-Objekt
+}
+
 // ==================== SERVICE ====================
 
 @Injectable({
@@ -134,6 +156,17 @@ export class ApiService {
   }
 
   // ==================== USER ENDPOINTS ====================
+
+  generateWebsiteMockup(dto: PageAiMockupDto): Observable<PageAiMockupResponse> {
+    return this.http.post<PageAiMockupResponse>(
+      `${this.apiUrl}/page-ai/mockup`,
+      dto,
+      {
+        headers: this.getHeaders()
+      }
+    );
+  }
+
 
   /**
    * User registrieren
