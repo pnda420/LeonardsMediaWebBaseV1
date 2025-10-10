@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { PreviewService } from '../../../state/preview.service';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { ApiService, PageAiMockupDto, PageAiMockupResponse } from '../../../core/api/api.service';
+import { ApiService, PageAiMockupDto, PageAiMockupResponse } from '../../../api/api.service';
 
 interface WebsiteType {
   value: string;
@@ -141,10 +141,12 @@ export class InputFormComponent implements OnInit {
       this.apiService.generateWebsiteMockup(dto).subscribe({
         next: (response: PageAiMockupResponse) => {
           // Add to preview service
-          this.previews.add({
+          this.previews.addTemporary({
             html: response.html,
-            form: dto.form
+            form: dto.form,
+            pageId: response.pageId
           });
+
 
           // Navigate to preview
           this.router.navigate(['/preview']);

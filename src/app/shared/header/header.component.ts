@@ -34,9 +34,6 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    this.previewService.loadPreviewsFromLocalStorage();
-  }
 
   toggle() {
     this.open = !this.open;

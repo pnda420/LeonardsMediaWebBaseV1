@@ -13,37 +13,29 @@
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">✅</div>
+                <div class="stat-icon">👥</div>
                 <div class="stat-content">
-                    <div class="stat-value">{{ stats.published }}</div>
-                    <div class="stat-label">Veröffentlicht</div>
+                    <div class="stat-value">{{ stats.uniqueUsers }}</div>
+                    <div class="stat-label">User</div>
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">📝</div>
+                <div class="stat-icon">📊</div>
                 <div class="stat-content">
-                    <div class="stat-value">{{ stats.draft }}</div>
-                    <div class="stat-label">Entwürfe</div>
+                    <div class="stat-value">{{ stats.totalSize }} MB</div>
+                    <div class="stat-label">Gesamt Größe</div>
                 </div>
             </div>
         </div>
 
-        <!-- Filters & Search -->
-        <div class="filters-bar">
+        <!-- Search Bar -->
+        <div class="search-bar">
             <div class="search-box">
-                <input type="text" [(ngModel)]="searchTerm" placeholder="Seite suchen..." class="search-input">
+                <input type="text" [(ngModel)]="searchTerm" placeholder="Seite suchen (Name, User, Beschreibung)..."
+                    class="search-input">
             </div>
-
-            <div class="filter-group">
-                <select [(ngModel)]="filterStatus" class="filter-select">
-                    <option value="all">Alle Status</option>
-                    <option value="published">Veröffentlicht</option>
-                    <option value="draft">Entwürfe</option>
-                </select>
-            </div>
-
-            <button *ngIf="searchTerm || filterStatus !== 'all'" class="btn btn--ghost" (click)="clearFilters()">
-                Filter zurücksetzen
+            <button *ngIf="searchTerm" class="btn btn--ghost" (click)="clearFilters()">
+                ✕ Zurücksetzen
             </button>
         </div>
 
@@ -63,69 +55,72 @@
         <div *ngIf="!loading && !error && filteredPages.length === 0" class="empty-state">
             <div class="empty__icon">🎨</div>
             <h3>Keine Seiten gefunden</h3>
-            <p *ngIf="searchTerm || filterStatus !== 'all'">Versuche andere Suchbegriffe oder Filter.</p>
-            <p *ngIf="!searchTerm && filterStatus === 'all'">Noch keine Seiten generiert.</p>
-            <button *ngIf="searchTerm || filterStatus !== 'all'" class="btn btn--secondary" (click)="clearFilters()">
-                Filter zurücksetzen
+            <p *ngIf="searchTerm">Versuche andere Suchbegriffe.</p>
+            <p *ngIf="!searchTerm">Noch keine Seiten generiert.</p>
+            <button *ngIf="searchTerm" class="btn btn--secondary" (click)="clearFilters()">
+                Suche zurücksetzen
             </button>
         </div>
 
-        <!-- Pages Grid -->
-        <div *ngIf="!loading && !error && filteredPages.length > 0" class="pages-grid">
-            <article *ngFor="let page of filteredPages" class="page-card">
-
-                <!-- Card Header -->
-                <div class="card__header">
-                    <div class="card__title">
-                        <h3>{{ page.name }}</h3>
-                        <span class="status-badge" [class.status--published]="page.isPublished">
-                            {{ page.isPublished ? '✅ Live' : '📝 Entwurf' }}
-                        </span>
-                    </div>
-                    <p class="card__date">{{ formatDate(page.createdAt) }}</p>
-                </div>
-
-                <!-- Card Content -->
-                <div class="card__content">
-                    <p class="card__description" *ngIf="page.description">
-                        {{ page.description }}
-                    </p>
-                    <div class="card__preview">
-                        <code>{{ getContentPreview(page.pageContent, 150) }}</code>
-                    </div>
-                    <div class="card__meta">
-                        <span class="meta-item">
-                            <strong>Größe:</strong> {{ (page.pageContent.length / 1024).toFixed(1) }} KB
-                        </span>
-                        <span class="meta-item" *ngIf="page.user">
-                            <strong>Von:</strong> {{ page.user.name }}
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Card Actions -->
-                <div class="card__actions">
-                    <button class="btn-action btn-action--primary" (click)="openPreview(page)" title="Vorschau">
-                        👁️ Vorschau
-                    </button>
-                    <button class="btn-action btn-action--success" (click)="togglePublish(page)" title="Status ändern">
-                        {{ page.isPublished ? '📝 Auf Draft' : '✅ Publishen' }}
-                    </button>
-                    <button class="btn-action btn-action--secondary" (click)="downloadPage(page)" title="Download">
-                        ⬇️ Download
-                    </button>
-                    <button class="btn-action btn-action--info" (click)="copyContent(page)" title="Kopieren">
-                        📋 Kopieren
-                    </button>
-                    <button class="btn-action btn-action--danger" (click)="deletePage(page)" title="Löschen">
-                        🗑️
-                    </button>
-                </div>
-            </article>
+        <!-- Pages Table -->
+        <div *ngIf="!loading && !error && filteredPages.length > 0" class="pages-table-wrapper">
+            <table class="pages-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>User</th>
+                        <th>Beschreibung</th>
+                        <th>Größe</th>
+                        <th>Erstellt</th>
+                        <th class="actions-col">Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let page of filteredPages" class="page-row">
+                        <td class="name-col">
+                            <strong>{{ page.name }}</strong>
+                        </td>
+                        <td class="user-col">
+                            <div class="user-info" *ngIf="page.user">
+                                <span class="user-name">{{ page.user.name }}</span>
+                                <span class="user-email">{{ page.user.email }}</span>
+                            </div>
+                            <span *ngIf="!page.user" class="text-muted">Unbekannt</span>
+                        </td>
+                        <td class="desc-col">
+                            <span *ngIf="page.description" class="description">{{ page.description }}</span>
+                            <span *ngIf="!page.description" class="text-muted">Keine Beschreibung</span>
+                        </td>
+                        <td class="size-col">
+                            {{ (page.pageContent.length / 1024).toFixed(1) }} KB
+                        </td>
+                        <td class="date-col">
+                            {{ formatDate(page.createdAt) }}
+                        </td>
+                        <td class="actions-col">
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-icon--primary" (click)="openPreview(page)" title="Vorschau">
+                                    👁️
+                                </button>
+                                <button class="btn-icon btn-icon--secondary" (click)="downloadPage(page)"
+                                    title="Download">
+                                    ⬇️
+                                </button>
+                                <button class="btn-icon btn-icon--info" (click)="copyContent(page)" title="Kopieren">
+                                    📋
+                                </button>
+                                <button class="btn-icon btn-icon--danger" (click)="deletePage(page)" title="Löschen">
+                                    🗑️
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <!-- Results Count -->
-        <div class="results-footer" *ngIf="!loading && !error">
+        <div class="results-footer" *ngIf="!loading && !error && filteredPages.length > 0">
             <p>{{ filteredPages.length }} von {{ pages.length }} Seiten angezeigt</p>
         </div>
 
@@ -136,13 +131,21 @@
 <div class="modal-overlay" *ngIf="showPreviewModal" (click)="closePreview()">
     <div class="modal" (click)="$event.stopPropagation()">
         <div class="modal__header">
-            <h2>{{ selectedPage?.name }}</h2>
+            <div class="modal__title">
+                <h2>{{ selectedPage?.name }}</h2>
+                <span class="modal__subtitle" *ngIf="selectedPage?.user">
+                    von {{ selectedPage!.user!.name }}
+                </span>
+            </div>
             <button class="modal__close" (click)="closePreview()">✕</button>
         </div>
         <div class="modal__content">
-            <iframe [srcdoc]="selectedPage?.pageContent" class="preview-iframe"
-                sandbox="allow-same-origin allow-scripts">
+            <iframe #previewIframe [src]="previewUrl" class="preview-iframe" *ngIf="previewUrl">
             </iframe>
+            <div class="preview-loading" *ngIf="!previewUrl">
+                <div class="spinner"></div>
+                <p>Lade Vorschau...</p>
+            </div>
         </div>
         <div class="modal__footer">
             <button class="btn btn--secondary" (click)="downloadPage(selectedPage!)">
