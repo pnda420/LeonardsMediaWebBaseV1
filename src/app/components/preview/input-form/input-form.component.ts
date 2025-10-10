@@ -25,6 +25,8 @@ export class InputFormComponent implements OnInit {
   loading = false;
   isLoggedIn = false;
   currentUrl: string = '';
+  selectedQuality: 'fast' | 'balanced' | 'premium' = 'balanced';
+  showQualitySelector = false;
 
   websiteTypes: WebsiteType[] = [
     { value: 'praesentation', label: 'Präsentation', icon: '🎯', description: 'Portfolio, Firma', },
@@ -111,7 +113,16 @@ export class InputFormComponent implements OnInit {
     }
   }
 
-  async onSubmit(): Promise<void> {
+  toggleQualitySelector(): void {
+    this.showQualitySelector = !this.showQualitySelector;
+  }
+
+  selectQuality(quality: 'fast' | 'balanced' | 'premium'): void {
+    this.selectedQuality = quality;
+    this.showQualitySelector = false;
+  }
+
+ async onSubmit(): Promise<void> {
     if (!this.form.valid) {
       Object.keys(this.form.controls).forEach(key => {
         this.form.get(key)?.markAsTouched();
@@ -127,7 +138,6 @@ export class InputFormComponent implements OnInit {
     try {
       const currentUser = this.authService.getCurrentUser();
 
-      // Prepare DTO for API
       const dto: PageAiMockupDto = {
         form: {
           ...this.form.value,
@@ -137,18 +147,17 @@ export class InputFormComponent implements OnInit {
         }
       };
 
-      // Call API via ApiService
-      this.apiService.generateWebsiteMockup(dto).subscribe({
+      // Call API mit quality parameter
+      this.apiService.generateWebsiteMockup(dto, this.selectedQuality).subscribe({
         next: (response: PageAiMockupResponse) => {
-          // Add to preview service
+          console.log('✅ Website generiert!', response.metadata);
+
           this.previews.addTemporary({
             html: response.html,
             form: dto.form,
             pageId: response.pageId
           });
 
-
-          // Navigate to preview
           this.router.navigate(['/preview']);
           this.loading = false;
         },
@@ -159,8 +168,6 @@ export class InputFormComponent implements OnInit {
           if (err.status === 401) {
             message = 'Sitzung abgelaufen. Bitte erneut anmelden.';
             this.authService.logout();
-          } else if (err.status === 0) {
-            message = 'Keine Verbindung zum Server.';
           } else if (err.error?.message) {
             message = err.error.message;
           }

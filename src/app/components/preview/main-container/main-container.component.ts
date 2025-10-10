@@ -63,58 +63,20 @@ export class MainContainerComponent implements OnInit, OnDestroy {
 
     if (!iframeDoc) return;
 
-    // HTML ohne Dark Mode Styles
-    const cleanedHtml = this.removeDarkModeStyles(html);
+    console.log('📦 Original HTML Länge:', html.length);
 
-    // Vollständiges HTML-Dokument erstellen
-    const fullHtml = `
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-        }
-    </style>
-    ${this.extractStyles(cleanedHtml)}
-</head>
-<body>
-    ${this.extractBody(cleanedHtml)}
-    <script>
-        // Alle Links und Buttons blockieren
-        document.addEventListener('click', function(e) {
-            const target = e.target.closest('a, button, [role="button"]');
-            if (target) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            }
-        }, true);
-        
-        // Forms blockieren
-        document.addEventListener('submit', function(e) {
-            e.preventDefault();
-            return false;
-        }, true);
-    </script>
-</body>
-</html>
-    `.trim();
+    // ✅ Sicherheits-Script hinzufügen
+    const safeHtml = this.injectSafetyScript(html);
 
-    // HTML in iframe schreiben
+    console.log('✅ Finale HTML Länge:', safeHtml.length);
+
+    // ✅ Direkt in iframe schreiben - KEINE weitere Manipulation
     iframeDoc.open();
-    iframeDoc.write(fullHtml);
+    iframeDoc.write(safeHtml);
     iframeDoc.close();
+
+    // ✅ Debug: Check Styles nach Render
+    setTimeout(() => this.debugIframeStyles(), 500);
   }
 
   private clearIframe(): void {
@@ -130,45 +92,105 @@ export class MainContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private extractStyles(html: string): string {
-    const styleMatches = html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi);
-    return Array.from(styleMatches).map(match => `<style>${match[1]}</style>`).join('\n');
+  routeTo(route: string): void {
+    this.router.navigate([route]);
   }
 
-  private extractBody(html: string): string {
-    // Entferne <style> Tags
-    let body = html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+  // ✅ Sicherheits-Script am Ende hinzufügen
+  private injectSafetyScript(html: string): string {
+    const safetyScript = `
+    <script>
+        // Blockiere alle Interaktionen
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest('a, button, [role="button"]');
+            if (target) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }, true);
+        
+        // Forms blockieren
+        document.addEventListener('submit', function(e) {
+            e.preventDefault();
+            return false;
+        }, true);
+        
+        // Verhindere Navigation
+        window.addEventListener('beforeunload', function(e) {
+            e.preventDefault();
+            return false;
+        });
+    </script>
+    `;
 
-    // Falls es <body> Tags gibt, nur den Inhalt nehmen
-    const bodyMatch = body.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-    if (bodyMatch) {
-      return bodyMatch[1];
+    // Inject VOR </body> wenn vorhanden
+    const bodyCloseIndex = html.lastIndexOf('</body>');
+    if (bodyCloseIndex > -1) {
+      return html.substring(0, bodyCloseIndex) + safetyScript + html.substring(bodyCloseIndex);
     }
 
-    return body;
+    // Sonst am Ende
+    return html + safetyScript;
   }
 
-  private removeDarkModeStyles(html: string): string {
-    if (!html) return '';
+  // ✅ Debug: Check iframe Styles
+  private debugIframeStyles(): void {
+    if (!this.previewIframe?.nativeElement) return;
 
-    // Entferne alle @media (prefers-color-scheme: dark) Blöcke
-    html = html.replace(/@media\s*\(\s*prefers-color-scheme\s*:\s*dark\s*\)\s*\{[\s\S]*?\}\s*\}/gi, '');
+    const iframe = this.previewIframe.nativeElement;
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
 
-    // Entferne Dark Mode CSS Variablen und Klassen
-    html = html.replace(/(:root\[data-theme=['"]dark['"]\]|\.dark-mode|\.dark|html\.dark|body\.dark)\s*\{[\s\S]*?\}/gi, '');
+    if (!iframeDoc || !iframe.contentWindow) return;
 
-    return html;
+    const body = iframeDoc.body;
+    const computedStyle = iframe.contentWindow.getComputedStyle(body);
+
+    console.log('🎨 iframe body styles:');
+    console.log('  background:', computedStyle.backgroundColor);
+    console.log('  color:', computedStyle.color);
+    console.log('  font-family:', computedStyle.fontFamily);
+
+    // Check alle h1 Elemente
+    const h1Elements = iframeDoc.querySelectorAll('h1');
+    h1Elements.forEach((h1, i) => {
+      const h1Style = iframe.contentWindow!.getComputedStyle(h1);
+      console.log(`📝 h1[${i}] color:`, h1Style.color, '| text:', h1.textContent?.substring(0, 30));
+    });
+
+    // Check Hero Section
+    const heroElements = iframeDoc.querySelectorAll('.hero, [class*="hero"]');
+    if (heroElements.length > 0) {
+      console.log('🦸 Hero sections gefunden:', heroElements.length);
+      heroElements.forEach((hero, i) => {
+        const heroStyle = iframe.contentWindow!.getComputedStyle(hero);
+        console.log(`  hero[${i}] background:`, heroStyle.backgroundColor);
+      });
+    }
   }
+
+  // ==================== UI Methods ====================
 
   getCurrentScreenWidth(): number {
     return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
   }
 
   onPreviewChange(ev: Event): void {
-    const target = ev.target as HTMLSelectElement;
-    const idx = Number(target.value);
-    if (!Number.isNaN(idx)) {
-      this.previewService.selectByIndex(idx);
+    // Handle both button clicks and select changes
+    const target = ev.target as HTMLElement;
+
+    if (target.tagName === 'SELECT') {
+      const select = target as HTMLSelectElement;
+      const idx = Number(select.value);
+      if (!Number.isNaN(idx)) {
+        this.previewService.selectByIndex(idx);
+      }
+    } else if (target.classList.contains('preview-header__page-btn')) {
+      const button = target as HTMLButtonElement;
+      const idx = Number(button.getAttribute('data-index'));
+      if (!Number.isNaN(idx)) {
+        this.previewService.selectByIndex(idx);
+      }
     }
   }
 

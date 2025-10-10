@@ -27,7 +27,7 @@ export class RegisterComponent {
     private toasts: ToastService
   ) { }
 
-  async register() {
+  register() {
     if (!this.name || !this.email || !this.password) {
       this.error = 'Bitte fülle alle Felder aus';
       return;
@@ -41,15 +41,19 @@ export class RegisterComponent {
     this.loading = true;
     this.error = '';
 
-    try {
-      await this.authService.register(this.email, this.name, this.password);
-      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-      this.router.navigate([returnUrl]);
-      this.toasts.success('Erfolgreich registriert und eingeloggt.');
-      this.loading = false;
-    } catch (err: any) {
-      this.error = err?.error?.message || 'Registrierung fehlgeschlagen. Email bereits vergeben?';
-      this.loading = false;
-    }
+    this.authService.register(this.email, this.name, this.password).subscribe({
+      next: (response) => {
+        console.log('✅ Registrierung erfolgreich:', response);
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.router.navigate([returnUrl]);
+        this.toasts.success('Erfolgreich registriert und eingeloggt.');
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('❌ Registrierung fehlgeschlagen:', err);
+        this.error = err?.error?.message || 'Registrierung fehlgeschlagen. Email bereits vergeben?';
+        this.loading = false;
+      }
+    });
   }
 }

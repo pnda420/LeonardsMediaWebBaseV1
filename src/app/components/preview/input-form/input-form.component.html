@@ -156,6 +156,45 @@
                 </div>
             </section>
 
+            <!-- Quality Selector -->
+            <div class="quality-selector-wrapper" *ngIf="form.valid">
+                <div class="quality-selector">
+                    <label class="quality-label">
+                        <span class="quality-label-icon">⚙️</span>
+                        Generierungs-Qualität
+                    </label>
+
+                    <div class="quality-options">
+                        <button type="button" class="quality-option" (click)="selectQuality('fast')"
+                            [class.active]="selectedQuality === 'fast'">
+                            <span class="quality-icon">⚡</span>
+                            <span class="quality-info">
+                                <span class="quality-name">Schnell</span>
+                                <span class="quality-time">~15 Sek</span>
+                            </span>
+                        </button>
+
+                        <button type="button" class="quality-option" (click)="selectQuality('balanced')"
+                            [class.active]="selectedQuality === 'balanced'">
+                            <span class="quality-icon">⭐</span>
+                            <span class="quality-info">
+                                <span class="quality-name">Standard</span>
+                                <span class="quality-time">~30 Sek</span>
+                            </span>
+                        </button>
+
+                        <button type="button" class="quality-option" (click)="selectQuality('premium')"
+                            [class.active]="selectedQuality === 'premium'">
+                            <span class="quality-icon">💎</span>
+                            <span class="quality-info">
+                                <span class="quality-name">Premium</span>
+                                <span class="quality-time">~60 Sek</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Aktionen -->
             <div class="form-actions">
                 <button type="button" class="btn btn--ghost" (click)="onReset()">
@@ -174,10 +213,6 @@
                 </button>
             </div>
 
-            <div class="form-summary ok" *ngIf="form.valid">
-                <div class="summary-icon" aria-hidden="true">✓</div>
-                <p>Bereit zum Absenden!</p>
-            </div>
         </form>
     </div>
 </div>

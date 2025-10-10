@@ -127,8 +127,16 @@ export interface PageAiMockupResponse {
   ok: boolean;
   html: string;
   rawLength: number;
-  pageId?: string; // NEU: ID der gespeicherten Page
-  savedPage?: GeneratedPage; // NEU: Optional komplettes Page-Objekt
+  pageId?: string;
+  savedPage?: GeneratedPage;
+  metadata?: {
+    quality: string;
+    tokensUsed: number;
+    model: string;
+    generatedAt: string;
+    projectName: string;
+    websiteType: string;
+  };
 }
 
 // ==================== SERVICE ====================
@@ -157,13 +165,14 @@ export class ApiService {
 
   // ==================== USER ENDPOINTS ====================
 
-  generateWebsiteMockup(dto: PageAiMockupDto): Observable<PageAiMockupResponse> {
+  generateWebsiteMockup(
+    dto: PageAiMockupDto,
+    quality: 'fast' | 'balanced' | 'premium' = 'balanced'
+  ): Observable<PageAiMockupResponse> {
     return this.http.post<PageAiMockupResponse>(
-      `${this.apiUrl}/page-ai/mockup`,
+      `${this.apiUrl}/page-ai/mockup?quality=${quality}`,
       dto,
-      {
-        headers: this.getHeaders()
-      }
+      { headers: this.getHeaders() }
     );
   }
 

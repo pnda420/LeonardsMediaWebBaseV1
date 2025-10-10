@@ -1,38 +1,67 @@
-<!-- Preview Banner -->
-<aside class="preview-banner" role="banner" aria-label="Vorschauhinweis">
-    <div class="preview-banner__inner">
-        <div class="preview-banner__info">
-            <svg class="preview-banner__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-                <path d="M12 8v.01M12 12v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg>
-            <p class="preview-banner__text">
-                <strong>Vorschaumodus</strong>
-                <span class="muted">{{ getAllPreviews().length }} gespeicherte Seite(n)</span>
-            </p>
+<!-- Modern Preview Header -->
+<header class="preview-header">
+    <div class="preview-header__container">
+        <!-- Left: Branding & Info -->
+        <div class="preview-header__brand">
+            <div class="preview-header__logo">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="7" height="7" rx="1" fill="currentColor" opacity="0.3" />
+                    <rect x="3" y="13" width="7" height="7" rx="1" fill="currentColor" opacity="0.6" />
+                    <rect x="13" y="3" width="7" height="7" rx="1" fill="currentColor" opacity="0.8" />
+                    <rect x="13" y="13" width="7" height="7" rx="1" fill="currentColor" />
+                </svg>
+            </div>
+            <div class="preview-header__info">
+                <span class="preview-header__title">Preview</span>
+                <span class="preview-header__count" *ngIf="getAllPreviews().length > 0">
+                    {{ getAllPreviews().length }} {{ getAllPreviews().length === 1 ? 'Seite' : 'Seiten' }}
+                </span>
+            </div>
         </div>
 
-        <div class="preview-banner__actions">
-            <select id="previewSelect" class="select preview-select" aria-label="Vorschau auswählen"
-                (change)="onPreviewChange($event)" *ngIf="getAllPreviews().length > 0">
-                <option *ngFor="let p of getAllPreviews(); let i = index; trackBy: trackByIndex" [value]="i"
-                    [selected]="i === getSelectedIndex()">
-                    {{ 'Seite ' + (i + 1) }}
-                </option>
-            </select>
+        <!-- Center: Page Selector (Desktop only) -->
+        <div class="preview-header__selector" *ngIf="getAllPreviews().length > 0">
+            <button *ngFor="let p of getAllPreviews(); let i = index; trackBy: trackByIndex"
+                [class.active]="i === getSelectedIndex()" (click)="onPreviewChange($event)" [attr.data-index]="i"
+                class="preview-header__page-btn">
+                <span class="preview-header__page-number">{{ i + 1 }}</span>
+            </button>
+        </div>
 
-            <button class="btn btn--ghost" type="button" (click)="deleteCurrent()" *ngIf="getAllPreviews().length > 0"
-                [disabled]="loading">
-                🗑️ Löschen
+        <!-- Right: Actions -->
+        <div class="preview-header__actions">
+
+            <button class="btn btn--icon" type="button" (click)="routeTo('/')">
+                <span>Zurück</span>
             </button>
 
-            <button class="btn btn--ghost" type="button" (click)="goBack()" aria-label="Zurück zur Übersicht">
-                <span aria-hidden="true">←</span> Zurück
+            <button class="btn btn--icon btn--new" type="button" (click)="goBack()" aria-label="Neue Seite erstellen">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <span class="btn__text">Neue Seite</span>
+            </button>
+
+            <button class="btn btn--icon btn--danger" type="button" (click)="deleteCurrent()"
+                *ngIf="getAllPreviews().length > 0" [disabled]="loading" aria-label="Seite löschen">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
             </button>
         </div>
     </div>
-</aside>
+
+    <!-- Mobile Page Selector -->
+    <div class="preview-header__mobile-selector" *ngIf="getAllPreviews().length > 1">
+        <select class="preview-header__mobile-select" (change)="onPreviewChange($event)">
+            <option *ngFor="let p of getAllPreviews(); let i = index; trackBy: trackByIndex" [value]="i"
+                [selected]="i === getSelectedIndex()">
+                Seite {{ i + 1 }}
+            </option>
+        </select>
+    </div>
+</header>
 
 <!-- Loading State -->
 <div class="loading-state" *ngIf="loading">
@@ -49,10 +78,20 @@
 
 <!-- Empty State -->
 <div class="empty-state" *ngIf="!hasContent && !loading && getAllPreviews().length === 0">
-    <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" />
-        <path d="M9 9l6 6m0-6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-    </svg>
-    <p class="empty-state__text">Noch keine Seiten erstellt</p>
-    <button class="btn btn--primary" (click)="goBack()">Jetzt erstellen</button>
+    <div class="empty-state__icon">
+        <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" opacity="0.3" />
+            <rect x="3" y="13" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" opacity="0.5" />
+            <rect x="13" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" opacity="0.7" />
+            <rect x="13" y="13" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" />
+        </svg>
+    </div>
+    <h2 class="empty-state__title">Noch keine Seiten erstellt</h2>
+    <p class="empty-state__text">Erstelle deine erste Website in wenigen Minuten</p>
+    <button class="btn btn--primary btn--large" (click)="goBack()">
+        <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <span>Jetzt erstellen</span>
+    </button>
 </div>

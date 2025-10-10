@@ -1,111 +1,312 @@
 @import '../../../utils/shared-styles.scss';
 
-.preview-banner {
-    background: $color-white;
-    border-bottom: 1px solid $color-gray-light;
-    padding: 1rem;
+// ==================== MODERN PREVIEW HEADER ====================
+.preview-header {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     position: sticky;
     top: 0;
     z-index: 100;
+    backdrop-filter: blur(10px) saturate(180%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 
-    &__inner {
+    &__container {
         max-width: 1400px;
         margin: 0 auto;
+        padding: 1rem 1.5rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 1rem;
-        flex-wrap: wrap;
+        gap: 2rem;
+
+        @media (max-width: 768px) {
+            padding: 0.75rem 1rem;
+            gap: 1rem;
+        }
+    }
+
+    &__brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-width: 0;
+    }
+
+    &__logo {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, $color-brand-primary, darken($color-brand-primary, 10%));
+        border-radius: 10px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba($color-brand-primary, 0.25);
+
+        svg {
+            width: 20px;
+            height: 20px;
+            color: white;
+        }
     }
 
     &__info {
         display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    &__icon {
-        width: 24px;
-        height: 24px;
-        color: $color-brand-primary;
-    }
-
-    &__text {
-        display: flex;
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 2px;
+        min-width: 0;
+    }
 
-        strong {
-            font-size: 0.95rem;
-            color: $color-text-primary;
+    &__title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: $color-text-primary;
+        letter-spacing: -0.01em;
+    }
+
+    &__count {
+        font-size: 0.75rem;
+        color: $color-text-secondary;
+        font-weight: 500;
+    }
+
+    // Center Selector (Desktop Only)
+    &__selector {
+        display: flex;
+        gap: 6px;
+        padding: 6px;
+        background: rgba(0, 0, 0, 0.04);
+        border-radius: 10px;
+        max-width: 400px;
+        overflow-x: auto;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
         }
 
-        .muted {
-            font-size: 0.85rem;
-            color: $color-text-secondary;
+        @media (max-width: 1024px) {
+            display: none;
         }
     }
 
+    &__page-btn {
+        min-width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        &.active {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+            .preview-header__page-number {
+                color: $color-brand-primary;
+                font-weight: 700;
+            }
+        }
+    }
+
+    &__page-number {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: $color-text-secondary;
+        transition: color 0.2s ease;
+    }
+
+    // Actions
     &__actions {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    // Mobile Selector
+    &__mobile-selector {
+        display: none;
+        padding: 0.75rem 1rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+
+        @media (max-width: 1024px) {
+            display: block;
+        }
+    }
+
+    &__mobile-select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        background: white;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: $color-text-primary;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:focus {
+            outline: none;
+            border-color: $color-brand-primary;
+            box-shadow: 0 0 0 3px rgba($color-brand-primary, 0.1);
+        }
     }
 }
 
-.preview-select {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid $color-gray-light;
+// ==================== MODERN BUTTONS ====================
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border: none;
     border-radius: 8px;
-    background: $color-white;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
 
-    &:focus {
-        outline: none;
-        border-color: $color-brand-primary;
-        box-shadow: 0 0 0 3px rgba($color-brand-primary, 0.1);
+    svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    // Icon-only button
+    &--icon {
+        padding: 0.625rem;
+
+        .btn__text {
+            display: none;
+
+            @media (min-width: 640px) {
+                display: inline;
+            }
+        }
+
+        @media (min-width: 640px) {
+            padding: 0.625rem 1rem;
+        }
+    }
+
+    // Primary (Create New)
+    &--new {
+        background: $color-brand-primary;
+        color: white;
+        box-shadow: 0 2px 8px rgba($color-brand-primary, 0.25);
+
+        &:hover:not(:disabled) {
+            background: darken($color-brand-primary, 5%);
+            box-shadow: 0 4px 12px rgba($color-brand-primary, 0.35);
+            transform: translateY(-1px);
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(0);
+        }
+    }
+
+    // Danger (Delete)
+    &--danger {
+        background: rgba(239, 68, 68, 0.1);
+        color: #dc2626;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        &:hover:not(:disabled) {
+            background: rgba(239, 68, 68, 0.15);
+        }
+    }
+
+    // Primary Large (Empty State)
+    &--primary {
+        background: $color-brand-primary;
+        color: white;
+        box-shadow: 0 4px 12px rgba($color-brand-primary, 0.3);
+
+        &:hover {
+            background: darken($color-brand-primary, 5%);
+            box-shadow: 0 6px 16px rgba($color-brand-primary, 0.4);
+            transform: translateY(-2px);
+        }
+    }
+
+    &--large {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
     }
 }
 
+// ==================== PREVIEW WRAPPER ====================
 .preview-wrapper {
     width: 100%;
     display: flex;
     justify-content: center;
-    background: $color-background-main;
-    min-height: calc(100vh - 80px);
-    padding: 1rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: calc(100vh - 100px);
+    padding: 1.5rem;
+
+    @media (max-width: 768px) {
+        padding: 0;
+        background: white;
+    }
 }
 
 .preview-iframe {
+    width: 100%;
     border: none;
     background: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border-radius: 8px;
-    min-height: calc(100vh - 120px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-radius: 12px;
+    min-height: calc(100vh - 140px);
     height: auto;
     display: block;
 
     @media (max-width: 768px) {
-        width: 100% !important;
         border-radius: 0;
         box-shadow: none;
+        min-height: calc(100vh - 120px);
     }
 }
 
+// ==================== LOADING STATE ====================
 .loading-state {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 60vh;
-    gap: 1rem;
+    gap: 1.5rem;
 
     .spinner {
         width: 48px;
         height: 48px;
-        border: 4px solid $color-gray-light;
+        border: 4px solid rgba($color-brand-primary, 0.1);
         border-top-color: $color-brand-primary;
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
@@ -114,9 +315,11 @@
     p {
         color: $color-text-secondary;
         font-size: 0.95rem;
+        font-weight: 500;
     }
 }
 
+// ==================== EMPTY STATE ====================
 .empty-state {
     display: flex;
     flex-direction: column;
@@ -128,20 +331,54 @@
     text-align: center;
 
     &__icon {
-        width: 64px;
-        height: 64px;
-        color: $color-gray;
-        opacity: 0.5;
+        width: 80px;
+        height: 80px;
+        padding: 1rem;
+        background: linear-gradient(135deg, rgba($color-brand-primary, 0.1), rgba($color-brand-primary, 0.05));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            color: $color-brand-primary;
+        }
+    }
+
+    &__title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $color-text-primary;
+        margin: 0;
+        letter-spacing: -0.02em;
     }
 
     &__text {
-        font-size: 1.1rem;
+        font-size: 1rem;
         color: $color-text-secondary;
+        margin: -0.5rem 0 0;
+        max-width: 400px;
     }
 }
 
+// ==================== ANIMATIONS ====================
 @keyframes spin {
     to {
         transform: rotate(360deg);
+    }
+}
+
+// ==================== RESPONSIVE TWEAKS ====================
+@media (max-width: 640px) {
+    .preview-header {
+        &__info {
+            display: none;
+        }
+
+        &__actions {
+            gap: 0.25rem;
+        }
     }
 }
