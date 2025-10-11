@@ -1,26 +1,29 @@
 <!-- UNDER CONSTRUCTION SEITE -->
-<div class="page" *ngIf="isUnderConstruction;">
+<div class="page page--maintenance" *ngIf="isUnderConstruction">
   <app-maintenance></app-maintenance>
 </div>
 
 <!-- NORMALE SEITE -->
-
-<div class="page" *ngIf="!isUnderConstruction;">
+<div class="page" *ngIf="!isUnderConstruction">
   @if(router.url !== '/preview') {
-  <app-header class="site-header"></app-header>
-
+  <app-header class="site-header" [class.scrolled]="isScrolled"></app-header>
 
   <main id="main" class="site-main" role="main">
-    <div class="container">
+    <div class="main-content">
       <router-outlet></router-outlet>
     </div>
   </main>
 
   <app-footer class="site-footer"></app-footer>
 
-  }@else {
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" [class.visible]="showScrollTop" (click)="scrollToTop()" aria-label="Nach oben scrollen">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+  } @else {
   <router-outlet></router-outlet>
   }
 </div>
 
+<!-- Toast Container (immer sichtbar) -->
 <app-toast-container></app-toast-container>

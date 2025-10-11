@@ -19,6 +19,7 @@ export class RegisterComponent {
   password = '';
   loading = false;
   error = '';
+  showPassword = false;
 
   constructor(
     private authService: AuthService,
@@ -40,6 +41,7 @@ export class RegisterComponent {
 
     this.loading = true;
     this.error = '';
+
 
     this.authService.register(this.email, this.name, this.password).subscribe({
       next: (response) => {

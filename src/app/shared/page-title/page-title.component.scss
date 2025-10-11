@@ -1,66 +1,51 @@
 @import '../../utils/shared-styles.scss';
 
-/* Wrapper für konsistenten Abstand */
 .page-header {
-  margin: 0 0 1rem;
-  padding-top: .25rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  margin-top: 1rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 2.5rem;
+  }
 }
 
-/* Titel: klare Typo, responsive Größe, sauberer Offset für Sticky-Header */
 .page-title {
-  margin: 0;
-  padding: .25rem 0 .75rem;
-  color: $color-text-primary;
-  letter-spacing: -0.012em;
-  line-height: 1.15;
-  font-family: 'Inter', 'Roboto', Arial, sans-serif;
-  font-weight: 600;
-  font-size: clamp(1.5rem, 1.2rem + 1.8vw, 2.25rem);
-
-  border-bottom: 1px solid $color-gray-light;
-
-  /* Falls du einen sticky Header hast (siehe --header-h aus deinem Header) */
-  scroll-margin-top: calc(var(--header-h, 64px) + 16px);
-}
-
-/* Variante: kurzer Brand-Akzent statt durchgehender Linie */
-.page-title--accent {
-  border-bottom-color: transparent;
   position: relative;
-}
-.page-title--accent::after {
-  content: "";
-  display: block;
-  width: 56px;
-  height: 3px;
-  border-radius: 3px;
-  background: $color-brand-primary;
-  margin-top: .5rem;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  font-size: clamp(1.75rem, 4vw + 1rem, 2.5rem);
+  font-weight: 900;
+  color: $color-text-primary;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+
+  .title-accent {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: $gradient-primary;
+    border-radius: $radius-full;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  }
 }
 
-/* Variante: Icon neben dem Titel (ohne Material) */
-.page-title--icon {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-}
-.page-title__icon {
-  width: 1.25em;
-  height: 1.25em;
-  color: $color-brand-primary;
-}
-
-/* Untertitel (optional) */
 .page-subtitle {
-  margin: .5rem 0 0;
+  margin: 1rem auto 0;
+  max-width: 600px;
+  font-size: clamp(1rem, 1.5vw + 0.5rem, 1.125rem);
   color: $color-text-secondary;
-  font-size: clamp(.95rem, .85rem + .4vw, 1.05rem);
+  line-height: 1.6;
 }
 
-/* Dark-Mode (falls du eine Dark-Klasse nutzt) */
-.theme-dark .page-title {
-  border-bottom-color: rgba(255,255,255,0.12);
-}
-.theme-dark .page-title--accent::after {
-  background: $color-brand-light;
+/* ===== MOTION PREFERENCES ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+  }
 }

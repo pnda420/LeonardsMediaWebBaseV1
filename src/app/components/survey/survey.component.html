@@ -1,298 +1,287 @@
-<section class="op" aria-label="Kurze Umfrage">
-    <div class="flex">
-        <div class="container hero">
-            <div class="hero__content">
-                <h2>Was brauchst du für deine Website?</h2>
-                <p>Kurze Fragen. Klare Sprache. Am Ende gibt’s eine Empfehlung und die Infos, die ich für ein Angebot
-                    brauche.</p>
+<section class="survey-page">
 
-                <div class="hero__facts" aria-label="Status">
-                    <span class="chip">Schritt {{ step() + 1 }} / {{ steps.length }}</span>
-                    <span class="chip chip--muted">Dauer: ~1-2 Minuten</span>
+    <!-- SUCCESS VIEW -->
+    <div *ngIf="isSubmitted()" class="container success-view">
+        <div class="success-card">
+            <div class="success-icon">
+                <span class="material-symbols-outlined ms-fill">check_circle</span>
+            </div>
+
+            <div class="success-content">
+                <h1>Vielen Dank für deine Anfrage!</h1>
+                <p class="success-subtitle">
+                    Deine Nachricht ist bei mir angekommen. Ich melde mich in der Regel innerhalb von 24 Stunden bei dir
+                    zurück.
+                </p>
+
+                <div class="success-details">
+                    <div class="detail-item">
+                        <span class="material-symbols-outlined">mail</span>
+                        <div>
+                            <strong>Bestätigung per E-Mail</strong>
+                            <span>Du erhältst eine Kopie an {{ form.get('contactEmail')?.value }}</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-item" *ngIf="recommendation().pkg as rec">
+                        <span class="material-symbols-outlined">lightbulb</span>
+                        <div>
+                            <strong>Meine Empfehlung: {{ rec.title }}</strong>
+                            <span>Basierend auf deinen Angaben</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="material-symbols-outlined">schedule</span>
+                        <div>
+                            <strong>Nächste Schritte</strong>
+                            <span>Ich schaue mir deine Anfrage genau an und erstelle ein passendes Angebot</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="success-actions">
+                    <button type="button" class="btn btn--primary btn--large" (click)="goToHome()">
+                        <span class="material-symbols-outlined ms-size-20">home</span>
+                        Zur Startseite
+                    </button>
+                    <button type="button" class="btn btn--ghost" (click)="resetSurvey()">
+                        <span class="material-symbols-outlined ms-size-20">refresh</span>
+                        Neue Anfrage starten
+                    </button>
+                </div>
+
+                <div class="success-footer">
+                    <p>
+                        <span class="material-symbols-outlined">info</span>
+                        Hast du noch Fragen? Schreib mir gerne direkt eine E-Mail oder ruf mich an.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Stepper -->
-    <div class="flex">
-        <div class="container stepper" aria-label="Fortschritt">
-            <ol class="steps-inline">
-                <li *ngFor="let s of steps; let i = index" [class.active]="i === step()"
-                    [class.done]="i <= maxStepReached()" (click)="i <= maxStepReached() && goToStep(i)">
-                    <span class="num">{{ i + 1 }}</span>
-                    <span class="label">{{ s }}</span>
-                </li>
-            </ol>
+    <!-- SURVEY VIEW (nur anzeigen wenn NICHT submitted) -->
+    <ng-container *ngIf="!isSubmitted()">
+
+        <!-- Hero Section -->
+        <div class="container hero-section">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="material-symbols-outlined ms-fill">auto_awesome</span>
+                    Interaktive Projekt-Analyse
+                </div>
+                <h1>Finde dein perfektes Website-Paket</h1>
+                <!-- <p>
+                    Beantworte ein paar kurze Fragen und erhalte eine individuelle Empfehlung.
+                    Die Informationen helfen mir, dir ein passendes Angebot zu erstellen.
+                </p> -->
+                <div class="hero-meta">
+                    <div class="meta-chip">
+                        <span class="material-symbols-outlined">nest_clock_farsight_analog</span>
+                        ~1-2 Minuten
+                    </div>
+                    <div class="meta-chip meta-chip--highlight">
+                        <span class="material-symbols-outlined">line_end_arrow_notch</span>
+                        Schritt {{ step() + 1 }} von {{ steps.length }}
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- Form -->
-    <div class="flex">
-        <div class="container survey">
-            <!-- STEP 0: Projekt -->
-            <div *ngIf="step() === 0" class="card">
-                <h3>Was passt grob zu deinem Vorhaben?</h3>
-                <div class="choices">
-                    <button type="button" class="pill" [class.pill--sel]="form.value.projectType==='one'"
-                        (click)="form.patchValue({projectType: 'one'})">
-                        Eine einfache Seite
-                    </button>
-                    <button type="button" class="pill" [class.pill--sel]="form.value.projectType==='multi'"
-                        (click)="form.patchValue({projectType: 'multi'})">
-                        Mehrere Seiten
-                    </button>
-                    <button type="button" class="pill" [class.pill--sel]="form.value.projectType==='custom'"
-                        (click)="form.patchValue({projectType: 'custom'})">
-                        Etwas Individuelles, Komplexeres
-                    </button>
-                </div>
-                <div class="nav">
-                    <button class="btn btn--primary" [disabled]="!form.value.projectType"
-                        (click)="next()">Weiter</button>
-                </div>
+        <!-- Progress Stepper -->
+        <div class="container stepper-section">
+            <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="((step() + 1) / steps.length) * 100"></div>
             </div>
-
-            <!-- STEP 1: Inhalte -->
-            <div *ngIf="step() === 1" class="card">
-                <h3>Wie viel Inhalt ist geplant?</h3>
-                <p class="muted">Grobe Einschätzung reicht.</p>
-                <div class="choices">
-                    <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='very-low'"
-                        (click)="form.patchValue({contentAmount: 'very-low'})">
-                        Sehr wenig<br>
-                        <span class="muted">(1–2 Absätze, z. B. Startseite mit Kontaktdaten)</span>
-                    </button>
-                    <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='low'"
-                        (click)="form.patchValue({contentAmount: 'low'})">
-                        Wenig<br>
-                        <span class="muted">(3–5 Abschnitte, z. B. Start, Über mich, Leistungen, Kontakt)</span>
-                    </button>
-                    <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='medium'"
-                        (click)="form.patchValue({contentAmount: 'medium'})">
-                        Mittel<br>
-                        <span class="muted">(6–10 Abschnitte oder Seiten, z. B. Portfolio, Team, FAQ)</span>
-                    </button>
-                    <button type="button" class="pill" [class.pill--sel]="form.value.contentAmount==='high'"
-                        (click)="form.patchValue({contentAmount: 'high'})">
-                        Viel<br>
-                        <span class="muted">(mehr als 10 Seiten, z. B. Blog, viele Unterseiten)</span>
-                    </button>
-                </div>
-                <div class="nav">
-                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
-                    <button class="btn btn--primary" [disabled]="!form.value.contentAmount"
-                        (click)="next()">Weiter</button>
-                </div>
+            <div class="stepper-grid">
+                <button *ngFor="let s of steps; let i = index" class="step-item" [class.active]="i === step()"
+                    [class.completed]="i < step()" [class.accessible]="i <= maxStepReached()"
+                    [disabled]="i > maxStepReached()" (click)="i <= maxStepReached() && goToStep(i)"
+                    [attr.aria-label]="'Schritt ' + (i + 1) + ': ' + s"
+                    [attr.aria-current]="i === step() ? 'step' : null">
+                    <span class="step-number">
+                        <span *ngIf="i < step()" class="material-symbols-outlined ms-fill">check</span>
+                        <span *ngIf="i >= step()">{{ i + 1 }}</span>
+                    </span>
+                    <span class="step-label">{{ s }}</span>
+                </button>
             </div>
+        </div>
 
-            <!-- STEP 2: Domain -->
-            <div *ngIf="step() === 2" class="card">
-                <h3>Domain</h3>
-                <div class="choices">
-                    <button type="button" class="pill" [class.pill--sel]="form.value.hasDomain==='yes'"
-                        (click)="form.patchValue({hasDomain: 'yes'})">Ich habe schon eine Domain</button>
-                    <button type="button" class="pill" [class.pill--sel]="form.value.hasDomain==='no'"
-                        (click)="form.patchValue({hasDomain: 'no', domainName: ''})">Ich brauche eine Domain</button>
-                    <button type="button" class="pill" [class.pill--sel]="form.value.hasDomain==='unsure'"
-                        (click)="form.patchValue({hasDomain: 'unsure', domainName: ''})">Weiß ich noch nicht</button>
-                </div>
+        <!-- Survey Card -->
+        <div class="container survey-content">
+            <div class="survey-card">
 
-                <div *ngIf="form.value.hasDomain==='yes' " class="field">
-                    <label for="domain">Wie lautet sie?</label>
-                    <input id="domain" type="text" [formControl]="$any(form.get('domainName'))"
-                        placeholder="z. B. meinefirma.de"
-                        [attr.data-invalid]="!$any(form.get('domainName'))?.valid && $any(form.get('domainName'))?.touched ? 'true' : null">
-                </div>
+                <!-- Dynamic Step Content -->
+                <div *ngFor="let question of questions; let i = index" class="survey-step" [hidden]="step() !== i">
 
-                <div class="nav">
-                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
-                    <button class="btn btn--primary" [disabled]="!form.value.hasDomain" (click)="next()">Weiter</button>
-                </div>
-            </div>
-
-            <!-- STEP 3: Hosting -->
-            <div *ngIf="step() === 3" class="card">
-                <h3>Hosting</h3>
-                <div class="choices">
-                    <button type="button" class="pill" [class.pill--sel]="form.value.hosting==='with-me'"
-                        (click)="form.patchValue({hosting: 'with-me', hostingProvider: ''})">Bitte bei dir
-                        hosten</button>
-                    <button type="button" class="pill" [class.pill--sel]="form.value.hosting==='self'"
-                        (click)="form.patchValue({hosting: 'self'})">Ich hoste selbst</button>
-                    <button type="button" class="pill" [class.pill--sel]="form.value.hosting==='unsure'"
-                        (click)="form.patchValue({hosting: 'unsure', hostingProvider: ''})">Weiß ich noch nicht</button>
-                </div>
-
-                <div *ngIf="form.value.hosting==='self'" class="field">
-                    <label for="provider">Bei wem?</label>
-                    <input id="provider" type="text" [formControl]="$any(form.get('hostingProvider'))"
-                        placeholder="z. B. IONOS, netcup, all-inkl">
-                </div>
-
-                <div class="nav">
-                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
-                    <button class="btn btn--primary" [disabled]="!form.value.hosting" (click)="next()">Weiter</button>
-                </div>
-            </div>
-
-            <!-- STEP 4: Funktionen -->
-            <div *ngIf="step() === 4" class="card">
-                <h3>Welche Funktionen brauchst du?</h3>
-                <p class="muted">Einfach ankreuzen. Nur was wirklich gebraucht wird.</p>
-
-                <div class="addons" [formGroup]="$any(featuresGroup)">
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="startSection"> Startbereich (großes Bild / Überschrift)
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="about"> Über mich / Über uns
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="services"> Leistungen / Angebote
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="gallery"> Bildergalerie / Projekte
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="team"> Teamvorstellung
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="testimonials"> Kundenstimmen / Bewertungen
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="contactForm"> Kontaktformular
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="map"> Standortkarte (Google Maps)
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="faq"> Häufige Fragen (FAQ)
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="pricing"> Preise / Tarife
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="blog"> Neuigkeiten / Blog
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="booking"> Terminbuchung
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="downloads"> Downloads (PDFs, Broschüren)
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="newsletter"> Newsletter-Anmeldung
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="multilingual"> Mehrsprachigkeit
-                    </label>
-                    <label class="pill pill--check">
-                        <input type="checkbox" formControlName="socialLinks"> Social Media Links
-                    </label>
-                </div>
-
-
-                <div class="nav">
-                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
-                    <button class="btn btn--primary" (click)="next()">Weiter</button>
-                </div>
-            </div>
-
-            <!-- STEP 5: Budget & Zeit -->
-            <div *ngIf="step() === 5" class="card">
-                <h3>Budget & Zeit</h3>
-                <div class="field">
-                    <label>Budgetrahmen</label>
-                    <div class="choices">
-                        <button type="button" class="pill" [class.pill--sel]="form.value.budget==='&lt;2k'"
-                            (click)="form.patchValue({budget: '<2k'})">unter 2.000 €</button>
-                        <button type="button" class="pill" [class.pill--sel]="form.value.budget==='2-4k'"
-                            (click)="form.patchValue({budget: '2-4k'})">2.000–4.000 €</button>
-                        <button type="button" class="pill" [class.pill--sel]="form.value.budget==='4-7k'"
-                            (click)="form.patchValue({budget: '4-7k'})">4.000–7.000 €</button>
-                        <button type="button" class="pill" [class.pill--sel]="form.value.budget==='&gt;7k'"
-                            (click)="form.patchValue({budget: '>7k'})">über 7.000 €</button>
-                        <button type="button" class="pill" [class.pill--sel]="form.value.budget==='unsure'"
-                            (click)="form.patchValue({budget: 'unsure'})">weiß ich nicht</button>
+                    <div class="step-header">
+                        <span class="step-icon">{{ question.icon }}</span>
+                        <h2>{{ question.title }}</h2>
+                        <p class="step-subtitle" *ngIf="question.subtitle">{{ question.subtitle }}</p>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label>Zeitrahmen</label>
-                    <div class="choices">
-                        <button type="button" class="pill" [class.pill--sel]="form.value.timeframe==='fast'"
-                            (click)="form.patchValue({timeframe: 'fast'})">so schnell wie möglich</button>
-                        <button type="button" class="pill" [class.pill--sel]="form.value.timeframe==='normal'"
-                            (click)="form.patchValue({timeframe: 'normal'})">normal (4–8 Wochen)</button>
-                        <button type="button" class="pill" [class.pill--sel]="form.value.timeframe==='flex'"
-                            (click)="form.patchValue({timeframe: 'flex'})">flexibel</button>
-                    </div>
-                </div>
-
-                <div class="nav">
-                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
-                    <button class="btn btn--primary" [disabled]="!form.value.budget || !form.value.timeframe"
-                        (click)="next()">Weiter</button>
-                </div>
-            </div>
-
-            <!-- STEP 6: Kontakt & Zusammenfassung -->
-            <div *ngIf="step() === 6" class="card">
-                <h3>Fast fertig – wie kann ich dich erreichen?</h3>
-
-                <div class="field">
-                    <label for="name">Name</label>
-                    <input id="name" type="text" [formControl]="$any(form.get('contactName'))"
-                        placeholder="Vor- und Nachname"
-                        [attr.data-invalid]="$any(form.get('contactName'))?.invalid && $any(form.get('contactName'))?.touched ? 'true' : null">
-                </div>
-
-                <div class="field">
-                    <label for="email">E-Mail</label>
-                    <input id="email" type="email" [formControl]="$any(form.get('contactEmail'))"
-                        placeholder="name@beispiel.de"
-                        [attr.data-invalid]="$any(form.get('contactEmail'))?.invalid && $any(form.get('contactEmail'))?.touched ? 'true' : null">
-                </div>
-
-                <div class="field">
-                    <label for="notes">Gibt es noch etwas Wichtiges?</label>
-                    <textarea id="notes" rows="3" [formControl]="$any(form.get('notes'))"
-                        placeholder="Optional"></textarea>
-                </div>
-
-                <!-- Empfehlung -->
-                <div class="recommendation">
-                    <h4>Meine Empfehlung</h4>
-                    <ng-container *ngIf="recommendation().pkg as rec">
-                        <div class="rec-card" role="region" aria-label="Empfohlenes Paket">
-                            <img [src]="rec.img" [alt]="rec.title" loading="lazy">
-                            <div class="rec-meta">
-                                <strong>{{ rec.title }}</strong>
-                                <span class="meta">{{ rec.short }}</span>
-                                <span class="price">{{ rec.price }}</span>
-                                <div class="why">
-                                    <span class="badge">Begründung</span>
-                                    <ul>
-                                        <li *ngFor="let r of recommendation().reasons">{{ r }}</li>
-                                    </ul>
+                    <!-- Single Choice Options -->
+                    <div *ngIf="question.type === 'single-choice'" class="options-wrapper">
+                        <div [ngClass]="question.layout === 'cards' ? 'options-grid' : 'options-list'">
+                            <button *ngFor="let opt of question.options" type="button"
+                                [ngClass]="question.layout === 'cards' ? 'option-card' : 'option-row'"
+                                [class.selected]="form.get(question.formKey)?.value === opt.value"
+                                (click)="handleOptionClick(question.formKey, opt.value, question.resetFields)">
+                                <span *ngIf="question.layout === 'cards'" class="option-icon">{{ opt.icon }}</span>
+                                <div class="option-main" *ngIf="question.layout === 'list'">
+                                    <span class="option-radio"></span>
+                                    <div class="option-text">
+                                        <strong>{{ opt.label }}</strong>
+                                        <span class="option-hint" *ngIf="opt.hint">{{ opt.hint }}</span>
+                                    </div>
                                 </div>
+                                <ng-container *ngIf="question.layout === 'cards'">
+                                    <strong>{{ opt.label }}</strong>
+                                    <span class="option-description" *ngIf="opt.hint">{{ opt.hint }}</span>
+                                </ng-container>
+                            </button>
+                        </div>
+
+                        <!-- Conditional Text Input -->
+                        <div *ngIf="question.conditionalInput && form.get(question.formKey)?.value === question.conditionalInput.showWhen"
+                            class="form-field">
+                            <label [for]="question.conditionalInput.formKey">{{ question.conditionalInput.label
+                                }}</label>
+                            <input [id]="question.conditionalInput.formKey" type="text" class="form-input"
+                                [formControl]="$any(form.get(question.conditionalInput.formKey))"
+                                [placeholder]="question.conditionalInput.placeholder" [class.invalid]="$any(form.get(question.conditionalInput.formKey))?.invalid && 
+                                           $any(form.get(question.conditionalInput.formKey))?.touched">
+                        </div>
+                    </div>
+
+                    <!-- Multiple Choice (Checkboxes) -->
+                    <div *ngIf="question.type === 'multiple-choice'" class="features-grid"
+                        [formGroup]="$any(featuresGroup)">
+                        <label *ngFor="let opt of question.options" class="feature-checkbox">
+                            <input type="checkbox" [formControlName]="opt.value">
+                            <span class="checkbox-custom"></span>
+                            <div class="feature-text">
+                                <strong>{{ opt.label }}</strong>
+                                <span *ngIf="opt.hint">{{ opt.hint }}</span>
                             </div>
-                            <div class="rec-actions">
-                                <button class="btn btn--ghost" (click)="router.navigate(['/', rec.route])">Details
-                                    ansehen</button>
+                        </label>
+                    </div>
+
+                    <!-- Budget & Timeframe (Combined) -->
+                    <div *ngIf="question.type === 'combined'" class="combined-sections">
+                        <div class="form-section" *ngFor="let section of question.sections">
+                            <label class="section-label">{{ section.label }}</label>
+                            <div
+                                [ngClass]="section.layout === 'grid' ? 'options-grid options-grid--compact' : 'options-list'">
+                                <button *ngFor="let opt of section.options" type="button"
+                                    [ngClass]="section.layout === 'grid' ? 'option-card option-card--small' : 'option-row'"
+                                    [class.selected]="form.get(section.formKey)?.value === opt.value"
+                                    (click)="setSectionValue(section.formKey, opt.value)">
+                                    <div class="option-main" *ngIf="section.layout === 'list'">
+                                        <span class="option-radio"></span>
+                                        <div class="option-text">
+                                            <strong>{{ opt.label }}</strong>
+                                            <span class="option-hint" *ngIf="opt.hint">{{ opt.hint }}</span>
+                                        </div>
+                                    </div>
+                                    <strong *ngIf="section.layout === 'grid'">{{ opt.label }}</strong>
+                                </button>
                             </div>
                         </div>
-                    </ng-container>
-                    <p *ngIf="!recommendation().pkg" class="muted">Ich kann nach einem kurzen Gespräch sauber
-                        einschätzen, was passt.</p>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div *ngIf="question.type === 'contact'" class="contact-form">
+                        <div class="form-fields">
+                            <div class="form-field">
+                                <label for="contactName">{{ getFieldLabel(question, 0) }}</label>
+                                <input id="contactName" type="text" class="form-input"
+                                    [formControl]="$any(form.get('contactName'))"
+                                    [placeholder]="getFieldPlaceholder(question, 0)"
+                                    [class.invalid]="$any(form.get('contactName'))?.invalid && $any(form.get('contactName'))?.touched">
+                            </div>
+
+                            <div class="form-field">
+                                <label for="contactEmail">{{ getFieldLabel(question, 1) }}</label>
+                                <input id="contactEmail" type="email" class="form-input"
+                                    [formControl]="$any(form.get('contactEmail'))"
+                                    [placeholder]="getFieldPlaceholder(question, 1)"
+                                    [class.invalid]="$any(form.get('contactEmail'))?.invalid && $any(form.get('contactEmail'))?.touched">
+                            </div>
+
+                            <div class="form-field">
+                                <label for="notes">{{ getFieldLabel(question, 2) }}</label>
+                                <textarea id="notes" rows="4" class="form-textarea"
+                                    [formControl]="$any(form.get('notes'))"
+                                    [placeholder]="getFieldPlaceholder(question, 2)"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Recommendation Box -->
+                        <div class="recommendation-box" *ngIf="recommendation().pkg as rec">
+                            <div class="recommendation-header">
+                                <span class="material-symbols-outlined ms-fill">lightbulb</span>
+                                <h3>Meine Empfehlung für dich</h3>
+                            </div>
+
+                            <div class="recommendation-card">
+                                <div class="rec-image">
+                                    <img [src]="rec.img" [alt]="rec.title" loading="lazy">
+                                </div>
+                                <div class="rec-content">
+                                    <div class="rec-header">
+                                        <h4>{{ rec.title }}</h4>
+                                    </div>
+                                    <p class="rec-description">{{ rec.short }}</p>
+
+                                    <div class="rec-reasons">
+                                        <div class="reasons-badge">
+                                            <span class="material-symbols-outlined">psychology</span>
+                                            Warum ich das empfehle
+                                        </div>
+                                        <ul>
+                                            <li *ngFor="let r of recommendation().reasons">
+                                                <span class="material-symbols-outlined ms-fill">check_circle</span>
+                                                {{ r }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="recommendation-fallback" *ngIf="!recommendation().pkg">
+                            <span class="material-symbols-outlined">info</span>
+                            Nach einem kurzen Gespräch kann ich dir die perfekte Lösung empfehlen.
+                        </p>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="step-actions">
+                        <button *ngIf="step() > 0" type="button" class="btn btn--ghost" (click)="prev()">
+                            <span class="material-symbols-outlined ms-size-20">arrow_back</span>
+                            Zurück
+                        </button>
+                        <button *ngIf="step() < steps.length - 1" type="button" class="btn btn--primary btn--large"
+                            [disabled]="!isStepValid(i)" (click)="next()">
+                            Weiter
+                            <span class="material-symbols-outlined ms-size-20">arrow_forward</span>
+                        </button>
+                        <button *ngIf="step() === steps.length - 1" type="button" class="btn btn--primary btn--large"
+                            [disabled]="form.invalid || isSubmitting()" (click)="submit()">
+                            <span class="material-symbols-outlined ms-size-20" *ngIf="!isSubmitting()">send</span>
+                            <span class="material-symbols-outlined ms-size-20 spinning"
+                                *ngIf="isSubmitting()">progress_activity</span>
+                            {{ isSubmitting() ? 'Wird gesendet...' : 'Absenden & Beratung starten' }}
+                        </button>
+                    </div>
                 </div>
 
-                <div class="nav">
-                    <button class="btn btn--ghost" (click)="prev()">Zurück</button>
-                    <button class="btn btn--primary" (click)="submit()">Absenden & Beratung starten</button>
-                </div>
             </div>
         </div>
-    </div>
+
+    </ng-container>
+
 </section>

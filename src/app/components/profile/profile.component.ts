@@ -44,6 +44,21 @@ export class ProfileComponent implements OnInit {
   getRoleLabel(): string {
     return this.user?.role === UserRole.ADMIN ? 'Administrator' : 'Benutzer';
   }
-}
 
-// ==================== pages/profile/profile.component.html ====================
+  formatDate(dateString: Date | undefined): string {
+    if (!dateString) return '-';
+
+    const date = new Date(dateString);
+    return date.toLocaleDateString('de-DE', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
+  }
+
+  getRoleIcon(): string {
+    return this.user?.role === UserRole.ADMIN ? 'admin_panel_settings' : 'person';
+  }
+
+
+}

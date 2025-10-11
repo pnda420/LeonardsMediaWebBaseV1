@@ -1,54 +1,183 @@
 <app-page-title title="Vorgehen"></app-page-title>
 
-<section class="process">
-  <div class="container process__intro">
-    <h2>So läuft ein Projekt ab</h2>
-    <p>Transparenter Ablauf ohne Spielereien. Klare Zuständigkeiten, realistische Zusagen, saubere Übergabe.</p>
-  </div>
-<div class="flex">
-  <div class="container timeline">
-    <article class="step" *ngFor="let s of steps; trackBy: trackById">
-      <div class="step__marker">
-        <div class="dot" [class.done]="s.done"></div>
+<!-- Hero Section -->
+<section class="process-hero" role="region" aria-label="Einführung">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="material-symbols-outlined ms-fill">route</span>
+        Transparenter Projektablauf
       </div>
-
-      <div class="step__content">
-        <header class="step__head">
-            <app-icon [icon]="s.icon" [size]="'28'"></app-icon>
-          <h3>{{ s.title }}</h3>
-          <div class="step__meta">
-            <span class="chip" *ngIf="s.duration">Dauer: {{ s.duration }}</span>
-            <span class="chip chip--muted" *ngIf="s.output">Ergebnis: {{ s.output }}</span>
-          </div>
-        </header>
-
-        <p class="step__summary">{{ s.summary }}</p>
-
-        <div class="step__lists" *ngIf="s.you?.length || s.me?.length">
-          <div class="col" *ngIf="s.you?.length">
-            <h4>Sie liefern</h4>
-            <ul>
-              <li *ngFor="let item of s.you">{{ item }}</li>
-            </ul>
-          </div>
-          <div class="col" *ngIf="s.me?.length">
-            <h4>Ich liefere</h4>
-            <ul>
-              <li *ngFor="let item of s.me">{{ item }}</li>
-            </ul>
-          </div>
+      <h1>So läuft ein Projekt ab</h1>
+      <p class="hero-description">
+        Transparenter Ablauf ohne Spielereien. Klare Zuständigkeiten, realistische Zusagen, saubere Übergabe.
+      </p>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">7</span>
+          <span class="stat-label">Klare Phasen</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">4-8</span>
+          <span class="stat-label">Wochen typisch</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Transparenz</span>
         </div>
       </div>
-    </article>
-  </div>
-</div>
-<div class="flex">
-    <div class="container process__cta ">
-    <div class="cta__box">
-      <h2>Klingt passend?</h2>
-      <p>Kurzes Erstgespräch, klare Einschätzung, kein Sales-Druck.</p>
-      <button style="border: 1px solid #000;" class="btn btn--primary" (click)="router.navigate(['/contact'])">Termin anfragen</button>
     </div>
   </div>
-</div>
+</section>
+
+<!-- Timeline Section -->
+<section class="process-timeline" role="region" aria-label="Projektphasen">
+  <div class="container">
+    <div class="timeline-wrapper">
+      <div class="timeline-line"></div>
+
+      <article class="timeline-step" *ngFor="let s of steps; let i = index; trackBy: trackById"
+        [class.step-done]="s.done">
+
+        <!-- Step Number & Icon -->
+        <div class="step-marker">
+          <div class="marker-circle">
+            <span class="step-number">{{ i + 1 }}</span>
+          </div>
+          <div class="marker-icon">
+            <app-icon [icon]="s.icon" [size]="'32'"></app-icon>
+          </div>
+        </div>
+
+        <!-- Step Content -->
+        <div class="step-card">
+          <header class="step-header">
+            <h3>{{ s.title }}</h3>
+            <div class="step-meta">
+              <span class="meta-chip" *ngIf="s.duration">
+                <span class="material-symbols-outlined">schedule</span>
+                {{ s.duration }}
+              </span>
+              <span class="meta-chip meta-chip--output" *ngIf="s.output">
+                <span class="material-symbols-outlined">check_circle</span>
+                {{ s.output }}
+              </span>
+            </div>
+          </header>
+
+          <p class="step-summary">{{ s.summary }}</p>
+
+          <!-- Responsibilities Grid -->
+          <div class="step-responsibilities" *ngIf="s.you?.length || s.me?.length">
+            <div class="responsibility-col" *ngIf="s.you?.length">
+              <div class="col-header">
+                <span class="material-symbols-outlined">person</span>
+                <h4>Sie liefern</h4>
+              </div>
+              <ul class="responsibility-list">
+                <li *ngFor="let item of s.you">
+                  <span class="material-symbols-outlined">arrow_forward</span>
+                  {{ item }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="responsibility-col" *ngIf="s.me?.length">
+              <div class="col-header">
+                <span class="material-symbols-outlined">engineering</span>
+                <h4>Ich liefere</h4>
+              </div>
+              <ul class="responsibility-list">
+                <li *ngFor="let item of s.me">
+                  <span class="material-symbols-outlined">arrow_forward</span>
+                  {{ item }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="process-benefits" role="region" aria-label="Vorteile">
+  <div class="container">
+    <header class="section-head">
+      <h2>Warum dieser Ablauf?</h2>
+      <p>Aus Erfahrung gelernt – für reibungslose Projektumsetzung</p>
+    </header>
+
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <span class="material-symbols-outlined ms-fill">visibility</span>
+        </div>
+        <h3>Volle Transparenz</h3>
+        <p>Du weißt jederzeit, wo wir stehen und was als Nächstes kommt</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <span class="material-symbols-outlined ms-fill">handshake</span>
+        </div>
+        <h3>Klare Zuständigkeiten</h3>
+        <p>Keine Missverständnisse – jeder weiß genau, was zu tun ist</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <span class="material-symbols-outlined ms-fill">schedule</span>
+        </div>
+        <h3>Realistische Zeitpläne</h3>
+        <p>Keine unrealistischen Versprechen – nur machbare Deadlines</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <span class="material-symbols-outlined ms-fill">verified</span>
+        </div>
+        <h3>Saubere Übergabe</h3>
+        <p>Am Ende hast du alles in der Hand – inkl. Dokumentation</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="process-cta" role="region" aria-label="Kontaktaufnahme">
+  <div class="container">
+    <div class="cta-card">
+      <div class="cta-icon">
+        <span class="material-symbols-outlined ms-fill">rocket_launch</span>
+      </div>
+      <h2>Klingt passend?</h2>
+      <p>Lass uns in einem kurzen Erstgespräch klären, ob das zu deinem Projekt passt.</p>
+      <div class="cta-features">
+        <div class="feature-item">
+          <span class="material-symbols-outlined">check_circle</span>
+          <span>30 Min Erstgespräch</span>
+        </div>
+        <div class="feature-item">
+          <span class="material-symbols-outlined">check_circle</span>
+          <span>Klare Einschätzung</span>
+        </div>
+        <div class="feature-item">
+          <span class="material-symbols-outlined">check_circle</span>
+          <span>Kein Sales-Druck</span>
+        </div>
+      </div>
+      <div class="cta-actions">
+        <button class="btn btn--primary btn--large" (click)="router.navigate(['/contact'])">
+          <span class="material-symbols-outlined ms-size-20">event</span>
+          Termin anfragen
+        </button>
+        <button class="btn btn--ghost" (click)="router.navigate(['/survey'])">
+          <span class="material-symbols-outlined ms-size-20">auto_awesome</span>
+          Oder Projekt-Finder nutzen
+        </button>
+      </div>
+    </div>
+  </div>
 </section>

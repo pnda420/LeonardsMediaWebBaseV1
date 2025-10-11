@@ -1,325 +1,260 @@
 @import '../../utils/shared-styles.scss';
 
 .site-header {
-  /* Eine Quelle der Wahrheit für die Höhe */
-  --header-h: 64px;
-
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
-  background: $color-white;
-  border-bottom: 1px solid $color-gray-light;
+  backdrop-filter: blur(20px) saturate(160%);
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  transition: all 0.3s ease;
   padding-top: env(safe-area-inset-top);
 
   .header__inner {
-    min-height: var(--header-h);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 72px;
+    position: relative;
+  }
+}
+
+/* ===== LOGO ===== */
+
+.brand {
+  height: 36px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
   }
 
-  .brand {
-    order: 1; // Logo ganz links auf Mobile
-    height: 36px;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-drag: none;
-    transition: transform 160ms ease;
+  @media (min-width: 900px) {
+    height: 40px;
+  }
+}
 
-    &:hover {
-      transform: scale(1.02);
-    }
+/* ===== NAVIGATION ===== */
 
-    @media (min-width: 900px) {
-      order: 1; // links auf Desktop
-      height: 40px;
-    }
+.nav {
+  display: none;
+  gap: 0.5rem;
+
+  @media (min-width: 900px) {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
   }
 
-  .nav-toggle {
-    order: 2; // Burger ganz rechts auf Mobile
+  a,
+  button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border: 1px solid $color-gray-light;
-    border-radius: 10px;
-    background: $color-white;
-    color: $color-text-primary;
-    cursor: pointer;
-    transition: box-shadow 160ms ease, transform 160ms ease, border-color 160ms ease;
-
-    &:hover {
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-    }
-
-    &:active {
-      transform: scale(0.98);
-    }
-
-    &:focus-visible {
-      outline: none;
-      border-color: $color-brand-primary;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
-    }
-
-    @media (min-width: 900px) {
-      display: none;
-    }
-  }
-
-  .nav {
-    order: 3;
-    display: none;
-    gap: 0.25rem;
-
-    a {
-      display: inline-flex;
-      align-items: center;
-      height: 40px;
-      padding: 0 12px;
-      border-radius: 10px;
-      font-family: 'Inter', 'Roboto', Arial, sans-serif;
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: $color-text-primary;
-      text-decoration: none;
-      transition: background-color 140ms ease, color 140ms ease;
-
-      &:hover {
-        background: $color-background-main;
-      }
-
-      &:focus-visible {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
-      }
-
-      &.is-active {
-        background: rgba(37, 99, 235, 0.10);
-        color: $color-brand-dark;
-      }
-    }
-
-    /* MOBILE: fixed Drawer unter dem Header */
-    &.open {
-      display: grid;
-      position: fixed;
-      top: calc(env(safe-area-inset-top) + var(--header-h));
-      left: 0;
-      right: 0;
-      padding: 0.75rem 1rem 1rem;
-      gap: 0.25rem;
-      background: $color-white;
-      border-bottom: 1px solid $color-gray-light;
-      z-index: 1001;
-      /* über Header-Inhalt */
-
-      a {
-        height: 44px;
-        border-radius: 12px;
-      }
-    }
-
-    /* DESKTOP */
-    @media (min-width: 900px) {
-      display: inline-flex !important;
-      position: static;
-      margin-left: auto;
-      background: transparent;
-      border: 0;
-      padding: 0;
-
-      a {
-        height: 42px;
-      }
-    }
-  }
-
-  .user-menu {
-    position: relative;
-
-    &__link {
-      display: inline-flex !important;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0 14px !important;
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(59, 130, 246, 0.12) 100%);
-      border: 1.5px solid rgba(37, 99, 235, 0.20);
-      font-weight: 600 !important;
-      color: $color-brand-dark !important;
-      transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-
-      &:hover {
-        background: linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(59, 130, 246, 0.16) 100%);
-        border-color: rgba(37, 99, 235, 0.35);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-      }
-
-      &.is-active {
-        background: linear-gradient(135deg, rgba(37, 99, 235, 0.14) 0%, rgba(59, 130, 246, 0.18) 100%);
-        border-color: rgba(37, 99, 235, 0.40);
-      }
-
-      .user-name {
-        font-size: 0.9rem;
-        letter-spacing: -0.01em;
-      }
-
-      app-icon {
-        opacity: 0.85;
-      }
-    }
-  }
-
-  /* Admin Badge Styles */
-  .nav-link--admin {
-    background: linear-gradient(135deg, rgba(234, 88, 12, 0.08) 0%, rgba(249, 115, 22, 0.12) 100%) !important;
-    border: 1.5px solid rgba(234, 88, 12, 0.25) !important;
-    color: #c2410c !important;
-    font-weight: 600 !important;
-
-    &:hover {
-      background: linear-gradient(135deg, rgba(234, 88, 12, 0.12) 0%, rgba(249, 115, 22, 0.16) 100%) !important;
-      border-color: rgba(234, 88, 12, 0.40) !important;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.20);
-    }
-  }
-
-  /* Login Button (wenn nicht eingeloggt) */
-  .nav-link--highlight {
-    background: linear-gradient(135deg, $color-brand-primary 0%, #1d4ed8 100%) !important;
-    color: white !important;
-    font-weight: 600 !important;
-    border: 1px solid rgba(255, 255, 255, 0.20) !important;
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
-
-    &:hover {
-      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%) !important;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
-    }
-
-    &:active {
-      transform: translateY(0);
-    }
-  }
-
-  /* Logout Button */
-  .nav-link--logout {
-    display: inline-flex;
-    align-items: center;
-    height: 40px;
-    padding: 0 14px;
-    border-radius: 10px;
-    font-family: 'Inter', 'Roboto', Arial, sans-serif;
-    font-size: 0.95rem;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: $radius-md;
+    font-size: 0.9375rem;
     font-weight: 500;
-    background: rgba(239, 68, 68, 0.08);
-    border: 1.5px solid rgba(239, 68, 68, 0.20);
-    color: #dc2626;
+    color: $color-text-secondary;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    border: none;
+    background: transparent;
     cursor: pointer;
-    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover {
-      background: rgba(239, 68, 68, 0.12);
-      border-color: rgba(239, 68, 68, 0.35);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.20);
+      color: $color-brand-primary;
+      background: rgba(37, 99, 235, 0.06);
     }
 
-    &:active {
-      transform: translateY(0);
+    &.active {
+      color: $color-brand-primary;
+      font-weight: 600;
+      background: $gradient-subtle;
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
     }
   }
 
-  /* Mobile Anpassungen */
+  /* Mobile Menu */
   &.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: calc(env(safe-area-inset-top) + 72px);
+    left: 0;
+    right: 0;
+    background: $glass-bg;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 1rem;
+    gap: 0.5rem;
+    box-shadow: $shadow-glass;
+    animation: slideDown 0.3s ease;
 
-    .user-menu__link,
-    .nav-link--admin,
-    .nav-link--logout {
-      height: 44px;
-      border-radius: 12px;
-    }
-  }
-
-  /* Desktop */
-  @media (min-width: 900px) {
-
-    .user-menu__link,
-    .nav-link--logout {
-      height: 42px;
+    a,
+    button {
+      width: 100%;
+      justify-content: flex-start;
+      padding: 0.875rem 1rem;
+      font-size: 1rem;
     }
   }
 }
 
+/* ===== SPECIAL NAV LINKS ===== */
 
+.nav-link--primary {
+  background: $gradient-primary !important;
+  color: white !important;
+  font-weight: 600 !important;
+  box-shadow: $shadow-brand;
 
-/* Backdrop für Mobile (blockt Interaktion & dimmt Hintergrund) */
+  &:hover {
+    box-shadow: $shadow-brand-hover !important;
+    transform: translateY(-2px);
+    background: $gradient-primary-hover !important;
+  }
+}
+
+.nav-link--user {
+  background: $gradient-subtle !important;
+  color: $color-brand-primary !important;
+  border: 2px solid rgba(37, 99, 235, 0.2) !important;
+  font-weight: 600 !important;
+
+  &:hover {
+    border-color: $color-brand-primary !important;
+    transform: translateY(-2px);
+  }
+
+  &.active {
+    border-color: $color-brand-primary !important;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  }
+}
+
+.nav-link--admin {
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.08), rgba(249, 115, 22, 0.12)) !important;
+  border: 2px solid rgba(234, 88, 12, 0.25) !important;
+  color: #c2410c !important;
+  font-weight: 600 !important;
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(234, 88, 12, 0.12), rgba(249, 115, 22, 0.16)) !important;
+    border-color: rgba(234, 88, 12, 0.4) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.2);
+  }
+}
+
+.nav-link--logout {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border: 2px solid rgba(239, 68, 68, 0.2) !important;
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border-color: rgba(239, 68, 68, 0.35) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  }
+}
+
+/* ===== MOBILE TOGGLE ===== */
+
+.nav-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 2px solid $color-gray-200;
+  border-radius: $radius-md;
+  color: $color-text-primary;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  @media (min-width: 900px) {
+    display: none;
+  }
+
+  &:hover {
+    border-color: $color-brand-primary;
+    background: rgba(37, 99, 235, 0.06);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  }
+
+  .material-symbols-outlined {
+    font-size: 24px;
+  }
+}
+
+/* ===== BACKDROP ===== */
+
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.25);
-  border: 0;
-  padding: 0;
-  margin: 0;
-  z-index: 1000;
-  /* unter .nav.open (1001), über rest */
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: -1;
+  animation: fadeIn 0.3s ease;
+  height: 2000px;
+  cursor: pointer;
 }
 
-/* Reduzierte Bewegungen */
+/* ===== ANIMATIONS ===== */
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ===== MOTION PREFERENCES ===== */
+
 @media (prefers-reduced-motion: reduce) {
 
-  .brand,
-  .nav-toggle,
-  .nav a {
-    transition: none !important;
-  }
-}
-
-
-/* Dunkle Variante (falls du Dark-Header bevorzugst) – einfach .site-header--dark auf <header> setzen */
-.site-header--dark {
-  background: $color-brand-dark;
-  border-bottom-color: transparent;
-
-  .nav-toggle {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.12);
-    color: $color-white;
-
-    &:focus-visible {
-      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.28);
-    }
-  }
-
-  .nav {
-    a {
-      color: $color-white;
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.08);
-      }
-
-      &.is-active {
-        background: rgba(96, 165, 250, 0.24);
-        color: $color-white;
-      }
-    }
-
-    &.open {
-      background: $color-brand-dark;
-      border-bottom-color: rgba(255, 255, 255, 0.16);
-    }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

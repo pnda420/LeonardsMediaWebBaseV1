@@ -1,27 +1,229 @@
-/* styles.scss */
+/* ===== GLOBAL STYLES - MODERN GLASSMORPHISM THEME ===== */
 
-* {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    box-sizing: border-box;
+@import './app/utils/shared-styles.scss';
+
+/* ===== RESET & BASE ===== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: $color-text-primary;
+  background: $gradient-bg;
+  background-attachment: fixed;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+
+  // Subtiler Noise/Texture Overlay (optional)
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+// Main Content Wrapper
+#app-root,
+app-root {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== TYPOGRAPHY ===== */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: $color-text-primary;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw + 1rem, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: clamp(1.75rem, 3vw + 1rem, 2.5rem);
+  font-weight: 800;
+}
+
+h3 {
+  font-size: clamp(1.5rem, 2vw + 0.5rem, 2rem);
+  font-weight: 700;
+}
+
+h4 {
+  font-size: clamp(1.25rem, 1.5vw + 0.5rem, 1.5rem);
+  font-weight: 700;
+}
+
+h5 {
+  font-size: clamp(1.125rem, 1vw + 0.5rem, 1.25rem);
+  font-weight: 600;
+}
+
+h6 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color $transition-fast;
+}
+
+/* ===== SCROLLBAR STYLING ===== */
+
+/* Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $color-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, $color-brand-primary, $color-brand-secondary);
+  border-radius: $radius-full;
+  border: 2px solid $color-gray-100;
+
+  &:hover {
+    background: linear-gradient(180deg, $color-brand-dark, $color-brand-primary);
+  }
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $color-brand-primary $color-gray-100;
+}
+
+/* ===== SELECTION ===== */
+
+::selection {
+  background: rgba(37, 99, 235, 0.2);
+  color: $color-text-primary;
+}
+
+::-moz-selection {
+  background: rgba(37, 99, 235, 0.2);
+  color: $color-text-primary;
+}
+
+/* ===== CONTAINER SYSTEM ===== */
 
 .container {
   width: 100%;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;  /* Sicherer Abstand für mobile Geräte */
+  padding-left: 1rem;
   padding-right: 1rem;
 
   @media (min-width: 768px) {
-    padding-left: 2rem; /* Mehr Abstand für größere Bildschirme */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  @media (min-width: 1200px) {
+    padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  &--narrow {
+    max-width: 900px;
+  }
+
+  &--wide {
+    max-width: 1400px;
+  }
+
+  &--full {
+    max-width: 100%;
   }
 }
 
-/* Material Symbols (Google Icons) helpers */
+/* ===== SECTION SPACING ===== */
+
+section {
+  position: relative;
+  padding-block: 1rem;
+
+  @media (min-width: 768px) {
+    padding-block: 1rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding-block: 5rem;
+  }
+}
+
+/* ===== FOCUS STATES (Accessibility) ===== */
+
+*:focus-visible {
+  outline: 2px solid $color-brand-primary;
+  outline-offset: 2px;
+  border-radius: $radius-sm;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+}
+
+/* ===== IMAGE OPTIMIZATION ===== */
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== MATERIAL SYMBOLS (Google Icons) ===== */
+
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
@@ -46,24 +248,776 @@
     'opsz' var(--ms-opsz, 24);
 }
 
-/* Utilities to tweak icon appearance */
+/* Icon Utilities */
 .ms-fill { --ms-fill: 1; }
 .ms-wght-300 { --ms-wght: 300; }
 .ms-wght-400 { --ms-wght: 400; }
 .ms-wght-600 { --ms-wght: 600; }
 .ms-wght-700 { --ms-wght: 700; }
+.ms-size-16 { --ms-size: 16px; }
 .ms-size-20 { --ms-size: 20px; }
 .ms-size-24 { --ms-size: 24px; }
+.ms-size-28 { --ms-size: 28px; }
 .ms-size-32 { --ms-size: 32px; }
 .ms-size-40 { --ms-size: 40px; }
+.ms-size-48 { --ms-size: 48px; }
 
+/* ===== LOADING STATES ===== */
 
-// :root {
-//   scrollbar-gutter: stable;
-// }
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
 
-// html {
-//   overflow-y: scroll; /* erzwingt permanenten Scrollbar-Platz */
-// }
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
+.loading-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ===== SKELETON LOADERS ===== */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    $color-gray-200 0%,
+    $color-gray-100 50%,
+    $color-gray-200 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: $radius-md;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ===== GLASS PANEL (Reusable) ===== */
+
+.glass-panel {
+  background: $glass-bg;
+  backdrop-filter: blur(20px);
+  border: 1px solid $glass-border;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-glass;
+  padding: 2rem;
+  transition: all $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-glass-hover;
+    transform: translateY(-2px);
+  }
+
+  &--solid {
+    background: $color-white;
+    backdrop-filter: none;
+  }
+}
+
+/* ===== BACKDROP (für Modals/Overlays) ===== */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(8px);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ===== MOTION PREFERENCES ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== RESPONSIVE UTILITIES ===== */
+
+// Visibility
+.hide-mobile {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.hide-tablet {
+  @media (min-width: 768px) and (max-width: 1023px) {
+    display: none !important;
+  }
+}
+
+.hide-desktop {
+  @media (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.show-mobile {
+  display: none !important;
+  @media (max-width: 767px) {
+    display: block !important;
+  }
+}
+
+.show-tablet {
+  display: none !important;
+  @media (min-width: 768px) and (max-width: 1023px) {
+    display: block !important;
+  }
+}
+
+.show-desktop {
+  display: none !important;
+  @media (min-width: 1024px) {
+    display: block !important;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+
+@media print {
+  body {
+    background: white;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+}
+
+/* ===== DARK MODE SUPPORT (Optional) ===== */
+
+@media (prefers-color-scheme: dark) {
+  // Falls du später Dark Mode implementieren willst,
+  // kannst du hier die Variablen überschreiben
+  
+  // body {
+  //   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  //   color: #f8fafc;
+  // }
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.z-10 { z-index: 10; }
+.z-20 { z-index: 20; }
+.z-30 { z-index: 30; }
+.z-40 { z-index: 40; }
+.z-50 { z-index: 50; }
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+/* ===== GRID UTILITIES ===== */
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ===== OVERLAY EFFECTS ===== */
+
+.overlay {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0) 0%,
+      rgba(15, 23, 42, 0.4) 60%,
+      rgba(15, 23, 42, 0.8) 100%
+    );
+    pointer-events: none;
+  }
+}
+
+/* ===== STATUS DOTS ===== */
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  
+  &--success {
+    background: $color-success;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+  
+  &--warning {
+    background: $color-warning;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+  }
+  
+  &--error {
+    background: $color-error;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+  }
+  
+  &--info {
+    background: $color-info;
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+  }
+  
+  &--pulse {
+    animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+/* ===== TOOLTIP (Simple) ===== */
+
+[data-tooltip] {
+  position: relative;
+  cursor: pointer;
+  
+  &::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    padding: 0.5rem 0.75rem;
+    background: $color-gray-900;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: $radius-md;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 1000;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: $color-gray-900;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+  
+  &:hover::before,
+  &:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ===== CUSTOM ANIMATIONS ===== */
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-slide-up {
+  animation: slideInUp 0.5s ease-out;
+}
+
+.animate-slide-down {
+  animation: slideInDown 0.5s ease-out;
+}
+
+.animate-slide-left {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.animate-slide-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s ease-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ===== GRADIENT BACKGROUNDS ===== */
+
+.bg-gradient-primary {
+  background: $gradient-primary;
+}
+
+.bg-gradient-subtle {
+  background: $gradient-subtle;
+}
+
+.bg-gradient-main {
+  background: $gradient-bg;
+}
+
+/* ===== FORM ELEMENTS ===== */
+
+label {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: $color-text-primary;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid $color-gray-200;
+  border-radius: $radius-md;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: $color-text-primary;
+  background: $color-white;
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: $color-gray-300;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-brand-primary;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  }
+
+  &::placeholder {
+    color: $color-text-tertiary;
+  }
+
+  &:disabled {
+    background: $color-gray-100;
+    color: $color-text-tertiary;
+    cursor: not-allowed;
+  }
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+  padding-right: 2.5rem;
+}
+
+/* Checkbox & Radio */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 2px solid $color-gray-300;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:checked {
+    background: $color-brand-primary;
+    border-color: $color-brand-primary;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  }
+}
+
+input[type="radio"] {
+  border-radius: 50%;
+}
+
+/* ===== TABLES ===== */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: $color-white;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+}
+
+thead {
+  background: $color-gray-50;
+}
+
+th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: $color-text-primary;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid $color-gray-200;
+}
+
+td {
+  padding: 1rem;
+  color: $color-text-secondary;
+  border-bottom: 1px solid $color-gray-200;
+}
+
+tbody tr {
+  transition: background $transition-fast;
+
+  &:hover {
+    background: $color-gray-50;
+  }
+
+  &:last-child td {
+    border-bottom: none;
+  }
+}
+
+/* ===== ALERTS & NOTIFICATIONS ===== */
+
+.alert {
+  padding: 1rem 1.25rem;
+  border-radius: $radius-md;
+  border-left: 4px solid;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+
+  &--success {
+    background: $color-success-light;
+    border-color: $color-success;
+    color: darken($color-success, 20%);
+  }
+
+  &--warning {
+    background: $color-warning-light;
+    border-color: $color-warning;
+    color: darken($color-warning, 20%);
+  }
+
+  &--error {
+    background: $color-error-light;
+    border-color: $color-error;
+    color: darken($color-error, 20%);
+  }
+
+  &--info {
+    background: $color-info-light;
+    border-color: $color-info;
+    color: darken($color-info, 20%);
+  }
+}
+
+/* ===== PROGRESS BAR ===== */
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: $color-gray-200;
+  border-radius: $radius-full;
+  overflow: hidden;
+
+  &__fill {
+    height: 100%;
+    background: $gradient-primary;
+    border-radius: $radius-full;
+    transition: width 0.3s ease;
+  }
+}
+
+/* ===== SPINNER / LOADER ===== */
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid $color-gray-200;
+  border-top-color: $color-brand-primary;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  
+  &--small {
+    width: 24px;
+    height: 24px;
+    border-width: 3px;
+  }
+  
+  &--large {
+    width: 56px;
+    height: 56px;
+    border-width: 5px;
+  }
+}
+
+/* ===== END OF GLOBAL STYLES ===== */

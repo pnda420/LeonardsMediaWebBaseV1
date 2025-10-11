@@ -1,11 +1,13 @@
 <div class="admin-header">
     <div class="container">
-        <nav class="nav">
-            <div *ngFor="let route of routes" (click)="routeTo('/' + route.path)" routerLinkActive="nav__link--active"
-                class="nav__link">
+        <nav class="admin-nav" role="navigation" aria-label="Admin Navigation">
+            <a *ngFor="let route of routes" class="nav-link" [class.nav-link--active]="isActive(route.path)"
+                [attr.aria-current]="isActive(route.path) ? 'page' : null" [attr.href]="getHref(route.path)"
+                (click)="routeTo(route.path, $event)" [attr.aria-label]="route.label">
+                <span class="material-symbols-outlined" *ngIf="route.icon">{{ route.icon }}</span>
                 {{ route.label }}
-            </div>
+            </a>
         </nav>
-    </div>
 
+    </div>
 </div>

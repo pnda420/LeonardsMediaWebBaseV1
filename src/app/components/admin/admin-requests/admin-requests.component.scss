@@ -1,782 +1,566 @@
 @import '../../../utils/shared-styles.scss';
 
 .container {
-    margin-left: 1rem;
-    margin-right: 1rem;
-
-    @media (min-width: 600px) {
-        margin-left: 1.5rem;
-        margin-right: 1.5rem;
-    }
-
-    @media (min-width: 1200px) {
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 1000px;
-        width: 100%;
-    }
-}
-
-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
 }
 
 .admin-requests {
-    background: $color-background-main;
-    min-height: 60vh;
+    min-height: calc(100vh - 200px);
+    padding-block: 2rem;
+
+    @media (min-width: 768px) {
+        padding-block: 3rem;
+    }
 
     .container {
-        padding-block: 2rem;
-    }
+        display: grid;
+        gap: 2rem;
 
-    /* Header */
-    .requests__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-
-        .header__info {
-            flex: 1;
-
-            h2 {
-                font-size: 1.6rem;
-                color: $color-text-primary;
-                margin-bottom: .25rem;
-            }
-
-            .subtitle {
-                color: $color-text-secondary;
-                font-size: .95rem;
-            }
-        }
-
-        .header__badges {
-            display: flex;
-            gap: .6rem;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            padding: .6rem 1rem;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-
-            &--primary {
-                background: $color-brand-primary;
-                color: white;
-                box-shadow: 0 2px 8px rgba($color-brand-primary, .25);
-            }
-
-            &--secondary {
-                background: $color-white;
-                color: $color-text-primary;
-                border: 1px solid $color-gray-light;
-            }
-
-            .count {
-                font-size: 1.4rem;
-                font-weight: 700;
-            }
-
-            .label {
-                font-size: .9rem;
-                font-weight: 600;
-            }
+        @media (max-width: 639px) {
+            gap: 1.5rem;
         }
     }
+}
 
-    /* Tabs */
-    .tabs {
-        display: flex;
-        gap: .5rem;
-        margin-bottom: 1.5rem;
-        background: $color-white;
-        padding: .4rem;
-        border-radius: 14px;
-        border: 1px solid $color-gray-light;
+/* ===== HEADER ===== */
 
-        .tab {
-            flex: 1;
-            padding: .7rem 1rem;
-            border: none;
-            background: transparent;
-            color: $color-text-secondary;
-            font-weight: 600;
-            font-size: .9rem;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all .2s ease;
+.requests__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.5rem;
+    flex-wrap: wrap;
 
-            &:hover {
-                background: $color-background-main;
-                color: $color-text-primary;
-            }
+    .header__info {
+        flex: 1;
+        min-width: 0;
 
-            &--active {
-                background: $color-brand-primary;
-                color: white;
-                box-shadow: 0 2px 6px rgba($color-brand-primary, .2);
-
-                &:hover {
-                    background: darken($color-brand-primary, 5%);
-                    color: white;
-                }
-            }
-        }
-    }
-
-    /* Loading State */
-    .loading-state {
-        text-align: center;
-        padding: 3rem 1rem;
-        background: $color-white;
-        border-radius: 16px;
-        border: 1px solid $color-gray-light;
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            margin: 0 auto 1rem;
-            border: 3px solid $color-gray-light;
-            border-top-color: $color-brand-primary;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        p {
-            color: $color-text-secondary;
-        }
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    /* Error State */
-    .error-state {
-        text-align: center;
-        padding: 3rem 1rem;
-        background: $color-white;
-        border-radius: 16px;
-        border: 1px solid $color-gray-light;
-
-        p {
-            color: $color-error;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-    }
-
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 4rem 1rem;
-        background: $color-white;
-        border-radius: 16px;
-        border: 1px solid $color-gray-light;
-
-        .empty__icon {
-            font-size: 3rem;
-            margin-bottom: .75rem;
-        }
-
-        h3 {
-            font-size: 1.2rem;
+        h2 {
+            font-size: clamp(1.75rem, 3vw + 1rem, 2.25rem);
+            font-weight: 800;
             color: $color-text-primary;
-            margin-bottom: .25rem;
+            margin: 0 0 0.5rem;
+            letter-spacing: -0.02em;
         }
 
-        p {
+        .subtitle {
             color: $color-text-secondary;
+            font-size: 1rem;
+            margin: 0;
+            line-height: 1.5;
         }
     }
 
-    /* Requests List */
-    .requests__list {
-        display: grid;
-        gap: 1rem;
+    .header__badges {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
     }
 
-    /* Request Card */
-    .request-card {
-        background: $color-white;
-        border: 1px solid $color-gray-light;
-        border-radius: 16px;
-        padding: 1.25rem;
-        display: grid;
-        gap: 1rem;
-        transition: transform .2s ease, box-shadow .2s ease;
+    .badge {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-md;
+        transition: all 0.3s ease;
 
         &:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: $shadow-lg;
         }
 
-        /* Card Header */
-        .card__header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
-            flex-wrap: wrap;
-
-            .header__left {
-                display: grid;
-                gap: .25rem;
-
-                h3 {
-                    font-size: 1.15rem;
-                    color: $color-text-primary;
-                }
-
-                .time {
-                    font-size: .85rem;
-                    color: $color-text-secondary;
-                }
-            }
-
-            .service-badge {
-                display: inline-block;
-                padding: .4rem .8rem;
-                background: $color-background-main;
-                border: 1px solid $color-gray-light;
-                border-radius: 20px;
-                font-size: .85rem;
-                font-weight: 600;
-                color: $color-brand-primary;
-                white-space: nowrap;
-            }
+        @media (max-width: 639px) {
+            padding: 0.875rem 1.25rem;
         }
-
-        /* Contact Info */
-        .card__contact {
-            display: grid;
-            gap: .5rem;
-
-            .contact__item {
-                display: flex;
-                align-items: center;
-                gap: .6rem;
-                padding: .7rem .85rem;
-                background: $color-background-main;
-                border-radius: 12px;
-                cursor: pointer;
-                transition: all .2s ease;
-                position: relative;
-
-                .icon {
-                    font-size: 1.1rem;
-                }
-
-                .value {
-                    flex: 1;
-                    color: $color-text-primary;
-                    font-weight: 600;
-                    font-size: .9rem;
-                }
-
-                .copy-hint {
-                    font-size: .75rem;
-                    color: $color-text-secondary;
-                    opacity: 0;
-                    transition: opacity .2s ease;
-                }
-
-                &:hover {
-                    background: lighten($color-brand-primary, 48%);
-
-                    .copy-hint {
-                        opacity: 1;
-                    }
-                }
-
-                &:active {
-                    transform: scale(0.98);
-                }
-            }
-        }
-
-        /* Callback Badge */
-        .callback-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: .4rem;
-            padding: .5rem .8rem;
-            background: linear-gradient(135deg, lighten($color-brand-primary, 45%) 0%, lighten($color-brand-primary, 48%) 100%);
-            border: 1px solid lighten($color-brand-primary, 35%);
-            border-radius: 12px;
-            font-size: .85rem;
-            font-weight: 600;
-            color: $color-brand-primary;
-            width: fit-content;
-        }
-
-        /* Message */
-        .card__message {
-            background: $color-background-main;
-            border-radius: 12px;
-            padding: 1rem;
-
-            .message__label {
-                font-size: .85rem;
-                font-weight: 600;
-                color: $color-text-secondary;
-                margin-bottom: .4rem;
-            }
-
-            .message__text {
-                color: $color-text-primary;
-                line-height: 1.6;
-                white-space: pre-wrap;
-            }
-        }
-
-        /* Actions */
-        .card__actions {
-            display: flex;
-            gap: .6rem;
-            flex-wrap: wrap;
-            padding-top: .5rem;
-            border-top: 1px solid $color-gray-light;
-        }
-    }
-
-    /* Buttons */
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        height: 42px;
-        padding: 0 1rem;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: .9rem;
-        text-decoration: none;
-        cursor: pointer;
-        border: 1px solid transparent;
-        transition: all 160ms ease;
-        white-space: nowrap;
 
         &--primary {
-            background: $color-brand-primary;
-            color: $color-white;
+            background: $gradient-primary;
+            color: white;
+            box-shadow: $shadow-brand;
 
             &:hover {
-                background: darken($color-brand-primary, 8%);
-                transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba($color-brand-primary, 0.25);
-            }
-
-            &:active {
-                transform: translateY(0);
+                box-shadow: $shadow-brand-hover;
             }
         }
 
         &--secondary {
-            background: $color-white;
-            color: $color-brand-primary;
-            border: 1px solid $color-brand-primary;
+            background: $glass-bg;
+            backdrop-filter: blur(20px);
+            color: $color-text-primary;
+            border: 1px solid $glass-border;
+        }
 
-            &:hover {
-                background: lighten($color-brand-primary, 50%);
+        .count {
+            font-size: 1.75rem;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.02em;
+
+            @media (max-width: 639px) {
+                font-size: 1.5rem;
             }
         }
 
-        &--ghost {
-            background: transparent;
-            color: $color-text-secondary;
-            border: 1px solid $color-gray-light;
-
-            &:hover {
-                background: $color-background-main;
-                color: $color-text-primary;
-            }
-        }
-
-        &--danger {
-            background: transparent;
-            color: $color-error;
-            border: 1px solid lighten($color-error, 30%);
-
-            &:hover {
-                background: lighten($color-error, 45%);
-                border-color: $color-error;
-            }
+        .label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            white-space: nowrap;
         }
     }
 }
 
-/* Motion respect */
-@media (prefers-reduced-motion: reduce) {
+/* ===== TABS ===== */
 
-    .request-card,
-    .btn,
-    .contact__item,
+.tabs {
+    display: flex;
+    gap: 0.75rem;
+    background: $glass-bg;
+    backdrop-filter: blur(20px);
+    padding: 0.5rem;
+    border-radius: $radius-lg;
+    border: 1px solid $glass-border;
+    box-shadow: $shadow-glass;
+
+    @media (max-width: 639px) {
+        gap: 0.5rem;
+        padding: 0.375rem;
+    }
+
     .tab {
-        transition: none !important;
+        flex: 1;
+        padding: 0.875rem 1.5rem;
+        border: none;
+        background: transparent;
+        color: $color-text-secondary;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        border-radius: $radius-md;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+
+        @media (max-width: 639px) {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        &:hover:not(&--active) {
+            background: rgba(37, 99, 235, 0.06);
+            color: $color-text-primary;
+        }
+
+        &--active {
+            background: $gradient-primary;
+            color: white;
+            box-shadow: $shadow-brand;
+
+            &:hover {
+                box-shadow: $shadow-brand-hover;
+                transform: translateY(-1px);
+            }
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+        }
+    }
+}
+
+/* ===== LOADING/ERROR/EMPTY STATES ===== */
+
+.loading-state,
+.error-state,
+.empty-state {
+    background: $glass-bg;
+    backdrop-filter: blur(20px);
+    border: 1px solid $glass-border;
+    border-radius: $radius-xl;
+    padding: 4rem 2rem;
+    text-align: center;
+    box-shadow: $shadow-glass;
+
+    @media (max-width: 639px) {
+        padding: 3rem 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $color-text-primary;
+        margin: 0 0 0.5rem;
+    }
+
+    p {
+        color: $color-text-secondary;
+        margin: 0 0 1.5rem;
+        line-height: 1.6;
+    }
+
+    .empty__icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+
+        @media (max-width: 639px) {
+            font-size: 3rem;
+        }
+    }
+}
+
+.error-state p {
+    color: $color-error;
+    font-weight: 600;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1.5rem;
+    border: 4px solid $color-gray-200;
+    border-top-color: $color-brand-primary;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== REQUESTS LIST ===== */
+
+.requests__list {
+    display: grid;
+    gap: 1.25rem;
+
+    @media (max-width: 639px) {
+        gap: 1rem;
+    }
+}
+
+/* ===== REQUEST CARD ===== */
+
+.request-card {
+    background: $glass-bg;
+    backdrop-filter: blur(20px);
+    border: 1px solid $glass-border;
+    border-radius: $radius-xl;
+    padding: 1.75rem;
+    display: grid;
+    gap: 1.25rem;
+    box-shadow: $shadow-glass;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: $shadow-glass-hover;
+        border-color: rgba(37, 99, 235, 0.2);
+    }
+
+    @media (max-width: 639px) {
+        padding: 1.25rem;
+        gap: 1rem;
+    }
+
+    /* Card Header */
+    .card__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        flex-wrap: wrap;
+
+        .header__left {
+            display: grid;
+            gap: 0.375rem;
+            flex: 1;
+            min-width: 0;
+
+            h3 {
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: $color-text-primary;
+                margin: 0;
+                line-height: 1.3;
+            }
+
+            .time {
+                font-size: 0.875rem;
+                color: $color-text-secondary;
+                font-weight: 500;
+            }
+        }
+
+        .service-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: $gradient-subtle;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: $radius-full;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: $color-brand-primary;
+            white-space: nowrap;
+            box-shadow: $shadow-sm;
+        }
+    }
+
+    /* Contact Info */
+    .card__contact {
+        display: grid;
+        gap: 0.75rem;
+    }
+
+    .contact__item {
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        padding: 1rem 1.25rem;
+        background: $color-white;
+        border: 2px solid $glass-border;
+        border-radius: $radius-md;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+
+        @media (max-width: 639px) {
+            padding: 0.875rem 1rem;
+            gap: 0.75rem;
+        }
+
+        .icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .value {
+            flex: 1;
+            color: $color-text-primary;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .copy-hint {
+            font-size: 0.75rem;
+            color: $color-text-secondary;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+
+            @media (max-width: 639px) {
+                display: none;
+            }
+        }
+
+        &:hover {
+            background: $gradient-subtle;
+            border-color: rgba(37, 99, 235, 0.3);
+            transform: translateX(4px);
+
+            .copy-hint {
+                opacity: 1;
+            }
+        }
+
+        &:active {
+            transform: translateX(2px);
+        }
+    }
+
+    /* Callback Badge */
+    .callback-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 1rem;
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.15));
+        border: 2px solid rgba(16, 185, 129, 0.3);
+        border-radius: $radius-md;
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: $color-success;
+        width: fit-content;
+        box-shadow: $shadow-sm;
+    }
+
+    /* Message */
+    .card__message {
+        background: $color-white;
+        border: 1px solid $glass-border;
+        border-radius: $radius-md;
+        padding: 1.25rem;
+
+        @media (max-width: 639px) {
+            padding: 1rem;
+        }
+
+        .message__label {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: $color-text-secondary;
+            margin: 0 0 0.625rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .message__text {
+            color: $color-text-primary;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            margin: 0;
+            font-size: 0.9375rem;
+        }
+    }
+
+    /* Actions */
+    .card__actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        padding-top: 0.75rem;
+        border-top: 2px solid $glass-border;
+
+        @media (max-width: 639px) {
+            gap: 0.5rem;
+        }
+    }
+}
+
+/* ===== BUTTONS ===== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: $radius-md;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+
+    @media (max-width: 639px) {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.875rem;
+        flex: 1;
+        min-width: 0;
+    }
+
+    &--primary {
+        background: $gradient-primary;
+        color: white;
+        box-shadow: $shadow-brand;
+
+        &:hover {
+            box-shadow: $shadow-brand-hover;
+            transform: translateY(-2px);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+        }
+    }
+
+    &--secondary {
+        background: $color-white;
+        color: $color-brand-primary;
+        border: 2px solid $color-brand-primary;
+        box-shadow: $shadow-sm;
+
+        &:hover {
+            background: $gradient-subtle;
+            transform: translateY(-2px);
+            box-shadow: $shadow-md;
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+        }
+    }
+
+    &--ghost {
+        background: transparent;
+        color: $color-text-secondary;
+        border: 2px solid $glass-border;
+
+        &:hover {
+            background: $gradient-subtle;
+            border-color: rgba(37, 99, 235, 0.3);
+            color: $color-brand-primary;
+            transform: translateY(-2px);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+        }
+    }
+
+    &--danger {
+        background: rgba(239, 68, 68, 0.08);
+        color: $color-error;
+        border: 2px solid rgba(239, 68, 68, 0.2);
+
+        &:hover {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border-color: $color-error;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+        }
+    }
+}
+
+/* ===== MOTION PREFERENCES ===== */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
     }
 
     .spinner {
-        animation: none !important;
-    }
-}
-
-.container {
-    margin-left: 1rem;
-    margin-right: 1rem;
-
-    @media (min-width: 600px) {
-        margin-left: 1.5rem;
-        margin-right: 1.5rem;
-    }
-
-    @media (min-width: 1200px) {
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 1000px;
-        width: 100%;
-    }
-}
-
-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.admin-requests {
-    background: $color-background-main;
-    min-height: 60vh;
-
-    .container {
-        padding-block: 2rem;
-    }
-
-    /* Header */
-    .requests__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-
-        .header__info {
-            flex: 1;
-
-            h2 {
-                font-size: 1.6rem;
-                color: $color-text-primary;
-                margin-bottom: .25rem;
-            }
-
-            .subtitle {
-                color: $color-text-secondary;
-                font-size: .95rem;
-            }
-        }
-
-        .header__badge {
-            background: $color-brand-primary;
-            color: white;
-            padding: .6rem 1rem;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-            box-shadow: 0 2px 8px rgba($color-brand-primary, .25);
-
-            .count {
-                font-size: 1.4rem;
-                font-weight: 700;
-            }
-
-            .label {
-                font-size: .9rem;
-                font-weight: 600;
-            }
-        }
-    }
-
-    /* Loading State */
-    .loading-state {
-        text-align: center;
-        padding: 3rem 1rem;
-        background: $color-white;
-        border-radius: 16px;
-        border: 1px solid $color-gray-light;
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            margin: 0 auto 1rem;
-            border: 3px solid $color-gray-light;
-            border-top-color: $color-brand-primary;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        p {
-            color: $color-text-secondary;
-        }
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    /* Error State */
-    .error-state {
-        text-align: center;
-        padding: 3rem 1rem;
-        background: $color-white;
-        border-radius: 16px;
-        border: 1px solid $color-gray-light;
-
-        p {
-            color: $color-error;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-    }
-
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 4rem 1rem;
-        background: $color-white;
-        border-radius: 16px;
-        border: 1px solid $color-gray-light;
-
-        .empty__icon {
-            font-size: 3rem;
-            margin-bottom: .75rem;
-        }
-
-        h3 {
-            font-size: 1.2rem;
-            color: $color-text-primary;
-            margin-bottom: .25rem;
-        }
-
-        p {
-            color: $color-text-secondary;
-        }
-    }
-
-    /* Requests List */
-    .requests__list {
-        display: grid;
-        gap: 1rem;
-    }
-
-    /* Request Card */
-    .request-card {
-        background: $color-white;
-        border: 1px solid $color-gray-light;
-        border-radius: 16px;
-        padding: 1.25rem;
-        display: grid;
-        gap: 1rem;
-        transition: transform .2s ease, box-shadow .2s ease;
-
-        &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        /* Card Header */
-        .card__header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
-            flex-wrap: wrap;
-
-            .header__left {
-                display: grid;
-                gap: .25rem;
-
-                h3 {
-                    font-size: 1.15rem;
-                    color: $color-text-primary;
-                }
-
-                .time {
-                    font-size: .85rem;
-                    color: $color-text-secondary;
-                }
-            }
-
-            .service-badge {
-                display: inline-block;
-                padding: .4rem .8rem;
-                background: $color-background-main;
-                border: 1px solid $color-gray-light;
-                border-radius: 20px;
-                font-size: .85rem;
-                font-weight: 600;
-                color: $color-brand-primary;
-                white-space: nowrap;
-            }
-        }
-
-        /* Contact Info */
-        .card__contact {
-            display: grid;
-            gap: .5rem;
-
-            .contact__item {
-                display: flex;
-                align-items: center;
-                gap: .6rem;
-                padding: .7rem .85rem;
-                background: $color-background-main;
-                border-radius: 12px;
-                cursor: pointer;
-                transition: all .2s ease;
-                position: relative;
-
-                .icon {
-                    font-size: 1.1rem;
-                }
-
-                .value {
-                    flex: 1;
-                    color: $color-text-primary;
-                    font-weight: 600;
-                    font-size: .9rem;
-                }
-
-                .copy-hint {
-                    font-size: .75rem;
-                    color: $color-text-secondary;
-                    opacity: 0;
-                    transition: opacity .2s ease;
-                }
-
-                &:hover {
-                    background: lighten($color-brand-primary, 48%);
-
-                    .copy-hint {
-                        opacity: 1;
-                    }
-                }
-
-                &:active {
-                    transform: scale(0.98);
-                }
-            }
-        }
-
-        /* Callback Badge */
-        .callback-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: .4rem;
-            padding: .5rem .8rem;
-            background: linear-gradient(135deg, lighten($color-brand-primary, 45%) 0%, lighten($color-brand-primary, 48%) 100%);
-            border: 1px solid lighten($color-brand-primary, 35%);
-            border-radius: 12px;
-            font-size: .85rem;
-            font-weight: 600;
-            color: $color-brand-primary;
-            width: fit-content;
-        }
-
-        /* Message */
-        .card__message {
-            background: $color-background-main;
-            border-radius: 12px;
-            padding: 1rem;
-
-            .message__label {
-                font-size: .85rem;
-                font-weight: 600;
-                color: $color-text-secondary;
-                margin-bottom: .4rem;
-            }
-
-            .message__text {
-                color: $color-text-primary;
-                line-height: 1.6;
-                white-space: pre-wrap;
-                word-break: break-word;
-                overflow-wrap: anywhere;
-            }
-        }
-
-        /* Actions */
-        .card__actions {
-            display: flex;
-            gap: .6rem;
-            flex-wrap: wrap;
-            padding-top: .5rem;
-            border-top: 1px solid $color-gray-light;
-        }
-    }
-
-    /* Buttons */
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        height: 42px;
-        padding: 0 1rem;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: .9rem;
-        text-decoration: none;
-        cursor: pointer;
-        border: 1px solid transparent;
-        transition: all 160ms ease;
-        white-space: nowrap;
-
-        &--primary {
-            background: $color-brand-primary;
-            color: $color-white;
-
-            &:hover {
-                background: darken($color-brand-primary, 8%);
-                transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba($color-brand-primary, 0.25);
-            }
-
-            &:active {
-                transform: translateY(0);
-            }
-        }
-
-        &--secondary {
-            background: $color-white;
-            color: $color-brand-primary;
-            border: 1px solid $color-brand-primary;
-
-            &:hover {
-                background: lighten($color-brand-primary, 50%);
-            }
-        }
-
-        &--ghost {
-            background: transparent;
-            color: $color-text-secondary;
-            border: 1px solid $color-gray-light;
-
-            &:hover {
-                background: $color-background-main;
-                color: $color-white;
-            }
-        }
+        animation: none;
+        border-top-color: transparent;
+        border-right-color: $color-brand-primary;
     }
 }

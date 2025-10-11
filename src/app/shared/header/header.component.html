@@ -1,62 +1,67 @@
 <header class="site-header" role="banner">
   <div class="container header__inner">
-    <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-controls="primary-nav"
-      [attr.aria-expanded]="open ? 'true' : 'false'" (click)="toggle()">
-      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-      </svg>
-    </button>
 
+    <!-- Logo -->
     <img class="brand" src="assets/LM_Logos/Logo1.png" alt="LeonardsMedia" decoding="async" (click)="routeTo('/')" />
 
-    <nav id="primary-nav" class="nav" [class.open]="open" aria-label="Hauptnavigation">
-      <!-- Öffentliche Links -->
-      <a (click)="routeTo('/')" routerLink="/" routerLinkActive="is-active"
-        [routerLinkActiveOptions]="{ exact: true }">Startseite</a>
-      <a (click)="routeTo('/services')" routerLink="/services" routerLinkActive="is-active">Leistungspakete</a>
-      <a (click)="routeTo('/faq')" routerLink="/faq" routerLinkActive="is-active">FAQ</a>
-      <a (click)="routeTo('/about')" routerLink="/about" routerLinkActive="is-active">Über uns</a>
-      <a (click)="routeTo('/contact')" routerLink="/contact" routerLinkActive="is-active">Kontakt</a>
-      <a (click)="routeTo('/server-status')" routerLink="/server-status" routerLinkActive="is-active">Systemstatus</a>
-      <a (click)="routeTo('/preview')" routerLink="/preview" routerLinkActive="is-active">Vorschau</a>
-
-      <!-- KI Preview (wenn vorhanden) -->
-      <!-- <a *ngIf="getPreviewAmmount() > 0"
-        style="font-weight: 500; background-color: #245ee6; border: 3px solid rgb(0, 84, 210); color: white;"
-        (click)="routeTo('/preview')" routerLink="/preview" routerLinkActive="is-active">
-        ✨ Ki Vorschauübersicht öffnen
+    <!-- Navigation -->
+    <nav id="primary-nav" class="nav" [class.open]="open">
+      <a (click)="routeTo('/')" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Startseite
+      </a>
+      <a (click)="routeTo('/services')" routerLink="/services" routerLinkActive="active">
+        Leistungspakete
+      </a>
+      <a (click)="routeTo('/faq')" routerLink="/faq" routerLinkActive="active">
+        FAQ
+      </a>
+      <!-- <a (click)="routeTo('/about')" routerLink="/about" routerLinkActive="active">
+        Über uns
       </a> -->
+      <a (click)="routeTo('/contact')" routerLink="/contact" routerLinkActive="active">
+        Kontakt
+      </a>
+      <a (click)="routeTo('/preview')" routerLink="/preview" routerLinkActive="active">
+        Vorschau
+      </a>
 
+      <!-- Auth Links -->
       <ng-container *ngIf="!user">
-        <a (click)="routeTo('/login')" routerLink="/login" routerLinkActive="is-active" class="nav-link--highlight">
+        <a (click)="routeTo('/login')" routerLink="/login" routerLinkActive="active" class="nav-link--primary">
+          <span class="material-symbols-outlined ms-size-20">login</span>
           Login
         </a>
       </ng-container>
 
-      <!-- WENN EINGELOGGT -->
       <ng-container *ngIf="user">
-        <!-- Admin Link -->
+        <!-- Admin -->
         <a *ngIf="user.role === UserRole.ADMIN" (click)="routeTo('/admin/requests')" routerLink="/admin/requests"
-          routerLinkActive="is-active" class="nav-link--admin">
-          🔧 Admin
+          routerLinkActive="active" class="nav-link--admin">
+          <span class="material-symbols-outlined ms-size-20">admin_panel_settings</span>
+          Admin
         </a>
 
-        <!-- User Profil - HERVORGEHOBEN -->
-        <div class="user-menu">
-          <a (click)="routeTo('/profile')" routerLink="/profile" routerLinkActive="is-active" class="user-menu__link">
-            <app-icon [icon]="'account_circle'"></app-icon>
-            <span class="user-name">{{ user.name }}</span>
-          </a>
-        </div>
+        <!-- Profile -->
+        <a (click)="routeTo('/profile')" routerLink="/profile" routerLinkActive="active" class="nav-link--user">
+          <span class="material-symbols-outlined ms-size-20 ms-fill">account_circle</span>
+          {{ user.name }}
+        </a>
 
-        <!-- Logout Button -->
+        <!-- Logout -->
         <button class="nav-link--logout" type="button" (click)="logout()">
+          <span class="material-symbols-outlined ms-size-20">logout</span>
           Ausloggen
         </button>
       </ng-container>
     </nav>
+
+    <!-- Mobile Toggle -->
+    <button class="nav-toggle" type="button" [attr.aria-expanded]="open"
+      [attr.aria-label]="open ? 'Menü schließen' : 'Menü öffnen'" (click)="toggle()">
+      <span class="material-symbols-outlined">{{ open ? 'close' : 'menu' }}</span>
+    </button>
   </div>
 
-  <!-- Backdrop für Mobile -->
-  <button class="backdrop" type="button" aria-hidden="true" *ngIf="open" (click)="toggle()"></button>
+  <!-- Backdrop -->
+  <div class="backdrop" *ngIf="open" (click)="toggle()"></div>
 </header>

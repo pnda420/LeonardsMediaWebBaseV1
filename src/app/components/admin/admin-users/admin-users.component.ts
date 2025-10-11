@@ -17,7 +17,7 @@ interface UserStats {
 @Component({
   selector: 'app-admin-users',
   standalone: true,
-  imports: [CommonModule, FormsModule, PageTitleComponent, AdminHeaderComponent],
+  imports: [CommonModule, FormsModule, AdminHeaderComponent],
   templateUrl: './admin-users.component.html',
   styleUrl: './admin-users.component.scss'
 })

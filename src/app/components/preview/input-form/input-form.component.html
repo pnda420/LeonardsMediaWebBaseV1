@@ -1,215 +1,222 @@
-<div class="container form-wrap" aria-label="Website erstellen">
+<div class="container form-wrap">
 
-    <!-- LOGIN REQUIRED MESSAGE -->
+    <!-- AUTH REQUIRED -->
     <div class="auth-required" *ngIf="!isLoggedIn">
         <div class="auth-card">
-            <div class="auth-icon">🔒</div>
+            <div class="auth-icon">
+                <span class="material-symbols-outlined ms-fill">lock</span>
+            </div>
             <h2>Anmeldung erforderlich</h2>
-            <p class="auth-message">
-                Um eine Website zu erstellen, musst du angemeldet sein.
-                So können wir deine Projekte speichern und verwalten.
-            </p>
+            <p>Um eine Website zu erstellen, musst du angemeldet sein.</p>
 
             <div class="auth-actions">
-                <a [routerLink]="['/login']" [queryParams]="{ returnUrl: currentUrl }" class="btn btn--primary">
+                <button class="btn btn--primary btn--large" [routerLink]="['/login']"
+                    [queryParams]="{ returnUrl: currentUrl }">
+                    <span class="material-symbols-outlined ms-size-20">login</span>
                     Jetzt anmelden
-                </a>
-                <a [routerLink]="['/register']" [queryParams]="{ returnUrl: currentUrl }" class="btn btn--ghost">
+                </button>
+                <button class="btn btn--secondary btn--large" [routerLink]="['/register']"
+                    [queryParams]="{ returnUrl: currentUrl }">
+                    <span class="material-symbols-outlined ms-size-20">person_add</span>
                     Konto erstellen
-                </a>
-            </div>
-
-            <div class="auth-footer">
-                <p>Noch kein Konto?</p>
-                <a [routerLink]="['/register']" class="link">
-                    Kostenlos registrieren →
-                </a>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- FORM (only visible when logged in) -->
+    <!-- FORM -->
     <div *ngIf="isLoggedIn">
-        <header class="form-head">
-            <div class="head-actions">
-                <a class="btn btn--ghost" (click)="router.navigate(['/services/one-pager'])" aria-label="Zurück">←
-                    Zurück</a>
+
+        <!-- Header -->
+        <header class="form-header">
+            <button class="btn btn--ghost btn--icon" (click)="router.navigate(['/services/one-pager'])">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div class="header-content">
+                <h1>Neue Website erstellen</h1>
+                <p>Beschreibe dein Projekt in wenigen Schritten.</p>
             </div>
-            <h1>Neue Website erstellen</h1>
-            <p class="subtitle">Beschreibe dein Projekt in wenigen Schritten.</p>
-            <div class="progress" aria-label="Fortschritt">
-                <div class="progress__bar" [style.width.%]="getProgressPercentage()"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
             </div>
         </header>
 
-        <form class="op-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <form class="website-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
 
-            <!-- Projekt -->
-            <section class="form-section cardlike" aria-labelledby="sec-project">
-                <h2 id="sec-project" class="section-title">
-                    <span class="section-number">01</span> Projekt
-                </h2>
+            <!-- 01: Projekt -->
+            <section class="form-card">
+                <div class="card-header">
+                    <span class="card-number">01</span>
+                    <h2>Projekt</h2>
+                </div>
 
-                <div class="form-group">
+                <div class="form-field">
                     <label>Ich bin... <span class="required">*</span></label>
-                    <div class="radio-group-inline">
-                        <label class="radio-inline" *ngFor="let type of customerTypes">
-                            <input type="radio" name="customerType" [value]="type.value"
-                                formControlName="customerType" />
-                            <span class="radio-inline-content">
-                                <i class="radio-icon">{{ type.icon }}</i>
-                                {{ type.label }}
-                            </span>
-                        </label>
+                    <div class="button-group">
+                        <button type="button" *ngFor="let type of customerTypes" class="btn-choice"
+                            [class.active]="form.get('customerType')?.value === type.value"
+                            (click)="form.patchValue({customerType: type.value})">
+                            <span class="choice-icon">{{ type.icon }}</span>
+                            <span>{{ type.label }}</span>
+                        </button>
                     </div>
-                    <span class="error-message" *ngIf="isFieldInvalid('customerType')">
-                        <i class="error-icon">!</i>Bitte wählen.
+                    <span class="error-text" *ngIf="isFieldInvalid('customerType')">
+                        <span class="material-symbols-outlined">error</span>
+                        Bitte wählen
                     </span>
                 </div>
 
-                <div class="form-group" *ngIf="form.get('customerType')?.value === 'business'">
+                <div class="form-field" *ngIf="form.get('customerType')?.value === 'business'">
                     <label for="companyName">Firmenname <span class="required">*</span></label>
-                    <input id="companyName" type="text" formControlName="companyName"
-                        placeholder="z. B. Mustermann GmbH" [class.error-input]="isFieldInvalid('companyName')" />
-                    <p class="help">Offizieller Name deines Unternehmens</p>
-                    <span class="error-message" *ngIf="isFieldInvalid('companyName')">
-                        <i class="error-icon">!</i>Firmenname ist erforderlich.
+                    <div class="input-wrapper">
+                        <span class="input-icon material-symbols-outlined">business</span>
+                        <input id="companyName" type="text" formControlName="companyName"
+                            placeholder="z.B. Mustermann GmbH" [class.error]="isFieldInvalid('companyName')" />
+                    </div>
+                    <span class="error-text" *ngIf="isFieldInvalid('companyName')">
+                        <span class="material-symbols-outlined">error</span>
+                        Firmenname erforderlich
                     </span>
                 </div>
 
-                <div class="form-group">
-                    <label for="projectName">Name deines Projekts <span class="required">*</span></label>
-                    <input id="projectName" type="text" formControlName="projectName"
-                        placeholder="z. B. Mein Café, Portfolio Max Mustermann"
-                        [class.error-input]="isFieldInvalid('projectName')" />
-                    <p class="help">Wie heißt deine Website?</p>
-                    <span class="error-message" *ngIf="isFieldInvalid('projectName')">
-                        <i class="error-icon">!</i>Projektname ist erforderlich.
+                <div class="form-field">
+                    <label for="projectName">Projektname <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon material-symbols-outlined">label</span>
+                        <input id="projectName" type="text" formControlName="projectName"
+                            placeholder="z.B. Mein Café, Portfolio" [class.error]="isFieldInvalid('projectName')" />
+                    </div>
+                    <span class="error-text" *ngIf="isFieldInvalid('projectName')">
+                        <span class="material-symbols-outlined">error</span>
+                        Projektname erforderlich
                     </span>
                 </div>
 
-                <div class="form-group">
+                <div class="form-field">
                     <label>Art der Website <span class="required">*</span></label>
-                    <div class="radio-group">
-                        <label class="radio-card" *ngFor="let type of websiteTypes">
+                    <div class="card-grid">
+                        <label class="choice-card" *ngFor="let type of websiteTypes">
                             <input type="radio" name="typeOfWebsite" [value]="type.value"
                                 formControlName="typeOfWebsite" />
-                            <div class="radio-card-content">
-                                <i class="radio-icon" aria-hidden="true">{{ type.icon }}</i>
-                                <span class="radio-title">{{ type.label }}</span>
-                                <span class="radio-description">{{ type.description }}</span>
+                            <div class="choice-card-content">
+                                <span class="choice-card-icon">{{ type.icon }}</span>
+                                <span class="choice-card-title">{{ type.label }}</span>
+                                <span class="choice-card-desc">{{ type.description }}</span>
                             </div>
                         </label>
                     </div>
-                    <span class="error-message" *ngIf="isFieldInvalid('typeOfWebsite')">
-                        <i class="error-icon">!</i>Bitte wählen.
+                    <span class="error-text" *ngIf="isFieldInvalid('typeOfWebsite')">
+                        <span class="material-symbols-outlined">error</span>
+                        Bitte wählen
                     </span>
                 </div>
             </section>
 
-            <!-- Design -->
-            <section class="form-section cardlike" aria-labelledby="sec-design">
-                <h2 id="sec-design" class="section-title">
-                    <span class="section-number">02</span> Design
-                </h2>
+            <!-- 02: Design -->
+            <section class="form-card">
+                <div class="card-header">
+                    <span class="card-number">02</span>
+                    <h2>Design</h2>
+                </div>
 
-                <div class="form-group">
+                <div class="form-field">
                     <label for="primaryColor">Hauptfarbe</label>
-                    <div class="color-item">
-                        <input id="primaryColor" type="color" formControlName="primaryColor" class="color-input" />
-                        <label for="primaryColor" class="color-label">
-                            Deine Markenfarbe
+                    <div class="color-picker">
+                        <input id="primaryColor" type="color" formControlName="primaryColor" />
+                        <div class="color-info">
+                            <span class="color-label">Deine Markenfarbe</span>
                             <span class="color-value">{{ form.get('primaryColor')?.value }}</span>
-                        </label>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-field">
                     <label for="designStyle">Stil</label>
-                    <select id="designStyle" formControlName="designStyle">
-                        <option value="modern">Modern & minimal</option>
-                        <option value="friendly">Freundlich & klar</option>
-                        <option value="elegant">Elegant</option>
-                        <option value="playful">Verspielt</option>
-                    </select>
+                    <div class="input-wrapper">
+                        <span class="input-icon material-symbols-outlined">palette</span>
+                        <select id="designStyle" formControlName="designStyle">
+                            <option value="modern">Modern & minimal</option>
+                            <option value="friendly">Freundlich & klar</option>
+                            <option value="elegant">Elegant</option>
+                            <option value="playful">Verspielt</option>
+                        </select>
+                    </div>
                 </div>
             </section>
 
-            <!-- Inhalt -->
-            <section class="form-section cardlike" aria-labelledby="sec-content">
-                <h2 id="sec-content" class="section-title">
-                    <span class="section-number">03</span> Inhalt
-                </h2>
+            <!-- 03: Inhalt -->
+            <section class="form-card">
+                <div class="card-header">
+                    <span class="card-number">03</span>
+                    <h2>Inhalt</h2>
+                </div>
 
-                <div class="form-group">
+                <div class="form-field">
                     <label for="contentInformation">
                         Beschreibe dein Projekt <span class="required">*</span>
-                        <span class="char-count">{{ getCharCount() }}/500</span>
+                        <span class="char-counter">{{ getCharCount() }}/500</span>
                     </label>
                     <textarea id="contentInformation" rows="8" formControlName="contentInformation"
-                        placeholder="Beispiel: Ein gemütliches Café im Herzen der Stadt. Wir servieren frischen Kaffee und hausgemachte Kuchen. Besucher sollen unsere Öffnungszeiten finden und Plätze reservieren können."
-                        [class.error-input]="isFieldInvalid('contentInformation')" maxlength="500"></textarea>
-                    <p class="help">Worum geht's? Was sollen Besucher tun können? (Min. 30 Zeichen)</p>
-                    <span class="error-message" *ngIf="isFieldInvalid('contentInformation')">
-                        <i class="error-icon">!</i>Bitte mindestens 30 Zeichen eingeben.
+                        placeholder="Beispiel: Ein gemütliches Café im Herzen der Stadt. Wir servieren frischen Kaffee und hausgemachte Kuchen."
+                        [class.error]="isFieldInvalid('contentInformation')" maxlength="500"></textarea>
+                    <p class="field-hint">Min. 30 Zeichen</p>
+                    <span class="error-text" *ngIf="isFieldInvalid('contentInformation')">
+                        <span class="material-symbols-outlined">error</span>
+                        Mindestens 30 Zeichen
                     </span>
                 </div>
             </section>
 
             <!-- Quality Selector -->
-            <div class="quality-selector-wrapper" *ngIf="form.valid">
-                <div class="quality-selector">
-                    <label class="quality-label">
-                        <span class="quality-label-icon">⚙️</span>
-                        Generierungs-Qualität
-                    </label>
-
-                    <div class="quality-options">
-                        <button type="button" class="quality-option" (click)="selectQuality('fast')"
-                            [class.active]="selectedQuality === 'fast'">
-                            <span class="quality-icon">⚡</span>
-                            <span class="quality-info">
-                                <span class="quality-name">Schnell</span>
-                                <span class="quality-time">~15 Sek</span>
-                            </span>
-                        </button>
-
-                        <button type="button" class="quality-option" (click)="selectQuality('balanced')"
-                            [class.active]="selectedQuality === 'balanced'">
-                            <span class="quality-icon">⭐</span>
-                            <span class="quality-info">
-                                <span class="quality-name">Standard</span>
-                                <span class="quality-time">~30 Sek</span>
-                            </span>
-                        </button>
-
-                        <button type="button" class="quality-option" (click)="selectQuality('premium')"
-                            [class.active]="selectedQuality === 'premium'">
-                            <span class="quality-icon">💎</span>
-                            <span class="quality-info">
-                                <span class="quality-name">Premium</span>
-                                <span class="quality-time">~60 Sek</span>
-                            </span>
-                        </button>
-                    </div>
+            <div class="quality-card" *ngIf="form.valid">
+                <div class="card-header">
+                    <span class="material-symbols-outlined">settings</span>
+                    <h3>Generierungs-Qualität</h3>
+                </div>
+                <div class="quality-options">
+                    <button type="button" class="quality-btn" [class.active]="selectedQuality === 'fast'"
+                        (click)="selectQuality('fast')">
+                        <span class="quality-emoji">⚡</span>
+                        <div class="quality-info">
+                            <span class="quality-name">Schnell</span>
+                            <span class="quality-time">~15 Sek</span>
+                        </div>
+                    </button>
+                    <button type="button" class="quality-btn" [class.active]="selectedQuality === 'balanced'"
+                        (click)="selectQuality('balanced')">
+                        <span class="quality-emoji">⭐</span>
+                        <div class="quality-info">
+                            <span class="quality-name">Standard</span>
+                            <span class="quality-time">~30 Sek</span>
+                        </div>
+                    </button>
+                    <button type="button" class="quality-btn" [class.active]="selectedQuality === 'premium'"
+                        (click)="selectQuality('premium')">
+                        <span class="quality-emoji">💎</span>
+                        <div class="quality-info">
+                            <span class="quality-name">Premium</span>
+                            <span class="quality-time">~60 Sek</span>
+                        </div>
+                    </button>
                 </div>
             </div>
 
-            <!-- Aktionen -->
+            <!-- Actions -->
             <div class="form-actions">
-                <button type="button" class="btn btn--ghost" (click)="onReset()">
+                <button type="button" class="btn btn--secondary" (click)="onReset()">
+                    <span class="material-symbols-outlined ms-size-20">refresh</span>
                     Zurücksetzen
                 </button>
                 <button type="submit" class="btn btn--primary" [disabled]="loading || form.invalid"
                     [class.loading]="loading">
-                    @if (!loading) {
-                    <span class="btn-text">Website generieren</span>
-                    }
-                    @if (loading) {
-                    <span class="btn-text">
-                        <i class="spinner" aria-hidden="true"></i>Wird erstellt...
+                    <span *ngIf="!loading">
+                        <span class="material-symbols-outlined ms-size-20">auto_awesome</span>
+                        Website generieren
                     </span>
-                    }
+                    <span *ngIf="loading" class="loading-content">
+                        <span class="spinner"></span>
+                        Wird erstellt...
+                    </span>
                 </button>
             </div>
 

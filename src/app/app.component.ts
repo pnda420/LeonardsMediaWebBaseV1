@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./shared/header/header.component";
 import { FooterComponent } from "./shared/footer/footer.component";
@@ -13,7 +13,15 @@ import { ToastService } from './shared/toasts/toast.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule, FormsModule, MaintenanceComponent, ToastContainerComponent],
+  imports: [
+    RouterOutlet,
+    HeaderComponent,
+    FooterComponent,
+    CommonModule,
+    FormsModule,
+    MaintenanceComponent,
+    ToastContainerComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -21,6 +29,10 @@ export class AppComponent implements OnInit {
   title = 'WebsiteBaseV2';
   isUnderConstruction = false;
   private readonly accessPassword = 'lm';
+
+  // Neue Properties für Scroll-Handling
+  isScrolled: boolean = false;
+  showScrollTop: boolean = false;
 
   constructor(
     public router: Router,
@@ -31,19 +43,17 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Access Control für Under Construction Mode
     this.route.queryParams.subscribe(params => {
       const access = params['pw'];
       if (access === this.accessPassword) {
         this.isUnderConstruction = false;
         this.router.navigate([], { queryParams: { pw: null }, queryParamsHandling: 'merge' });
-        // optional: Flag im localStorage merken (damit nicht jedes Mal in URL nötig)
         sessionStorage.setItem('hasAccess', 'true');
       } else if (sessionStorage.getItem('hasAccess') === 'true') {
         this.isUnderConstruction = false;
       }
     });
-
-
 
     // SEO-Update bei Navigation
     this.router.events
@@ -56,9 +66,33 @@ export class AppComponent implements OnInit {
         const url = this.doc.location.href;
 
         this.seo.update({ title, description, url });
+
+        // Scroll to top bei Route-Change
+        window.scrollTo(0, 0);
       });
   }
 
+  // Listen to scroll events
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
+    // Header scrolled state
+    this.isScrolled = scrollPosition > 50;
+
+    // Show scroll-to-top button
+    this.showScrollTop = scrollPosition > 300;
+  }
+
+  // Scroll to top smoothly
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
+  // Helper: Tiefste Route finden (für SEO)
   private getDeepest(route: ActivatedRoute): ActivatedRoute {
     let current = route;
     while (current.firstChild) current = current.firstChild;

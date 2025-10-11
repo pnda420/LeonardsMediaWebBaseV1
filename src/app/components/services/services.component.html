@@ -1,59 +1,110 @@
-<app-page-title title="Leistungen"></app-page-title>
-
+<app-page-title title="Leistungspakete"></app-page-title>
 <section class="services-overview">
-    <div class="flex">
-        <div class="container">
-            <!-- Intro -->
-            <div class="services-intro">
-                <h2>Was ich für dich bauen kann</h2>
-                <p>Fokussierte Pakete für verschiedene Anforderungen - vom One-Pager bis zur kompletten Web-App.</p>
-            </div>
+    <div class="container">
 
-            <!-- Service Cards Grid -->
-            <div class="services-grid">
-                <article class="service-card" *ngFor="let s of services">
-                    <div class="service-card__image">
-                        <img [src]="s.img" [alt]="s.title" loading="lazy">
-                        <span *ngIf="s.badge" class="service-card__badge">
-                            {{ s.badge }}
+
+        <!-- Hero Header -->
+        <!-- <header class="services-hero">
+            <h1 class="gradient-text">Was ich für dich bauen kann</h1>
+            <p class="services-subtitle">
+                Fokussierte Pakete für verschiedene Anforderungen - vom One-Pager bis zur kompletten Web-App.
+            </p>
+        </header> -->
+
+        <!-- Service Cards Grid -->
+        <div class="services-grid">
+            <article class="service-card" *ngFor="let s of services">
+
+                <!-- Card Image -->
+                <div class="service-card__image">
+                    <img [src]="s.img" [alt]="s.title" loading="lazy">
+                    <div class="image-overlay"></div>
+                    <span *ngIf="s.badge" class="service-badge">
+                        <span class="material-symbols-outlined ms-fill">star</span>
+                        {{ s.badge }}
+                    </span>
+                </div>
+
+                <!-- Card Content -->
+                <div class="service-card__content">
+
+                    <!-- Header with Price -->
+                    <div class="service-card__header">
+                        <h3>{{ s.title }}</h3>
+                        <span *ngIf="s.price" class="service-price">
+                            {{ s.price }}
                         </span>
                     </div>
 
-                    <div class="service-card__content">
-                        <div class="service-card__header">
-                            <h3>{{ s.title }}</h3>
-                            <span *ngIf="s.price" class="service-card__price">
-                                {{ s.price }}
-                            </span>
-                        </div>
+                    <!-- Description -->
+                    <p class="service-description">{{ s.short }}</p>
 
-                        <p class="service-card__description">{{ s.short }}</p>
+                    <!-- Features List -->
+                    <ul class="service-features" *ngIf="s.features && s.features.length > 0">
+                        <li *ngFor="let feature of s.features">
+                            <span class="material-symbols-outlined ms-fill">check_circle</span>
+                            <span>{{ feature }}</span>
+                        </li>
+                    </ul>
 
-                        <ul class="service-card__features" *ngIf="s.features && s.features.length > 0">
-                            <li *ngFor="let feature of s.features">{{ feature }}</li>
-                        </ul>
+                    <!-- CTA Button -->
+                    <a class="btn btn--primary" [routerLink]="[s.route]"
+                        [attr.aria-label]="s.title + ' - ' + (s.cta || 'Details ansehen')">
+                        {{ s.cta || 'Details ansehen' }}
+                        <span class="material-symbols-outlined ms-size-20">arrow_forward</span>
+                    </a>
+                </div>
 
-                        <a class="btn btn--primary" [routerLink]="[s.route]"
-                            [attr.aria-label]="s.title + ' - ' + (s.cta || 'Details ansehen')">
-                            {{ s.cta || 'Details ansehen' }}
-                        </a>
-                    </div>
-                </article>
+            </article>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="services-cta">
+            <div class="cta-content">
+                <div class="cta-icon">
+                    <span class="material-symbols-outlined">help</span>
+                </div>
+                <div class="cta-text">
+                    <h3>Nicht sicher, welches Paket passt?</h3>
+                    <p>Nutze den interaktiven Projekt-Finder oder vereinbare ein kostenloses Erstgespräch.</p>
+                </div>
             </div>
+            <div class="cta-actions">
+                <button class="btn btn--primary btn--large" (click)="router.navigate(['/survey'])">
+                    <span class="material-symbols-outlined ms-size-20">auto_awesome</span>
+                    Projekt-Finder starten
+                </button>
+                <button class="btn btn--secondary btn--large" (click)="router.navigate(['/contact'])">
+                    <span class="material-symbols-outlined ms-size-20">event</span>
+                    Gespräch vereinbaren
+                </button>
+            </div>
+        </div>
 
-            <!-- CTA -->
-            <div class="services-cta">
-                <h3>Nicht sicher, welches Paket passt?</h3>
-                <p>Nutze den interaktiven Projekt-Finder oder vereinbare ein kostenloses Erstgespräch.</p>
-                <div class="services-cta__actions">
-                    <a class="btn btn--primary" (click)="router.navigate(['/survey'])">
-                        ✨ Projekt-Finder starten
-                    </a>
-                    <a class="btn btn--secondary" (click)="router.navigate(['/contact'])">
-                        Gespräch vereinbaren
-                    </a>
+        <!-- Trust Indicators -->
+        <div class="trust-section">
+            <div class="trust-item">
+                <span class="material-symbols-outlined ms-fill">verified</span>
+                <div>
+                    <strong>Zufriedenheitsgarantie</strong>
+                    <p>14 Tage Geld-zurück</p>
+                </div>
+            </div>
+            <div class="trust-item">
+                <span class="material-symbols-outlined ms-fill">schedule</span>
+                <div>
+                    <strong>Schnelle Umsetzung</strong>
+                    <p>MVP in 2-4 Wochen</p>
+                </div>
+            </div>
+            <div class="trust-item">
+                <span class="material-symbols-outlined ms-fill">support_agent</span>
+                <div>
+                    <strong>Persönlicher Support</strong>
+                    <p>Direkte Kommunikation</p>
                 </div>
             </div>
         </div>
+
     </div>
 </section>

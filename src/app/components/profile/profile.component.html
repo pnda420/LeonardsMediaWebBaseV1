@@ -1,56 +1,82 @@
 <app-page-title title="Mein Profil"></app-page-title>
 
-<section class="profile">
+<section class="profile-page">
     <div class="container">
 
-        <div class="profile__card" *ngIf="user">
-            <!-- Header mit Avatar -->
-            <div class="profile__header">
-                <div class="profile__avatar">
-                    {{ user.name.charAt(0).toUpperCase() }}
+        <!-- Profile Card -->
+        <div class="profile-card" *ngIf="user">
+
+            <!-- Header Section -->
+            <div class="profile-header">
+                <div class="avatar-wrapper">
+                    <div class="avatar">
+                        {{ user.name.charAt(0).toUpperCase() }}
+                    </div>
+                    <div class="avatar-status"></div>
                 </div>
-                <div class="profile__info">
+                <div class="profile-info">
                     <h2>{{ user.name }}</h2>
-                    <p class="profile__email">{{ user.email }}</p>
-                    <span class="badge" [ngClass]="getRoleBadgeClass()">
+                    <p class="email">{{ user.email }}</p>
+                    <span class="role-badge" [ngClass]="getRoleBadgeClass()">
+                        <span class="material-symbols-outlined ms-size-20 ms-fill">{{ getRoleIcon() }}</span>
                         {{ getRoleLabel() }}
                     </span>
                 </div>
             </div>
 
-            <!-- Details -->
-            <div class="profile__details">
-                <h3>Account-Details</h3>
-                <div class="detail__grid">
-                    <div class="detail__item">
-                        <span class="detail__label">Benutzer-ID</span>
-                        <span class="detail__value">{{ user.id }}</span>
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="material-symbols-outlined ms-fill">calendar_today</span>
+                    <div class="stat-content">
+                        <span class="stat-label">Mitglied seit</span>
+                        <span class="stat-value">{{ formatDate(user.createdAt) }}</span>
                     </div>
-                    <div class="detail__item">
-                        <span class="detail__label">E-Mail</span>
-                        <span class="detail__value">{{ user.email }}</span>
-                    </div>
-                    <div class="detail__item">
-                        <span class="detail__label">Name</span>
-                        <span class="detail__value">{{ user.name }}</span>
-                    </div>
-                    <div class="detail__item">
-                        <span class="detail__label">Rolle</span>
-                        <span class="detail__value">{{ getRoleLabel() }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="material-symbols-outlined ms-fill">shield</span>
+                    <div class="stat-content">
+                        <span class="stat-label">Account-Status</span>
+                        <span class="stat-value">Aktiv</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Actions -->
-            <div class="profile__actions">
-                <button class="btn btn--danger" (click)="logout()">
+            <!-- Details Section -->
+            <div class="details-section">
+                <h3>Account-Details</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Benutzer-ID</span>
+                        <span class="detail-value">{{ user.id.substring(0, 12) }}...</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">E-Mail-Adresse</span>
+                        <span class="detail-value">{{ user.email }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Vollständiger Name</span>
+                        <span class="detail-value">{{ user.name }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Benutzerrolle</span>
+                        <span class="detail-value">{{ getRoleLabel() }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions Section -->
+            <div class="actions-section">
+                <button class="btn btn--danger btn--large" (click)="logout()">
+                    <span class="material-symbols-outlined ms-size-20">logout</span>
                     Ausloggen
                 </button>
             </div>
         </div>
 
         <!-- Loading State -->
-        <div class="profile__card" *ngIf="!user">
+        <div class="profile-card profile-card--loading" *ngIf="!user">
+            <div class="spinner"></div>
             <p>Lade Profil...</p>
         </div>
 
