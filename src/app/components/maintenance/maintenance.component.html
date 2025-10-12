@@ -24,13 +24,13 @@
         </p>
 
         <!-- Features Grid -->
-        <div class="features-grid">
+        <!-- <div class="features-grid">
             <article class="feature" *ngFor="let feature of features">
                 <div class="icon">{{ feature.icon }}</div>
                 <h3>{{ feature.title }}</h3>
                 <p>{{ feature.description }}</p>
             </article>
-        </div>
+        </div> -->
 
         <!-- Email Notification -->
         <div class="notify-box">
@@ -40,7 +40,7 @@
             <div class="email-form" *ngIf="!submitted">
                 <input type="email" class="email-input" placeholder="deine@email.de" [(ngModel)]="email"
                     (keyup.enter)="onSubmit()" required />
-                <button class="btn" (click)="onSubmit()">
+                <button class="btn btn--primary" (click)="onSubmit()">
                     Benachrichtigen
                 </button>
             </div>
@@ -51,14 +51,14 @@
         </div>
 
         <!-- Tech Stack -->
-        <div class="tech-stack">
+        <!-- <div class="tech-stack">
             <p class="tech-label">Technologien, mit denen ich arbeite:</p>
             <div class="tech-badges">
                 <span class="tech-badge" *ngFor="let tech of techStack">
                     {{ tech }}
                 </span>
             </div>
-        </div>
+        </div> -->
 
         <!-- Contact Info -->
         <div class="contact">
