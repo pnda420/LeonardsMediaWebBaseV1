@@ -1,0 +1,443 @@
+@import '../../utils/shared-styles.scss';
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.booking-page {
+  padding: 3rem 0;
+  min-height: 100vh;
+}
+
+/* ===== HERO ===== */
+.booking-hero {
+  text-align: center;
+  margin-bottom: 3rem;
+  display: grid;
+  gap: 1rem;
+
+  .hero-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+
+    .material-symbols-outlined {
+      font-size: 48px;
+      color: white;
+    }
+  }
+
+  h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    color: $color-text-primary;
+    margin: 0;
+  }
+
+  .hero-description {
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    color: $color-text-secondary;
+    margin: 0;
+  }
+
+  .hero-facts {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+
+    .fact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: $color-text-primary;
+
+      .material-symbols-outlined {
+        color: #10b981;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+/* ===== BOOKING GRID ===== */
+.booking-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+}
+
+/* ===== CALENDAR ===== */
+.calendar-section {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: $color-text-primary;
+      margin: 0;
+    }
+
+    .month-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .btn-nav {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(59, 130, 246, 0.1));
+        border: 1px solid rgba(37, 99, 235, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover:not(:disabled) {
+          background: linear-gradient(135deg, #2563eb, #3b82f6);
+          transform: scale(1.1);
+
+          .material-symbols-outlined {
+            color: white;
+          }
+        }
+
+        &:disabled {
+          opacity: 0.3;
+          cursor: not-allowed;
+        }
+
+        .material-symbols-outlined {
+          font-size: 20px;
+          color: #2563eb;
+        }
+      }
+
+      .month-label {
+        font-size: 0.9375rem;
+        font-weight: 700;
+        color: $color-text-primary;
+        min-width: 120px;
+        text-align: center;
+      }
+    }
+  }
+
+  .days-grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    margin-bottom: 2rem;
+  }
+
+  .day-card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    &.selected {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      border-color: #2563eb;
+
+      .day-name,
+      .day-number,
+      .day-status {
+        color: white;
+      }
+    }
+
+    &.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .day-name {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: $color-text-secondary;
+      text-transform: uppercase;
+    }
+
+    .day-number {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: $color-text-primary;
+    }
+
+    .day-status {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #10b981;
+
+      &--full {
+        color: #ef4444;
+      }
+    }
+  }
+
+  .slots-section {
+    padding-top: 2rem;
+    border-top: 2px solid #e2e8f0;
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: $color-text-primary;
+      margin: 0 0 1rem;
+    }
+
+    .slots-grid {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+
+    .slot-card {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 700;
+      color: $color-text-primary;
+
+      &:hover {
+        border-color: #3b82f6;
+        background: white;
+        transform: translateY(-2px);
+      }
+
+      &.selected {
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        border-color: #2563eb;
+        color: white;
+
+        .material-symbols-outlined {
+          color: white;
+        }
+      }
+
+      .material-symbols-outlined {
+        font-size: 18px;
+        color: #2563eb;
+      }
+    }
+  }
+}
+
+/* ===== FORM ===== */
+.form-section {
+  display: grid;
+  gap: 1.5rem;
+  align-content: flex-start;
+
+  .form-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+
+    .form-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+
+      .material-symbols-outlined {
+        font-size: 32px;
+        color: #2563eb;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: $color-text-primary;
+        margin: 0;
+      }
+    }
+  }
+
+  .booking-form {
+    display: grid;
+    gap: 1.25rem;
+
+    .form-group {
+      display: grid;
+      gap: 0.5rem;
+
+      label {
+        font-size: 0.9375rem;
+        font-weight: 700;
+        color: $color-text-primary;
+      }
+
+      input,
+      textarea {
+        padding: 0.875rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: all 0.2s ease;
+
+        &:focus {
+          outline: none;
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        &::placeholder {
+          color: #94a3b8;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+    }
+
+    .booking-summary {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(59, 130, 246, 0.05));
+      border: 2px solid rgba(37, 99, 235, 0.15);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin: 0.5rem 0;
+
+      .summary-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+
+        .material-symbols-outlined {
+          font-size: 24px;
+          color: #2563eb;
+        }
+
+        strong {
+          font-size: 1.0625rem;
+          color: $color-text-primary;
+        }
+      }
+
+      .summary-content {
+        display: grid;
+        gap: 0.5rem;
+
+        p {
+          margin: 0;
+          font-size: 0.9375rem;
+          font-weight: 600;
+          color: $color-text-secondary;
+        }
+      }
+    }
+
+    .form-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: $color-text-secondary;
+      margin: 0;
+
+      .material-symbols-outlined {
+        font-size: 18px;
+        flex-shrink: 0;
+        margin-top: 0.125rem;
+      }
+    }
+  }
+
+  .info-card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 1.5rem;
+
+    h4 {
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: $color-text-primary;
+      margin: 0 0 1rem;
+    }
+
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.75rem;
+
+      li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        font-size: 0.9375rem;
+        color: $color-text-secondary;
+
+        .material-symbols-outlined {
+          font-size: 20px;
+          color: #2563eb;
+          flex-shrink: 0;
+          margin-top: 0.125rem;
+        }
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

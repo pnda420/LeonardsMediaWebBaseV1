@@ -1,4 +1,4 @@
-<app-page-title title="Einfache Website"></app-page-title>
+<app-page-title title="Starter Website"></app-page-title>
 
 <section class="service-detail">
 
@@ -9,27 +9,26 @@
                 <div class="hero-content">
                     <div class="hero-badge">
                         <span class="material-symbols-outlined ms-size-20 ms-fill">rocket_launch</span>
-                        Beliebtestes Paket für den Start
+                        🚀 Schnellstart
                     </div>
-                    <h1>Deine Website. Eine Seite. Direkt auf den Punkt.</h1>
+                    <h1>Eine Seite. Alles drauf. Fertig in 2 Wochen.</h1>
                     <p>
-                        Alles Wichtige auf <strong>einer Seite</strong>: Dein Angebot, deine Vorteile,
-                        Kontaktmöglichkeit.
-                        Klar strukturiert, mobil perfekt, schnell live.
+                        Dein Angebot, deine Vorteile, Kontaktmöglichkeit - <strong>alles auf einer Seite</strong>.
+                        Perfekt für den schnellen Start.
                     </p>
 
                     <div class="hero-facts">
                         <div class="fact-chip">
                             <span class="material-symbols-outlined ms-fill">payments</span>
-                            Ab 1.800€
+                            Ab 1.490€
                         </div>
                         <div class="fact-chip fact-chip--muted">
                             <span class="material-symbols-outlined">schedule</span>
-                            Live in 1–3 Wochen
+                            Fertig in 1-2 Wochen
                         </div>
                         <div class="fact-chip fact-chip--muted">
                             <span class="material-symbols-outlined ms-fill">check_circle</span>
-                            Mobil optimiert
+                            Auf Handy perfekt
                         </div>
                     </div>
 
@@ -40,19 +39,19 @@
                         </button>
                         <button class="btn btn--secondary btn--large" (click)="router.navigate(['/preview-form'])">
                             <span class="material-symbols-outlined ms-size-20">auto_awesome</span>
-                            Kostenlose Vorschau
+                            Gratis Vorschau
                         </button>
                     </div>
 
                     <p class="hero-guarantee">
                         <span class="material-symbols-outlined ms-fill">verified</span>
-                        Keine versteckten Kosten · 14 Tage Zufriedenheitsgarantie
+                        Fester Preis · 14 Tage Geld-zurück
                     </p>
                 </div>
 
                 <div class="hero-visual">
                     <div class="visual-card">
-                        <img [src]="img" alt="Beispiel One-Pager" loading="lazy" />
+                        <img [src]="img" alt="Beispiel Starter Website" loading="lazy" />
                     </div>
                 </div>
             </div>
@@ -66,12 +65,12 @@
                 <span class="material-symbols-outlined ms-fill">auto_awesome</span>
             </div>
             <div class="ki-content">
-                <h3>Probier's aus: KI-Vorschau</h3>
-                <p>Beschreib in 2–3 Sätzen dein Angebot. Du bekommst direkt einen ersten Entwurf – kostenlos und
-                    unverbindlich.</p>
+                <h3>Probier's aus: Gratis Vorschau</h3>
+                <p>Sag mir in 2 Sätzen was du machst. Ich zeig dir sofort wie deine Website aussehen könnte - gratis.
+                </p>
                 <button class="btn btn--ghost" (click)="router.navigate(['/preview-form'])">
                     <span class="material-symbols-outlined ms-size-20">visibility</span>
-                    Vorschau generieren
+                    Vorschau erstellen
                 </button>
             </div>
         </div>
@@ -80,8 +79,8 @@
     <!-- FIT CHECK -->
     <div class="container fit-section">
         <header class="section-header">
-            <h2>Ist das das Richtige für dich?</h2>
-            <p>Schnelle Orientierungshilfe</p>
+            <h2>Passt das zu dir?</h2>
+            <p>Schneller Check in 30 Sekunden</p>
         </header>
 
         <div class="fit-grid">
@@ -89,13 +88,13 @@
                 <div class="fit-icon">
                     <span class="material-symbols-outlined ms-fill">check_circle</span>
                 </div>
-                <h3>Perfekt geeignet</h3>
+                <h3>Perfekt, wenn du...</h3>
                 <ul>
-                    <li><strong>Ein klares Angebot</strong> (Dienstleistung, Produkt, Event)</li>
-                    <li>Du willst <strong>schnell online</strong> sein</li>
-                    <li>Ziel: <strong>Kontaktaufnahme oder Buchung</strong></li>
-                    <li>Wenig Content (3–6 Abschnitte)</li>
-                    <li>Budget-bewusst, aber professionell</li>
+                    <li>Schnell online sein willst (1-2 Wochen)</li>
+                    <li>Ein klares Angebot hast</li>
+                    <li>Leute sollen dich kontaktieren</li>
+                    <li>Nicht viel Text brauchst</li>
+                    <li>Ein festes Budget hast</li>
                 </ul>
             </div>
 
@@ -103,151 +102,242 @@
                 <div class="fit-icon">
                     <span class="material-symbols-outlined ms-fill">warning</span>
                 </div>
-                <h3>Eher nicht geeignet</h3>
+                <h3>Nicht passend, wenn du...</h3>
                 <ul>
-                    <li>Du brauchst <strong>viele Unterseiten</strong> (Blog, Portfolio)</li>
-                    <li><strong>Online-Shop</strong> mit Warenkorb & Bezahlung</li>
-                    <li>Komplexe Formulare oder Buchungssysteme</li>
-                    <li>Mehrsprachigkeit</li>
-                    <li>Mitgliederbereiche oder Login</li>
+                    <li>Viele verschiedene Seiten brauchst</li>
+                    <li>Einen Online-Shop willst</li>
+                    <li>Komplizierte Formulare brauchst</li>
+                    <li>Login für Mitglieder willst</li>
+                    <li>Die Seite in mehreren Sprachen brauchst</li>
                 </ul>
                 <div class="fit-note">
                     <span class="material-symbols-outlined">lightbulb</span>
-                    Dafür schau dir
-                    <a (click)="router.navigate(['/services/standard-website'])">Standard Website</a>
+                    Dann schau dir
+                    <a (click)="router.navigate(['/services/standard-website'])">Business</a>
                     oder
-                    <a (click)="router.navigate(['/services/individual-website'])">Individual Website</a>
+                    <a (click)="router.navigate(['/services/individual-website'])">Premium</a>
                     an.
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- LEISTUNGSUMFANG -->
+    <!-- WAS DU BEKOMMST -->
     <div class="container scope-section">
         <header class="section-header">
             <h2>Was du bekommst</h2>
-            <p>Alles inklusive - keine versteckten Kosten</p>
+            <p>Alles inklusive - kein Kleingedrucktes</p>
         </header>
 
         <div class="scope-grid">
-            <div class="scope-card" *ngFor="let i of includes">
+            <div class="scope-card">
                 <div class="scope-check">
                     <span class="material-symbols-outlined ms-fill">check</span>
                 </div>
                 <div class="scope-content">
-                    <h3 [innerHTML]="i.title"></h3>
-                    <p>{{ i.text }}</p>
+                    <h3>Alle Bereiche die du willst</h3>
+                    <p>Über mich, Angebot, Vorteile, Kontakt - du sagst mir was rein soll.</p>
+                </div>
+            </div>
+
+            <div class="scope-card">
+                <div class="scope-check">
+                    <span class="material-symbols-outlined ms-fill">check</span>
+                </div>
+                <div class="scope-content">
+                    <h3>Kontaktformular</h3>
+                    <p>Kunden können dir direkt schreiben. Du bekommst die Nachricht per E-Mail.</p>
+                </div>
+            </div>
+
+            <div class="scope-card">
+                <div class="scope-check">
+                    <span class="material-symbols-outlined ms-fill">check</span>
+                </div>
+                <div class="scope-content">
+                    <h3>Auf Handy perfekt</h3>
+                    <p>Sieht auf Handy, Tablet und Computer super aus. Automatisch angepasst.</p>
+                </div>
+            </div>
+
+            <div class="scope-card">
+                <div class="scope-check">
+                    <span class="material-symbols-outlined ms-fill">check</span>
+                </div>
+                <div class="scope-content">
+                    <h3>Bei Google findbar</h3>
+                    <p>Ich optimiere alles damit deine Kunden dich bei Google finden.</p>
+                </div>
+            </div>
+
+            <div class="scope-card">
+                <div class="scope-check">
+                    <span class="material-symbols-outlined ms-fill">check</span>
+                </div>
+                <div class="scope-content">
+                    <h3>Deine Farben & Style</h3>
+                    <p>Du sagst mir welche Farben und welchen Look du willst. Ich setze es um.</p>
+                </div>
+            </div>
+
+            <div class="scope-card">
+                <div class="scope-check">
+                    <span class="material-symbols-outlined ms-fill">check</span>
+                </div>
+                <div class="scope-content">
+                    <h3>3 Monate Support gratis</h3>
+                    <p>Fehler beheben, kleine Änderungen - ich helfe dir die ersten 3 Monate kostenlos.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ABLAUF -->
+    <!-- WIE ES ABLÄUFT -->
     <div class="container process-section">
         <header class="section-header">
-            <h2>So läuft's ab</h2>
-            <p>Transparent, planbar, ohne Überraschungen</p>
+            <h2>So geht's</h2>
+            <p>Einfach, klar, keine Überraschungen</p>
         </header>
 
         <div class="process-timeline">
             <div class="process-step">
                 <div class="step-number">1</div>
                 <div class="step-content">
-                    <h3>Kickoff-Gespräch</h3>
-                    <p>30–45 Min: Ziele klären, Inhalte besprechen, Referenzen anschauen.</p>
+                    <h3>Wir reden (30 Min)</h3>
+                    <p>Du erzählst was du brauchst. Ich sage dir ehrlich ob es passt.</p>
                 </div>
             </div>
 
             <div class="process-step">
                 <div class="step-number">2</div>
                 <div class="step-content">
-                    <h3>Design-Entwurf</h3>
-                    <p>Erste Skizze. 1–2 Feedback-Runden inklusive, bis es passt.</p>
+                    <h3>Ich zeig dir einen Entwurf</h3>
+                    <p>Du siehst wie es aussehen wird. Passt nicht? Ich ändere es.</p>
                 </div>
             </div>
 
             <div class="process-step">
                 <div class="step-number">3</div>
                 <div class="step-content">
-                    <h3>Entwicklung</h3>
-                    <p>Saubere Umsetzung mit modernem Code. Mobil optimiert, schnelle Ladezeiten.</p>
+                    <h3>Ich baue die Website</h3>
+                    <p>Du kannst zwischendurch schauen und Feedback geben.</p>
                 </div>
             </div>
 
             <div class="process-step">
                 <div class="step-number">4</div>
                 <div class="step-content">
-                    <h3>Go-Live</h3>
-                    <p>Finale Checks, Veröffentlichung, kurze Übergabe.</p>
-                </div>
-            </div>
-
-            <div class="process-step">
-                <div class="step-number">5</div>
-                <div class="step-content">
-                    <h3>Support (optional)</h3>
-                    <p>Nach dem Launch: Fehlerbehebung und kleine Anpassungen.</p>
+                    <h3>Website geht live</h3>
+                    <p>Ich mache sie online. Du bekommst alles erklärt.</p>
                 </div>
             </div>
         </div>
 
         <a class="text-link" (click)="router.navigate(['/process'])">
-            Detaillierten Projektablauf ansehen
+            Mehr Details zum Ablauf
             <span class="material-symbols-outlined">arrow_forward</span>
         </a>
     </div>
 
-    <!-- FAQ -->
+    <!-- HÄUFIGE FRAGEN -->
     <div class="container faq-section">
         <header class="section-header">
             <h2>Häufige Fragen</h2>
-            <p>Alles, was Kunden normalerweise wissen wollen</p>
+            <p>Was Kunden mich oft fragen</p>
         </header>
 
-        <details class="faq-item" *ngFor="let f of faq">
+        <details class="faq-item">
             <summary>
                 <span class="faq-icon material-symbols-outlined">help</span>
-                {{ f.q }}
+                Wie lange dauert es wirklich?
                 <span class="faq-arrow material-symbols-outlined">expand_more</span>
             </summary>
             <div class="faq-answer">
-                <p *ngFor="let p of f.a">{{ p }}</p>
+                <p>Meistens 1-2 Wochen. Wenn du mir schnell die Infos und Bilder gibst, gehts schneller. Wenn du länger
+                    brauchst, ist das auch ok.</p>
+            </div>
+        </details>
+
+        <details class="faq-item">
+            <summary>
+                <span class="faq-icon material-symbols-outlined">help</span>
+                Was kostet es genau?
+                <span class="faq-arrow material-symbols-outlined">expand_more</span>
+            </summary>
+            <div class="faq-answer">
+                <p>Ab 1.490€. Das ist der Festpreis. Keine versteckten Kosten. Wenn du Extras willst, sage ich dir
+                    vorher was es kostet.</p>
+            </div>
+        </details>
+
+        <details class="faq-item">
+            <summary>
+                <span class="faq-icon material-symbols-outlined">help</span>
+                Muss ich die Texte selbst schreiben?
+                <span class="faq-arrow material-symbols-outlined">expand_more</span>
+            </summary>
+            <div class="faq-answer">
+                <p>Ja, du gibst mir die Texte. Ich helfe dir aber gerne dabei und sage dir was gut funktioniert. Wenn du
+                    willst, kann ich auch jemanden empfehlen der Texte schreibt.</p>
+            </div>
+        </details>
+
+        <details class="faq-item">
+            <summary>
+                <span class="faq-icon material-symbols-outlined">help</span>
+                Kann ich später was ändern?
+                <span class="faq-arrow material-symbols-outlined">expand_more</span>
+            </summary>
+            <div class="faq-answer">
+                <p>Klar! Die ersten 3 Monate mache ich kleine Änderungen gratis. Danach können wir einen Support-Vertrag
+                    machen oder ich rechne nach Aufwand ab.</p>
+            </div>
+        </details>
+
+        <details class="faq-item">
+            <summary>
+                <span class="faq-icon material-symbols-outlined">help</span>
+                Was ist mit Hosting und Domain?
+                <span class="faq-arrow material-symbols-outlined">expand_more</span>
+            </summary>
+            <div class="faq-answer">
+                <p>Ich helfe dir dabei und erkläre alles. Das kostet extra (ca. 5-15€ im Monat), aber ich sage dir
+                    vorher genau was.</p>
             </div>
         </details>
 
         <a class="text-link" (click)="router.navigate(['/faq'])">
-            Alle FAQ ansehen
+            Alle Fragen ansehen
             <span class="material-symbols-outlined">arrow_forward</span>
         </a>
     </div>
 
-    <!-- CTA -->
+    <!-- JETZT LOSLEGEN -->
     <div class="container cta-section">
         <div class="cta-card">
             <div class="cta-icon">
                 <span class="material-symbols-outlined ms-fill">rocket_launch</span>
             </div>
-            <h2>Bereit für deine Website?</h2>
-            <p>Kostenloses Erstgespräch - wir klären, ob das Paket zu deinem Projekt passt.</p>
+            <h2>Lass uns starten!</h2>
+            <p>Wir reden 30 Minuten über dein Projekt. Kostet nix, keine Pflicht.</p>
             <ul class="cta-benefits">
                 <li>
                     <span class="material-symbols-outlined ms-fill">check_circle</span>
-                    30 Min unverbindliches Gespräch
+                    Ich sage dir ehrlich ob es passt
                 </li>
                 <li>
                     <span class="material-symbols-outlined ms-fill">check_circle</span>
-                    Klare Einschätzung von Aufwand & Kosten
+                    Du weißt danach genau was es kostet
                 </li>
                 <li>
                     <span class="material-symbols-outlined ms-fill">check_circle</span>
-                    Keine Verpflichtung, kein Sales-Druck
+                    Kein Verkaufsdruck - versprochen
                 </li>
             </ul>
             <div class="cta-actions">
                 <button class="btn btn--primary btn--large" (click)="router.navigate(['/contact'])">
                     <span class="material-symbols-outlined ms-size-20">send</span>
-                    Jetzt Projekt anfragen
+                    Gespräch buchen
                 </button>
                 <button class="btn btn--secondary" (click)="router.navigate(['/services'])">
                     Andere Pakete ansehen

@@ -1,13 +1,5 @@
 <div class="container form-wrap">
-
-    <!-- AUTH REQUIRED - Reusable Component -->
-    <app-auth-required *ngIf="!isLoggedIn" [title]="'Anmeldung erforderlich'"
-        [message]="'Um eine Website zu erstellen, musst du angemeldet sein.'" [returnUrl]="currentUrl"
-        [showBackButton]="true">
-    </app-auth-required>
-
-    <!-- FORM -->
-    <div *ngIf="isLoggedIn">
+    <div>
 
         <!-- Header -->
         <header class="form-header">
@@ -149,6 +141,33 @@
                 </div>
             </section>
 
+            <section class="form-card">
+                <div class="card-header">
+                    <span class="card-number">04</span>
+                    <h2>Deine E-Mail-Adresse</h2>
+                </div>
+
+                <div class="form-field">
+                    <label for="email">
+                        E-Mail-Adresse <span class="required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon material-symbols-outlined">mail</span>
+                        <input id="email" type="email" formControlName="email" placeholder="z. B. dein.name@example.com"
+                            [class.error]="isFieldInvalid('email')" />
+                    </div>
+                    <p class="field-hint">
+                        Wir schicken dir den Link zu deiner erstellten Website an diese Adresse,
+                        sobald die Generierung abgeschlossen ist.
+                    </p>
+                    <span class="error-text" *ngIf="isFieldInvalid('email')">
+                        <span class="material-symbols-outlined">error</span>
+                        Bitte gib eine gültige E-Mail-Adresse an
+                    </span>
+                </div>
+            </section>
+
+
             <!-- Quality Selector -->
             <div class="quality-card" *ngIf="form.valid">
                 <div class="card-header">
@@ -182,6 +201,7 @@
                     </button>
                 </div>
             </div>
+
 
             <!-- Actions -->
             <div class="form-actions">

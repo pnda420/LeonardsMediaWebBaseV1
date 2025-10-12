@@ -26,6 +26,7 @@ import { AdminUsersComponent } from './components/admin/admin-users/admin-users.
 import { AdminGenPagesComponent } from './components/admin/admin-gen-pages/admin-gen-pages.component';
 import { AdminSettingsComponent } from './components/admin/admin-settings/admin-settings.component';
 import { GenerationLoadingComponent } from './shared/generation-loading/generation-loading.component';
+import { BookingComponent } from './components/booking/booking.component';
 
 const pageMainName = 'LeonardsMedia';
 export const routes: Routes = [
@@ -38,6 +39,7 @@ export const routes: Routes = [
     { path: 'process', component: VorgehenComponent, title: pageMainName + ' | Vorgehen', data: { description: 'Vorgehen von LeonardsMedia.' } },
     { path: 'faq', component: FaqComponent, title: pageMainName + ' | FAQ', data: { description: 'FAQ von LeonardsMedia.' } },
     { path: 'policy', component: PolicyComponent, title: pageMainName + ' | Datenschutz', data: { description: 'Datenschutzerklärung von LeonardsMedia.' } },
+    { path: 'booking', component: BookingComponent, title: pageMainName + ' | Buchung', data: { description: 'Buchungsseite von LeonardsMedia.' } },
     { path: 'services/one-pager', component: OnePagerComponent, title: pageMainName + ' | Einfache Website', data: { description: 'Einfache Webseite von LeonardsMedia.' } },
     { path: 'services/standard-website', component: StandardWebsiteComponent, title: pageMainName + ' | Standard Website', data: { description: 'Standard Website von LeonardsMedia.' } },
     { path: 'services/individual-website', component: IndividualWebsiteComponent, title: pageMainName + ' | Individuelle Website', data: { description: 'Individuelle Website von LeonardsMedia.' } },
@@ -48,7 +50,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent, title: pageMainName + ' | Login', data: { description: 'Login von LeonardsMedia.' } },
     { path: 'profile', component: ProfileComponent, title: pageMainName + ' | Profil', data: { description: 'Profil von LeonardsMedia.' } },
     { path: 'register', component: RegisterComponent, title: pageMainName + ' | Register', data: { description: 'Register von LeonardsMedia.' } },
-    { path: 'generation-loading', component: GenerationLoadingComponent, canActivate: [authGuard], title: pageMainName + ' | Wird erstellt', data: { description: 'Website wird generiert' } },
+    { path: 'generation-loading', component: GenerationLoadingComponent, title: pageMainName + ' | Wird erstellt', data: { description: 'Website wird generiert' } },
 
     { path: 'admin/requests', component: AdminRequestsComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Requests', data: { description: 'Admin Requests von LeonardsMedia.' } },
     { path: 'admin/users', component: AdminUsersComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Users', data: { description: 'Admin Users von LeonardsMedia.' } },

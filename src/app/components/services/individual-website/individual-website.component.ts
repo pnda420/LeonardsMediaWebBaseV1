@@ -82,7 +82,7 @@ export class IndividualWebsiteComponent {
       q: 'Wie wird der Preis kalkuliert?',
       a: [
         'Nach der Discovery-Phase bekommst du ein Festpreis-Angebot basierend auf dem finalen Konzept.',
-        'Basis ab 5.000 €. Komplexere Projekte mit vielen Features können 10.000-30.000 € oder mehr kosten.',
+        'Basis ab 5.000 € . Komplexere Projekte mit vielen Features können 10.000-30.000 €  oder mehr kosten.',
         'Transparente Kalkulation - du weißt vorher genau, was es kostet.'
       ]
     },

@@ -176,6 +176,15 @@ export class ApiService {
     );
   }
 
+  generateWebsiteMockupPublic(
+    dto: PageAiMockupDto,
+    quality: 'fast' | 'balanced' | 'premium' = 'balanced'
+  ): Observable<PageAiMockupResponse> {
+    return this.http.post<PageAiMockupResponse>(
+      `${this.apiUrl}/page-ai/mockup-public?quality=${quality}`,
+      dto,
+    );
+  }
 
   /**
    * User registrieren

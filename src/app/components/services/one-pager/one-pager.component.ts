@@ -17,7 +17,7 @@ export class OnePagerComponent {
   title = 'Einfache Website (One-Pager)';
   slug = 'one-pager';
   img  = 'assets/cards/simple-min.png';
-  price = 'ab 1.800 €';
+  price = 'ab 1.800 € ';
 
   includes = [
     { title: 'Design & Struktur', text: 'Startlayout (Wireframe), 1–2 Designrunden, klare Typografie und Abstände.' },

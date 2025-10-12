@@ -1,14 +1,15 @@
 import { Component, ElementRef, ViewChild, effect, OnInit, OnDestroy } from '@angular/core';
-import { PreviewService } from '../../../state/preview.service';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { PreviewService } from '../../../state/preview.service';
 import { AuthService } from '../../../services/auth.service';
-import { AuthRequiredComponent } from "../../../shared/auth-required/auth-required.component";
+import { ApiService } from '../../../api/api.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-main-container',
   standalone: true,
-  imports: [CommonModule, AuthRequiredComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './main-container.component.html',
   styleUrls: ['./main-container.component.scss']
 })
@@ -17,19 +18,37 @@ export class MainContainerComponent implements OnInit, OnDestroy {
 
   loading = false;
   hasContent = false;
-  isLoggedIn = false;
-  currentUrl: string = '';
+
+  /**
+   * Öffentliche Vorschau, wenn via URL ?id=... aufgerufen wird
+   * und (a) der User nicht eingeloggt ist, oder
+   * (b) die Page nicht in den User-Previews vorhanden ist.
+   */
+  publicPreview: {
+    id: string;
+    name: string;
+    createdAt?: string | Date;
+    form?: any;
+    html: string;
+  } | null = null;
 
   constructor(
     private previewService: PreviewService,
     private authService: AuthService,
+    private api: ApiService,
     private router: Router,
     private route: ActivatedRoute
   ) {
-    // Effect für Live-Updates der Preview
+    // Effekt für Live-Updates der Preview-Liste (nur für eingeloggte Nutzer)
     effect(() => {
       const list = this.previewService.previews();
       const selected = this.previewService.selected();
+
+      // Wenn öffentliche Vorschau aktiv ist, nicht leeren.
+      if (this.publicPreview) {
+        this.hasContent = true;
+        return;
+      }
 
       if (!selected && list.length === 0) {
         this.hasContent = false;
@@ -40,45 +59,130 @@ export class MainContainerComponent implements OnInit, OnDestroy {
       const current = selected ?? list[list.length - 1];
       if (current?.html) {
         this.hasContent = true;
-        setTimeout(() => this.renderInIframe(current.html), 50);
+        // Sicherstellen, dass das iframe im DOM ist
+        setTimeout(() => this.renderInIframe(current.html), 0);
       }
     });
   }
 
   async ngOnInit(): Promise<void> {
-      this.currentUrl = this.router.url.split('?')[0];
-      this.isLoggedIn = this.authService.isLoggedIn();
-    const currentUser = this.authService.getCurrentUser();
-    if (currentUser?.id) {
-      this.loading = true;
-      await this.previewService.loadUserPages(currentUser.id);
-      this.loading = false;
+    this.loading = true;
 
-      // Nach dem Laden: Check URL Parameter
-      this.route.queryParams.subscribe(params => {
-        const urlId = params['id'];
+    const currentUser = this.authService.getCurrentUser();
+    const isLoggedIn = !!currentUser?.id;
+
+    // Query-Parameter beobachten (id)
+    this.route.queryParams.subscribe(async params => {
+      const urlId = params['id'] as string | undefined;
+
+      // Eingeloggt: User-Seiten laden (wie bisher)
+      if (isLoggedIn) {
+        await this.previewService.loadUserPages(currentUser!.id);
+
         if (urlId) {
+          // In den geladenen Previews suchen
           const previews = this.previewService.previews();
           const index = previews.findIndex(p => p.id === urlId);
           if (index !== -1) {
+            this.publicPreview = null;
             this.previewService.selectByIndex(index);
+            this.loading = false;
+            return;
+          }
+
+          // Nicht gefunden -> öffentlich per Backend laden
+          try {
+            const page = await this.api.getGeneratedPage(urlId).toPromise();
+            if (page?.pageContent) {
+              this.publicPreview = {
+                id: page.id,
+                name: page.name || 'Unbenannt',
+                createdAt: page.createdAt,
+                form: undefined,
+                html: page.pageContent
+              };
+              this.hasContent = true;
+              // Warten bis *ngIf das iframe rendert
+              setTimeout(() => this.renderInIframe(page.pageContent), 0);
+            } else {
+              this.publicPreview = null;
+              this.hasContent = false;
+            }
+          } catch (e) {
+            console.error('⚠️ Seite per ID nicht gefunden oder nicht zugreifbar:', e);
+            this.publicPreview = null;
+            this.hasContent = false;
+          }
+        } else {
+          // Kein URL-ID -> normales Verhalten
+          const current = this.previewService.selected() ?? this.previewService.previews().at(-1);
+          if (current?.html) {
+            this.hasContent = true;
+            setTimeout(() => this.renderInIframe(current.html), 0);
+          } else {
+            this.hasContent = false;
           }
         }
-      });
-    }
+
+        this.loading = false;
+        return;
+      }
+
+      // Nicht eingeloggt: bei vorhandener id öffentlich laden
+      if (urlId) {
+        try {
+          const page = await this.api.getGeneratedPage(urlId).toPromise();
+          if (page?.pageContent) {
+            this.publicPreview = {
+              id: page.id,
+              name: page.name || 'Unbenannt',
+              createdAt: page.createdAt,
+              form: undefined,
+              html: page.pageContent
+            };
+            this.hasContent = true;
+            // Nächster Tick, damit das iframe existiert
+            setTimeout(() => this.renderInIframe(page.pageContent), 0);
+          } else {
+            this.publicPreview = null;
+            this.hasContent = false;
+          }
+        } catch (e) {
+          console.error('⚠️ Öffentliche Seite per ID nicht gefunden:', e);
+          this.publicPreview = null;
+          this.hasContent = false;
+        }
+      } else {
+        // Kein id -> nichts zu rendern
+        this.publicPreview = null;
+        this.hasContent = false;
+      }
+
+      this.loading = false;
+    });
   }
 
   ngOnDestroy(): void {
     this.clearIframe();
   }
 
+  getCurrentDate(): Date {
+    return new Date();
+  }
+
   private renderInIframe(html: string): void {
-    if (!this.previewIframe?.nativeElement) return;
+    // Defensive: falls iframe noch nicht gerendert ist, im nächsten Tick erneut versuchen
+    const iframeEl = this.previewIframe?.nativeElement;
+    if (!iframeEl) {
+      setTimeout(() => this.renderInIframe(html), 0);
+      return;
+    }
 
-    const iframe = this.previewIframe.nativeElement;
-    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-
-    if (!iframeDoc) return;
+    const iframeDoc = iframeEl.contentDocument || iframeEl.contentWindow?.document;
+    if (!iframeDoc) {
+      setTimeout(() => this.renderInIframe(html), 0);
+      return;
+    }
 
     const safeHtml = this.injectSafetyScript(html);
 
@@ -109,24 +213,14 @@ export class MainContainerComponent implements OnInit, OnDestroy {
   private injectSafetyScript(html: string): string {
     const safetyScript = `
     <script>
-        document.addEventListener('click', function(e) {
-            const target = e.target.closest('a, button, [role="button"]');
-            if (target) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            }
-        }, true);
-        
-        document.addEventListener('submit', function(e) {
-            e.preventDefault();
-            return false;
-        }, true);
-        
-        window.addEventListener('beforeunload', function(e) {
-            e.preventDefault();
-            return false;
-        });
+      document.addEventListener('click', function(e) {
+        const target = e.target && (e.target.closest && e.target.closest('a, button, [role="button"]'));
+        if (target) { e.preventDefault(); e.stopPropagation(); return false; }
+      }, true);
+
+      document.addEventListener('submit', function(e) { e.preventDefault(); return false; }, true);
+
+      window.addEventListener('beforeunload', function(e) { e.preventDefault(); return false; });
     </script>
     `;
 
@@ -134,7 +228,6 @@ export class MainContainerComponent implements OnInit, OnDestroy {
     if (bodyCloseIndex > -1) {
       return html.substring(0, bodyCloseIndex) + safetyScript + html.substring(bodyCloseIndex);
     }
-
     return html + safetyScript;
   }
 
@@ -143,7 +236,6 @@ export class MainContainerComponent implements OnInit, OnDestroy {
 
     const iframe = this.previewIframe.nativeElement;
     const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-
     if (!iframeDoc || !iframe.contentWindow) return;
 
     const body = iframeDoc.body;
@@ -170,7 +262,7 @@ export class MainContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  // ==================== UI Methods ====================
+  // ==================== UI Helpers ====================
 
   getCurrentScreenWidth(): number {
     return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -186,7 +278,9 @@ export class MainContainerComponent implements OnInit, OnDestroy {
       const index = previews.findIndex(p => p.id === selectedId);
 
       if (index !== -1) {
+        this.publicPreview = null; // wechsle zurück auf User-Preview-Modus
         this.previewService.selectByIndex(index);
+
         // Update URL ohne reload
         this.router.navigate([], {
           relativeTo: this.route,
@@ -199,13 +293,6 @@ export class MainContainerComponent implements OnInit, OnDestroy {
 
   trackByIndex(index: number): number {
     return index;
-  }
-
-  getSelectedIndex(): number {
-    const list = this.previewService.previews();
-    const idx = this.previewService.selectedIndex();
-    if (typeof idx === 'number' && idx >= 0 && idx < list.length) return idx;
-    return Math.max(0, list.length - 1);
   }
 
   getAllPreviews() {
@@ -227,7 +314,6 @@ export class MainContainerComponent implements OnInit, OnDestroy {
       minute: '2-digit'
     });
   }
-
 
   async deleteCurrent(): Promise<void> {
     const selected = this.previewService.selected();

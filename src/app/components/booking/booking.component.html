@@ -1,0 +1,187 @@
+<section class="booking-page">
+    <div class="container">
+
+        <!-- HERO -->
+        <header class="booking-hero">
+            <div class="hero-icon">
+                <span class="material-symbols-outlined ms-fill">event</span>
+            </div>
+            <h1>Lass uns reden</h1>
+            <div class="hero-facts">
+                <div class="fact-item">
+                    <span class="material-symbols-outlined ms-fill">schedule</span>
+                    <span>30 Minuten</span>
+                </div>
+                <div class="fact-item">
+                    <span class="material-symbols-outlined ms-fill">videocam</span>
+                    <span>Online per Video</span>
+                </div>
+                <div class="fact-item">
+                    <span class="material-symbols-outlined ms-fill">check_circle</span>
+                    <span>Kostenlos</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- BOOKING GRID -->
+        <div class="booking-grid">
+
+            <!-- KALENDER -->
+            <div class="calendar-section">
+                <div class="section-header">
+                    <h2>Wähle einen Tag</h2>
+                    <div class="month-nav">
+                        <button class="btn-nav" (click)="previousWeek()" [disabled]="currentWeekIndex === 0">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
+                        <span class="month-label">{{ currentMonthLabel }}</span>
+                        <button class="btn-nav" (click)="nextWeek()">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="days-grid">
+                    <button 
+                        *ngFor="let day of currentWeek"
+                        class="day-card"
+                        [class.selected]="selectedDate === day.date"
+                        [class.disabled]="!day.available"
+                        [disabled]="!day.available"
+                        (click)="selectDate(day.date)">
+                        <span class="day-name">{{ day.dayName }}</span>
+                        <span class="day-number">{{ day.dayNumber }}</span>
+                        <span class="day-status" *ngIf="day.available">
+                            {{ day.slotsCount }} Slots
+                        </span>
+                        <span class="day-status day-status--full" *ngIf="!day.available">
+                            Voll
+                        </span>
+                    </button>
+                </div>
+
+                <!-- ZEITSLOTS -->
+                <div class="slots-section" *ngIf="selectedDate">
+                    <h3>Wähle eine Uhrzeit</h3>
+                    <div class="slots-grid">
+                        <button 
+                            *ngFor="let slot of availableSlots"
+                            class="slot-card"
+                            [class.selected]="selectedSlot === slot"
+                            (click)="selectSlot(slot)">
+                            <span class="material-symbols-outlined">schedule</span>
+                            <span>{{ slot }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOOKING FORM -->
+            <div class="form-section">
+                <div class="form-card">
+                    <div class="form-header">
+                        <span class="material-symbols-outlined">person</span>
+                        <h3>Deine Infos</h3>
+                    </div>
+
+                    <form class="booking-form" (ngSubmit)="submitBooking()">
+                        
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                [(ngModel)]="bookingData.name"
+                                name="name"
+                                placeholder="Max Mustermann"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">E-Mail</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                [(ngModel)]="bookingData.email"
+                                name="email"
+                                placeholder="max@beispiel.de"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Telefon (optional)</label>
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                [(ngModel)]="bookingData.phone"
+                                name="phone"
+                                placeholder="+49 123 456789">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Worum geht's?</label>
+                            <textarea 
+                                id="message" 
+                                [(ngModel)]="bookingData.message"
+                                name="message"
+                                rows="4"
+                                placeholder="Erzähl mir kurz was du vorhast..."></textarea>
+                        </div>
+
+                        <!-- ZUSAMMENFASSUNG -->
+                        <div class="booking-summary" *ngIf="selectedDate && selectedSlot">
+                            <div class="summary-header">
+                                <span class="material-symbols-outlined">event_available</span>
+                                <strong>Dein Termin</strong>
+                            </div>
+                            <div class="summary-content">
+                                <p>📅 {{ getFormattedDate() }}</p>
+                                <p>🕐 {{ selectedSlot }} Uhr</p>
+                                <p>⏱️ 30 Minuten</p>
+                                <p>💻 Online per Video-Call</p>
+                            </div>
+                        </div>
+
+                        <button 
+                            type="submit" 
+                            class="btn btn--primary btn--large"
+                            [disabled]="!selectedDate || !selectedSlot || !bookingData.name || !bookingData.email">
+                            <span class="material-symbols-outlined ms-size-20">check_circle</span>
+                            Termin buchen
+                        </button>
+
+                        <p class="form-note">
+                            <span class="material-symbols-outlined">info</span>
+                            Du bekommst direkt eine Bestätigung per E-Mail mit dem Video-Call Link.
+                        </p>
+                    </form>
+                </div>
+
+                <!-- WARUM GESPRÄCH -->
+                <div class="info-card">
+                    <h4>Was wir besprechen</h4>
+                    <ul class="info-list">
+                        <li>
+                            <span class="material-symbols-outlined">chat</span>
+                            <span>Was du brauchst & deine Ziele</span>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">calculate</span>
+                            <span>Ehrliche Kosten-Einschätzung</span>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">calendar_month</span>
+                            <span>Wie lange es dauert</span>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">route</span>
+                            <span>Wie wir zusammen arbeiten</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>

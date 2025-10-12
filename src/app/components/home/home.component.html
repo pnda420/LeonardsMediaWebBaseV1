@@ -1,49 +1,94 @@
 <!-- Hero Section mit modernem Gradient Background -->
-<section class="hero" role="region" aria-label="Einführung">
+<section class="hero">
   <div class="hero__backdrop"></div>
-  <div class="container hero__inner">
-    <div class="hero__content">
-      <div class="hero__badge">
-        <span class="badge__icon">🍂</span>
-        <span>Oktober-Special: 15% Rabatt auf alle Pakete</span>
-      </div>
-      <h1 class="hero__title">
-        Webseiten Erstellung<br>
-        <span class="gradient-text">einfach umgesetzt</span>
-      </h1>
-      <p class="hero__description">
-        Moderne Webseiten entwickeln - mit klarem Fokus auf deine Anforderungen.
-        Kein Agentur-Overhead, direkte Kommunikation, faire Preise.
-      </p>
-      <div class="hero__actions">
-        <button class="btn btn--primary btn--large" (click)="router.navigate(['/contact'])">
-          <span class="material-symbols-outlined ms-size-20">event</span>
-          Kostenloses Erstgespräch anfragen
-        </button>
-        <button class="btn btn--primary btn--large" (click)="router.navigate(['/services'])">
-          <span class="material-symbols-outlined ms-size-20">explore</span>
-          Unsere Angebote entdecken
-        </button>
-      </div>
-      <div class="hero__trust">
-        <div class="trust-item">
-          <span class="material-symbols-outlined ms-size-20 ms-fill">check_circle</span>
-          <span>30 Min Erstgespräch</span>
+  <div class="container">
+    <div class="hero__inner">
+
+      <!-- CONTENT -->
+      <div class="hero__content">
+
+        <!-- Badge -->
+        <!-- <div class="hero__badge">
+          <span>🍂</span>
+          <span>Oktober-Special: 15% günstiger</span>
+        </div> -->
+
+        <!-- TITEL - JEDER VERSTEHT ES -->
+        <h1 class="hero__title">
+          <span class="hero__title-main">Deine Website in 2-4 Wochen</span>
+          <span class="hero__title-sub">Direkt vom Entwickler. Ab 1490€.</span>
+        </h1>
+
+        <!-- VALUE PROPS - EINFACHE SPRACHE -->
+        <div class="hero__value-props">
+          <div class="value-prop">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span>Fester Preis. Keine versteckten Kosten.</span>
+          </div>
+          <div class="value-prop">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span>Du sprichst direkt mit uns.</span>
+          </div>
+          <div class="value-prop">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span>Schnell. Modern. Einfach.</span>
+          </div>
         </div>
-        <div class="trust-item">
-          <span class="material-symbols-outlined ms-size-20 ms-fill">verified</span>
-          <span>Keine Verpflichtung</span>
+
+        <!-- ZAHLEN -->
+        <!-- <div class="hero__stats">
+          <div class="stat-card">
+            <span class="stat-number">6 Monate</span>
+            <span class="stat-label">Support gratis</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">Ab 1490€</span>
+            <span class="stat-label">Fester Preis</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Happy Kunden</span>
+          </div>
+        </div> -->
+
+        <!-- CTA -->
+        <div class="hero__actions">
+          <button class="btn btn--primary" (click)="router.navigate(['/booking'])">
+            <span class="material-symbols-outlined">event</span>
+            Kostenloses Gespräch buchen (30 Min)
+          </button>
+          <a (click)="router.navigate(['/services'])" class="secondary-link">
+            Preise ansehen
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
+          <p class="hero__note">
+            <span class="material-symbols-outlined">lock</span>
+            Kein Login nötig • Keine Pflicht • Kein Verkaufsdruck
+          </p>
         </div>
-        <div class="trust-item">
-          <span class="material-symbols-outlined ms-size-20 ms-fill">mood</span>
-          <span>Kein Sales-Druck</span>
+
+        <!-- FINDER TEASER -->
+        <div class="finder-teaser" (click)="router.navigate(['/survey'])">
+          <div class="finder-icon">
+            <span class="material-symbols-outlined">auto_awesome</span>
+          </div>
+          <div class="finder-content">
+            <strong>Weißt nicht, was du brauchst?</strong>
+            <span>Finde in 2 Minuten das richtige Paket</span>
+          </div>
+          <span class="material-symbols-outlined finder-arrow">arrow_forward</span>
+        </div>
+
+      </div>
+
+      <!-- VISUAL (Desktop only) -->
+      <div class="hero__visual">
+        <div class="visual-card">
+          <img src="assets/company.png"
+            alt="Website Dashboard" />
         </div>
       </div>
-    </div>
-    <div class="hero__visual">
-      <div class="visual-card">
-        <img src="assets/company.png" alt="" loading="eager" />
-      </div>
+
     </div>
   </div>
 </section>

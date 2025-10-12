@@ -166,10 +166,10 @@ export class SurveyComponent {
           formKey: 'budget',
           layout: 'grid',
           options: [
-            { value: '<2k', label: 'unter 2.000 €' },
-            { value: '2-4k', label: '2.000–4.000 €' },
-            { value: '4-7k', label: '4.000–7.000 €' },
-            { value: '>7k', label: 'über 7.000 €' },
+            { value: '<2k', label: 'unter 2.000 € ' },
+            { value: '2-4k', label: '2.000–4.000 € ' },
+            { value: '4-7k', label: '4.000–7.000 € ' },
+            { value: '>7k', label: 'über 7.000 € ' },
             { value: 'unsure', label: 'Weiß ich nicht' }
           ]
         },

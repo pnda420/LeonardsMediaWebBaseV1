@@ -1,11 +1,4 @@
-<!-- AUTH REQUIRED - Reusable Component -->
-<app-auth-required *ngIf="!isLoggedIn" [title]="'Anmeldung erforderlich'"
-    [message]="'Um deine Website-Vorschauen anzusehen, musst du angemeldet sein.'" [returnUrl]="currentUrl"
-    [showBackButton]="false">
-</app-auth-required>
-
-<!-- MAIN CONTENT - Only if logged in -->
-<ng-container *ngIf="isLoggedIn">
+<ng-container>
 
     <!-- Modern Preview Header with Dropdown -->
     <header class="preview-header">
@@ -87,6 +80,22 @@
                     <span class="material-symbols-outlined">brush</span>
                     <span class="info-label">Stil:</span>
                     <span class="info-value">{{ preview.form.designStyle }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-info-bar" *ngIf="!getSelectedPreview() && publicPreview as pub">
+            <div class="preview-info-bar__container">
+                <div class="info-item">
+                    <span class="material-symbols-outlined">label</span>
+                    <span class="info-label">Name:</span>
+                    <span class="info-value">{{ pub.name || 'Unbenannt' }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <span class="info-label">Erstellt:</span>
+                    <span class="info-value">{{ formatDate(pub.createdAt ? pub.createdAt : getCurrentDate()) }}</span>
                 </div>
             </div>
         </div>

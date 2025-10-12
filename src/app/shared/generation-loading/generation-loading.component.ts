@@ -66,6 +66,10 @@ export class GenerationLoadingComponent implements OnInit, OnDestroy {
     this.router.navigate(['/preview']);
   }
 
+  goToHome(): void {
+    this.router.navigate(['/']);
+  }
+
   createNew(): void {
     this.router.navigate(['/preview-form']);
   }
