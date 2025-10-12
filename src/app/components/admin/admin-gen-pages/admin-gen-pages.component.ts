@@ -181,9 +181,8 @@ export class AdminGenPagesComponent implements OnInit {
 
   private extractBody(html: string): string {
     // Entferne <style> Tags
-    let body = html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+    let  body= html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
 
-    // Falls <body> Tags vorhanden sind, nur den Inhalt nehmen
     const bodyMatch = body.match(/<body[^>]*>([\s\S]*)<\/body>/i);
     if (bodyMatch) {
       return bodyMatch[1];

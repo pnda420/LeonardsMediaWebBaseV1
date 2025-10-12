@@ -149,7 +149,7 @@
                             class="form-field">
                             <label [for]="question.conditionalInput.formKey">{{ question.conditionalInput.label
                                 }}</label>
-                            <input [id]="question.conditionalInput.formKey" type="text" class="form-input"
+                            <input [id]="question.conditionalInput.formKey" type="text" class="input"
                                 [formControl]="$any(form.get(question.conditionalInput.formKey))"
                                 [placeholder]="question.conditionalInput.placeholder" [class.invalid]="$any(form.get(question.conditionalInput.formKey))?.invalid && 
                                            $any(form.get(question.conditionalInput.formKey))?.touched">
@@ -197,7 +197,7 @@
                         <div class="form-fields">
                             <div class="form-field">
                                 <label for="contactName">{{ getFieldLabel(question, 0) }}</label>
-                                <input id="contactName" type="text" class="form-input"
+                                <input id="contactName" type="text" class="input"
                                     [formControl]="$any(form.get('contactName'))"
                                     [placeholder]="getFieldPlaceholder(question, 0)"
                                     [class.invalid]="$any(form.get('contactName'))?.invalid && $any(form.get('contactName'))?.touched">
@@ -205,7 +205,7 @@
 
                             <div class="form-field">
                                 <label for="contactEmail">{{ getFieldLabel(question, 1) }}</label>
-                                <input id="contactEmail" type="email" class="form-input"
+                                <input id="contactEmail" type="email" class="input"
                                     [formControl]="$any(form.get('contactEmail'))"
                                     [placeholder]="getFieldPlaceholder(question, 1)"
                                     [class.invalid]="$any(form.get('contactEmail'))?.invalid && $any(form.get('contactEmail'))?.touched">
@@ -213,7 +213,7 @@
 
                             <div class="form-field">
                                 <label for="notes">{{ getFieldLabel(question, 2) }}</label>
-                                <textarea id="notes" rows="4" class="form-textarea"
+                                <textarea id="notes" rows="4" class="textarea"
                                     [formControl]="$any(form.get('notes'))"
                                     [placeholder]="getFieldPlaceholder(question, 2)"></textarea>
                             </div>

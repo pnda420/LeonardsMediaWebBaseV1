@@ -53,18 +53,14 @@
 
         <!-- CTA -->
         <div class="hero__actions">
+          <button class="btn btn--secondary" (click)="router.navigate(['/services'])">
+            <span class="material-symbols-outlined">star_shine</span>
+            Drei Pakete. Ein Ziel: Ihr Erfolg.
+          </button>
           <button class="btn btn--primary" (click)="router.navigate(['/booking'])">
             <span class="material-symbols-outlined">event</span>
-            Kostenloses Gespräch buchen (30 Min)
+            Kostenloses Gespräch buchen
           </button>
-          <a (click)="router.navigate(['/services'])" class="secondary-link">
-            Preise ansehen
-            <span class="material-symbols-outlined">arrow_forward</span>
-          </a>
-          <p class="hero__note">
-            <span class="material-symbols-outlined">lock</span>
-            Kein Login nötig • Keine Pflicht • Kein Verkaufsdruck
-          </p>
         </div>
 
         <!-- FINDER TEASER -->
@@ -84,8 +80,7 @@
       <!-- VISUAL (Desktop only) -->
       <div class="hero__visual">
         <div class="visual-card">
-          <img src="assets/company.png"
-            alt="Website Dashboard" />
+          <img src="assets/company.png" alt="Website Dashboard" />
         </div>
       </div>
 

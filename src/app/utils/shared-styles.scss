@@ -391,6 +391,12 @@ $spacing-4xl: 4rem;     // 64px
   }
 }
 
+.textarea {
+  @extend .input;
+  min-height: 100px;
+  resize: vertical;
+}
+
 // ===== DIVIDER =====
 
 .divider {

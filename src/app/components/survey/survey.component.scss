@@ -394,6 +394,8 @@
     &--small {
         padding: 1rem 0.75rem;
         gap: 0.5rem;
+        border: 2px solid $color-brand-light;
+        box-shadow: 0 2px 12px rgba(37, 99, 235, 0.10);
 
         strong {
             font-size: 0.875rem;
