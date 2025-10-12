@@ -1,28 +1,10 @@
 <div class="container form-wrap">
 
-    <!-- AUTH REQUIRED -->
-    <div class="auth-required" *ngIf="!isLoggedIn">
-        <div class="auth-card">
-            <div class="auth-icon">
-                <span class="material-symbols-outlined ms-fill">lock</span>
-            </div>
-            <h2>Anmeldung erforderlich</h2>
-            <p>Um eine Website zu erstellen, musst du angemeldet sein.</p>
-
-            <div class="auth-actions">
-                <button class="btn btn--primary btn--large" [routerLink]="['/login']"
-                    [queryParams]="{ returnUrl: currentUrl }">
-                    <span class="material-symbols-outlined ms-size-20">login</span>
-                    Jetzt anmelden
-                </button>
-                <button class="btn btn--secondary btn--large" [routerLink]="['/register']"
-                    [queryParams]="{ returnUrl: currentUrl }">
-                    <span class="material-symbols-outlined ms-size-20">person_add</span>
-                    Konto erstellen
-                </button>
-            </div>
-        </div>
-    </div>
+    <!-- AUTH REQUIRED - Reusable Component -->
+    <app-auth-required *ngIf="!isLoggedIn" [title]="'Anmeldung erforderlich'"
+        [message]="'Um eine Website zu erstellen, musst du angemeldet sein.'" [returnUrl]="currentUrl"
+        [showBackButton]="true">
+    </app-auth-required>
 
     <!-- FORM -->
     <div *ngIf="isLoggedIn">
@@ -179,7 +161,7 @@
                         <span class="quality-emoji">⚡</span>
                         <div class="quality-info">
                             <span class="quality-name">Schnell</span>
-                            <span class="quality-time">~15 Sek</span>
+                            <span class="quality-time">~1-2 Min</span>
                         </div>
                     </button>
                     <button type="button" class="quality-btn" [class.active]="selectedQuality === 'balanced'"
@@ -187,7 +169,7 @@
                         <span class="quality-emoji">⭐</span>
                         <div class="quality-info">
                             <span class="quality-name">Standard</span>
-                            <span class="quality-time">~30 Sek</span>
+                            <span class="quality-time">~2-3 Min</span>
                         </div>
                     </button>
                     <button type="button" class="quality-btn" [class.active]="selectedQuality === 'premium'"
@@ -195,7 +177,7 @@
                         <span class="quality-emoji">💎</span>
                         <div class="quality-info">
                             <span class="quality-name">Premium</span>
-                            <span class="quality-time">~60 Sek</span>
+                            <span class="quality-time">~3-5 Min</span>
                         </div>
                     </button>
                 </div>

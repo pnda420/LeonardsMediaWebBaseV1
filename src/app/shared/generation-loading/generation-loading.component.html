@@ -1,0 +1,38 @@
+ <div class="loading-page">
+      <div class="loading-container">
+        
+        <!-- Animated Logo/Icon -->
+        <div class="loading-icon">
+          <div class="pulse-ring"></div>
+          <div class="pulse-ring delay-1"></div>
+          <div class="pulse-ring delay-2"></div>
+          <span class="icon-emoji">{{ currentEmoji }}</span>
+        </div>
+
+        <!-- AI Thought -->
+        <div class="ai-thought">
+          <span class="thought-icon">💭</span>
+          <p>{{ currentThought }}</p>
+        </div>
+
+        <!-- Status Message -->
+        <div class="status-message">
+          <h1>Website wird erstellt...</h1>
+          <p>Die KI arbeitet an deinem Projekt. Du kannst diese Seite schließen.</p>
+          <p class="email-hint">✉️ Du erhältst eine Email sobald fertig</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+          <button class="btn btn--ghost" (click)="goToPreview()">
+            <span class="material-symbols-outlined">list</span>
+            Zu meinen Projekten
+          </button>
+          <button class="btn btn--secondary" (click)="createNew()">
+            <span class="material-symbols-outlined">add</span>
+            Neue Website
+          </button>
+        </div>
+
+      </div>
+    </div>

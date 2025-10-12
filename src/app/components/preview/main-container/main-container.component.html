@@ -1,97 +1,128 @@
-<!-- Modern Preview Header -->
-<header class="preview-header">
-    <div class="preview-header__container">
-        <!-- Left: Branding & Info -->
-        <div class="preview-header__brand">
-            <div class="preview-header__logo">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <rect x="3" y="3" width="7" height="7" rx="1" fill="currentColor" opacity="0.3" />
-                    <rect x="3" y="13" width="7" height="7" rx="1" fill="currentColor" opacity="0.6" />
-                    <rect x="13" y="3" width="7" height="7" rx="1" fill="currentColor" opacity="0.8" />
-                    <rect x="13" y="13" width="7" height="7" rx="1" fill="currentColor" />
-                </svg>
+<!-- AUTH REQUIRED - Reusable Component -->
+<app-auth-required *ngIf="!isLoggedIn" [title]="'Anmeldung erforderlich'"
+    [message]="'Um deine Website-Vorschauen anzusehen, musst du angemeldet sein.'" [returnUrl]="currentUrl"
+    [showBackButton]="false">
+</app-auth-required>
+
+<!-- MAIN CONTENT - Only if logged in -->
+<ng-container *ngIf="isLoggedIn">
+
+    <!-- Modern Preview Header with Dropdown -->
+    <header class="preview-header">
+        <div class="preview-header__container">
+            <!-- Left: Branding -->
+            <div class="preview-header__brand">
+                <div class="preview-header__logo">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <rect x="3" y="3" width="7" height="7" rx="1" fill="currentColor" opacity="0.3" />
+                        <rect x="3" y="13" width="7" height="7" rx="1" fill="currentColor" opacity="0.6" />
+                        <rect x="13" y="3" width="7" height="7" rx="1" fill="currentColor" opacity="0.8" />
+                        <rect x="13" y="13" width="7" height="7" rx="1" fill="currentColor" />
+                    </svg>
+                </div>
+                <div class="preview-header__info">
+                    <span class="preview-header__title">Design Center</span>
+                    <span class="preview-header__count" *ngIf="getAllPreviews().length > 0">
+                        {{ getAllPreviews().length }} {{ getAllPreviews().length === 1 ? 'Projekt' : 'Projekte' }}
+                    </span>
+                </div>
             </div>
-            <div class="preview-header__info">
-                <span class="preview-header__title">Preview</span>
-                <span class="preview-header__count" *ngIf="getAllPreviews().length > 0">
-                    {{ getAllPreviews().length }} {{ getAllPreviews().length === 1 ? 'Seite' : 'Seiten' }}
-                </span>
+
+            <!-- Center: Dropdown Selector (Always visible if pages exist) -->
+            <div class="preview-header__selector" *ngIf="getAllPreviews().length > 0">
+                <div class="preview-selector">
+                    <span class="material-symbols-outlined">web</span>
+                    <select class="preview-selector__dropdown" (change)="onPreviewChange($event)">
+                        <option *ngFor="let p of getAllPreviews(); trackBy: trackByIndex" [value]="p.id"
+                            [selected]="p.id === getSelectedPreview()?.id">
+                            {{ p.name || 'Unbenannt' }} • {{ formatDate(p.createdAt) }}
+                        </option>
+                    </select>
+                    <span class="material-symbols-outlined">expand_more</span>
+                </div>
+            </div>
+
+            <!-- Right: Actions -->
+            <div class="preview-header__actions">
+                <button class="btn btn--ghost" type="button" (click)="routeTo('/')">
+                    <span class="material-symbols-outlined">home</span>
+                    <span class="btn__text">Home</span>
+                </button>
+
+                <button class="btn btn--primary" type="button" (click)="goBack()">
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="btn__text">Neue Seite</span>
+                </button>
+
+                <button class="btn btn--danger" type="button" (click)="deleteCurrent()"
+                    *ngIf="getAllPreviews().length > 0" [disabled]="loading">
+                    <span class="material-symbols-outlined">delete</span>
+                </button>
             </div>
         </div>
 
-        <!-- Center: Page Selector (Desktop only) -->
-        <div class="preview-header__selector" *ngIf="getAllPreviews().length > 0">
-            <button *ngFor="let p of getAllPreviews(); let i = index; trackBy: trackByIndex"
-                [class.active]="i === getSelectedIndex()" (click)="onPreviewChange($event)" [attr.data-index]="i"
-                class="preview-header__page-btn">
-                <span class="preview-header__page-number">{{ i + 1 }}</span>
-            </button>
+        <!-- Info Bar with Selected Preview Details -->
+        <div class="preview-info-bar" *ngIf="getSelectedPreview() as preview">
+            <div class="preview-info-bar__container">
+                <div class="info-item">
+                    <span class="material-symbols-outlined">label</span>
+                    <span class="info-label">Name:</span>
+                    <span class="info-value">{{ preview.name || 'Unbenannt' }}</span>
+                </div>
+
+                <div class="info-item" *ngIf="preview.form?.primaryColor">
+                    <span class="material-symbols-outlined">palette</span>
+                    <span class="info-label">Farbe:</span>
+                    <div class="color-preview" [style.background-color]="preview.form.primaryColor"></div>
+                    <span class="info-value">{{ preview.form.primaryColor }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <span class="info-label">Erstellt:</span>
+                    <span class="info-value">{{ formatDate(preview.createdAt) }}</span>
+                </div>
+
+                <div class="info-item" *ngIf="preview.form?.designStyle">
+                    <span class="material-symbols-outlined">brush</span>
+                    <span class="info-label">Stil:</span>
+                    <span class="info-value">{{ preview.form.designStyle }}</span>
+                </div>
+            </div>
         </div>
+    </header>
 
-        <!-- Right: Actions -->
-        <div class="preview-header__actions">
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>Lädt Seiten...</p>
+    </div>
 
-            <button class="btn btn--icon" type="button" (click)="routeTo('/')">
-                <span>Zurück</span>
-            </button>
+    <!-- Preview Content - IFRAME -->
+    <div class="preview-wrapper" *ngIf="hasContent && !loading">
+        <iframe #previewIframe class="preview-iframe" [style.width.px]="getCurrentScreenWidth()"
+            sandbox="allow-same-origin" title="Website Vorschau">
+        </iframe>
+    </div>
 
-            <button class="btn btn--icon btn--new" type="button" (click)="goBack()" aria-label="Neue Seite erstellen">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                </svg>
-                <span class="btn__text">Neue Seite</span>
-            </button>
-
-            <button class="btn btn--icon btn--danger" type="button" (click)="deleteCurrent()"
-                *ngIf="getAllPreviews().length > 0" [disabled]="loading" aria-label="Seite löschen">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </button>
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!hasContent && !loading && getAllPreviews().length === 0">
+        <div class="empty-state__icon">
+            <svg viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" opacity="0.3" />
+                <rect x="3" y="13" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" opacity="0.5" />
+                <rect x="13" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" opacity="0.7" />
+                <rect x="13" y="13" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" />
+            </svg>
         </div>
+        <h2 class="empty-state__title">Noch keine Seiten erstellt</h2>
+        <p class="empty-state__text">Erstelle deine erste Website in wenigen Minuten</p>
+        <button class="btn btn--primary btn--large" (click)="goBack()">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span>Jetzt erstellen</span>
+        </button>
     </div>
 
-    <!-- Mobile Page Selector -->
-    <div class="preview-header__mobile-selector" *ngIf="getAllPreviews().length > 1">
-        <select class="preview-header__mobile-select" (change)="onPreviewChange($event)">
-            <option *ngFor="let p of getAllPreviews(); let i = index; trackBy: trackByIndex" [value]="i"
-                [selected]="i === getSelectedIndex()">
-                Seite {{ i + 1 }}
-            </option>
-        </select>
-    </div>
-</header>
-
-<!-- Loading State -->
-<div class="loading-state" *ngIf="loading">
-    <div class="spinner"></div>
-    <p>Lädt Seiten...</p>
-</div>
-
-<!-- Preview Content - IFRAME -->
-<div class="preview-wrapper" *ngIf="hasContent && !loading">
-    <iframe #previewIframe class="preview-iframe" [style.width.px]="getCurrentScreenWidth()" sandbox="allow-same-origin"
-        title="Website Vorschau">
-    </iframe>
-</div>
-
-<!-- Empty State -->
-<div class="empty-state" *ngIf="!hasContent && !loading && getAllPreviews().length === 0">
-    <div class="empty-state__icon">
-        <svg viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" opacity="0.3" />
-            <rect x="3" y="13" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" opacity="0.5" />
-            <rect x="13" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" opacity="0.7" />
-            <rect x="13" y="13" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" />
-        </svg>
-    </div>
-    <h2 class="empty-state__title">Noch keine Seiten erstellt</h2>
-    <p class="empty-state__text">Erstelle deine erste Website in wenigen Minuten</p>
-    <button class="btn btn--primary btn--large" (click)="goBack()">
-        <svg viewBox="0 0 24 24" fill="none">
-            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-        </svg>
-        <span>Jetzt erstellen</span>
-    </button>
-</div>
+</ng-container>

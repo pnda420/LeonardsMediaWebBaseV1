@@ -25,6 +25,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AdminUsersComponent } from './components/admin/admin-users/admin-users.component';
 import { AdminGenPagesComponent } from './components/admin/admin-gen-pages/admin-gen-pages.component';
 import { AdminSettingsComponent } from './components/admin/admin-settings/admin-settings.component';
+import { GenerationLoadingComponent } from './shared/generation-loading/generation-loading.component';
 
 const pageMainName = 'LeonardsMedia';
 export const routes: Routes = [
@@ -47,9 +48,10 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent, title: pageMainName + ' | Login', data: { description: 'Login von LeonardsMedia.' } },
     { path: 'profile', component: ProfileComponent, title: pageMainName + ' | Profil', data: { description: 'Profil von LeonardsMedia.' } },
     { path: 'register', component: RegisterComponent, title: pageMainName + ' | Register', data: { description: 'Register von LeonardsMedia.' } },
-    
-    { path: 'admin/requests', component: AdminRequestsComponent,  canActivate: [authGuard, adminGuard],  title: pageMainName + ' | Admin Requests', data: { description: 'Admin Requests von LeonardsMedia.' } },
-    { path: 'admin/users', component: AdminUsersComponent,  canActivate: [authGuard, adminGuard],  title: pageMainName + ' | Admin Users', data: { description: 'Admin Users von LeonardsMedia.' } },
-    { path: 'admin/gen-pages', component: AdminGenPagesComponent,  canActivate: [authGuard, adminGuard],  title: pageMainName + ' | Admin Gen Pages', data: { description: 'Admin Gen Pages von LeonardsMedia.' } },
-    { path: 'admin/settings', component: AdminSettingsComponent,  canActivate: [authGuard, adminGuard],  title: pageMainName + ' | Admin Settings', data: { description: 'Admin Settings von LeonardsMedia.' } },
+    { path: 'generation-loading', component: GenerationLoadingComponent, canActivate: [authGuard], title: pageMainName + ' | Wird erstellt', data: { description: 'Website wird generiert' } },
+
+    { path: 'admin/requests', component: AdminRequestsComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Requests', data: { description: 'Admin Requests von LeonardsMedia.' } },
+    { path: 'admin/users', component: AdminUsersComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Users', data: { description: 'Admin Users von LeonardsMedia.' } },
+    { path: 'admin/gen-pages', component: AdminGenPagesComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Gen Pages', data: { description: 'Admin Gen Pages von LeonardsMedia.' } },
+    { path: 'admin/settings', component: AdminSettingsComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Settings', data: { description: 'Admin Settings von LeonardsMedia.' } },
 ];

@@ -1,13 +1,14 @@
 import { Component, ElementRef, ViewChild, effect, OnInit, OnDestroy } from '@angular/core';
 import { PreviewService } from '../../../state/preview.service';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { AuthRequiredComponent } from "../../../shared/auth-required/auth-required.component";
 
 @Component({
   selector: 'app-main-container',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AuthRequiredComponent],
   templateUrl: './main-container.component.html',
   styleUrls: ['./main-container.component.scss']
 })
@@ -16,11 +17,14 @@ export class MainContainerComponent implements OnInit, OnDestroy {
 
   loading = false;
   hasContent = false;
+  isLoggedIn = false;
+  currentUrl: string = '';
 
   constructor(
     private previewService: PreviewService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     // Effect für Live-Updates der Preview
     effect(() => {
@@ -36,18 +40,31 @@ export class MainContainerComponent implements OnInit, OnDestroy {
       const current = selected ?? list[list.length - 1];
       if (current?.html) {
         this.hasContent = true;
-        // Warte kurz bis iframe im DOM ist
         setTimeout(() => this.renderInIframe(current.html), 50);
       }
     });
   }
 
   async ngOnInit(): Promise<void> {
+      this.currentUrl = this.router.url.split('?')[0];
+      this.isLoggedIn = this.authService.isLoggedIn();
     const currentUser = this.authService.getCurrentUser();
     if (currentUser?.id) {
       this.loading = true;
       await this.previewService.loadUserPages(currentUser.id);
       this.loading = false;
+
+      // Nach dem Laden: Check URL Parameter
+      this.route.queryParams.subscribe(params => {
+        const urlId = params['id'];
+        if (urlId) {
+          const previews = this.previewService.previews();
+          const index = previews.findIndex(p => p.id === urlId);
+          if (index !== -1) {
+            this.previewService.selectByIndex(index);
+          }
+        }
+      });
     }
   }
 
@@ -63,19 +80,12 @@ export class MainContainerComponent implements OnInit, OnDestroy {
 
     if (!iframeDoc) return;
 
-    console.log('📦 Original HTML Länge:', html.length);
-
-    // ✅ Sicherheits-Script hinzufügen
     const safeHtml = this.injectSafetyScript(html);
 
-    console.log('✅ Finale HTML Länge:', safeHtml.length);
-
-    // ✅ Direkt in iframe schreiben - KEINE weitere Manipulation
     iframeDoc.open();
     iframeDoc.write(safeHtml);
     iframeDoc.close();
 
-    // ✅ Debug: Check Styles nach Render
     setTimeout(() => this.debugIframeStyles(), 500);
   }
 
@@ -96,11 +106,9 @@ export class MainContainerComponent implements OnInit, OnDestroy {
     this.router.navigate([route]);
   }
 
-  // ✅ Sicherheits-Script am Ende hinzufügen
   private injectSafetyScript(html: string): string {
     const safetyScript = `
     <script>
-        // Blockiere alle Interaktionen
         document.addEventListener('click', function(e) {
             const target = e.target.closest('a, button, [role="button"]');
             if (target) {
@@ -110,13 +118,11 @@ export class MainContainerComponent implements OnInit, OnDestroy {
             }
         }, true);
         
-        // Forms blockieren
         document.addEventListener('submit', function(e) {
             e.preventDefault();
             return false;
         }, true);
         
-        // Verhindere Navigation
         window.addEventListener('beforeunload', function(e) {
             e.preventDefault();
             return false;
@@ -124,17 +130,14 @@ export class MainContainerComponent implements OnInit, OnDestroy {
     </script>
     `;
 
-    // Inject VOR </body> wenn vorhanden
     const bodyCloseIndex = html.lastIndexOf('</body>');
     if (bodyCloseIndex > -1) {
       return html.substring(0, bodyCloseIndex) + safetyScript + html.substring(bodyCloseIndex);
     }
 
-    // Sonst am Ende
     return html + safetyScript;
   }
 
-  // ✅ Debug: Check iframe Styles
   private debugIframeStyles(): void {
     if (!this.previewIframe?.nativeElement) return;
 
@@ -151,14 +154,12 @@ export class MainContainerComponent implements OnInit, OnDestroy {
     console.log('  color:', computedStyle.color);
     console.log('  font-family:', computedStyle.fontFamily);
 
-    // Check alle h1 Elemente
     const h1Elements = iframeDoc.querySelectorAll('h1');
     h1Elements.forEach((h1, i) => {
       const h1Style = iframe.contentWindow!.getComputedStyle(h1);
       console.log(`📝 h1[${i}] color:`, h1Style.color, '| text:', h1.textContent?.substring(0, 30));
     });
 
-    // Check Hero Section
     const heroElements = iframeDoc.querySelectorAll('.hero, [class*="hero"]');
     if (heroElements.length > 0) {
       console.log('🦸 Hero sections gefunden:', heroElements.length);
@@ -176,20 +177,22 @@ export class MainContainerComponent implements OnInit, OnDestroy {
   }
 
   onPreviewChange(ev: Event): void {
-    // Handle both button clicks and select changes
     const target = ev.target as HTMLElement;
 
     if (target.tagName === 'SELECT') {
       const select = target as HTMLSelectElement;
-      const idx = Number(select.value);
-      if (!Number.isNaN(idx)) {
-        this.previewService.selectByIndex(idx);
-      }
-    } else if (target.classList.contains('preview-header__page-btn')) {
-      const button = target as HTMLButtonElement;
-      const idx = Number(button.getAttribute('data-index'));
-      if (!Number.isNaN(idx)) {
-        this.previewService.selectByIndex(idx);
+      const selectedId = select.value;
+      const previews = this.previewService.previews();
+      const index = previews.findIndex(p => p.id === selectedId);
+
+      if (index !== -1) {
+        this.previewService.selectByIndex(index);
+        // Update URL ohne reload
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: { id: selectedId },
+          queryParamsHandling: 'merge'
+        });
       }
     }
   }
@@ -209,6 +212,23 @@ export class MainContainerComponent implements OnInit, OnDestroy {
     return this.previewService.previews();
   }
 
+  getSelectedPreview() {
+    return this.previewService.selected();
+  }
+
+  formatDate(date: Date | string | undefined): string {
+    if (!date) return 'Unbekannt';
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return d.toLocaleDateString('de-DE', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+
   async deleteCurrent(): Promise<void> {
     const selected = this.previewService.selected();
     const currentUser = this.authService.getCurrentUser();
@@ -220,6 +240,11 @@ export class MainContainerComponent implements OnInit, OnDestroy {
         this.loading = false;
 
         if (success) {
+          // URL Parameter entfernen
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: {}
+          });
           alert('Seite gelöscht!');
         } else {
           alert('Fehler beim Löschen');

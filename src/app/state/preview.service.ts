@@ -4,6 +4,7 @@ import { ApiService, GeneratedPage } from '../api/api.service';
 export interface Preview {
   id: string; // Jetzt DB-ID statt timestamp
   html: string;
+  name: string;
   form: any;
   createdAt: Date;
   pageId?: string; // Optional: DB Page ID
@@ -30,6 +31,7 @@ export class PreviewService {
     const item: Preview = {
       id: input.pageId || Date.now().toString(),
       html: input.html,
+      name: input.form?.projectName,
       form: input.form ?? null,
       createdAt: new Date(),
       pageId: input.pageId
@@ -51,6 +53,7 @@ export class PreviewService {
         const previews: Preview[] = pages.map(page => ({
           id: page.id,
           html: page.pageContent,
+          name: page.name,
           form: null, // Form-Daten sind optional
           createdAt: new Date(page.createdAt),
           pageId: page.id

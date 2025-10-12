@@ -5,6 +5,7 @@ import { PreviewService } from '../../../state/preview.service';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ApiService, PageAiMockupDto, PageAiMockupResponse } from '../../../api/api.service';
+import { AuthRequiredComponent } from "../../../shared/auth-required/auth-required.component";
 
 interface WebsiteType {
   value: string;
@@ -16,7 +17,7 @@ interface WebsiteType {
 @Component({
   selector: 'app-input-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, AuthRequiredComponent],
   templateUrl: './input-form.component.html',
   styleUrl: './input-form.component.scss'
 })
@@ -122,14 +123,11 @@ export class InputFormComponent implements OnInit {
     this.showQualitySelector = false;
   }
 
- async onSubmit(): Promise<void> {
+  async onSubmit(): Promise<void> {
     if (!this.form.valid) {
       Object.keys(this.form.controls).forEach(key => {
         this.form.get(key)?.markAsTouched();
       });
-
-      const firstError = document.querySelector('.error-input');
-      firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
@@ -147,18 +145,14 @@ export class InputFormComponent implements OnInit {
         }
       };
 
-      // Call API mit quality parameter
+      // ✅ Call API (läuft im Backend weiter, auch wenn Frontend weg ist)
       this.apiService.generateWebsiteMockup(dto, this.selectedQuality).subscribe({
-        next: (response: PageAiMockupResponse) => {
-          console.log('✅ Website generiert!', response.metadata);
+        next: (response: any) => {
+          console.log('✅ Generierung gestartet:', response);
 
-          this.previews.addTemporary({
-            html: response.html,
-            form: dto.form,
-            pageId: response.pageId
-          });
+          // ✅ Navigate to loading page
+          this.router.navigate(['/generation-loading']);
 
-          this.router.navigate(['/preview']);
           this.loading = false;
         },
         error: (err: any) => {
