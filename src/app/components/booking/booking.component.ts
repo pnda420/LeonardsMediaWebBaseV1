@@ -1,16 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
-interface Day {
-  date: string;
-  dayName: string;
-  dayNumber: number;
-  available: boolean;
-  slotsCount: number;
-}
-
+import { Subject, takeUntil } from 'rxjs';
+import { BookingSlot, DayWithSlots, ApiService, CreateBookingDto } from '../../api/api.service';
 
 @Component({
   selector: 'app-booking',
@@ -19,18 +12,24 @@ interface Day {
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.scss'
 })
-export class BookingComponent implements OnInit {
+export class BookingComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   // State
   selectedDate: string = '';
-  selectedSlot: string = '';
+  selectedSlot: BookingSlot | null = null;
   currentWeekIndex: number = 0;
   currentMonthLabel: string = '';
+  isLoading: boolean = false;
+  isSubmitting: boolean = false;
+  errorMessage: string = '';
+  successMessage: string = '';
   
-  // WICHTIG: Als Property statt Getter!
-  availableSlots: string[] = [];
+  availableSlots: BookingSlot[] = [];
+  weeks: DayWithSlots[][] = [];
+  allSlots: BookingSlot[] = [];
 
-  // Mock Data
+  // Form Data
   bookingData = {
     name: '',
     email: '',
@@ -38,69 +37,107 @@ export class BookingComponent implements OnInit {
     message: ''
   };
 
-  // Mock Wochen (3 Wochen)
-  weeks: Day[][] = [];
-
-  // Alle möglichen Slots
-  allSlots = [
-    '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-    '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
-    '16:00', '16:30', '17:00'
-  ];
-
-  // Mock Slots pro Tag (gespeichert)
-  private slotsPerDay: { [key: string]: string[] } = {};
-
-  constructor(public router: Router) {}
+  constructor(
+    private apiService: ApiService,
+    public router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.generateMockWeeks();
-    this.generateSlotsForAllDays();
-    this.updateMonthLabel();
+    this.loadAvailableSlots();
   }
 
-  // Mock Daten generieren
-  generateMockWeeks(): void {
-    const today = new Date();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  formatDate(dateStr: string): string {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  }
+
+  formatTime(time: string): string {
+    const [hours, minutes] = time.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes);
+    return date.toLocaleString('de-DE', { hour: 'numeric', minute: 'numeric', hour12: false }) || time;
+  }
+
+  // ==================== DATA LOADING ====================
+
+  loadAvailableSlots(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
     
-    for (let weekIndex = 0; weekIndex < 3; weekIndex++) {
-      const week: Day[] = [];
-      
-      for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() + (weekIndex * 7) + dayIndex);
-        
-        // Skip Wochenende
-        if (date.getDay() === 0 || date.getDay() === 6) continue;
-        
-        const available = Math.random() > 0.2; // 80% verfügbar
-        const slotsCount = available ? Math.floor(Math.random() * 8) + 3 : 0;
-        
-        week.push({
-          date: date.toISOString().split('T')[0],
-          dayName: this.getDayName(date.getDay()),
-          dayNumber: date.getDate(),
-          available: available,
-          slotsCount: slotsCount
-        });
-      }
-      
-      this.weeks.push(week);
-    }
-  }
-
-  // Slots für alle Tage vorher generieren
-  generateSlotsForAllDays(): void {
-    this.weeks.forEach(week => {
-      week.forEach(day => {
-        if (day.available) {
-          // Random Slots für diesen Tag
-          const slots = this.allSlots.filter(() => Math.random() > 0.3);
-          this.slotsPerDay[day.date] = slots;
-        } else {
-          this.slotsPerDay[day.date] = [];
+    const today = new Date().toISOString().split('T')[0];
+    
+    this.apiService.getAvailableBookingSlots(today)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (slots) => {
+          this.allSlots = slots;
+          this.generateWeeksFromSlots(slots);
+          this.updateMonthLabel();
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error loading slots:', error);
+          this.errorMessage = 'Slots konnten nicht geladen werden. Bitte versuche es später erneut.';
+          this.isLoading = false;
         }
       });
+  }
+
+  generateWeeksFromSlots(slots: BookingSlot[]): void {
+    // Slots nach Datum gruppieren
+    const slotsByDate = new Map<string, BookingSlot[]>();
+    
+    slots.forEach(slot => {
+      if (!slotsByDate.has(slot.date)) {
+        slotsByDate.set(slot.date, []);
+      }
+      slotsByDate.get(slot.date)!.push(slot);
+    });
+
+    // Alle verfügbaren Daten sortieren
+    const dates = Array.from(slotsByDate.keys()).sort();
+    
+    if (dates.length === 0) {
+      this.weeks = [];
+      return;
+    }
+
+    // In Wochen aufteilen (max 3 Wochen)
+    this.weeks = [];
+    let currentWeek: DayWithSlots[] = [];
+    let weekCount = 0;
+    
+    dates.forEach((dateStr, index) => {
+      const date = new Date(dateStr + 'T12:00:00');
+      const daySlots = slotsByDate.get(dateStr) || [];
+      
+      // Wochenende überspringen
+      if (date.getDay() === 0 || date.getDay() === 6) return;
+      
+      const dayData: DayWithSlots = {
+        date: dateStr,
+        dayName: this.getDayName(date.getDay()),
+        dayNumber: date.getDate(),
+        available: daySlots.length > 0,
+        slots: daySlots
+      };
+      
+      currentWeek.push(dayData);
+      
+      // Neue Woche beginnen nach 5 Tagen oder am Ende
+      if (currentWeek.length >= 5 || index === dates.length - 1) {
+        this.weeks.push([...currentWeek]);
+        currentWeek = [];
+        weekCount++;
+        
+        // Max 3 Wochen
+        if (weekCount >= 3) return;
+      }
     });
   }
 
@@ -109,25 +146,25 @@ export class BookingComponent implements OnInit {
     return days[dayNumber];
   }
 
-  get currentWeek(): Day[] {
+  get currentWeek(): DayWithSlots[] {
     return this.weeks[this.currentWeekIndex] || [];
   }
 
   updateMonthLabel(): void {
     if (this.currentWeek.length === 0) return;
-    const firstDay = new Date(this.currentWeek[0].date);
+    const firstDay = new Date(this.currentWeek[0].date + 'T12:00:00');
     const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
                     'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
     this.currentMonthLabel = `${months[firstDay.getMonth()]} ${firstDay.getFullYear()}`;
   }
 
+  // ==================== NAVIGATION ====================
+
   previousWeek(): void {
     if (this.currentWeekIndex > 0) {
       this.currentWeekIndex--;
       this.updateMonthLabel();
-      this.selectedDate = '';
-      this.selectedSlot = '';
-      this.availableSlots = [];
+      this.clearSelection();
     }
   }
 
@@ -135,26 +172,34 @@ export class BookingComponent implements OnInit {
     if (this.currentWeekIndex < this.weeks.length - 1) {
       this.currentWeekIndex++;
       this.updateMonthLabel();
-      this.selectedDate = '';
-      this.selectedSlot = '';
-      this.availableSlots = [];
+      this.clearSelection();
     }
   }
 
-  selectDate(date: string): void {
-    this.selectedDate = date;
-    this.selectedSlot = '';
-    // Slots für diesen Tag laden
-    this.availableSlots = this.slotsPerDay[date] || [];
+  clearSelection(): void {
+    this.selectedDate = '';
+    this.selectedSlot = null;
+    this.availableSlots = [];
   }
 
-  selectSlot(slot: string): void {
+  // ==================== SELECTION ====================
+
+  selectDate(date: string): void {
+    this.selectedDate = date;
+    this.selectedSlot = null;
+    
+    // Slots für diesen Tag laden
+    const day = this.currentWeek.find(d => d.date === date);
+    this.availableSlots = day?.slots || [];
+  }
+
+  selectSlot(slot: BookingSlot): void {
     this.selectedSlot = slot;
   }
 
   getFormattedDate(): string {
     if (!this.selectedDate) return '';
-    const date = new Date(this.selectedDate);
+    const date = new Date(this.selectedDate + 'T12:00:00');
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
@@ -162,22 +207,65 @@ export class BookingComponent implements OnInit {
     return `${dayName}, ${day}.${month}.${year}`;
   }
 
+  getFormattedTime(): string {
+    if (!this.selectedSlot) return '';
+    return `${this.formatTime(this.selectedSlot.timeFrom)} - ${this.formatTime(this.selectedSlot.timeTo)}`;
+  }
+
+  // ==================== BOOKING SUBMIT ====================
+
   submitBooking(): void {
-    console.log('Booking:', {
-      date: this.selectedDate,
-      time: this.selectedSlot,
-      ...this.bookingData
-    });
-    
-    alert('🎉 Termin gebucht! Du bekommst gleich eine E-Mail mit allen Infos.');
-    
-    // Reset
-    this.resetForm();
+    if (!this.selectedSlot || !this.bookingData.name || !this.bookingData.email) {
+      return;
+    }
+
+    this.isSubmitting = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    const bookingDto: CreateBookingDto = {
+      name: this.bookingData.name.trim(),
+      email: this.bookingData.email.trim(),
+      phone: this.bookingData.phone?.trim() || undefined,
+      message: this.bookingData.message?.trim() || undefined,
+      slotId: this.selectedSlot.id
+    };
+
+    this.apiService.createBooking(bookingDto)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (booking) => {
+          this.successMessage = '🎉 Termin erfolgreich gebucht! Du bekommst gleich eine E-Mail mit allen Infos.';
+          this.isSubmitting = false;
+          
+          // Nach 2 Sekunden Form zurücksetzen und Slots neu laden
+          setTimeout(() => {
+            this.resetForm();
+            this.loadAvailableSlots();
+            this.successMessage = '';
+          }, 3000);
+        },
+        error: (error) => {
+          console.error('Booking error:', error);
+          this.isSubmitting = false;
+          
+          if (error.status === 409) {
+            this.errorMessage = 'Dieser Slot ist leider nicht mehr verfügbar. Bitte wähle einen anderen Termin.';
+          } else if (error.status === 404) {
+            this.errorMessage = 'Dieser Slot wurde nicht gefunden. Bitte lade die Seite neu.';
+          } else {
+            this.errorMessage = 'Buchung fehlgeschlagen. Bitte versuche es erneut oder kontaktiere uns direkt.';
+          }
+          
+          // Slots neu laden um aktuelle Verfügbarkeit zu zeigen
+          this.loadAvailableSlots();
+        }
+      });
   }
 
   resetForm(): void {
     this.selectedDate = '';
-    this.selectedSlot = '';
+    this.selectedSlot = null;
     this.availableSlots = [];
     this.bookingData = {
       name: '',
@@ -185,5 +273,25 @@ export class BookingComponent implements OnInit {
       phone: '',
       message: ''
     };
+  }
+
+  // ==================== HELPER ====================
+
+  getSlotsCountForDay(day: DayWithSlots): number {
+    return day.slots.length;
+  }
+
+  isFormValid(): boolean {
+    return !!(
+      this.selectedSlot &&
+      this.bookingData.name?.trim() &&
+      this.bookingData.email?.trim() &&
+      this.isValidEmail(this.bookingData.email)
+    );
+  }
+
+  isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 }

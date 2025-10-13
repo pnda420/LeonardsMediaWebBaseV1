@@ -139,6 +139,76 @@ export interface PageAiMockupResponse {
   };
 }
 
+export interface BookingSlot {
+  id: string;
+  date: string; // YYYY-MM-DD
+  timeFrom: string; // HH:MM
+  timeTo: string; // HH:MM
+  isAvailable: boolean;
+  maxBookings: number;
+  currentBookings: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface CreateBookingSlotDto {
+  date: string;
+  timeFrom: string;
+  timeTo: string;
+  maxBookings?: number;
+  isAvailable?: boolean;
+}
+
+export interface UpdateBookingSlotDto {
+  date?: string;
+  timeFrom?: string;
+  timeTo?: string;
+  isAvailable?: boolean;
+  maxBookings?: number;
+}
+
+export enum BookingStatus {
+  PENDING = 'pending',
+  CONFIRMED = 'confirmed',
+  CANCELLED = 'cancelled',
+  COMPLETED = 'completed',
+}
+
+export interface Booking {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  message: string | null;
+  slotId: string;
+  slot?: BookingSlot;
+  status: BookingStatus;
+  adminNotes: string | null;
+  createdAt: Date;
+}
+
+export interface CreateBookingDto {
+  name: string;
+  email: string;
+  phone?: string;
+  message?: string;
+  slotId: string;
+}
+
+export interface UpdateBookingDto {
+  status?: BookingStatus;
+  adminNotes?: string;
+}
+
+// Hilfs-Interface für das Frontend
+export interface DayWithSlots {
+  date: string;
+  dayName: string;
+  dayNumber: number;
+  available: boolean;
+  slots: BookingSlot[];
+}
+
 // ==================== SERVICE ====================
 
 @Injectable({
@@ -451,6 +521,127 @@ export class ApiService {
    */
   deleteContactRequest(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/contact-requests/${id}`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  // ==================== BOOKING SLOTS ENDPOINTS ====================
+
+  /**
+   * Verfügbare Slots abrufen (öffentlich)
+   */
+  getAvailableBookingSlots(fromDate?: string): Observable<BookingSlot[]> {
+    let params = new HttpParams();
+    if (fromDate) {
+      params = params.set('fromDate', fromDate);
+    }
+    return this.http.get<BookingSlot[]>(`${this.apiUrl}/bookings/slots/available`, { params });
+  }
+
+  /**
+   * Slots für ein bestimmtes Datum abrufen (öffentlich)
+   */
+  getBookingSlotsByDate(date: string): Observable<BookingSlot[]> {
+    return this.http.get<BookingSlot[]>(`${this.apiUrl}/bookings/slots/date/${date}`);
+  }
+
+  /**
+   * Alle Slots abrufen (Admin)
+   */
+  getAllBookingSlots(): Observable<BookingSlot[]> {
+    return this.http.get<BookingSlot[]>(`${this.apiUrl}/bookings/slots`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  /**
+   * Einzelnen Slot erstellen (Admin)
+   */
+  createBookingSlot(dto: CreateBookingSlotDto): Observable<BookingSlot> {
+    return this.http.post<BookingSlot>(`${this.apiUrl}/bookings/slots`, dto, {
+      headers: this.getHeaders()
+    });
+  }
+
+  /**
+   * Mehrere Slots auf einmal erstellen (Admin)
+   */
+  createMultipleBookingSlots(slots: CreateBookingSlotDto[]): Observable<BookingSlot[]> {
+    return this.http.post<BookingSlot[]>(
+      `${this.apiUrl}/bookings/slots/bulk`,
+      { slots },
+      { headers: this.getHeaders() }
+    );
+  }
+
+  /**
+   * Slot aktualisieren (Admin)
+   */
+  updateBookingSlot(id: string, dto: UpdateBookingSlotDto): Observable<BookingSlot> {
+    return this.http.patch<BookingSlot>(`${this.apiUrl}/bookings/slots/${id}`, dto, {
+      headers: this.getHeaders()
+    });
+  }
+
+  /**
+   * Slot löschen (Admin)
+   */
+  deleteBookingSlot(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/bookings/slots/${id}`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  // ==================== BOOKINGS ENDPOINTS ====================
+
+  /**
+   * Booking erstellen (öffentlich)
+   */
+  createBooking(dto: CreateBookingDto): Observable<Booking> {
+    return this.http.post<Booking>(`${this.apiUrl}/bookings`, dto);
+  }
+
+  /**
+   * Alle Bookings abrufen (Admin)
+   */
+  getAllBookings(): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.apiUrl}/bookings`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  /**
+   * Einzelne Booking abrufen (Admin)
+   */
+  getBooking(id: string): Observable<Booking> {
+    return this.http.get<Booking>(`${this.apiUrl}/bookings/${id}`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  /**
+   * Booking aktualisieren (Admin)
+   */
+  updateBooking(id: string, dto: UpdateBookingDto): Observable<Booking> {
+    return this.http.patch<Booking>(`${this.apiUrl}/bookings/${id}`, dto, {
+      headers: this.getHeaders()
+    });
+  }
+
+  /**
+   * Booking stornieren (Admin)
+   */
+  cancelBooking(id: string): Observable<Booking> {
+    return this.http.patch<Booking>(`${this.apiUrl}/bookings/${id}/cancel`, {}, {
+      headers: this.getHeaders()
+    });
+  }
+
+  /**
+   * Booking löschen (Admin)
+   */
+  deleteBooking(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/bookings/${id}`, {
       headers: this.getHeaders()
     });
   }

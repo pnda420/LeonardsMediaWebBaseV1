@@ -23,8 +23,37 @@
             </div>
         </header>
 
+        <!-- LOADING STATE -->
+        <div *ngIf="isLoading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Lade verfügbare Termine...</p>
+        </div>
+
+        <!-- ERROR STATE -->
+        <div *ngIf="errorMessage && !isLoading" class="error-banner">
+            <span class="material-symbols-outlined">error</span>
+            <p>{{ errorMessage }}</p>
+        </div>
+
+        <!-- SUCCESS STATE -->
+        <div *ngIf="successMessage" class="success-banner">
+            <span class="material-symbols-outlined">check_circle</span>
+            <p>{{ successMessage }}</p>
+        </div>
+
+        <!-- NO SLOTS AVAILABLE -->
+        <div *ngIf="!isLoading && weeks.length === 0" class="empty-state">
+            <span class="material-symbols-outlined">event_busy</span>
+            <h2>Aktuell keine Termine verfügbar</h2>
+            <p>Bitte schau später noch einmal vorbei oder kontaktiere uns direkt.</p>
+            <button class="btn btn--primary" (click)="loadAvailableSlots()">
+                <span class="material-symbols-outlined">refresh</span>
+                Neu laden
+            </button>
+        </div>
+
         <!-- BOOKING GRID -->
-        <div class="booking-grid">
+        <div *ngIf="!isLoading && weeks.length > 0" class="booking-grid">
 
             <!-- KALENDER -->
             <div class="calendar-section">
@@ -35,24 +64,20 @@
                             <span class="material-symbols-outlined">chevron_left</span>
                         </button>
                         <span class="month-label">{{ currentMonthLabel }}</span>
-                        <button class="btn-nav" (click)="nextWeek()">
+                        <button class="btn-nav" (click)="nextWeek()" [disabled]="currentWeekIndex >= weeks.length - 1">
                             <span class="material-symbols-outlined">chevron_right</span>
                         </button>
                     </div>
                 </div>
 
                 <div class="days-grid">
-                    <button 
-                        *ngFor="let day of currentWeek"
-                        class="day-card"
-                        [class.selected]="selectedDate === day.date"
-                        [class.disabled]="!day.available"
-                        [disabled]="!day.available"
-                        (click)="selectDate(day.date)">
+                    <button *ngFor="let day of currentWeek" class="day-card"
+                        [class.selected]="selectedDate === day.date" [class.disabled]="!day.available"
+                        [disabled]="!day.available" (click)="selectDate(day.date)">
                         <span class="day-name">{{ day.dayName }}</span>
                         <span class="day-number">{{ day.dayNumber }}</span>
                         <span class="day-status" *ngIf="day.available">
-                            {{ day.slotsCount }} Slots
+                            {{ getSlotsCountForDay(day) }} Slots
                         </span>
                         <span class="day-status day-status--full" *ngIf="!day.available">
                             Voll
@@ -64,13 +89,10 @@
                 <div class="slots-section" *ngIf="selectedDate">
                     <h3>Wähle eine Uhrzeit</h3>
                     <div class="slots-grid">
-                        <button 
-                            *ngFor="let slot of availableSlots"
-                            class="slot-card"
-                            [class.selected]="selectedSlot === slot"
-                            (click)="selectSlot(slot)">
+                        <button *ngFor="let slot of availableSlots" class="slot-card"
+                            [class.selected]="selectedSlot?.id === slot.id" (click)="selectSlot(slot)">
                             <span class="material-symbols-outlined">schedule</span>
-                            <span>{{ slot }}</span>
+                            <span>{{ formatTime(slot.timeFrom) }} - {{ formatTime(slot.timeTo) }}</span>
                         </button>
                     </div>
                 </div>
@@ -85,47 +107,29 @@
                     </div>
 
                     <form class="booking-form" (ngSubmit)="submitBooking()">
-                        
+
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input 
-                                type="text" 
-                                id="name" 
-                                [(ngModel)]="bookingData.name"
-                                name="name"
-                                placeholder="Max Mustermann"
-                                required>
+                            <label for="name">Name *</label>
+                            <input type="text" id="name" [(ngModel)]="bookingData.name" name="name"
+                                placeholder="Max Mustermann" required [disabled]="isSubmitting">
                         </div>
 
                         <div class="form-group">
-                            <label for="email">E-Mail</label>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                [(ngModel)]="bookingData.email"
-                                name="email"
-                                placeholder="max@beispiel.de"
-                                required>
+                            <label for="email">E-Mail *</label>
+                            <input type="email" id="email" [(ngModel)]="bookingData.email" name="email"
+                                placeholder="max@beispiel.de" required [disabled]="isSubmitting">
                         </div>
 
                         <div class="form-group">
                             <label for="phone">Telefon (optional)</label>
-                            <input 
-                                type="tel" 
-                                id="phone" 
-                                [(ngModel)]="bookingData.phone"
-                                name="phone"
-                                placeholder="+49 123 456789">
+                            <input type="tel" id="phone" [(ngModel)]="bookingData.phone" name="phone"
+                                placeholder="+49 123 456789" [disabled]="isSubmitting">
                         </div>
 
                         <div class="form-group">
                             <label for="message">Worum geht's?</label>
-                            <textarea 
-                                id="message" 
-                                [(ngModel)]="bookingData.message"
-                                name="message"
-                                rows="4"
-                                placeholder="Erzähl mir kurz was du vorhast..."></textarea>
+                            <textarea id="message" [(ngModel)]="bookingData.message" name="message" rows="4"
+                                placeholder="Erzähl mir kurz was du vorhast..." [disabled]="isSubmitting"></textarea>
                         </div>
 
                         <!-- ZUSAMMENFASSUNG -->
@@ -136,18 +140,17 @@
                             </div>
                             <div class="summary-content">
                                 <p>📅 {{ getFormattedDate() }}</p>
-                                <p>🕐 {{ selectedSlot }} Uhr</p>
+                                <p>🕐 {{ getFormattedTime() }} Uhr</p>
                                 <p>⏱️ 30 Minuten</p>
                                 <p>💻 Online per Video-Call</p>
                             </div>
                         </div>
 
-                        <button 
-                            type="submit" 
-                            class="btn btn--primary btn--large"
-                            [disabled]="!selectedDate || !selectedSlot || !bookingData.name || !bookingData.email">
-                            <span class="material-symbols-outlined ms-size-20">check_circle</span>
-                            Termin buchen
+                        <button type="submit" class="btn btn--primary btn--large"
+                            [disabled]="!isFormValid() || isSubmitting">
+                            <span class="material-symbols-outlined ms-size-20" *ngIf="!isSubmitting">check_circle</span>
+                            <span class="spinner-small" *ngIf="isSubmitting"></span>
+                            {{ isSubmitting ? 'Wird gebucht...' : 'Termin buchen' }}
                         </button>
 
                         <p class="form-note">

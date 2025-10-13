@@ -1,0 +1,171 @@
+<app-admin-header></app-admin-header>
+
+<div class="page">
+    <div class="container">
+        <!-- Header -->
+        <div class="card header">
+            <div class="header-bar">
+                <div>
+                    <h1 class="title">Booking Manager</h1>
+                    <p class="subtitle">Erstelle und verwalte deine Slots</p>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn" [class.active]="view === 'create'" (click)="view = 'create'">
+                        <span class="icon">➕</span>
+                        Erstellen
+                    </button>
+
+                    <button class="tab-btn" [class.active]="view === 'manage'" (click)="view = 'manage'">
+                        <span class="icon">🗓️</span>
+                        Verwalten
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CREATE VIEW -->
+        <div *ngIf="view === 'create'" class="create-grid">
+            <!-- Quick Create -->
+            <div class="card">
+                <div class="card-head">
+                    <div class="head-icon green">
+                        <span>⏰</span>
+                    </div>
+                    <div>
+                        <h2>Quick Create</h2>
+                        <p class="muted">Mehrere Slots auf einmal</p>
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="field">
+                        <label>Datum</label>
+                        <input type="date" [(ngModel)]="quickCreate.date" class="input" />
+                    </div>
+
+                    <div class="two-col">
+                        <div class="field">
+                            <label>Startzeit</label>
+                            <input type="time" [(ngModel)]="quickCreate.startTime" class="input" />
+                        </div>
+                        <div class="field">
+                            <label>Duration (Min)</label>
+                            <input type="number" min="15" step="15" [(ngModel)]="quickCreate.duration" class="input" />
+                        </div>
+                    </div>
+
+                    <div class="two-col">
+                        <div class="field">
+                            <label>Anzahl Slots</label>
+                            <input type="number" min="1" max="20" [(ngModel)]="quickCreate.count" class="input" />
+                        </div>
+                        <div class="field">
+                            <label>Pause nach X</label>
+                            <input type="number" min="0" [(ngModel)]="quickCreate.breakAfter" class="input" />
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Pausendauer (Min)</label>
+                        <input type="number" min="0" step="5" [(ngModel)]="quickCreate.breakDuration" class="input" />
+                    </div>
+
+                    <div class="hint hint-green">
+                        ✨ Erstellt {{ quickCreate.count }} Slots à
+                        {{ quickCreate.duration }} Min
+                        <ng-container *ngIf="quickCreate.breakAfter > 0">
+                            mit {{ quickCreate.breakDuration }} Min Pause alle
+                            {{ quickCreate.breakAfter }} Slots
+                        </ng-container>
+                    </div>
+
+                    <button class="btn btn-green" (click)="handleQuickCreate()" [disabled]="loading">
+                        <span *ngIf="!loading" class="icon">✔️</span>
+                        <span *ngIf="loading" class="icon spin">🔄</span>
+                        {{ loading ? 'Erstelle...' : 'Slots erstellen' }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Manual Create -->
+            <div class="card">
+                <div class="card-head">
+                    <div class="head-icon blue">
+                        <span>➕</span>
+                    </div>
+                    <div>
+                        <h2>Manuell erstellen</h2>
+                        <p class="muted">Einzelner Slot</p>
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="field">
+                        <label>Datum</label>
+                        <input type="date" [(ngModel)]="manualSlot.date" class="input" />
+                    </div>
+
+                    <div class="two-col">
+                        <div class="field">
+                            <label>Von</label>
+                            <input type="time" [(ngModel)]="manualSlot.timeFrom" class="input" />
+                        </div>
+                        <div class="field">
+                            <label>Bis</label>
+                            <input type="time" [(ngModel)]="manualSlot.timeTo" class="input" />
+                        </div>
+                    </div>
+
+                    <button class="btn btn-blue" (click)="handleManualCreate()" [disabled]="loading">
+                        <span *ngIf="!loading" class="icon">➕</span>
+                        <span *ngIf="loading" class="icon spin">🔄</span>
+                        {{ loading ? 'Erstelle...' : 'Slot hinzufügen' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MANAGE VIEW -->
+        <div *ngIf="view === 'manage'" class="card">
+            <div class="manage-head">
+                <h2>Slot Übersicht</h2>
+                <button class="btn btn-ghost" (click)="loadSlots()" [disabled]="loading">
+                    <span class="icon" [class.spin]="loading">🔄</span>
+                    Aktualisieren
+                </button>
+            </div>
+
+            <div *ngIf="slots.length === 0" class="empty">
+                <div class="empty-icon">🗓️</div>
+                <p class="empty-title">Keine Slots vorhanden</p>
+                <p class="muted">Erstelle deinen ersten Slot im "Erstellen" Tab</p>
+            </div>
+
+            <div *ngIf="slots.length > 0" class="slot-list">
+                <div class="slot-item" *ngFor="let slot of slots" [class.available]="slot.isAvailable"
+                    [class.unavailable]="!slot.isAvailable">
+                    <div class="slot-left">
+                        <div class="date-badge" [class.badge-green]="slot.isAvailable"
+                            [class.badge-red]="!slot.isAvailable">
+                            {{ slot.date.split('-')[2] }}
+                        </div>
+                        <div>
+                            <div class="slot-title">
+                                {{ formatDate(slot.date) }} • {{ formatTime(slot.timeFrom) }} - {{ formatTime(slot.timeTo) }}
+                            </div>
+                            <div class="slot-sub">
+                                {{ slot.currentBookings || 0 }} / {{ slot.maxBookings }} gebucht
+                                <ng-container *ngIf="!slot.isAvailable"> • Nicht verfügbar</ng-container>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="icon-btn danger" (click)="handleDeleteSlot(slot.id)">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

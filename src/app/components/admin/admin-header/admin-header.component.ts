@@ -76,6 +76,12 @@ export class AdminHeaderComponent {
       label: 'Generierte Seiten',
       icon: 'auto_awesome'
     },
+    {
+      path: 'admin/booking',
+      label: 'Buchungen',
+      icon: 'calendar_today'
+    },
+
     // {
     //   path: 'admin/settings',
     //   label: 'Einstellungen',

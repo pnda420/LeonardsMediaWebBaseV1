@@ -27,6 +27,7 @@ import { AdminGenPagesComponent } from './components/admin/admin-gen-pages/admin
 import { AdminSettingsComponent } from './components/admin/admin-settings/admin-settings.component';
 import { GenerationLoadingComponent } from './shared/generation-loading/generation-loading.component';
 import { BookingComponent } from './components/booking/booking.component';
+import { AdminBookingComponent } from './components/admin/admin-booking/admin-booking.component';
 
 const pageMainName = 'LeonardsMedia';
 export const routes: Routes = [
@@ -55,5 +56,6 @@ export const routes: Routes = [
     { path: 'admin/requests', component: AdminRequestsComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Requests', data: { description: 'Admin Requests von LeonardsMedia.' } },
     { path: 'admin/users', component: AdminUsersComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Users', data: { description: 'Admin Users von LeonardsMedia.' } },
     { path: 'admin/gen-pages', component: AdminGenPagesComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Gen Pages', data: { description: 'Admin Gen Pages von LeonardsMedia.' } },
+    { path: 'admin/booking', component: AdminBookingComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Booking', data: { description: 'Admin Booking von LeonardsMedia.' } },
     { path: 'admin/settings', component: AdminSettingsComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Settings', data: { description: 'Admin Settings von LeonardsMedia.' } },
 ];
