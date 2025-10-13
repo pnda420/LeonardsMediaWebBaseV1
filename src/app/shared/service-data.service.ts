@@ -73,6 +73,7 @@ private services: ServiceItem[] = [
       'Animationen & Effekte',
       '12 Monate Premium-Support'
     ],
+    badge: '💎 Individuell',
     price: 'ab 3.990 € ',
     cta: 'Mehr erfahren',
     route: 'individual-website',

@@ -11,6 +11,7 @@ interface GeneratedPage {
   name: string;
   pageContent: string;
   description?: string;
+  contactEmail?: string;
   createdAt: Date;
   updatedAt: Date;
   user?: {

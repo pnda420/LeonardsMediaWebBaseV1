@@ -139,7 +139,7 @@
     padding: 0.75rem 1rem;
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(0, 0, 0, 0.06);
+    border: $color-brand-primary 2px solid;
     border-radius: 12px;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);

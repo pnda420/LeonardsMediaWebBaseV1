@@ -21,9 +21,9 @@
       <a (click)="routeTo('/contact')" routerLink="/contact" routerLinkActive="active">
         Kontakt
       </a>
-      <!-- <a (click)="routeTo('/preview')" routerLink="/preview" routerLinkActive="active">
+      <a *ngIf="user" (click)="routeTo('/preview')" routerLink="/preview" routerLinkActive="active">
         Design Center
-      </a> -->
+      </a>
 
       <!-- Auth Links -->
       <ng-container *ngIf="!user">

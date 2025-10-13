@@ -1,4 +1,4 @@
-<app-page-title title="Leistungspakete"></app-page-title>
+<!-- <app-page-title title="Leistungspakete"></app-page-title> -->
 <section class="services-overview">
     <div class="container">
 
@@ -23,7 +23,7 @@
                 <div class="card-icon">
                     <span class="icon-emoji" *ngIf="s.badge === '🚀 Schnellstart'">🚀</span>
                     <span class="icon-emoji" *ngIf="s.badge === '⭐ Am beliebtesten'">⭐</span>
-                    <span class="icon-emoji" *ngIf="!s.badge">💎</span>
+                    <span class="icon-emoji" *ngIf="s.badge === '💎 Individuell'">💎</span>
                 </div>
 
                 <!-- Content -->
@@ -63,20 +63,33 @@
                     <span class="material-symbols-outlined">help</span>
                 </div>
                 <div class="cta-text">
-                    <h3>Weißt nicht was du brauchst?</h3>
-                    <p>Nutze den Projekt-Finder oder buch einfach ein Gespräch mit mir.</p>
+                    <h3>Noch unsicher, welches Paket passt?</h3>
+                    <p>Kein Problem. Wir helfen dir, die richtige Lösung zu finden.</p>
                 </div>
             </div>
+
             <div class="cta-actions">
+                <!-- Primary: Fragebogen -->
                 <button class="btn btn--primary btn--large" (click)="router.navigate(['/survey'])">
-                    <span class="material-symbols-outlined ms-size-20">auto_awesome</span>
-                    Projekt-Finder
+                    <span class="material-symbols-outlined ms-size-20">quiz</span>
+                    In 2 Minuten das richtige Paket finden
                 </button>
+
+                <!-- Secondary: Direkt zum Gespräch -->
                 <button class="btn btn--secondary btn--large" (click)="router.navigate(['/contact'])">
                     <span class="material-symbols-outlined ms-size-20">event</span>
-                    Gespräch buchen
+                    Oder direkt Anschreiben
                 </button>
             </div>
+
+            <!-- Zusätzliche Option: Einfach E-Mail -->
+            <p class="cta-alternative">
+                Lieber reden?
+                <a (click)="router.navigate(['/booking'])" class="text-link">
+                    Direkt Gespräch buchen
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </a>
+            </p>
         </div>
 
         <!-- TRUST -->

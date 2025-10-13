@@ -341,16 +341,19 @@
         </div>
       </div>
       <div class="cta__actions">
-        <button class="btn btn--primary btn--large" (click)="router.navigate(['/contact'])">
+        <!-- Primary CTA -->
+        <button class="btn btn--primary btn--large" (click)="router.navigate(['/booking'])">
           <span class="material-symbols-outlined ms-size-20">event</span>
-          Termin vereinbaren
+          Kostenloses Erstgespräch buchen
         </button>
+
+        <!-- Alternative Option -->
         <p class="cta__alternative">
-          Oder nutze den
+          Noch unsicher?
           <a class="link" (click)="router.navigate(['/survey'])">
-            Projekt-Finder ✨
+            Beantworte 7 Fragen
           </a>
-          um herauszufinden, welches Leistungspaket zu dir passt
+          und finde in 2 Minuten das passende Paket
         </p>
       </div>
     </div>

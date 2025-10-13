@@ -243,37 +243,43 @@
   </div>
 
   <!-- CTA -->
-  <div class="container cta-section">
-    <div class="cta-card">
-      <div class="cta-icon">
-        <span class="material-symbols-outlined ms-fill">rocket_launch</span>
+<div class="container cta-section">
+  <div class="cta-card">
+    <div class="cta-icon">
+      <span class="material-symbols-outlined ms-fill">rocket_launch</span>
+    </div>
+    <h2>Bereit für deine neue Website?</h2>
+    <p>Lass uns in einem kurzen Gespräch klären, wie wir dir helfen können.</p>
+    
+    <div class="cta-features">
+      <div class="feature-item">
+        <span class="material-symbols-outlined ms-fill">schedule</span>
+        <span>30 Minuten</span>
       </div>
-      <h2>Klingt gut?</h2>
-      <p>Lass uns kurz reden und schauen ob das zu deinem Projekt passt.</p>
-      <div class="cta-features">
-        <div class="feature-item">
-          <span class="material-symbols-outlined ms-fill">check_circle</span>
-          <span>30 Min Gespräch</span>
-        </div>
-        <div class="feature-item">
-          <span class="material-symbols-outlined ms-fill">check_circle</span>
-          <span>Kostet nix</span>
-        </div>
-        <div class="feature-item">
-          <span class="material-symbols-outlined ms-fill">check_circle</span>
-          <span>Keine Pflicht</span>
-        </div>
+      <div class="feature-item">
+        <span class="material-symbols-outlined ms-fill">workspace_premium</span>
+        <span>100% kostenlos</span>
       </div>
-      <div class="cta-actions">
-        <button class="btn btn--primary btn--large" (click)="router.navigate(['/contact'])">
-          <span class="material-symbols-outlined ms-size-20">event</span>
-          Gespräch buchen
-        </button>
-        <button class="btn btn--secondary" (click)="router.navigate(['/survey'])">
-          Oder Projekt-Finder nutzen
-        </button>
+      <div class="feature-item">
+        <span class="material-symbols-outlined ms-fill">handshake</span>
+        <span>Unverbindlich</span>
       </div>
     </div>
+    
+    <div class="cta-actions">
+      <button class="btn btn--primary btn--large" (click)="router.navigate(['/contact'])">
+        <span class="material-symbols-outlined ms-size-20">event</span>
+        Jetzt kontakt aufnehmen
+      </button>
+      
+      <p class="cta-alternative">
+        Noch unsicher?
+        <a class="link" (click)="router.navigate(['/survey'])">
+          Mach den 2-Minuten-Fragebogen
+        </a>
+      </p>
+    </div>
   </div>
+</div>
 
 </section>

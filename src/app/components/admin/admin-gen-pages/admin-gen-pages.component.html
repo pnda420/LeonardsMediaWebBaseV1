@@ -80,12 +80,17 @@
                         <td class="name-col">
                             <strong>{{ page.name }}</strong>
                         </td>
-                        <td class="user-col">
-                            <div class="user-info" *ngIf="page.user">
+                        <td class="user-col" *ngIf="page.user">
+                            <div class="user-info">
                                 <span class="user-name">{{ page.user.name }}</span>
                                 <span class="user-email">{{ page.user.email }}</span>
                             </div>
-                            <span *ngIf="!page.user" class="text-muted">Unbekannt</span>
+                        </td>
+                        <td class="user-col" *ngIf="!page.user">
+                            <div class="user-info">
+                                <span class="user-name">No Account</span>
+                                <span class="user-email">{{ page.contactEmail }}</span>
+                            </div>
                         </td>
                         <td class="desc-col">
                             <span *ngIf="page.description" class="description">{{ page.description }}</span>

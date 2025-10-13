@@ -131,7 +131,7 @@
     .step-number {
         position: absolute;
         top: -20px;
-        left: 2rem;
+        left: -1rem;
         width: 48px;
         height: 48px;
         background: linear-gradient(135deg, #2563eb, #3b82f6);
@@ -462,4 +462,30 @@
         animation: none !important;
         transition: none !important;
     }
+}
+
+.cta-alternative {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  
+  .link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: gap 0.2s;
+    
+    .material-symbols-outlined {
+      font-size: 1rem;
+    }
+    
+    &:hover {
+      gap: 0.5rem;
+      text-decoration: underline;
+    }
+  }
 }

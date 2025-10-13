@@ -61,143 +61,277 @@ export class SurveyComponent {
   isSubmitted = signal(false);
   isSubmitting = signal(false);
 
-  questions: Question[] = [
-    {
-      title: 'Was passt grob zu deinem Vorhaben?',
-      subtitle: 'Wähle die Variante, die am besten zu deinem Projekt passt.',
-      icon: '🎯',
-      type: 'single-choice',
-      formKey: 'projectType',
-      layout: 'cards',
-      options: [
-        { value: 'one', label: 'Eine einfache Seite', hint: 'Perfekt für schnelle Präsenz - alles auf einer Seite', icon: '📄' },
-        { value: 'multi', label: 'Mehrere Seiten', hint: 'Klassische Website mit verschiedenen Unterseiten', icon: '📑' },
-        { value: 'custom', label: 'Etwas Individuelles', hint: 'Spezielle Features, Datenbanken, komplexe Funktionen', icon: '⚙️' }
-      ]
-    },
-    {
-      title: 'Wie viel Inhalt ist geplant?',
-      subtitle: 'Eine grobe Einschätzung reicht völlig aus.',
-      icon: '📊',
-      type: 'single-choice',
-      formKey: 'contentAmount',
-      layout: 'list',
-      options: [
-        { value: 'very-low', label: 'Sehr wenig', hint: '1–2 Absätze, z.B. Startseite mit Kontaktdaten' },
-        { value: 'low', label: 'Wenig', hint: '3–5 Abschnitte, z.B. Start, Über mich, Leistungen, Kontakt' },
-        { value: 'medium', label: 'Mittel', hint: '6–10 Abschnitte oder Seiten, z.B. Portfolio, Team, FAQ' },
-        { value: 'high', label: 'Viel', hint: 'Mehr als 10 Seiten, z.B. Blog, viele Unterseiten' }
-      ]
-    },
-    {
-      title: 'Hast du bereits eine Domain?',
-      subtitle: 'Eine Domain ist deine Website-Adresse (z.B. meinefirma.de)',
-      icon: '🌐',
-      type: 'single-choice',
-      formKey: 'hasDomain',
-      layout: 'list',
-      options: [
-        { value: 'yes', label: 'Ja, ich habe schon eine Domain' },
-        { value: 'no', label: 'Nein, ich brauche noch eine Domain' },
-        { value: 'unsure', label: 'Weiß ich noch nicht' }
-      ],
-      resetFields: ['domainName'],
-      conditionalInput: {
-        showWhen: 'yes',
-        formKey: 'domainName',
-        label: 'Wie lautet deine Domain?',
-        placeholder: 'z.B. meinefirma.de'
+questions: Question[] = [
+  {
+    title: 'Was passt grob zu deinem Vorhaben?',
+    subtitle: 'Keine Sorge - wir helfen dir, die richtige Lösung zu finden.',
+    icon: '🎯',
+    type: 'single-choice',
+    formKey: 'projectType',
+    layout: 'cards',
+    options: [
+      { 
+        value: 'one', 
+        label: 'Eine einfache Seite', 
+        hint: 'Alles auf einen Blick - perfekt für schnelle Online-Präsenz', 
+        icon: '📄' 
+      },
+      { 
+        value: 'multi', 
+        label: 'Mehrere Seiten', 
+        hint: 'Klassische Website mit Start, Leistungen, Kontakt usw.', 
+        icon: '📑' 
+      },
+      { 
+        value: 'custom', 
+        label: 'Etwas Individuelles', 
+        hint: 'Spezielle Features wie Buchungssystem, Shop oder Datenbank', 
+        icon: '⚙️' 
       }
-    },
-    {
-      title: 'Wo soll die Website gehostet werden?',
-      subtitle: 'Hosting bedeutet, wo deine Website technisch liegt und erreichbar ist.',
-      icon: '☁️',
-      type: 'single-choice',
-      formKey: 'hosting',
-      layout: 'list',
-      options: [
-        { value: 'with-me', label: 'Bitte bei dir hosten', hint: 'Ich kümmere mich um alles - du brauchst dich nicht damit befassen' },
-        { value: 'self', label: 'Ich hoste selbst', hint: 'Ich habe bereits einen Hosting-Anbieter' },
-        { value: 'unsure', label: 'Weiß ich noch nicht', hint: 'Lass uns das zusammen klären' }
-      ],
-      resetFields: ['hostingProvider'],
-      conditionalInput: {
-        showWhen: 'self',
-        formKey: 'hostingProvider',
-        label: 'Bei welchem Anbieter hostest du?',
-        placeholder: 'z.B. IONOS, netcup, all-inkl'
+    ]
+  },
+  {
+    title: 'Wie viel Inhalt ist geplant?',
+    subtitle: 'Eine grobe Einschätzung reicht - wir passen das später gemeinsam an.',
+    icon: '📊',
+    type: 'single-choice',
+    formKey: 'contentAmount',
+    layout: 'list',
+    options: [
+      { 
+        value: 'very-low', 
+        label: 'Sehr wenig', 
+        hint: 'Zum Beispiel: Startseite mit Kontaktdaten und kurzer Beschreibung' 
+      },
+      { 
+        value: 'low', 
+        label: 'Wenig', 
+        hint: 'Zum Beispiel: Start, Über uns, Leistungen, Kontakt (3-5 Bereiche)' 
+      },
+      { 
+        value: 'medium', 
+        label: 'Mittel', 
+        hint: 'Zum Beispiel: + Portfolio, Team, FAQ, Referenzen (6-10 Bereiche)' 
+      },
+      { 
+        value: 'high', 
+        label: 'Viel', 
+        hint: 'Mehr als 10 Bereiche, z.B. mit Blog, vielen Unterseiten oder Produkten' 
       }
-    },
-    {
-      title: 'Welche Funktionen brauchst du?',
-      subtitle: 'Wähle alle Funktionen aus, die deine Website haben soll. Mehrfachauswahl möglich.',
-      icon: '✨',
-      type: 'multiple-choice',
-      formKey: 'features',
-      options: [
-        { value: 'startSection', label: 'Startbereich', hint: 'Großes Bild / Hero-Überschrift' },
-        { value: 'about', label: 'Über mich / uns', hint: 'Vorstellung des Unternehmens' },
-        { value: 'services', label: 'Leistungen / Angebote', hint: 'Was du anbietest' },
-        { value: 'gallery', label: 'Bildergalerie', hint: 'Portfolio, Referenzen, Projekte' },
-        { value: 'team', label: 'Teamvorstellung', hint: 'Mitarbeiter mit Fotos & Infos' },
-        { value: 'testimonials', label: 'Kundenstimmen', hint: 'Bewertungen & Referenzen' },
-        { value: 'contactForm', label: 'Kontaktformular', hint: 'Direkte Anfragen über die Website' },
-        { value: 'map', label: 'Standortkarte', hint: 'Google Maps Integration' },
-        { value: 'faq', label: 'FAQ', hint: 'Häufig gestellte Fragen' },
-        { value: 'pricing', label: 'Preise / Tarife', hint: 'Preisübersicht oder Pakete' },
-        { value: 'blog', label: 'Blog / News', hint: 'Regelmäßige Artikel & Updates' },
-        { value: 'booking', label: 'Terminbuchung', hint: 'Online Termine vereinbaren' },
-        { value: 'downloads', label: 'Downloads', hint: 'PDFs, Broschüren, Dokumente' },
-        { value: 'newsletter', label: 'Newsletter', hint: 'E-Mail-Anmeldung für Updates' },
-        { value: 'multilingual', label: 'Mehrsprachigkeit', hint: 'Website in mehreren Sprachen' },
-        { value: 'socialLinks', label: 'Social Media', hint: 'Links zu Instagram, Facebook, etc.' }
-      ]
-    },
-    {
-      title: 'Budget & Zeitrahmen',
-      subtitle: 'Hilft mir, dir ein realistisches Angebot zu machen.',
-      icon: '💰',
-      type: 'combined',
-      formKey: 'combined',
-      sections: [
-        {
-          label: 'Budgetrahmen',
-          formKey: 'budget',
-          layout: 'grid',
-          options: [
-            { value: '<2k', label: 'unter 2.000 € ' },
-            { value: '2-4k', label: '2.000–4.000 € ' },
-            { value: '4-7k', label: '4.000–7.000 € ' },
-            { value: '>7k', label: 'über 7.000 € ' },
-            { value: 'unsure', label: 'Weiß ich nicht' }
-          ]
-        },
-        {
-          label: 'Zeitrahmen',
-          formKey: 'timeframe',
-          layout: 'list',
-          options: [
-            { value: 'fast', label: 'So schnell wie möglich', hint: 'Dringendes Projekt' },
-            { value: 'normal', label: 'Normal (4–8 Wochen)', hint: 'Standard-Zeitrahmen' },
-            { value: 'flex', label: 'Flexibel', hint: 'Kein Zeitdruck' }
-          ]
-        }
-      ]
-    },
-    {
-      title: 'Fast geschafft!',
-      subtitle: 'Wie kann ich dich erreichen? Dann bekommst du deine individuelle Empfehlung.',
-      icon: '📬',
-      type: 'contact',
-      formKey: 'contact',
-      fields: [
-        { label: 'Dein Name', placeholder: 'Vor- und Nachname' },
-        { label: 'E-Mail-Adresse', placeholder: 'name@beispiel.de' },
-        { label: 'Noch etwas Wichtiges? (Optional)', placeholder: 'Besondere Wünsche, Fragen oder Anmerkungen...' }
-      ]
+    ]
+  },
+  {
+    title: 'Hast du bereits eine Domain?',
+    subtitle: 'Eine Domain ist deine Website-Adresse (z.B. meinefirma.de). Falls nicht - wir kümmern uns darum.',
+    icon: '🌐',
+    type: 'single-choice',
+    formKey: 'hasDomain',
+    layout: 'list',
+    options: [
+      { 
+        value: 'yes', 
+        label: 'Ja, habe ich bereits', 
+        hint: 'Perfekt - wir verbinden sie mit deiner neuen Website' 
+      },
+      { 
+        value: 'no', 
+        label: 'Nein, brauche ich noch', 
+        hint: 'Kein Problem - wir helfen dir bei der Auswahl und Registrierung' 
+      },
+      { 
+        value: 'unsure', 
+        label: 'Bin mir nicht sicher', 
+        hint: 'Wir klären das gemeinsam im Gespräch' 
+      }
+    ],
+    resetFields: ['domainName'],
+    conditionalInput: {
+      showWhen: 'yes',
+      formKey: 'domainName',
+      label: 'Wie lautet deine Domain? (Optional - hilft uns bei der Vorbereitung)',
+      placeholder: 'z.B. meinefirma.de'
     }
-  ];
+  },
+  {
+    title: 'Wo soll die Website gehostet werden?',
+    subtitle: 'Hosting = wo deine Website technisch liegt. Wir kümmern uns komplett darum, falls gewünscht.',
+    icon: '☁️',
+    type: 'single-choice',
+    formKey: 'hosting',
+    layout: 'list',
+    options: [
+      { 
+        value: 'with-me', 
+        label: 'Bitte komplett bei euch hosten', 
+        hint: 'Wir kümmern uns um alles - du musst dich um nichts Technisches kümmern' 
+      },
+      { 
+        value: 'self', 
+        label: 'Ich habe bereits Hosting', 
+        hint: 'Du hast schon einen Anbieter - wir richten die Website dort ein' 
+      },
+      { 
+        value: 'unsure', 
+        label: 'Weiß ich noch nicht', 
+        hint: 'Wir beraten dich gerne - je nach Projekt gibt es unterschiedliche Optionen' 
+      }
+    ],
+    resetFields: ['hostingProvider'],
+    conditionalInput: {
+      showWhen: 'self',
+      formKey: 'hostingProvider',
+      label: 'Bei welchem Anbieter hostest du? (Optional - hilft uns bei der Einschätzung)',
+      placeholder: 'z.B. IONOS, Strato, all-inkl, netcup'
+    }
+  },
+  {
+    title: 'Welche Funktionen brauchst du?',
+    subtitle: 'Wähle alle Bereiche aus, die auf deiner Website sein sollen. Mehrfachauswahl möglich.',
+    icon: '✨',
+    type: 'multiple-choice',
+    formKey: 'features',
+    options: [
+      { 
+        value: 'startSection', 
+        label: 'Startbereich mit großem Bild', 
+        hint: 'Hero-Bereich - das erste, was Besucher sehen' 
+      },
+      { 
+        value: 'about', 
+        label: 'Über mich / Über uns', 
+        hint: 'Vorstellung von dir, deinem Team oder deinem Unternehmen' 
+      },
+      { 
+        value: 'services', 
+        label: 'Leistungen / Angebote', 
+        hint: 'Was du anbietest - Dienstleistungen oder Produkte' 
+      },
+      { 
+        value: 'gallery', 
+        label: 'Bildergalerie / Portfolio', 
+        hint: 'Zeige deine Arbeiten, Projekte oder Referenzen mit Bildern' 
+      },
+      { 
+        value: 'team', 
+        label: 'Teamvorstellung', 
+        hint: 'Stelle deine Mitarbeiter mit Fotos und Infos vor' 
+      },
+      { 
+        value: 'testimonials', 
+        label: 'Kundenstimmen / Bewertungen', 
+        hint: 'Zeige, was deine Kunden über dich sagen' 
+      },
+      { 
+        value: 'contactForm', 
+        label: 'Kontaktformular', 
+        hint: 'Besucher können dir direkt Nachrichten schicken' 
+      },
+      { 
+        value: 'map', 
+        label: 'Standortkarte (Google Maps)', 
+        hint: 'Zeige, wo du zu finden bist - mit interaktiver Karte' 
+      },
+      { 
+        value: 'faq', 
+        label: 'FAQ / Häufige Fragen', 
+        hint: 'Beantworte die wichtigsten Fragen deiner Kunden vorab' 
+      },
+      { 
+        value: 'pricing', 
+        label: 'Preise / Pakete', 
+        hint: 'Zeige deine Preise transparent - mit oder ohne Buchungsmöglichkeit' 
+      },
+      { 
+        value: 'blog', 
+        label: 'Blog / News-Bereich', 
+        hint: 'Regelmäßig Artikel veröffentlichen - gut für Google & Kunden' 
+      },
+      { 
+        value: 'booking', 
+        label: 'Online-Terminbuchung', 
+        hint: 'Kunden können direkt online Termine bei dir buchen' 
+      },
+      { 
+        value: 'downloads', 
+        label: 'Download-Bereich', 
+        hint: 'Stelle PDFs, Broschüren oder Dokumente zum Download bereit' 
+      },
+      { 
+        value: 'newsletter', 
+        label: 'Newsletter-Anmeldung', 
+        hint: 'Sammle E-Mail-Adressen für Marketing & Updates' 
+      },
+      { 
+        value: 'multilingual', 
+        label: 'Mehrsprachigkeit', 
+        hint: 'Website in Deutsch + einer oder mehreren weiteren Sprachen' 
+      },
+      { 
+        value: 'socialLinks', 
+        label: 'Social Media Links', 
+        hint: 'Verlinke zu Instagram, Facebook, LinkedIn usw.' 
+      }
+    ]
+  },
+  {
+    title: 'Budget & Zeitrahmen',
+    subtitle: 'Hilft uns, dir ein realistisches und passendes Angebot zu machen. Alles bleibt vertraulich.',
+    icon: '💰',
+    type: 'combined',
+    formKey: 'combined',
+    sections: [
+      {
+        label: 'Was kannst du ungefähr investieren?',
+        formKey: 'budget',
+        layout: 'grid',
+        options: [
+          { value: '<2k', label: 'unter 2.000 €' },
+          { value: '2-4k', label: '2.000–4.000 €' },
+          { value: '4-7k', label: '4.000–7.000 €' },
+          { value: '>7k', label: 'über 7.000 €' },
+          { value: 'unsure', label: 'Weiß ich noch nicht' }
+        ]
+      },
+      {
+        label: 'Wie dringend brauchst du die Website?',
+        formKey: 'timeframe',
+        layout: 'list',
+        options: [
+          { 
+            value: 'fast', 
+            label: 'So schnell wie möglich', 
+            hint: 'Dringendes Projekt - wir priorisieren es entsprechend' 
+          },
+          { 
+            value: 'normal', 
+            label: 'Normal (4–8 Wochen)', 
+            hint: 'Standard-Zeitrahmen für die meisten Projekte' 
+          },
+          { 
+            value: 'flex', 
+            label: 'Kein Zeitdruck', 
+            hint: 'Flexibel planbar - wir finden gemeinsam den besten Zeitpunkt' 
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Fast geschafft!',
+    subtitle: 'Wie können wir dich erreichen? Du bekommst dann deine persönliche Empfehlung von uns.',
+    icon: '📬',
+    type: 'contact',
+    formKey: 'contact',
+    fields: [
+      { label: 'Dein Name', placeholder: 'Vor- und Nachname' },
+      { label: 'Deine E-Mail-Adresse', placeholder: 'name@beispiel.de' },
+      { 
+        label: 'Noch etwas, das wir wissen sollten? (Optional)', 
+        placeholder: 'Besondere Wünsche, Fragen, Deadline, Design-Vorstellungen...' 
+      }
+    ]
+  }
+];
 
   constructor(
     private fb: FormBuilder,
