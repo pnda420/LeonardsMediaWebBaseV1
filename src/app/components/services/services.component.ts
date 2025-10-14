@@ -7,7 +7,7 @@ import { ServiceDataService, ServiceItem } from '../../shared/service-data.servi
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [PageTitleComponent, RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule],
   templateUrl: './services.component.html',
   styleUrl: './services.component.scss'
 })

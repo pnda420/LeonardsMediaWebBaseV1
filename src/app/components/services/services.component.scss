@@ -3,22 +3,37 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
+
+  @media (max-width: 640px) {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
 }
 
 .services-overview {
-  padding: clamp(2rem, 4vw, 4rem) 0;
+  padding: 2rem 0;
   overflow-x: hidden;
+
+  @media (min-width: 768px) {
+    padding: clamp(2rem, 4vw, 4rem) 0;
+  }
 }
 
 .services-hero {
   text-align: center;
-  margin-bottom: clamp(2rem, 5vw, 3rem);
-  margin-left: clamp(1rem, 4vw, 2rem);
-  margin-right: clamp(1rem, 4vw, 2rem);
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+    margin-left: clamp(1rem, 4vw, 2rem);
+    margin-right: clamp(1rem, 4vw, 2rem);
+  }
 }
 
 .services-hero h1 {
-  font-size: clamp(1.75rem, 6vw, 3rem);
+  font-size: 1.75rem;
   font-weight: 900;
   margin: 0 0 .75rem;
   background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
@@ -26,25 +41,34 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.2;
+
+  @media (min-width: 768px) {
+    font-size: clamp(1.75rem, 6vw, 3rem);
+  }
 }
 
 .services-hero .services-subtitle {
-  font-size: clamp(1rem, 3.2vw, 1.125rem);
+  font-size: 1rem;
   color: $color-text-secondary;
   margin: 0;
   line-height: 1.5;
+
+  @media (min-width: 768px) {
+    font-size: clamp(1rem, 3.2vw, 1.125rem);
+  }
 }
 
 .services-grid {
   display: grid;
-  gap: clamp(1rem, 3.5vw, 2rem);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
   align-items: stretch;
-  margin-bottom: clamp(2rem, 5vw, 4rem);
+  margin-bottom: 2rem;
 
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  @media (min-width: 641px) {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1rem, 3.5vw, 2rem);
+    margin-bottom: clamp(2rem, 5vw, 4rem);
   }
 }
 
@@ -53,74 +77,74 @@
   background: #fff;
   border: 2px solid #e2e8f0;
   border-radius: 24px;
-  padding: clamp(1.25rem, 3.5vw, 2rem);
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   transition: .3s;
   box-shadow: 0 4px 12px rgba(0, 0, 0, .04);
-  min-height: 400px;
 
-  @media (max-width: 640px) {
-    min-height: auto;
-    padding: 1.5rem;
+  @media (min-width: 641px) {
+    padding: clamp(1.25rem, 3.5vw, 2rem);
+    min-height: 400px;
   }
 }
 
 .service-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-2px);
   box-shadow: 0 18px 36px rgba(0, 0, 0, .12);
   border-color: #3b82f6;
 
-  @media (max-width: 768px) {
-    transform: translateY(-2px);
+  @media (min-width: 769px) {
+    transform: translateY(-6px);
   }
 }
 
 .card-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: .4rem .8rem;
+  position: static;
+  align-self: flex-start;
+  margin-bottom: .75rem;
+  padding: .35rem .7rem;
   background: linear-gradient(135deg, #2563eb, #3b82f6);
   color: #fff;
   border-radius: 999px;
-  font-size: .78rem;
+  font-size: .75rem;
   font-weight: 800;
   box-shadow: 0 4px 12px rgba(37, 99, 235, .3);
   white-space: nowrap;
   z-index: 1;
 
-  @media (max-width: 420px) {
-    position: static;
-    align-self: flex-start;
-    margin-bottom: .75rem;
-    font-size: .75rem;
-    padding: .35rem .7rem;
+  @media (min-width: 421px) {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: .78rem;
+    padding: .4rem .8rem;
+    margin-bottom: 0;
   }
 }
 
 .card-icon {
-  width: clamp(64px, 12vw, 80px);
-  height: clamp(64px, 12vw, 80px);
+  width: 72px;
+  height: 72px;
   background: linear-gradient(135deg, rgba(37, 99, 235, .1), rgba(59, 130, 246, .1));
   border-radius: 20px;
   display: grid;
   place-items: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
   transition: .3s;
 
-  @media (max-width: 640px) {
-    width: 72px;
-    height: 72px;
-    margin-bottom: 1rem;
+  @media (min-width: 641px) {
+    width: clamp(64px, 12vw, 80px);
+    height: clamp(64px, 12vw, 80px);
+    margin-bottom: 1.25rem;
   }
 }
 
 .card-icon .icon-emoji {
-  font-size: clamp(2rem, 7vw, 2.5rem);
+  font-size: 2.25rem;
 
-  @media (max-width: 640px) {
-    font-size: 2.25rem;
+  @media (min-width: 641px) {
+    font-size: clamp(2rem, 7vw, 2.5rem);
   }
 }
 
@@ -157,15 +181,15 @@
 }
 
 .card-header h3 {
-  font-size: clamp(1.25rem, 4.6vw, 1.5rem);
+  font-size: 1.375rem;
   font-weight: 800;
   color: $color-text-primary;
   margin: 0;
   overflow-wrap: anywhere;
   line-height: 1.3;
 
-  @media (max-width: 640px) {
-    font-size: 1.375rem;
+  @media (min-width: 641px) {
+    font-size: clamp(1.25rem, 4.6vw, 1.5rem);
   }
 }
 
@@ -189,12 +213,12 @@
 
 .card-description {
   color: $color-text-secondary;
-  font-size: clamp(.9rem, 2.5vw, .95rem);
+  font-size: .95rem;
   line-height: 1.6;
   margin: 0 0 .5rem;
 
-  @media (max-width: 640px) {
-    font-size: .95rem;
+  @media (min-width: 641px) {
+    font-size: clamp(.9rem, 2.5vw, .95rem);
   }
 }
 
@@ -204,10 +228,10 @@
   margin: 0 0 1rem;
   display: flex;
   flex-direction: column;
-  gap: .625rem;
+  gap: .75rem;
 
-  @media (max-width: 640px) {
-    gap: .75rem;
+  @media (min-width: 641px) {
+    gap: .625rem;
   }
 }
 
@@ -217,21 +241,21 @@
   align-items: start;
   gap: .625rem;
   color: $color-text-secondary;
-  font-size: clamp(.9rem, 2.5vw, .9375rem);
+  font-size: .9375rem;
   line-height: 1.5;
 
-  @media (max-width: 640px) {
-    font-size: .9375rem;
+  @media (min-width: 641px) {
+    font-size: clamp(.9rem, 2.5vw, .9375rem);
   }
 }
 
 .card-features .material-symbols-outlined {
   color: #10b981;
-  font-size: 22px;
+  font-size: 24px;
   margin-top: .125rem;
 
-  @media (max-width: 640px) {
-    font-size: 24px;
+  @media (min-width: 641px) {
+    font-size: 22px;
   }
 }
 
@@ -242,18 +266,18 @@
   align-items: center;
   justify-content: center;
   gap: .5rem;
-  padding: .875rem 1.25rem;
+  padding: 1rem 1.5rem;
   border-radius: 12px;
   font-weight: 700;
-  font-size: .95rem;
+  font-size: 1rem;
   border: none;
   transition: .2s;
   cursor: pointer;
   text-decoration: none;
 
-  @media (max-width: 640px) {
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
+  @media (min-width: 641px) {
+    padding: .875rem 1.25rem;
+    font-size: .95rem;
   }
 }
 
@@ -278,13 +302,14 @@
 }
 
 .btn--large {
-  padding: 1rem 1.5rem;
-  font-size: 1rem;
+  padding: 1.125rem 1.5rem;
+  font-size: .95rem;
+  width: 100%;
 
-  @media (max-width: 640px) {
-    padding: 1.125rem 1.5rem;
-    font-size: .95rem;
-    width: 100%;
+  @media (min-width: 641px) {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    width: auto;
   }
 }
 
@@ -292,12 +317,12 @@
   background: linear-gradient(135deg, rgba(37, 99, 235, .05), rgba(59, 130, 246, .05));
   border: 2px solid rgba(37, 99, 235, .15);
   border-radius: 24px;
-  padding: clamp(1.5rem, 3.5vw, 2.5rem);
-  margin-bottom: clamp(2rem, 5vw, 4rem);
+  padding: 1.75rem 1.25rem;
+  margin-bottom: 2rem;
 
-  @media (max-width: 640px) {
-    padding: 1.75rem 1.25rem;
-    margin-bottom: 2rem;
+  @media (min-width: 641px) {
+    padding: clamp(1.5rem, 3.5vw, 2.5rem);
+    margin-bottom: clamp(2rem, 5vw, 4rem);
   }
 }
 
@@ -306,12 +331,13 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  margin-bottom: 1.25rem;
   gap: 1rem;
 
   @media (min-width: 768px) {
     flex-direction: row;
     text-align: left;
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
   }
 }
 
@@ -319,25 +345,37 @@
   flex-shrink: 0;
 
   .material-symbols-outlined {
-    font-size: clamp(40px, 8vw, 56px);
+    font-size: 40px;
     color: #2563eb;
+
+    @media (min-width: 768px) {
+      font-size: clamp(40px, 8vw, 56px);
+    }
   }
 }
 
 .cta-text {
   h3 {
-    font-size: clamp(1.25rem, 4vw, 1.5rem);
+    font-size: 1.25rem;
     font-weight: 800;
     margin: 0 0 .5rem;
     color: $color-text-primary;
     line-height: 1.3;
+
+    @media (min-width: 768px) {
+      font-size: clamp(1.25rem, 4vw, 1.5rem);
+    }
   }
 
   p {
-    font-size: clamp(.95rem, 2.8vw, 1.05rem);
+    font-size: .95rem;
     color: $color-text-secondary;
     margin: 0;
     line-height: 1.5;
+
+    @media (min-width: 768px) {
+      font-size: clamp(.95rem, 2.8vw, 1.05rem);
+    }
   }
 }
 
@@ -362,14 +400,14 @@
 
 .cta-alternative {
   text-align: center;
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   margin-bottom: 0;
-  font-size: .95rem;
+  font-size: .9rem;
   color: $color-text-secondary;
 
-  @media (max-width: 640px) {
-    font-size: .9rem;
-    margin-top: 1.25rem;
+  @media (min-width: 641px) {
+    font-size: .95rem;
+    margin-top: 1.5rem;
   }
 }
 
@@ -396,28 +434,27 @@
 
 .trust-section {
   display: grid;
+  grid-template-columns: 1fr;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
 
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  @media (min-width: 641px) {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 }
 
 .trust-item {
   display: flex;
-  gap: 1rem;
-  padding: 1.25rem;
+  gap: .875rem;
+  padding: 1.125rem;
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
   transition: .25s;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
 
-  @media (max-width: 640px) {
-    padding: 1.125rem;
-    gap: .875rem;
+  @media (min-width: 641px) {
+    padding: 1.25rem;
+    gap: 1rem;
   }
 }
 
@@ -428,28 +465,36 @@
 }
 
 .trust-item .material-symbols-outlined {
-  font-size: 32px;
+  font-size: 28px;
   color: #2563eb;
   flex-shrink: 0;
 
-  @media (max-width: 640px) {
-    font-size: 28px;
+  @media (min-width: 641px) {
+    font-size: 32px;
   }
 }
 
 .trust-item div {
   strong {
     display: block;
-    font-size: clamp(.95rem, 2.5vw, 1.05rem);
+    font-size: .95rem;
     font-weight: 800;
     margin-bottom: .25rem;
     color: $color-text-primary;
+
+    @media (min-width: 641px) {
+      font-size: clamp(.95rem, 2.5vw, 1.05rem);
+    }
   }
 
   p {
-    font-size: clamp(.85rem, 2.2vw, .9rem);
+    font-size: .85rem;
     color: $color-text-secondary;
     margin: 0;
     line-height: 1.4;
+
+    @media (min-width: 641px) {
+      font-size: clamp(.85rem, 2.2vw, .9rem);
+    }
   }
 }

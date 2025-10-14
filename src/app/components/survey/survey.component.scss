@@ -403,6 +403,27 @@
     }
 }
 
+@media (max-width: 639px) {
+    .step-actions {
+        flex-direction: column;
+    }
+
+    /* Primär-Button (Weiter/Absenden) nach oben */
+    .step-actions .btn--primary {
+        order: -1;
+    }
+
+    /* Sekundär-Button (Zurück) darunter */
+    .step-actions .btn--ghost {
+        order: 0;
+    }
+
+    /* Buttons vollbreit */
+    .step-actions .btn {
+        width: 100%;
+    }
+}
+
 /* ===== OPTION ROWS - GLASSMORPHISM ===== */
 .option-row {
     display: flex;
