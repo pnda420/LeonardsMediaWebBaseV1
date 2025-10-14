@@ -2127,14 +2127,16 @@ $gradient-gold-shine: linear-gradient(135deg, #fef3c7 0%, #fbbf24 50%, #d97706 1
   width: min(1100px, 92%);
   margin-inline: auto;
 
-  @media (max-width: 639px) {
-    margin-left: unset;
-    margin-right: unset;
+  // AAAAAAAAA TOM
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  // @media (max-width: 639px) {
+  //   margin-left: unset;
+  //   margin-right: unset;
+
+  //   display: flex;
+  //   flex-direction: column;
+  //   align-items: center;
+  // }
 }
 
 /* Section spacing */
