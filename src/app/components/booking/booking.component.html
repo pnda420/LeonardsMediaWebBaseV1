@@ -127,7 +127,7 @@
                             <button class="btn-nav" (click)="previousWeek()" [disabled]="currentWeekIndex === 0">
                                 <span class="material-symbols-outlined">chevron_left</span>
                             </button>
-                            <span class="month-label">{{ currentMonthLabel }}</span>
+                            <span class="month-label">{{ weekNavigationLabel }}</span>
                             <button class="btn-nav" (click)="nextWeek()"
                                 [disabled]="currentWeekIndex >= weeks.length - 1">
                                 <span class="material-symbols-outlined">chevron_right</span>

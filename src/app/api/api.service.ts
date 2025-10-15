@@ -207,6 +207,7 @@ export interface DayWithSlots {
   dayNumber: number;
   available: boolean;
   slots: BookingSlot[];
+  isPast: boolean;
 }
 
 // ==================== SERVICE ====================

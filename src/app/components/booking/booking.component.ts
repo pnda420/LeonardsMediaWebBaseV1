@@ -23,8 +23,8 @@ export class BookingComponent implements OnInit, OnDestroy {
    */
   private readonly MIN_HOURS_ADVANCE = 2;
 
-  private readonly MAX_WEEKS = 2;
-  private readonly SHOW_WEEKENDS = true;
+  private readonly MAX_WEEKS = 8; // Maximal 8 Wochen in die Zukunft
+  private readonly DAYS_PER_WEEK = 7; // Immer 7 Tage pro Woche anzeigen
 
   // ==================== STATE ====================
 
@@ -32,6 +32,8 @@ export class BookingComponent implements OnInit, OnDestroy {
   selectedSlot: BookingSlot | null = null;
   currentWeekIndex: number = 0;
   currentMonthLabel: string = '';
+  totalWeeksInMonth: number = 0;
+  currentWeekOfMonth: number = 1;
   isLoading: boolean = false;
   isSubmitting: boolean = false;
   errorMessage: string = '';
@@ -96,7 +98,7 @@ export class BookingComponent implements OnInit, OnDestroy {
           const filteredSlots = this.filterValidSlots(slots);
           this.allSlots = filteredSlots;
           this.generateWeeksFromSlots(filteredSlots);
-          this.updateMonthLabel();
+          this.updateWeekLabels();
           this.isLoading = false;
         },
         error: (error) => {
@@ -146,49 +148,45 @@ export class BookingComponent implements OnInit, OnDestroy {
       slotsByDate.get(slot.date)!.push(slot);
     });
 
-    // Alle verfügbaren Daten sortieren
-    const dates = Array.from(slotsByDate.keys()).sort();
+    // Startdatum: Heute
+    const startDate = new Date();
+    startDate.setHours(0, 0, 0, 0);
 
-    if (dates.length === 0) {
-      this.weeks = [];
-      return;
+    // Immer am Anfang der Woche starten (Montag)
+    const dayOfWeek = startDate.getDay();
+    const daysToMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek) % 7;
+    if (daysToMonday > 0) {
+      startDate.setDate(startDate.getDate() - dayOfWeek + 1);
     }
 
-    // In Wochen aufteilen
     this.weeks = [];
-    let currentWeek: DayWithSlots[] = [];
-    let weekCount = 0;
 
-    dates.forEach((dateStr, index) => {
-      const date = new Date(dateStr + 'T12:00:00');
-      const daySlots = slotsByDate.get(dateStr) || [];
+    // Wochen generieren
+    for (let weekIndex = 0; weekIndex < this.MAX_WEEKS; weekIndex++) {
+      const week: DayWithSlots[] = [];
 
-      // Wochenende überspringen wenn konfiguriert
-      if (!this.SHOW_WEEKENDS && (date.getDay() === 0 || date.getDay() === 6)) {
-        return;
+      for (let dayIndex = 0; dayIndex < this.DAYS_PER_WEEK; dayIndex++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + (weekIndex * 7) + dayIndex);
+
+        const dateStr = currentDate.toISOString().split('T')[0];
+        const daySlots = slotsByDate.get(dateStr) || [];
+
+        // Nur validierte Slots für diesen Tag
+        const validDaySlots = this.filterValidSlots(daySlots);
+
+        week.push({
+          date: dateStr,
+          dayName: this.getDayName(currentDate.getDay()),
+          dayNumber: currentDate.getDate(),
+          available: validDaySlots.length > 0,
+          slots: validDaySlots,
+          isPast: currentDate < new Date()
+        });
       }
 
-      const dayData: DayWithSlots = {
-        date: dateStr,
-        dayName: this.getDayName(date.getDay()),
-        dayNumber: date.getDate(),
-        available: daySlots.length > 0,
-        slots: daySlots
-      };
-
-      currentWeek.push(dayData);
-
-      // Neue Woche beginnen nach 5 Tagen (Werktage) oder am Ende
-      const daysPerWeek = this.SHOW_WEEKENDS ? 7 : 5;
-      if (currentWeek.length >= daysPerWeek || index === dates.length - 1) {
-        this.weeks.push([...currentWeek]);
-        currentWeek = [];
-        weekCount++;
-
-        // Max Wochen Limit
-        if (weekCount >= this.MAX_WEEKS) return;
-      }
-    });
+      this.weeks.push(week);
+    }
   }
 
   getDayName(dayNumber: number): string {
@@ -200,12 +198,30 @@ export class BookingComponent implements OnInit, OnDestroy {
     return this.weeks[this.currentWeekIndex] || [];
   }
 
-  updateMonthLabel(): void {
+  updateWeekLabels(): void {
     if (this.currentWeek.length === 0) return;
+
     const firstDay = new Date(this.currentWeek[0].date + 'T12:00:00');
     const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
       'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
-    this.currentMonthLabel = `${months[firstDay.getMonth()]} ${firstDay.getFullYear()}`;
+
+    // Aktuellen Monat bestimmen
+    this.currentMonthLabel = months[firstDay.getMonth()];
+
+    // Welche Woche des Monats?
+    const firstDayOfMonth = new Date(firstDay.getFullYear(), firstDay.getMonth(), 1);
+    const weekOfMonth = Math.ceil((firstDay.getDate() + firstDayOfMonth.getDay()) / 7);
+    this.currentWeekOfMonth = weekOfMonth;
+
+    // Wie viele Wochen hat dieser Monat insgesamt?
+    const lastDayOfMonth = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
+    const weeksInMonth = Math.ceil((lastDayOfMonth.getDate() + firstDayOfMonth.getDay()) / 7);
+    this.totalWeeksInMonth = weeksInMonth;
+  }
+
+  get weekNavigationLabel(): string {
+    if (!this.currentMonthLabel) return '';
+    return `${this.currentMonthLabel} Woche ${this.currentWeekOfMonth}/${this.totalWeeksInMonth}`;
   }
 
   // ==================== NAVIGATION ====================
@@ -213,7 +229,7 @@ export class BookingComponent implements OnInit, OnDestroy {
   previousWeek(): void {
     if (this.currentWeekIndex > 0) {
       this.currentWeekIndex--;
-      this.updateMonthLabel();
+      this.updateWeekLabels();
       this.clearSelection();
     }
   }
@@ -221,7 +237,7 @@ export class BookingComponent implements OnInit, OnDestroy {
   nextWeek(): void {
     if (this.currentWeekIndex < this.weeks.length - 1) {
       this.currentWeekIndex++;
-      this.updateMonthLabel();
+      this.updateWeekLabels();
       this.clearSelection();
     }
   }
@@ -290,17 +306,13 @@ export class BookingComponent implements OnInit, OnDestroy {
   }
 
   scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   submitBooking(): void {
     if (!this.selectedSlot || !this.bookingData.name || !this.bookingData.email) {
       return;
     }
-
-
 
     // Finale Validierung vor dem Absenden
     const slotDateTime = this.getSlotDateTime(this.selectedSlot.date, this.selectedSlot.timeFrom);
