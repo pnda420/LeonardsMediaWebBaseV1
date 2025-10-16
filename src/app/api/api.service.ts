@@ -210,6 +210,13 @@ export interface DayWithSlots {
   isPast: boolean;
 }
 
+export interface NewsletterSubscriber {
+  id: string;
+  email: string;
+  isActive: boolean;
+  subscribedAt: Date;
+}
+
 // ==================== SERVICE ====================
 
 @Injectable({
@@ -325,7 +332,7 @@ export class ApiService {
   /**
    * Newsletter abonnieren
    */
-  subscribeNewsletter(dto: NewsletterSubscribeDto): Observable<{ message: string }> {
+  subscribeNewsletterUser(dto: NewsletterSubscribeDto): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(
       `${this.apiUrl}/users/newsletter/subscribe`,
       dto,
@@ -336,7 +343,7 @@ export class ApiService {
   /**
    * Newsletter abmelden
    */
-  unsubscribeNewsletter(email: string): Observable<{ message: string }> {
+  unsubscribeNewsletterUser(email: string): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(
       `${this.apiUrl}/users/newsletter/unsubscribe`,
       { email },
@@ -347,7 +354,7 @@ export class ApiService {
   /**
    * Alle Newsletter-Abonnenten abrufen (Admin)
    */
-  getNewsletterSubscribers(): Observable<User[]> {
+  getNewsletterUserSubscribers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/users/newsletter/subscribers`, {
       headers: this.getHeaders()
     });
@@ -646,4 +653,40 @@ export class ApiService {
       headers: this.getHeaders()
     });
   }
+
+
+  // ==================== NEWSLETTER ENDPOINTS ====================
+
+  /**
+   * Newsletter abonnieren (öffentlich)
+   */
+  subscribeNewsletter(email: string): Observable<{ success: boolean; message: string; email: string }> {
+    return this.http.post<{ success: boolean; message: string; email: string }>(
+      `${this.apiUrl}/newsletter/subscribe`,
+      { email }
+    );
+  }
+
+  /**
+   * Newsletter abmelden (öffentlich)
+   */
+  unsubscribeNewsletter(email: string): Observable<{ success: boolean; message: string }> {
+    const params = new HttpParams().set('email', email);
+    return this.http.delete<{ success: boolean; message: string }>(
+      `${this.apiUrl}/newsletter/unsubscribe`,
+      { params }
+    );
+  }
+
+  /**
+   * Alle Newsletter-Abonnenten abrufen (Admin)
+   */
+  getNewsletterSubscribers(): Observable<{ count: number; subscribers: any[] }> {
+    return this.http.get<{ count: number; subscribers: any[] }>(
+      `${this.apiUrl}/newsletter/subscribers`,
+      { headers: this.getHeaders() }
+    );
+  }
+
+
 }

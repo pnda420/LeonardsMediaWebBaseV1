@@ -71,8 +71,8 @@ export class BookingComponent implements OnInit, OnDestroy {
   }
 
   formatDate(dateStr: string): string {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const date = this.parseLocalDate(dateStr); // statt new Date(dateStr)
+    return `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`;
   }
 
   formatTime(time: string): string {
@@ -88,7 +88,7 @@ export class BookingComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.errorMessage = '';
 
-    const today = new Date().toISOString().split('T')[0];
+    const today = this.toLocalYMD(new Date());
 
     this.apiService.getAvailableBookingSlots(today)
       .pipe(takeUntil(this.destroy$))
@@ -132,9 +132,9 @@ export class BookingComponent implements OnInit, OnDestroy {
    */
   private getSlotDateTime(date: string, time: string): Date {
     const [hours, minutes] = time.split(':').map(Number);
-    const slotDate = new Date(date + 'T00:00:00');
-    slotDate.setHours(hours, minutes, 0, 0);
-    return slotDate;
+    const base = this.parseLocalDate(date);
+    base.setHours(hours, minutes, 0, 0);
+    return base;
   }
 
   generateWeeksFromSlots(slots: BookingSlot[]): void {
@@ -153,11 +153,9 @@ export class BookingComponent implements OnInit, OnDestroy {
     startDate.setHours(0, 0, 0, 0);
 
     // Immer am Anfang der Woche starten (Montag)
-    const dayOfWeek = startDate.getDay();
-    const daysToMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek) % 7;
-    if (daysToMonday > 0) {
-      startDate.setDate(startDate.getDate() - dayOfWeek + 1);
-    }
+    const dow = (startDate.getDay() + 6) % 7;
+    startDate.setDate(startDate.getDate() - dow);
+    startDate.setHours(0, 0, 0, 0);
 
     this.weeks = [];
 
@@ -169,7 +167,7 @@ export class BookingComponent implements OnInit, OnDestroy {
         const currentDate = new Date(startDate);
         currentDate.setDate(startDate.getDate() + (weekIndex * 7) + dayIndex);
 
-        const dateStr = currentDate.toISOString().split('T')[0];
+        const dateStr = this.toLocalYMD(currentDate);
         const daySlots = slotsByDate.get(dateStr) || [];
 
         // Nur validierte Slots für diesen Tag
@@ -277,14 +275,29 @@ export class BookingComponent implements OnInit, OnDestroy {
     this.selectedSlot = slot;
   }
 
+  // Ganz oben in der Klasse ergänzen:
+
+  /** "2025-10-16" -> Date (lokal, 00:00) */
+  private parseLocalDate(dateStr: string): Date {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return new Date(y, (m - 1), d, 0, 0, 0, 0);
+  }
+
+  /** Date -> "YYYY-MM-DD" (lokal) */
+  private toLocalYMD(date: Date): string {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+
   getFormattedDate(): string {
-    if (!this.selectedDate) return '';
-    const date = new Date(this.selectedDate + 'T12:00:00');
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const dayName = this.getDayName(date.getDay());
-    return `${dayName}, ${day}.${month}.${year}`;
+    const dateStr = this.selectedSlot?.date || this.selectedDate;
+    if (!dateStr) return '';
+    const date = this.parseLocalDate(dateStr);
+    const days = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+    return `${days[date.getDay()]}, ${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
   }
 
   getFormattedTime(): string {
@@ -314,6 +327,27 @@ export class BookingComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (!this.selectedSlot || !this.bookingData.name || !this.bookingData.email) return;
+
+    // Sanity: Datum & Zeiten müssen aus selectedSlot kommen
+    const dateStr = this.selectedSlot.date;
+    const fromStr = this.selectedSlot.timeFrom;
+    const toStr = this.selectedSlot.timeTo;
+
+    // Wenn etwas leer/komisch ist -> abbrechen
+    if (!dateStr || !fromStr || !toStr) {
+      this.errorMessage = 'Unerwarteter Fehler: Slot-Daten unvollständig. Bitte Seite neu laden.';
+      return;
+    }
+
+    // Optional streng: prüfen, ob UI-Strings zum Slot passen
+    const uiDate = this.selectedDate; // (nur zu Diagnose)
+    if (uiDate && uiDate !== dateStr) {
+      this.errorMessage = 'Interner Abgleich fehlgeschlagen (Datum). Bitte Tag neu auswählen.';
+      return;
+    }
+
+
     // Finale Validierung vor dem Absenden
     const slotDateTime = this.getSlotDateTime(this.selectedSlot.date, this.selectedSlot.timeFrom);
     const now = new Date();
@@ -336,6 +370,13 @@ export class BookingComponent implements OnInit, OnDestroy {
       message: this.bookingData.message?.trim() || undefined,
       slotId: this.selectedSlot.id
     };
+
+    console.log('SUBMIT SLOT', {
+      id: this.selectedSlot.id,
+      date: dateStr,
+      from: fromStr,
+      to: toStr
+    });
 
     this.apiService.createBooking(bookingDto)
       .pipe(takeUntil(this.destroy$))

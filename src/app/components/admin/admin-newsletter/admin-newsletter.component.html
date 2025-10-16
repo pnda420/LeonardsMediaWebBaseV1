@@ -1,0 +1,88 @@
+<!-- admin-newsletter.component.html -->
+<app-admin-header></app-admin-header>
+<section class="admin-newsletter">
+    <div class="container">
+
+        <!-- Header mit Stats -->
+        <div class="newsletter__header">
+            <div class="header__info">
+                <h2>Newsletter-Abonnenten</h2>
+                <p class="subtitle">Verwalte deine E-Mail-Liste</p>
+            </div>
+            <div class="header__badges">
+                <div class="badge badge--primary">
+                    <span class="count">{{ getActiveCount() }}</span>
+                    <span class="label">Aktiv</span>
+                </div>
+                <div class="badge badge--secondary">
+                    <span class="count">{{ subscribers.length }}</span>
+                    <span class="label">Gesamt</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="action-bar">
+            <button class="btn btn--primary" (click)="copyAllEmails()">
+                📋 Alle E-Mails kopieren
+            </button>
+            <button class="btn btn--secondary" (click)="exportToCSV()">
+                📥 Als CSV exportieren
+            </button>
+            <button class="btn btn--ghost" (click)="loadSubscribers()">
+                🔄 Aktualisieren
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="loading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Lade Abonnenten...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="error && !loading" class="error-state">
+            <p>❌ {{ error }}</p>
+            <button class="btn btn--secondary" (click)="loadSubscribers()">Erneut versuchen</button>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!loading && !error && subscribers.length === 0" class="empty-state">
+            <div class="empty__icon">📭</div>
+            <h3>Noch keine Abonnenten</h3>
+            <p>Newsletter-Anmeldungen erscheinen hier.</p>
+        </div>
+
+        <!-- Subscribers List -->
+        <div *ngIf="!loading && !error && subscribers.length > 0" class="subscribers__list">
+            <article *ngFor="let subscriber of subscribers" class="subscriber-card">
+
+                <!-- Header -->
+                <div class="card__header">
+                    <div class="header__left">
+                        <div class="email-wrapper">
+                            <span class="email">{{ subscriber.email }}</span>
+                            <span *ngIf="copiedEmail === subscriber.email" class="copied-badge">✓ Kopiert</span>
+                        </div>
+                        <span class="time">{{ formatDate(subscriber.subscribedAt) }}</span>
+                    </div>
+                    <span class="status-badge" [class.status--active]="subscriber.isActive" [class.status--inactive]="!subscriber.isActive">
+                        {{ subscriber.isActive ? '✓ Aktiv' : '✗ Inaktiv' }}
+                    </span>
+                </div>
+
+                <!-- Actions -->
+                <div class="card__actions">
+                    <button class="btn btn--primary" (click)="copyEmail(subscriber.email)">
+                        📋 E-Mail kopieren
+                    </button>
+                    <a class="btn btn--secondary" href="mailto:{{ subscriber.email }}">
+                        ✉️ E-Mail schreiben
+                    </a>
+                </div>
+
+            </article>
+        </div>
+
+    </div>
+</section>

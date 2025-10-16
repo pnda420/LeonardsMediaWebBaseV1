@@ -11,19 +11,16 @@ import {
 } from '../../../api/api.service';
 import { firstValueFrom } from 'rxjs';
 
-type ViewMode = 'create' | 'manage';
-
-
-interface SeriesPattern {
-  id: string;
-  name: string;
-  icon: string;
+interface CalendarDay {
+  date: Date;
+  isCurrentMonth: boolean;
+  slots: BookingSlot[];
 }
 
-
-interface SlotWithBookings extends BookingSlot {
-  bookings?: Booking[];
-  expanded?: boolean;
+interface SeriesPattern {
+  id: 'daily' | 'weekly' | 'workweek' | 'custom';
+  name: string;
+  icon: string;
 }
 
 @Component({
@@ -34,30 +31,48 @@ interface SlotWithBookings extends BookingSlot {
   styleUrls: ['./admin-booking.component.scss']
 })
 export class AdminBookingComponent implements OnInit {
-  slots: SlotWithBookings[] = [];
-  filteredSlots: SlotWithBookings[] = [];
+  // Data
+  slots: BookingSlot[] = [];
   allBookings: Booking[] = [];
+  calendarDays: CalendarDay[] = [];
+
+  // UI State
   loading = false;
-  view: ViewMode = 'create';
-  BookingStatus = BookingStatus; // Für Template
+  loadingCreate = false;
+  currentDate = new Date();
+  showCreateModal = false;
+  selectedSlot: BookingSlot | null = null;
+  selectedSlotBookings: Booking[] = [];
+  selectedDay: CalendarDay | null = null;
+
+  // Constants (für Template zugänglich)
+  BookingStatus = BookingStatus;
+  weekDays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
 
   // Filter State
   filters = {
-    status: 'all', // all, available, booked, unavailable
-    dateFrom: '',
-    dateTo: '',
+    status: 'all' as 'all' | 'available' | 'booked' | 'unavailable',
     searchText: ''
   };
 
+  // Stats
+  stats = {
+    total: 0,
+    available: 0,
+    booked: 0,
+    upcoming: 0
+  };
+
+  // Series Creation
   seriesPatterns: SeriesPattern[] = [
     { id: 'daily', name: 'Täglich', icon: '📅' },
     { id: 'weekly', name: 'Wöchentlich', icon: '🗓️' },
     { id: 'workweek', name: 'Mo-Fr', icon: '💼' },
-    { id: 'custom', name: 'Benutzerdefiniert', icon: '⚙️' }
+    { id: 'custom', name: 'Custom', icon: '⚙️' }
   ];
 
   quickCreate = {
-    pattern: 'daily',
+    pattern: 'daily' as SeriesPattern['id'],
     startDate: new Date().toISOString().split('T')[0],
     endDate: this.getDatePlusWeeks(2),
     startTime: '09:00',
@@ -65,14 +80,8 @@ export class AdminBookingComponent implements OnInit {
     slotDuration: 30,
     breakDuration: 0,
     breakAfter: 4,
-    customDays: [1, 2, 3, 4, 5]
-  };
-
-  stats = {
-    total: 0,
-    available: 0,
-    booked: 0,
-    upcoming: 0
+    // 0=So, 1=Mo, ... 6=Sa
+    customDays: [1, 2, 3, 4, 5] as number[]
   };
 
   constructor(private api: ApiService) { }
@@ -81,12 +90,7 @@ export class AdminBookingComponent implements OnInit {
     this.loadSlots();
   }
 
-  getDatePlusWeeks(weeks: number): string {
-    const date = new Date();
-    date.setDate(date.getDate() + weeks * 7);
-    return date.toISOString().split('T')[0];
-  }
-
+  // ===== Data Laden & Aufbereiten =====
   async loadSlots(): Promise<void> {
     this.loading = true;
     try {
@@ -95,14 +99,9 @@ export class AdminBookingComponent implements OnInit {
         firstValueFrom(this.api.getAllBookings())
       ]);
 
-      this.slots = slots.map(slot => ({
-        ...slot,
-        bookings: bookings.filter(b => b.slotId === slot.id),
-        expanded: false
-      }));
-
-      this.allBookings = bookings;
-      this.applyFilters();
+      this.slots = slots ?? [];
+      this.allBookings = bookings ?? [];
+      this.generateCalendar();
       this.calculateStats();
     } catch (err) {
       console.error('Error loading data:', err);
@@ -111,12 +110,50 @@ export class AdminBookingComponent implements OnInit {
     }
   }
 
-  applyFilters(): void {
-    let result = [...this.slots];
+  generateCalendar(): void {
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth();
 
-    // Status filter
+    // 1. & letzter Tag des Monats
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    // Start: Montag der ersten Kalenderwoche
+    const startDate = new Date(firstDay);
+    const dowStart = startDate.getDay(); // So=0, Mo=1, ..., Sa=6
+    const toSubtract = dowStart === 0 ? 6 : dowStart - 1;
+    startDate.setDate(startDate.getDate() - toSubtract);
+
+    // Ende: Sonntag der letzten Kalenderwoche
+    const endDate = new Date(lastDay);
+    const dowEnd = endDate.getDay();
+    const toAdd = dowEnd === 0 ? 0 : 7 - dowEnd;
+    endDate.setDate(endDate.getDate() + toAdd);
+
+    // Tage generieren
+    this.calendarDays = [];
+    const cur = new Date(startDate);
+    while (cur <= endDate) {
+      const dateStr = this.toLocalYMD(cur);
+
+      const daySlots = this.getFilteredSlotsForDate(dateStr);
+
+      this.calendarDays.push({
+        date: new Date(cur),
+        isCurrentMonth: cur.getMonth() === month,
+        slots: daySlots
+      });
+
+      cur.setDate(cur.getDate() + 1);
+    }
+  }
+
+  getFilteredSlotsForDate(date: string): BookingSlot[] {
+    let daySlots = this.slots.filter((s) => s.date === date);
+
+    // Status-Filter
     if (this.filters.status !== 'all') {
-      result = result.filter(slot => {
+      daySlots = daySlots.filter((slot) => {
         if (this.filters.status === 'available') {
           return slot.isAvailable && (slot.currentBookings || 0) === 0;
         } else if (this.filters.status === 'booked') {
@@ -128,96 +165,159 @@ export class AdminBookingComponent implements OnInit {
       });
     }
 
-    // Date range filter
-    if (this.filters.dateFrom) {
-      result = result.filter(slot => slot.date >= this.filters.dateFrom);
-    }
-    if (this.filters.dateTo) {
-      result = result.filter(slot => slot.date <= this.filters.dateTo);
-    }
-
-    // Text search (in booking names/emails)
+    // Textsuche (über zugehörige Buchungen)
     if (this.filters.searchText.trim()) {
       const search = this.filters.searchText.toLowerCase();
-      result = result.filter(slot => {
-        if (!slot.bookings || slot.bookings.length === 0) return false;
-        return slot.bookings.some(b =>
-          b.name.toLowerCase().includes(search) ||
-          b.email.toLowerCase().includes(search) ||
-          (b.phone && b.phone.toLowerCase().includes(search))
+      daySlots = daySlots.filter((slot) => {
+        const slotBookings = this.allBookings.filter((b) => b.slotId === slot.id);
+        if (slotBookings.length === 0) return false;
+        return slotBookings.some(
+          (b) =>
+            b.name.toLowerCase().includes(search) ||
+            b.email.toLowerCase().includes(search) ||
+            (!!b.phone && b.phone.toLowerCase().includes(search))
         );
       });
     }
 
-    this.filteredSlots = result;
+    // Nach Uhrzeit sortieren
+    return daySlots.sort((a, b) => a.timeFrom.localeCompare(b.timeFrom));
+  }
+
+  getFilteredSlotsCount(): number {
+    return this.calendarDays.reduce((sum, d) => sum + d.slots.length, 0);
   }
 
   calculateStats(): void {
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-
+    const today = new Date(); today.setHours(0, 0, 0, 0);
     this.stats.total = this.slots.length;
     this.stats.available = this.slots.filter(s => s.isAvailable && (s.currentBookings || 0) === 0).length;
     this.stats.booked = this.slots.filter(s => (s.currentBookings || 0) > 0).length;
-    this.stats.upcoming = this.slots.filter(s =>
-      new Date(s.date) >= now && s.isAvailable
-    ).length;
+    this.stats.upcoming = this.slots.filter(s => this.parseLocalYMD(s.date) >= today && s.isAvailable).length; // statt new Date(s.date)
   }
 
-  toggleSlotExpansion(slot: SlotWithBookings): void {
-    slot.expanded = !slot.expanded;
+  formatDateLongFromDate(d: Date): string {
+    return d.toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+  }
+
+
+
+  // ===== Navigation =====
+  previousMonth(): void {
+    this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+    this.currentDate = new Date(this.currentDate);
+    this.generateCalendar();
+  }
+
+  nextMonth(): void {
+    this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+    this.currentDate = new Date(this.currentDate);
+    this.generateCalendar();
+  }
+
+  goToToday(): void {
+    this.currentDate = new Date();
+    this.generateCalendar();
+  }
+
+  getCurrentMonthYear(): string {
+    return this.currentDate.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+  }
+
+  isToday(date: Date): boolean {
+    const t = new Date();
+    return (
+      date.getDate() === t.getDate() &&
+      date.getMonth() === t.getMonth() &&
+      date.getFullYear() === t.getFullYear()
+    );
+  }
+
+  // ===== Modals =====
+  openCreateModal(): void {
+    this.showCreateModal = true;
+  }
+
+  closeCreateModal(): void {
+    this.showCreateModal = false;
+  }
+
+  openSlotModal(slot: BookingSlot): void {
+    this.selectedSlot = slot;
+    this.selectedSlotBookings = this.allBookings.filter((b) => b.slotId === slot.id);
+  }
+
+  closeSlotModal(): void {
+    this.selectedSlot = null;
+    this.selectedSlotBookings = [];
+  }
+
+  openDayModal(day: CalendarDay): void {
+    this.selectedDay = day;
+  }
+
+  closeDayModal(): void {
+    this.selectedDay = null;
+  }
+
+  openQuickCreateForDay(date: Date): void {
+    const dateStr = this.toLocalYMD(date); // statt toISOString().split('T')[0]
+    this.quickCreate.startDate = dateStr;
+    this.quickCreate.endDate = dateStr;
+    this.openCreateModal();
+  }
+
+
+  // ===== Filter =====
+  onFilterChange(): void {
+    this.generateCalendar();
   }
 
   clearFilters(): void {
-    this.filters = {
-      status: 'all',
-      dateFrom: '',
-      dateTo: '',
-      searchText: ''
-    };
-    this.applyFilters();
+    this.filters = { status: 'all', searchText: '' };
+    this.generateCalendar();
   }
 
-  onFilterChange(): void {
-    this.applyFilters();
+  // ===== Slot-Serien-Erstellung =====
+  getDatePlusWeeks(weeks: number): string {
+    const date = new Date();
+    date.setDate(date.getDate() + weeks * 7);
+    return this.toLocalYMD(date); // statt toISOString().split('T')[0]
   }
+
 
   generateSeriesSlots(): CreateBookingSlotDto[] {
     const slots: CreateBookingSlotDto[] = [];
     const { pattern, startDate, endDate, startTime, endTime, slotDuration, breakDuration, breakAfter } = this.quickCreate;
 
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+    // WICHTIG: lokal parsen (kein new Date('YYYY-MM-DD'))
+    const start = this.parseLocalYMD(startDate);
+    const end = this.parseLocalYMD(endDate);
 
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      const dayOfWeek = d.getDay();
+      const dayOfWeek = d.getDay(); // So=0..Sa=6
       let shouldInclude = false;
-
-      if (pattern === 'daily') {
-        shouldInclude = true;
-      } else if (pattern === 'workweek') {
-        shouldInclude = dayOfWeek >= 1 && dayOfWeek <= 5;
-      } else if (pattern === 'weekly') {
-        shouldInclude = d.getDay() === start.getDay();
-      } else if (pattern === 'custom') {
-        shouldInclude = this.quickCreate.customDays.includes(dayOfWeek);
-      }
-
+      if (pattern === 'daily') shouldInclude = true;
+      else if (pattern === 'workweek') shouldInclude = dayOfWeek >= 1 && dayOfWeek <= 5;
+      else if (pattern === 'weekly') shouldInclude = d.getDay() === start.getDay();
+      else if (pattern === 'custom') shouldInclude = this.quickCreate.customDays.includes(dayOfWeek);
       if (!shouldInclude) continue;
 
-      const dateStr = d.toISOString().split('T')[0];
-      const daySlots = this.generateTimeSlotsForDay(
-        dateStr, startTime, endTime, slotDuration, breakDuration, breakAfter
-      );
+      const dateStr = this.toLocalYMD(d); // statt d.toISOString().split('T')[0]
+      const daySlots = this.generateTimeSlotsForDay(dateStr, startTime, endTime, slotDuration, breakDuration, breakAfter);
       slots.push(...daySlots);
     }
-
     return slots;
   }
 
+
   generateTimeSlotsForDay(
-    date: string, startTime: string, endTime: string,
-    slotDuration: number, breakDuration: number, breakAfter: number
+    date: string,
+    startTime: string,
+    endTime: string,
+    slotDuration: number,
+    breakDuration: number,
+    breakAfter: number
   ): CreateBookingSlotDto[] {
     const slots: CreateBookingSlotDto[] = [];
     const [startH, startM] = startTime.split(':').map(Number);
@@ -254,9 +354,9 @@ export class AdminBookingComponent implements OnInit {
   }
 
   toggleCustomDay(day: number): void {
-    const index = this.quickCreate.customDays.indexOf(day);
-    if (index > -1) {
-      this.quickCreate.customDays.splice(index, 1);
+    const idx = this.quickCreate.customDays.indexOf(day);
+    if (idx > -1) {
+      this.quickCreate.customDays.splice(idx, 1);
     } else {
       this.quickCreate.customDays.push(day);
       this.quickCreate.customDays.sort();
@@ -267,30 +367,34 @@ export class AdminBookingComponent implements OnInit {
     return this.quickCreate.customDays.includes(day);
   }
 
+  getPreviewCount(): number {
+    return this.generateSeriesSlots().length;
+  }
+
   async handleCreateSeries(): Promise<void> {
-    this.loading = true;
+    this.loadingCreate = true;
     try {
       const slots = this.generateSeriesSlots();
 
       if (slots.length === 0) {
-        alert('❌ Keine Slots zum Erstellen vorhanden!');
+        alert('Keine Slots zum Erstellen vorhanden!');
         return;
       }
 
       if (slots.length > 200) {
-        if (!confirm(`⚠️ Das würde ${slots.length} Slots erstellen. Fortfahren?`)) {
-          return;
-        }
+        const proceed = confirm(`Das würde ${slots.length} Slots erstellen. Fortfahren?`);
+        if (!proceed) return;
       }
 
       await firstValueFrom(this.api.createMultipleBookingSlots(slots));
       await this.loadSlots();
-      alert(`✅ ${slots.length} Slots erfolgreich erstellt!`);
+      this.closeCreateModal();
+      alert(`${slots.length} Slots erfolgreich erstellt!`);
     } catch (err) {
-      alert('❌ Fehler beim Erstellen der Slots');
+      alert('Fehler beim Erstellen der Slots');
       console.error(err);
     } finally {
-      this.loading = false;
+      this.loadingCreate = false;
     }
   }
 
@@ -298,36 +402,13 @@ export class AdminBookingComponent implements OnInit {
     if (!id) return;
     if (!confirm('Slot wirklich löschen?')) return;
 
-    this.loading = true;
     try {
       await firstValueFrom(this.api.deleteBookingSlot(id));
       await this.loadSlots();
+      this.closeSlotModal();
     } catch (err) {
-      alert('❌ Fehler beim Löschen');
+      alert('Fehler beim Löschen');
       console.error(err);
-    } finally {
-      this.loading = false;
-    }
-  }
-
-  async handleDeleteAll(): Promise<void> {
-    if (!confirm('⚠️ Wirklich ALLE Slots löschen?')) return;
-    if (!confirm('🚨 Letzte Warnung: Alle Slots werden gelöscht!')) return;
-
-    this.loading = true;
-    try {
-      for (const slot of this.slots) {
-        if (slot.id) {
-          await firstValueFrom(this.api.deleteBookingSlot(slot.id));
-        }
-      }
-      await this.loadSlots();
-      alert('✅ Alle Slots gelöscht');
-    } catch (err) {
-      alert('❌ Fehler beim Löschen');
-      console.error(err);
-    } finally {
-      this.loading = false;
     }
   }
 
@@ -335,51 +416,99 @@ export class AdminBookingComponent implements OnInit {
     try {
       await firstValueFrom(this.api.updateBooking(bookingId, { status }));
       await this.loadSlots();
+
+      // Lokalen Zustand aktualisieren
+      if (this.selectedSlot) {
+        this.selectedSlotBookings = this.allBookings.filter(
+          (b) => b.slotId === this.selectedSlot!.id
+        );
+      }
     } catch (err) {
-      alert('❌ Fehler beim Aktualisieren');
+      alert('Fehler beim Aktualisieren');
       console.error(err);
     }
   }
 
-  formatDate(dateStr: string): string {
-    const date = new Date(dateStr);
+  // ===== Helper fürs Template =====
+  formatTime(time: string): string {
+    // Erwartet "HH:mm" oder "H:mm" -> gibt "HH:mm" zurück
+    const [h, m] = time.split(':').map(Number);
+    return `${String(h ?? 0).padStart(2, '0')}:${String(m ?? 0).padStart(2, '0')}`;
+  }
+
+  formatDateLong(dateStr: string): string {
+    // Erwartet ISO yyyy-MM-dd
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const date = new Date(y, (m ?? 1) - 1, d ?? 1);
     return date.toLocaleDateString('de-DE', {
+      weekday: 'long',
       day: '2-digit',
-      month: 'short',
+      month: 'long',
       year: 'numeric'
     });
   }
 
-  formatTime(time: string): string {
-    return time.substring(0, 5);
-  }
-
-  getDayName(dateStr: string): string {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('de-DE', { weekday: 'short' });
-  }
-
-  getPreviewCount(): number {
-    return this.generateSeriesSlots().length;
-  }
-
   getStatusColor(status: BookingStatus): string {
-    const colors = {
-      [BookingStatus.PENDING]: 'orange',
-      [BookingStatus.CONFIRMED]: 'green',
-      [BookingStatus.CANCELLED]: 'red',
-      [BookingStatus.COMPLETED]: 'blue'
-    };
-    return colors[status] || 'gray';
+    switch (status) {
+      case BookingStatus.PENDING:
+        return '#f59e0b'; // amber
+      case BookingStatus.CONFIRMED:
+        return '#10b981'; // green
+      case BookingStatus.CANCELLED:
+        return '#ef4444'; // red
+      case BookingStatus.COMPLETED:
+        return '#3b82f6'; // blue
+      default:
+        return '#6b7280'; // gray
+    }
   }
 
   getStatusLabel(status: BookingStatus): string {
-    const labels = {
-      [BookingStatus.PENDING]: '⏳ Ausstehend',
-      [BookingStatus.CONFIRMED]: '✅ Bestätigt',
-      [BookingStatus.CANCELLED]: '❌ Abgesagt',
-      [BookingStatus.COMPLETED]: '🎉 Abgeschlossen'
-    };
-    return labels[status] || status;
+    switch (status) {
+      case BookingStatus.PENDING:
+        return 'Ausstehend';
+      case BookingStatus.CONFIRMED:
+        return 'Bestätigt';
+      case BookingStatus.CANCELLED:
+        return 'Storniert';
+      case BookingStatus.COMPLETED:
+        return 'Abgeschlossen';
+      default:
+        return 'Unbekannt';
+    }
+  }
+
+  toLocalYMD(d: Date): string {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  parseLocalYMD(ymd: string): Date {
+    const [y, m, d] = ymd.split('-').map(Number);
+    return new Date(y, (m - 1), d, 0, 0, 0, 0); // lokal, Mitternacht
+  }
+
+  getSlotStatusIcon(slot: BookingSlot): string {
+    if (!slot.isAvailable) return '🔒';
+    if ((slot.currentBookings || 0) > 0) return '📌';
+    return '✓';
+  }
+
+  getSlotStatusText(slot: BookingSlot): string {
+    if (!slot.isAvailable) return 'Gesperrt';
+    if ((slot.currentBookings || 0) >= slot.maxBookings) return 'Ausgebucht';
+    if ((slot.currentBookings || 0) > 0) return 'Teilweise gebucht';
+    return 'Verfügbar';
+  }
+
+  getSlotBookings(slot: BookingSlot): Booking[] {
+    return this.allBookings.filter((b) => b.slotId === slot.id);
+  }
+
+  getBookingNames(slot: BookingSlot): string {
+    const bookings = this.getSlotBookings(slot);
+    return bookings.map((b) => b.name).join(', ');
   }
 }

@@ -81,6 +81,11 @@ export class AdminHeaderComponent {
       label: 'Buchungen',
       icon: 'calendar_today'
     },
+    {
+      path: 'admin/newsletter',
+      label: 'Newsletter',
+      icon: 'mail'
+    },
 
     // {
     //   path: 'admin/settings',

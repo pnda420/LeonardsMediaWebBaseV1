@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ApiService } from '../../api/api.service';
 
 @Component({
   selector: 'app-maintenance',
@@ -12,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 export class MaintenanceComponent {
   email: string = '';
   submitted: boolean = false;
+  isLoading: boolean = false;
+  errorMessage: string = '';
 
   features = [
     {
@@ -42,17 +45,43 @@ export class MaintenanceComponent {
     'Cloud Hosting'
   ];
 
+  constructor(private apiService: ApiService) { }
+
   onSubmit(): void {
-    if (this.email) {
-      this.submitted = true;
-
-
-      console.log('Email submitted:', this.email);
-
-      setTimeout(() => {
-        this.submitted = false;
-        this.email = '';
-      }, 3000);
+    if (!this.email) {
+      return;
     }
+
+    // Einfache E-Mail-Validierung
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.email)) {
+      this.errorMessage = 'Bitte gib eine gültige E-Mail-Adresse ein';
+      setTimeout(() => this.errorMessage = '', 3000);
+      return;
+    }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.apiService.subscribeNewsletter(this.email).subscribe({
+      next: (response) => {
+        console.log('Newsletter subscription successful:', response);
+        this.submitted = true;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Newsletter subscription failed:', error);
+        this.isLoading = false;
+
+        // Freundliche Fehlermeldung anzeigen
+        if (error.status === 409) {
+          this.errorMessage = 'Diese E-Mail ist bereits angemeldet';
+        } else {
+          this.errorMessage = 'Etwas ist schiefgelaufen. Bitte versuche es später nochmal.';
+        }
+
+        setTimeout(() => this.errorMessage = '', 5000);
+      }
+    });
   }
 }
