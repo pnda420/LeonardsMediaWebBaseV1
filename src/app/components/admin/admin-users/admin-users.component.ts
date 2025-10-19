@@ -94,7 +94,7 @@ export class AdminUsersComponent implements OnInit {
     this.api.deleteUser(user.id).subscribe({
       next: () => {
         this.users = this.users.filter(u => u.id !== user.id);
-        console.log('✅ User gelöscht:', user.email);
+        // console.log('✅ User gelöscht:', user.email);
       },
       error: async (err) => {
         console.error('❌ Fehler beim Löschen:', err);
@@ -123,7 +123,7 @@ export class AdminUsersComponent implements OnInit {
     if (!confirmed) return;
 
     // TODO: Implementiere Update-Endpoint im Backend für Role
-    console.log('⚠️ Role-Update noch nicht implementiert');
+    // console.log('⚠️ Role-Update noch nicht implementiert');
     
     await this.confirmationService.confirm({
       title: 'Noch nicht verfügbar',
@@ -168,7 +168,7 @@ export class AdminUsersComponent implements OnInit {
     if (!confirmed) return;
 
     // TODO: Implementiere Update-Endpoint im Backend für Role
-    console.log('⚠️ Role-Update noch nicht implementiert');
+    // console.log('⚠️ Role-Update noch nicht implementiert');
     
     await this.confirmationService.confirm({
       title: 'Noch nicht verfügbar',
@@ -182,7 +182,7 @@ export class AdminUsersComponent implements OnInit {
   async copyEmail(email: string) {
     try {
       await navigator.clipboard.writeText(email);
-      console.log('📋 Email kopiert:', email);
+      // console.log('📋 Email kopiert:', email);
       
       // Optional: Kurze Erfolgsbestätigung
       await this.confirmationService.confirm({

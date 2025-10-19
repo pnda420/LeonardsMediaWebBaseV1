@@ -24,16 +24,10 @@ export class AuthRequiredComponent {
   ) { }
 
   ngOnInit(): void {
-    // Baue die komplette URL mit allen Query Params
     const urlTree = this.router.parseUrl(this.router.url);
-
-    // Hole den Path (z.B. '/preview')
     const path = urlTree.root.children['primary']?.segments.map(s => s.path).join('/') || this.returnUrl;
-
-    // Hole alle Query Params (z.B. {id: '6361e1d8-bb88-4075-a4c4-f8218d688c07'})
     const queryParams = urlTree.queryParams;
 
-    // Baue die vollständige URL mit Query Params
     if (Object.keys(queryParams).length > 0) {
       const queryString = Object.entries(queryParams)
         .map(([key, value]) => `${key}=${value}`)
@@ -42,8 +36,6 @@ export class AuthRequiredComponent {
     } else {
       this.fullReturnUrl = `/${path}`;
     }
-
-    console.log('🔗 Full Return URL:', this.fullReturnUrl);
   }
 
   goBack(): void {

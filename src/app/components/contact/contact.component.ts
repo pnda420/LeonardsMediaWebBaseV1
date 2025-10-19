@@ -78,7 +78,7 @@ export class ContactComponent implements OnInit {
       .pipe(finalize(() => { this.busy = false; }))
       .subscribe({
         next: (response) => {
-          console.log('✅ Kontaktanfrage erfolgreich gesendet:', response);
+          // console.log('✅ Kontaktanfrage erfolgreich gesendet:', response);
           this.state = 'success';
           this.toasts.success('Kontaktanfrage erfolgreich gesendet!', { duration: 5000 });
         },

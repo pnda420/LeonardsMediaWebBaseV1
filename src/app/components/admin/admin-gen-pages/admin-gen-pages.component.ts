@@ -217,7 +217,7 @@ export class AdminGenPagesComponent implements OnInit, OnDestroy {
     this.api.deleteGeneratedPage(page.id).subscribe({
       next: () => {
         this.pages = this.pages.filter(p => p.id !== page.id);
-        console.log('✅ Page gelöscht');
+        // console.log('✅ Page gelöscht');
         if (this.selectedPage?.id === page.id) {
           this.closePreview();
         }
@@ -244,14 +244,14 @@ export class AdminGenPagesComponent implements OnInit, OnDestroy {
     a.download = `${page.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.html`;
     a.click();
     window.URL.revokeObjectURL(url);
-    console.log('⬇️ Page heruntergeladen');
+    // console.log('⬇️ Page heruntergeladen');
   }
 
   async copyContent(page: GeneratedPage) {
     const fullHtml = this.createFullHtmlDocument(page.pageContent);
     try {
       await navigator.clipboard.writeText(fullHtml);
-      console.log('📋 Content kopiert');
+      // console.log('📋 Content kopiert');
       await this.confirmationService.confirm({
         title: 'Kopiert!',
         message: 'Der Content wurde in die Zwischenablage kopiert.',

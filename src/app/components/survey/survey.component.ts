@@ -581,7 +581,7 @@ export class SurveyComponent {
       .pipe(finalize(() => this.isSubmitting.set(false)))
       .subscribe({
         next: (response) => {
-          console.log('✅ Kontaktanfrage erfolgreich gesendet:', response);
+          // console.log('✅ Kontaktanfrage erfolgreich gesendet:', response);
           this.isSubmitted.set(true);
           this.toasts.success('Kontaktanfrage erfolgreich gesendet!', { duration: 5000 });
         },

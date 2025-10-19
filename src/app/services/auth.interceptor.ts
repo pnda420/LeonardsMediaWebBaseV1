@@ -8,12 +8,12 @@ export class AuthInterceptor implements HttpInterceptor {
         // Token direkt aus localStorage holen (kein AuthService!)
         const token = localStorage.getItem('access_token');
 
-        console.log('🔍 Interceptor läuft!');
-        console.log('📍 URL:', req.url);
-        console.log('🔑 Token vorhanden:', !!token);
+        // console.log('🔍 Interceptor läuft!');
+        // console.log('📍 URL:', req.url);
+        // console.log('🔑 Token vorhanden:', !!token);
 
         if (token) {
-            console.log('✅ Token wird hinzugefügt');
+            // console.log('✅ Token wird hinzugefügt');
 
             const cloned = req.clone({
                 setHeaders: {
@@ -24,7 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
             return next.handle(cloned);
         }
 
-        console.log('⚠️ Kein Token - Request ohne Auth');
+        // console.log('⚠️ Kein Token - Request ohne Auth');
         return next.handle(req);
     }
 }

@@ -65,7 +65,7 @@ export class MaintenanceComponent {
 
     this.apiService.subscribeNewsletter(this.email).subscribe({
       next: (response) => {
-        console.log('Newsletter subscription successful:', response);
+        // console.log('Newsletter subscription successful:', response);
         this.submitted = true;
         this.isLoading = false;
       },

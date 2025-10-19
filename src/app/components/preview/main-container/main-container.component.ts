@@ -238,23 +238,23 @@ export class MainContainerComponent implements OnInit, OnDestroy {
     const body = iframeDoc.body;
     const computedStyle = iframe.contentWindow.getComputedStyle(body);
 
-    console.log('🎨 iframe body styles:');
-    console.log('  background:', computedStyle.backgroundColor);
-    console.log('  color:', computedStyle.color);
-    console.log('  font-family:', computedStyle.fontFamily);
+    // console.log('🎨 iframe body styles:');
+    // console.log('  background:', computedStyle.backgroundColor);
+    // console.log('  color:', computedStyle.color);
+    // console.log('  font-family:', computedStyle.fontFamily);
 
     const h1Elements = iframeDoc.querySelectorAll('h1');
     h1Elements.forEach((h1, i) => {
       const h1Style = iframe.contentWindow!.getComputedStyle(h1);
-      console.log(`📝 h1[${i}] color:`, h1Style.color, '| text:', h1.textContent?.substring(0, 30));
+      // console.log(`📝 h1[${i}] color:`, h1Style.color, '| text:', h1.textContent?.substring(0, 30));
     });
 
     const heroElements = iframeDoc.querySelectorAll('.hero, [class*="hero"]');
     if (heroElements.length > 0) {
-      console.log('🦸 Hero sections gefunden:', heroElements.length);
+      // console.log('🦸 Hero sections gefunden:', heroElements.length);
       heroElements.forEach((hero, i) => {
         const heroStyle = iframe.contentWindow!.getComputedStyle(hero);
-        console.log(`  hero[${i}] background:`, heroStyle.backgroundColor);
+        // console.log(`  hero[${i}] background:`, heroStyle.backgroundColor);
       });
     }
   }

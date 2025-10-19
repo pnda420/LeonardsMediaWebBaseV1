@@ -34,8 +34,8 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.returnUrl = params['returnUrl'] || '/';
       this.hasReturnUrl = !!params['returnUrl'] && params['returnUrl'] !== '/';
-      console.log('🔗 Return URL:', this.returnUrl);
-      console.log('📍 Has Return URL:', this.hasReturnUrl);
+      // console.log('🔗 Return URL:', this.returnUrl);
+      // console.log('📍 Has Return URL:', this.hasReturnUrl);
     });
 
     // Falls bereits eingeloggt, direkt weiterleiten
@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
-        console.log('✅ Login erfolgreich');
+        // console.log('✅ Login erfolgreich');
         this.toasts.success('Erfolgreich eingeloggt!');
         this.loading = false;
 
@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit {
   }
 
   private navigateToReturnUrl(): void {
-    console.log('🚀 Navigiere zu:', this.returnUrl);
+    // console.log('🚀 Navigiere zu:', this.returnUrl);
 
     // Decode URL falls encoded
     const decodedUrl = decodeURIComponent(this.returnUrl);
@@ -116,8 +116,8 @@ export class LoginComponent implements OnInit {
         }
       });
 
-      console.log('📍 Path:', path);
-      console.log('🔍 Query Params:', queryParams);
+      // console.log('📍 Path:', path);
+      // console.log('🔍 Query Params:', queryParams);
 
       // Navigate mit separaten Query Params
       this.router.navigate([path], { queryParams });

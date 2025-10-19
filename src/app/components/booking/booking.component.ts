@@ -371,12 +371,12 @@ export class BookingComponent implements OnInit, OnDestroy {
       slotId: this.selectedSlot.id
     };
 
-    console.log('SUBMIT SLOT', {
-      id: this.selectedSlot.id,
-      date: dateStr,
-      from: fromStr,
-      to: toStr
-    });
+    // console.log('SUBMIT SLOT', {
+    //   id: this.selectedSlot.id,
+    //   date: dateStr,
+    //   from: fromStr,
+    //   to: toStr
+    // });
 
     this.apiService.createBooking(bookingDto)
       .pipe(takeUntil(this.destroy$))
