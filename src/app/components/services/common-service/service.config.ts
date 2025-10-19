@@ -46,7 +46,7 @@ export const SERVICE_CONFIGS: { [key: string]: ServiceConfig } = {
           'Login für Mitglieder willst',
           'Die Seite in mehreren Sprachen brauchst'
         ],
-        note: 'Dann schau dir <a href="/services/standard-website">Business</a> oder <a href="/services/individual-website">Premium</a> an.'
+        note: 'Dann schau dir <a style="color: blue !important;"  href="/services/standard-website">Business</a> oder <a style="color: blue !important;"  href="/services/individual-website">Premium</a> an.'
       }
     },
     includes: [
@@ -152,7 +152,7 @@ export const SERVICE_CONFIGS: { [key: string]: ServiceConfig } = {
           'Mehrsprachige Versionen',
           'Sehr knappes Budget (unter 3.000€)'
         ],
-        note: '💡 Für andere Projekte: <a href="/services/one-pager">Einfache Website</a> oder <a href="/services/individual-website">Individual Website</a>'
+        note: '💡 Für andere Projekte: <a style="color: blue !important;"  href="/services/one-pager">Einfache Website</a> oder <a style="color: blue !important;"  href="/services/individual-website">Individual Website</a>'
       }
     },
     includes: [
@@ -272,7 +272,7 @@ export const SERVICE_CONFIGS: { [key: string]: ServiceConfig } = {
           'Projekt muss in 2-3 Wochen fertig sein',
           'Keine technischen Anforderungen bekannt'
         ],
-        note: '💡 Für einfachere Projekte: <a href="/services/one-pager">Einfache Website</a> oder <a href="/services/standard-website">Standard Website</a>'
+        note: '💡 Für einfachere Projekte: <a style="color: blue !important;"  href="/services/one-pager">Einfache Website</a> oder <a style="color: blue !important;"  href="/services/standard-website">Standard Website</a>'
       }
     },
     includes: [

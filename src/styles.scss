@@ -191,14 +191,14 @@ a {
 
 section {
   position: relative;
-  padding-block: 2rem;
+  padding-block: 1rem;
 
   @media (min-width: 768px) {
-    padding-block: 3rem;
+    padding-block: 1rem;
   }
 
   @media (min-width: 1024px) {
-    padding-block: 4rem;
+    padding-block: 1rem;
   }
 }
 

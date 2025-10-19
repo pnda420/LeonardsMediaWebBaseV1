@@ -97,8 +97,13 @@ export class BookingComponent implements OnInit, OnDestroy {
           // Slots filtern: nur zukünftige mit Mindestvorlauf
           const filteredSlots = this.filterValidSlots(slots);
           this.allSlots = filteredSlots;
+
+          // Wochen erzeugen
           this.generateWeeksFromSlots(filteredSlots);
-          this.updateWeekLabels();
+
+          // Neu: nur zur ersten verfügbaren Woche springen (ohne Auswahl)
+          this.jumpToFirstAvailableWeek();
+
           this.isLoading = false;
         },
         error: (error) => {
@@ -119,17 +124,12 @@ export class BookingComponent implements OnInit, OnDestroy {
     const minDateTime = new Date(now.getTime() + this.MIN_HOURS_ADVANCE * 60 * 60 * 1000);
 
     return slots.filter(slot => {
-      // Slot-DateTime erstellen
       const slotDateTime = this.getSlotDateTime(slot.date, slot.timeFrom);
-
-      // Prüfen ob Slot in der Zukunft liegt und Mindestvorlauf erfüllt
       return slotDateTime >= minDateTime;
     });
   }
 
-  /**
-   * Erstellt ein Date-Objekt aus Datum und Uhrzeit
-   */
+  /** Erstellt ein Date-Objekt aus Datum und Uhrzeit */
   private getSlotDateTime(date: string, time: string): Date {
     const [hours, minutes] = time.split(':').map(Number);
     const base = this.parseLocalDate(date);
@@ -275,7 +275,33 @@ export class BookingComponent implements OnInit, OnDestroy {
     this.selectedSlot = slot;
   }
 
-  // Ganz oben in der Klasse ergänzen:
+  // ==================== NEU: Nur auf erste verfügbare Woche springen (keine Auto-Selektion) ====================
+
+  /** Setzt den Week-Index auf die erste Woche mit mindestens einem verfügbaren Tag. */
+  private jumpToFirstAvailableWeek(): void {
+    if (!this.weeks || this.weeks.length === 0) {
+      this.currentWeekIndex = 0;
+      this.clearSelection();
+      this.updateWeekLabels();
+      return;
+    }
+
+    const weekIndex = this.weeks.findIndex(week => week.some(d => d.available));
+    if (weekIndex === -1) {
+      // Gar nichts verfügbar
+      this.currentWeekIndex = 0;
+      this.clearSelection();
+      this.updateWeekLabels();
+      return;
+    }
+
+    // Auf die gefundene Woche springen
+    this.currentWeekIndex = weekIndex;
+    this.clearSelection(); // sicherstellen, dass nichts vorselektiert ist
+    this.updateWeekLabels();
+  }
+
+  // ==================== PARSE/FORMAT HELPERS ====================
 
   /** "2025-10-16" -> Date (lokal, 00:00) */
   private parseLocalDate(dateStr: string): Date {
@@ -290,7 +316,6 @@ export class BookingComponent implements OnInit, OnDestroy {
     const d = String(date.getDate()).padStart(2, '0');
     return `${y}-${m}-${d}`;
   }
-
 
   getFormattedDate(): string {
     const dateStr = this.selectedSlot?.date || this.selectedDate;
@@ -347,7 +372,6 @@ export class BookingComponent implements OnInit, OnDestroy {
       return;
     }
 
-
     // Finale Validierung vor dem Absenden
     const slotDateTime = this.getSlotDateTime(this.selectedSlot.date, this.selectedSlot.timeFrom);
     const now = new Date();
@@ -370,13 +394,6 @@ export class BookingComponent implements OnInit, OnDestroy {
       message: this.bookingData.message?.trim() || undefined,
       slotId: this.selectedSlot.id
     };
-
-    // console.log('SUBMIT SLOT', {
-    //   id: this.selectedSlot.id,
-    //   date: dateStr,
-    //   from: fromStr,
-    //   to: toStr
-    // });
 
     this.apiService.createBooking(bookingDto)
       .pipe(takeUntil(this.destroy$))
@@ -424,7 +441,7 @@ export class BookingComponent implements OnInit, OnDestroy {
     };
   }
 
-  // ==================== HELPER ====================
+  // ==================== HELFER ====================
 
   getSlotsCountForDay(day: DayWithSlots): number {
     return day.slots.length;

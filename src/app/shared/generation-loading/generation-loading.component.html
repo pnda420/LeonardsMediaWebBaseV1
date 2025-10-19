@@ -1,34 +1,83 @@
- <div class="loading-page">
-      <div class="loading-container">
-        
-        <!-- Animated Logo/Icon -->
-        <div class="loading-icon">
-          <div class="pulse-ring"></div>
-          <div class="pulse-ring delay-1"></div>
-          <div class="pulse-ring delay-2"></div>
-          <span class="icon-emoji">{{ currentEmoji }}</span>
-        </div>
+<!-- loading.component.html -->
+<div class="loading-page">
+  <div class="loading-container">
 
-        <!-- AI Thought -->
-        <div class="ai-thought">
-          <span class="thought-icon">💭</span>
-          <p>{{ currentThought }}</p>
-        </div>
-
-        <!-- Status Message -->
-        <div class="status-message">
-          <h1>Website wird erstellt...</h1>
-          <p>Die KI arbeitet an deinem Projekt. Du kannst diese Seite schließen.</p>
-          <p class="email-hint">✉️ Du erhältst eine Email sobald fertig</p>
-        </div>
-
-        <!-- Actions -->
-        <div class="actions">
-          <button class="btn btn--secondary" (click)="goToHome()">
-            <span class="material-symbols-outlined">home</span>
-            Home
-          </button>
-        </div>
-
+    <!-- Animated Icon with Rings -->
+    <div class="loading-icon">
+      <div class="icon-rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+      <div class="icon-center">
+        <span class="icon-emoji">{{ currentEmoji }}</span>
+        <div class="icon-glow"></div>
       </div>
     </div>
+
+    <!-- AI Thought Bubble -->
+    <div class="thought-bubble">
+      <div class="thought-icon">
+        <span class="material-symbols-outlined">psychology</span>
+      </div>
+      <div class="thought-content">
+        <span class="thought-label">KI denkt gerade...</span>
+        <p class="thought-text">{{ currentThought }}</p>
+      </div>
+      <div class="thought-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <!-- Status Card -->
+    <div class="status-card">
+      <h1>Website wird erstellt</h1>
+      <p class="status-desc">Die KI arbeitet an deinem Projekt. Das dauert nur wenige Minuten.</p>
+      <div class="status-info">
+        <div class="info-item">
+          <span class="material-symbols-outlined">close</span>
+          <span>Du kannst diese Seite schließen</span>
+        </div>
+        <div class="info-item info-highlight">
+          <span class="material-symbols-outlined">mail</span>
+          <span>Wir schicken dir eine E-Mail sobald fertig</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-indicator">
+      <div class="progress-steps">
+        <div class="step active">
+          <div class="step-icon">
+            <span class="material-symbols-outlined">check</span>
+          </div>
+          <span class="step-label">Analysiert</span>
+        </div>
+        <div class="step active">
+          <div class="step-icon">
+            <span class="material-symbols-outlined">auto_awesome</span>
+          </div>
+          <span class="step-label">Generiert</span>
+        </div>
+        <div class="step">
+          <div class="step-icon">
+            <span class="material-symbols-outlined">rocket_launch</span>
+          </div>
+          <span class="step-label">Fertig</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button class="btn btn--secondary" (click)="goToHome()">
+        <span class="material-symbols-outlined ms-size-20">home</span>
+        <span>Zurück zur Startseite</span>
+      </button>
+    </div>
+
+  </div>
+</div>
