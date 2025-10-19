@@ -36,6 +36,9 @@ export class AdminBookingComponent implements OnInit {
   allBookings: Booking[] = [];
   calendarDays: CalendarDay[] = [];
 
+  mobileView: 'upcoming' | 'all' = 'upcoming';
+
+
   // UI State
   loading = false;
   loadingCreate = false;
@@ -410,6 +413,20 @@ export class AdminBookingComponent implements OnInit {
       alert('Fehler beim Löschen');
       console.error(err);
     }
+  }
+
+  getUpcomingSlots(): BookingSlot[] {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return this.slots
+      .filter(s => this.parseLocalYMD(s.date) >= today)
+      .sort((a, b) => {
+        const dateCompare = a.date.localeCompare(b.date);
+        if (dateCompare !== 0) return dateCompare;
+        return a.timeFrom.localeCompare(b.timeFrom);
+      })
+      .slice(0, 20);
   }
 
   async updateBookingStatus(bookingId: string, status: BookingStatus): Promise<void> {

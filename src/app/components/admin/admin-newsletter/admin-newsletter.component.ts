@@ -1,4 +1,3 @@
-// admin-newsletter.component.ts
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApiService, NewsletterSubscriber } from '../../../api/api.service';
@@ -13,50 +12,43 @@ import { AdminHeaderComponent } from '../admin-header/admin-header.component';
 })
 export class AdminNewsletterComponent implements OnInit {
   subscribers: NewsletterSubscriber[] = [];
-  loading: boolean = true;
-  error: string = '';
-  copiedEmail: string = '';
+  loading = true;
+  error = '';
+  copiedEmail = '';
 
   constructor(private apiService: ApiService) { }
 
-  ngOnInit(): void {
-    this.loadSubscribers();
-  }
+  ngOnInit(): void { this.loadSubscribers(); }
+
+  trackByEmail = (_: number, s: NewsletterSubscriber) => s.email;
 
   loadSubscribers(): void {
-    this.loading = true;
-    this.error = '';
-
+    this.loading = true; this.error = '';
     this.apiService.getNewsletterSubscribers().subscribe({
-      next: (response) => {
-        this.subscribers = response.subscribers;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error loading newsletter subscribers:', err);
-        this.error = 'Fehler beim Laden der Abonnenten';
-        this.loading = false;
-      }
+      next: (res) => { this.subscribers = res.subscribers || []; },
+      error: (err) => { console.error('Error loading newsletter subscribers:', err); this.error = 'Fehler beim Laden der Abonnenten'; },
+      complete: () => { this.loading = false; }
     });
   }
 
   copyEmail(email: string): void {
     navigator.clipboard.writeText(email).then(() => {
       this.copiedEmail = email;
-      setTimeout(() => {
-        this.copiedEmail = '';
-      }, 2000);
+      setTimeout(() => this.copiedEmail = '', 2000);
     });
   }
 
   copyAllEmails(): void {
-    const emails = this.subscribers.map(s => s.email).join(', ');
-    navigator.clipboard.writeText(emails).then(() => {
-      alert('✅ Alle E-Mail-Adressen kopiert!');
+    // newline-separiert (besser für Paste in Tools), fällt auf Komma zurück
+    const list = this.subscribers.map(s => s.email).join('\n');
+    navigator.clipboard.writeText(list).then(() => {
+      // unobtrusive Feedback ohne alert? -> optional toast-Komponente
+      console.info('Alle E-Mail-Adressen kopiert.');
     });
   }
 
   exportToCSV(): void {
+    // robustes CSV mit Escaping + Semikolon als Trennzeichen (DE)
     const headers = ['E-Mail', 'Status', 'Angemeldet am'];
     const rows = this.subscribers.map(s => [
       s.email,
@@ -64,49 +56,40 @@ export class AdminNewsletterComponent implements OnInit {
       this.formatDate(s.subscribedAt)
     ]);
 
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(row => row.join(','))
+    const esc = (v: string) => {
+      const value = String(v ?? '');
+      // wenn ;," oder newline vorkommt -> in Anführungszeichen + doppelte Quotes escapen
+      return /[;"\n\r]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
+    };
+
+    const csv = [
+      headers.map(esc).join(';'),
+      ...rows.map(r => r.map(esc).join(';'))
     ].join('\n');
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-
-    link.setAttribute('href', url);
-    link.setAttribute('download', `newsletter-subscribers-${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `newsletter-subscribers-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   }
 
-  formatDate(date: Date): string {
+  formatDate(date: Date | string): string {
     const d = new Date(date);
     const now = new Date();
     const diffMs = now.getTime() - d.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
+    const min = Math.floor(diffMs / 60000);
+    const h = Math.floor(diffMs / 3600000);
+    const days = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'Gerade eben';
-    if (diffMins < 60) return `Vor ${diffMins} Min.`;
-    if (diffHours < 24) return `Vor ${diffHours} Std.`;
-    if (diffDays < 7) return `Vor ${diffDays} Tag${diffDays > 1 ? 'en' : ''}`;
-
-    return d.toLocaleDateString('de-DE', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
-    });
+    if (min < 1) return 'Gerade eben';
+    if (min < 60) return `Vor ${min} Min.`;
+    if (h < 24) return `Vor ${h} Std.`;
+    if (days < 7) return `Vor ${days} Tag${days > 1 ? 'en' : ''}`;
+    return d.toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: 'numeric' });
   }
 
-  getActiveCount(): number {
-    return this.subscribers.filter(s => s.isActive).length;
-  }
-
-  getInactiveCount(): number {
-    return this.subscribers.filter(s => !s.isActive).length;
-  }
+  getActiveCount(): number { return this.subscribers.filter(s => s.isActive).length; }
+  getInactiveCount(): number { return this.subscribers.filter(s => !s.isActive).length; }
 }

@@ -31,8 +31,7 @@
         <!-- Filters & Search -->
         <div class="filters-bar">
             <div class="search-box">
-                <input type="text" [(ngModel)]="searchTerm" placeholder="Name oder E-Mail suchen..."
-                    class="input">
+                <input type="text" [(ngModel)]="searchTerm" placeholder="Name oder E-Mail suchen..." class="input">
             </div>
 
             <div class="filter-group">
@@ -137,6 +136,49 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div *ngIf="!loading && !error && filteredUsers.length > 0" class="users-mobile-list">
+            <div *ngFor="let user of filteredUsers" class="user-mobile-card">
+
+                <div class="user-mobile-header">
+                    <div class="user-mobile-avatar">
+                        {{ user.name.charAt(0).toUpperCase() }}
+                    </div>
+                    <div class="user-mobile-info">
+                        <div class="user-mobile-name">{{ user.name }}</div>
+                        <span class="user-mobile-role" [class.admin]="user.role === UserRole.ADMIN"
+                            [class.user]="user.role === UserRole.USER">
+                            {{ getRoleLabel(user.role) }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="user-mobile-email" (click)="copyEmail(user.email)">
+                    <span class="email-text">📧 {{ user.email }}</span>
+                    <span class="copy-icon">📋</span>
+                </div>
+
+                <div class="user-mobile-meta">
+                    <span class="meta-id">ID: {{ user.id.substring(0, 8) }}...</span>
+                    <span class="meta-date">{{ formatDate(user.createdAt) }}</span>
+                </div>
+
+                <div class="user-mobile-actions">
+                    <button *ngIf="user.role === UserRole.USER" class="mobile-action-btn primary"
+                        (click)="makeAdmin(user)">
+                        👑 Admin
+                    </button>
+                    <button *ngIf="user.role === UserRole.ADMIN" class="mobile-action-btn warning"
+                        (click)="removeAdmin(user)">
+                        ⚠️ Entfernen
+                    </button>
+                    <button class="mobile-action-btn danger" (click)="deleteUser(user)">
+                        🗑️ Benutzer löschen
+                    </button>
+                </div>
+
+            </div>
         </div>
 
         <!-- Results Count -->

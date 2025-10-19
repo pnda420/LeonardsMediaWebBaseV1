@@ -1,79 +1,41 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { IsActiveMatchOptions, Router, RouterModule } from '@angular/router';
-
-interface AdminRoute {
-  path: string;
-  label: string;
-  icon?: string;
-}
+import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
+import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './admin-header.component.html',
-  styleUrl: './admin-header.component.scss'
+  styleUrls: ['./admin-header.component.scss']
 })
-export class AdminHeaderComponent {
-  @Input() base = '/admin';
+export class AdminHeaderComponent implements OnInit, OnDestroy {
+  open = false;
+  isMobile = false;
+  private sub?: Subscription;
+  private mq?: MediaQueryList;
+  private mqListener = (e: MediaQueryListEvent) => {
+    this.isMobile = e.matches;
+    if (!this.isMobile) this.close(); // falls von mobile -> desktop
+  };
 
+  constructor(private router: Router) { }
 
-  constructor(public router: Router) {
-
-  }
-
-  routeTo(path: string, event?: MouseEvent) {
-    event?.preventDefault(); // damit der native Link nicht voll lädt
-    const url = this.normalize(path);
-    this.router.navigateByUrl(url);
-  }
-
-  // Für sichtbaren Active-State
-  isActive(path: string): boolean {
-    const url = this.normalize(path);
-    const opts: IsActiveMatchOptions = {
-      paths: 'exact',
-      queryParams: 'ignored',
-      fragment: 'ignored',
-      matrixParams: 'ignored'
-    };
-    return this.router.isActive(url, opts);
-  }
-
-  // Für href im <a>
-  getHref(path: string): string {
-    return this.normalize(path);
-  }
-
-  // ---- Helpers ----
-  private normalize(path: string): string {
-    // Absolut, wenn bereits mit "/" beginnt
-    if (!path) return this.base;
-    if (path.startsWith('/')) return path;
-
-    // Wenn "admin/..." übergeben wird, vorn "/" ergänzen
-    if (path.startsWith('admin')) return `/${path}`;
-
-    // Sonst als Child unterhalb von base behandeln (z.B. "requests" -> "/admin/requests")
-    const base = this.base.endsWith('/') ? this.base.slice(0, -1) : this.base;
-    return `${base}/${path}`;
-  }
-
-  routes: AdminRoute[] = [
+  routes = [
     {
       path: 'admin/requests',
-      label: 'Kontaktanfragen',
+      label: 'Anfragen',
       icon: 'mail'
     },
     {
       path: 'admin/users',
-      label: 'User Verwaltung',
+      label: 'User',
       icon: 'group'
     },
     {
       path: 'admin/gen-pages',
-      label: 'Generierte Seiten',
+      label: 'KI-Seiten',
       icon: 'auto_awesome'
     },
     {
@@ -86,12 +48,77 @@ export class AdminHeaderComponent {
       label: 'Newsletter',
       icon: 'mail'
     },
-
-    // {
-    //   path: 'admin/settings',
-    //   label: 'Einstellungen',
-    //   icon: 'settings'
-    // }
+    {
+      path: 'admin/settings',
+      label: 'Einstellungen',
+      icon: 'settings'
+    },
   ];
 
+  getCurrentRouteLabel() {
+    const currentPath = this.router.url.split('?')[0];
+    const route = this.routes.find(r => this.normalize(r.path) === this.normalize(currentPath));
+    return route ? route.label : 'Admin Bereich';
+  }
+
+  ngOnInit() {
+    // Media Query initial + listener
+    this.mq = window.matchMedia('(max-width: 899px)');
+    this.isMobile = this.mq.matches;
+    this.mq.addEventListener?.('change', this.mqListener);
+
+    // Close on route change
+    this.sub = this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
+      this.close();
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
+    this.mq?.removeEventListener?.('change', this.mqListener);
+    this.unlockScroll();
+  }
+
+  toggle() {
+    this.open = !this.open;
+    this.open ? this.lockScroll() : this.unlockScroll();
+  }
+  close() {
+    if (!this.open) return;
+    this.open = false;
+    this.unlockScroll();
+  }
+
+  onNavClick() {
+    // Mobile: Linkklick schließt Menü (Desktop egal)
+    if (this.isMobile) this.close();
+  }
+
+  normalize(path: string) {
+    // immer absolut machen, damit NG04002 durch relative Segmente nicht passiert
+    return path.startsWith('/') ? path : '/' + path;
+  }
+
+  // ESC schließt
+  @HostListener('document:keydown.escape', ['$event'])
+  onEsc(e: KeyboardEvent) {
+    if (this.open) {
+      e.preventDefault();
+      this.close();
+    }
+  }
+
+  // Body Scroll Lock (ohne Lib)
+  private lockScroll() {
+    document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
+  }
+  private unlockScroll() {
+    document.body.style.overflow = '';
+    document.body.style.touchAction = '';
+  }
+
+  routeTo(path: string) {
+    this.router.navigateByUrl(this.normalize(path));
+  }
 }

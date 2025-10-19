@@ -123,6 +123,97 @@
         </div>
 
     </div>
+    <!-- Mobile List View (nur Mobile sichtbar) -->
+    <div class="mobile-list-view" *ngIf="!loading">
+
+        <!-- Mobile Tabs -->
+        <div class="mobile-tabs">
+            <button class="mobile-tab" [class.active]="mobileView === 'upcoming'" (click)="mobileView = 'upcoming'">
+                🔮 Anstehend
+            </button>
+            <button class="mobile-tab" [class.active]="mobileView === 'all'" (click)="mobileView = 'all'">
+                📊 Alle
+            </button>
+        </div>
+
+        <!-- Upcoming Slots -->
+        <div class="mobile-slots-list" *ngIf="mobileView === 'upcoming'">
+            <div *ngFor="let slot of getUpcomingSlots()" class="mobile-slot-card"
+                [class.available]="slot.isAvailable && (slot.currentBookings || 0) === 0"
+                [class.booked]="(slot.currentBookings || 0) > 0" [class.unavailable]="!slot.isAvailable"
+                (click)="openSlotModal(slot)">
+
+                <div class="mobile-slot-header">
+                    <div class="mobile-slot-date">
+                        <strong>{{ formatDateLong(slot.date) }}</strong>
+                        <span>{{ formatTime(slot.timeFrom) }} - {{ formatTime(slot.timeTo) }}</span>
+                    </div>
+                    <span class="mobile-slot-status"
+                        [class.available]="slot.isAvailable && (slot.currentBookings || 0) === 0"
+                        [class.booked]="(slot.currentBookings || 0) > 0" [class.unavailable]="!slot.isAvailable">
+                        {{ getSlotStatusIcon(slot) }} {{ getSlotStatusText(slot) }}
+                    </span>
+                </div>
+
+                <div class="mobile-slot-info">
+                    <div class="info-item">
+                        <span>📌</span>
+                        <strong>{{ slot.currentBookings || 0 }}/{{ slot.maxBookings }}</strong>
+                    </div>
+                    <div class="info-item" *ngIf="getSlotBookings(slot).length > 0">
+                        <span>👤</span>
+                        <strong>{{ getSlotBookings(slot).length }} Buchung(en)</strong>
+                    </div>
+                </div>
+
+                <div class="mobile-slot-bookings" *ngIf="getSlotBookings(slot).length > 0">
+                    <div *ngFor="let booking of getSlotBookings(slot).slice(0, 2)" class="booking-preview">
+                        <strong>{{ booking.name }}</strong>
+                        <span [style.color]="getStatusColor(booking.status)">
+                            {{ getStatusLabel(booking.status) }}
+                        </span>
+                    </div>
+                    <small *ngIf="getSlotBookings(slot).length > 2" style="color: #64748b; font-size: .75rem;">
+                        +{{ getSlotBookings(slot).length - 2 }} weitere
+                    </small>
+                </div>
+            </div>
+
+            <div class="mobile-empty-state" *ngIf="getUpcomingSlots().length === 0">
+                <div class="empty-icon">🎉</div>
+                <h3>Keine anstehenden Termine</h3>
+                <p>Erstelle neue Slots im Kalender</p>
+            </div>
+        </div>
+
+        <!-- All Slots -->
+        <div class="mobile-slots-list" *ngIf="mobileView === 'all'">
+            <div *ngFor="let slot of slots.slice(0, 50)" class="mobile-slot-card"
+                [class.available]="slot.isAvailable && (slot.currentBookings || 0) === 0"
+                [class.booked]="(slot.currentBookings || 0) > 0" [class.unavailable]="!slot.isAvailable"
+                (click)="openSlotModal(slot)">
+
+                <div class="mobile-slot-header">
+                    <div class="mobile-slot-date">
+                        <strong>{{ formatDateLong(slot.date) }}</strong>
+                        <span>{{ formatTime(slot.timeFrom) }} - {{ formatTime(slot.timeTo) }}</span>
+                    </div>
+                    <span class="mobile-slot-status"
+                        [class.available]="slot.isAvailable && (slot.currentBookings || 0) === 0"
+                        [class.booked]="(slot.currentBookings || 0) > 0" [class.unavailable]="!slot.isAvailable">
+                        {{ getSlotStatusIcon(slot) }}
+                    </span>
+                </div>
+
+                <div class="mobile-slot-info">
+                    <div class="info-item">
+                        <span>📌</span>
+                        <strong>{{ slot.currentBookings || 0 }}/{{ slot.maxBookings }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal: Slot erstellen -->

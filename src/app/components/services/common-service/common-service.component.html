@@ -1,0 +1,295 @@
+<app-page-title [title]="config?.pageTitle || ''"></app-page-title>
+
+<section class="service-detail" *ngIf="config">
+
+    <!-- HERO -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-badge" 
+                         [ngClass]="{
+                           'hero-badge--star': config.hero.badge.variant === 'star',
+                           'hero-badge--premium': config.hero.badge.variant === 'premium'
+                         }">
+                        <span *ngIf="config.hero.badge.icon === 'star'" class="material-symbols-outlined ms-size-20 ms-fill">star</span>
+                        <span *ngIf="config.hero.badge.icon !== 'star'">{{ config.hero.badge.icon }}</span>
+                        {{ config.hero.badge.text }}
+                    </div>
+                    <h1>{{ config.hero.title }}</h1>
+                    <p [innerHTML]="config.hero.description"></p>
+
+                    <div class="hero-facts">
+                        <div class="fact-chip">
+                            <span class="material-symbols-outlined ms-fill">payments</span>
+                            {{ config.hero.facts.price }}
+                        </div>
+                        <div class="fact-chip fact-chip--muted">
+                            <span class="material-symbols-outlined">schedule</span>
+                            {{ config.hero.facts.timeline }}
+                        </div>
+                        <div class="fact-chip fact-chip--muted">
+                            <span class="material-symbols-outlined ms-fill">check_circle</span>
+                            {{ config.hero.facts.highlight }}
+                        </div>
+                    </div>
+
+                    <div class="hero-actions">
+                        <button class="btn btn--primary btn--large" (click)="router.navigate(['/contact'])">
+                            <span class="material-symbols-outlined ms-size-20">send</span>
+                            Jetzt anfragen
+                        </button>
+                        <button class="btn btn--secondary btn--large" (click)="router.navigate(['/preview-form'])">
+                            <span class="material-symbols-outlined ms-size-20">auto_awesome</span>
+                            <span *ngIf="config.slug === 'one-pager'">Gratis Vorschau</span>
+                            <span *ngIf="config.slug !== 'one-pager'">Kostenlose Vorschau</span>
+                        </button>
+                    </div>
+
+                    <p class="hero-guarantee">
+                        <span class="material-symbols-outlined ms-fill">verified</span>
+                        {{ config.hero.guarantee }}
+                    </p>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="visual-card">
+                        <img [src]="config.hero.image" [alt]="'Beispiel ' + config.pageTitle" loading="lazy" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INFO BOX (KI oder Comparison) -->
+    <div class="container" *ngIf="config.infoBox">
+        <!-- KI Box -->
+        <div class="ki-box" *ngIf="config.infoBox.type === 'ki'">
+            <div class="ki-icon">
+                <span class="material-symbols-outlined ms-fill">auto_awesome</span>
+            </div>
+            <div class="ki-content">
+                <h3>{{ config.infoBox.title }}</h3>
+                <p>{{ config.infoBox.content }}</p>
+                <button class="btn btn--ghost" (click)="router.navigate(['/preview-form'])">
+                    <span class="material-symbols-outlined ms-size-20">visibility</span>
+                    Vorschau erstellen
+                </button>
+            </div>
+        </div>
+
+        <!-- Comparison Box -->
+        <div class="comparison-box" *ngIf="config.infoBox.type === 'comparison'">
+            <div class="comparison-icon">
+                <span class="material-symbols-outlined">compare_arrows</span>
+            </div>
+            <h3>{{ config.infoBox.title }}</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card" 
+                     *ngFor="let item of config.infoBox.items"
+                     [ngClass]="{'comparison-card--highlight': item.highlight}">
+                    <div class="comparison-badge" *ngIf="item.highlight">
+                        <span class="material-symbols-outlined ms-size-16">arrow_back</span>
+                        Das hier
+                    </div>
+                    <h4>{{ item.title }}</h4>
+                    <ul>
+                        <li *ngFor="let feature of item.features">{{ feature }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TYPICAL PAGES (nur Standard) -->
+    <div class="container pages-section" *ngIf="config.typicalPages">
+        <header class="section-header">
+            <h2>Typische Seitenstruktur</h2>
+            <p>Beispiel-Aufbau einer Standard Website</p>
+        </header>
+
+        <div class="pages-grid">
+            <div class="page-card" *ngFor="let page of config.typicalPages">
+                <div class="page-icon">
+                    <span class="material-symbols-outlined ms-fill">{{ page.icon }}</span>
+                </div>
+                <h4>{{ page.title }}</h4>
+                <p>{{ page.description }}</p>
+            </div>
+        </div>
+
+        <div class="pages-note">
+            <span class="material-symbols-outlined">lightbulb</span>
+            <div>
+                <strong>Flexibel anpassbar:</strong> Die Struktur wird an deine Anforderungen angepasst.
+                Du entscheidest, welche Seiten du brauchst.
+            </div>
+        </div>
+    </div>
+
+    <!-- USE CASES (nur Individual) -->
+    <div class="container use-cases" *ngIf="config.useCases">
+        <div class="section-header">
+            <h2>Typische Anwendungsfälle</h2>
+            <p>Was andere Kunden mit Individual Websites umsetzen</p>
+        </div>
+
+        <div class="use-cases__grid">
+            <div class="use-case" *ngFor="let useCase of config.useCases">
+                <div class="use-case__icon">{{ useCase.icon }}</div>
+                <h4>{{ useCase.title }}</h4>
+                <p>{{ useCase.description }}</p>
+            </div>
+        </div>
+
+        <p class="use-cases__note">
+            💡 <strong>Unsicher, was möglich ist?</strong> Im kostenlosen Erstgespräch klären wir deine Idee und
+            finden die beste technische Lösung.
+        </p>
+    </div>
+
+    <!-- TECH STACK (nur Individual) -->
+    <div class="container tech-stack" *ngIf="config.techStack">
+        <div class="section-header">
+            <h2>Technologie-Stack</h2>
+            <p>Moderne, bewährte Tools für skalierbare Lösungen</p>
+        </div>
+
+        <div class="tech-categories">
+            <div class="tech-category" *ngFor="let category of config.techStack">
+                <h4>{{ category.category }}</h4>
+                <div class="tech-badges">
+                    <span class="tech-badge" *ngFor="let tech of category.technologies">{{ tech }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FIT CHECK -->
+    <div class="container fit-section">
+        <header class="section-header">
+            <h2>{{ config.slug === 'one-pager' ? 'Passt das zu dir?' : 'Ist das das Richtige für dich?' }}</h2>
+            <p>{{ config.slug === 'one-pager' ? 'Schneller Check in 30 Sekunden' : 'Schnelle Orientierungshilfe' }}</p>
+        </header>
+
+        <div class="fit-grid">
+            <div class="fit-card fit-card--good">
+                <div class="fit-icon">
+                    <span class="material-symbols-outlined ms-fill">check_circle</span>
+                </div>
+                <h3>{{ config.fit.good.title }}</h3>
+                <ul>
+                    <li *ngFor="let item of config.fit.good.items" [innerHTML]="item"></li>
+                </ul>
+            </div>
+
+            <div class="fit-card fit-card--warning">
+                <div class="fit-icon">
+                    <span class="material-symbols-outlined ms-fill">warning</span>
+                </div>
+                <h3>{{ config.fit.warning.title }}</h3>
+                <ul>
+                    <li *ngFor="let item of config.fit.warning.items" [innerHTML]="item"></li>
+                </ul>
+                <div class="fit-note" *ngIf="config.fit.warning.note">
+                    <span class="material-symbols-outlined">lightbulb</span>
+                    <span [innerHTML]="config.fit.warning.note"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WAS DU BEKOMMST -->
+    <div class="container scope-section">
+        <header class="section-header">
+            <h2>Was du bekommst</h2>
+            <p>{{ config.slug === 'individual-website' ? 'Premium-Leistungen für anspruchsvolle Projekte' : 'Alles inklusive - keine versteckten Kosten' }}</p>
+        </header>
+
+        <div class="scope-grid">
+            <div class="scope-card" *ngFor="let item of config.includes">
+                <div class="scope-check">
+                    <span class="material-symbols-outlined ms-fill">check</span>
+                </div>
+                <div class="scope-content">
+                    <h3 [innerHTML]="item.title"></h3>
+                    <p>{{ item.text }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABLAUF -->
+    <div class="container process-section">
+        <header class="section-header">
+            <h2>{{ config.slug === 'one-pager' ? 'So geht\'s' : 'So läuft\'s ab' }}</h2>
+            <p>{{ config.slug === 'individual-website' ? 'Strukturiert, transparent, mit klaren Meilensteinen' : 'Einfach, klar, keine Überraschungen' }}</p>
+        </header>
+
+        <div class="process-timeline">
+            <div class="process-step" *ngFor="let step of config.process">
+                <div class="step-number">{{ step.number }}</div>
+                <div class="step-content">
+                    <h3>{{ step.title }}</h3>
+                    <p>{{ step.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <a class="text-link" (click)="router.navigate(['/process'])">
+            {{ config.slug === 'one-pager' ? 'Mehr Details zum Ablauf' : 'Detaillierten Projektablauf ansehen' }}
+            <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+    </div>
+
+    <!-- FAQ -->
+    <div class="container faq-section">
+        <header class="section-header">
+            <h2>Häufige Fragen</h2>
+            <p>{{ config.slug === 'one-pager' ? 'Was Kunden mich oft fragen' : 'Alles, was Kunden normalerweise wissen wollen' }}</p>
+        </header>
+
+        <details class="faq-item" *ngFor="let item of config.faq">
+            <summary>
+                <span class="faq-icon material-symbols-outlined">help</span>
+                {{ item.q }}
+                <span class="faq-arrow material-symbols-outlined">expand_more</span>
+            </summary>
+            <div class="faq-answer">
+                <p *ngFor="let answer of item.a">{{ answer }}</p>
+            </div>
+        </details>
+
+        <a class="text-link" (click)="router.navigate(['/faq'])">
+            {{ config.slug === 'one-pager' ? 'Alle Fragen ansehen' : 'Alle FAQ ansehen' }}
+            <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+    </div>
+
+    <!-- CTA -->
+    <div class="container cta-section">
+        <div class="cta-card">
+            <div class="cta-icon">
+                <span class="material-symbols-outlined ms-fill">rocket_launch</span>
+            </div>
+            <h2>{{ config.cta.title }}</h2>
+            <p>{{ config.cta.description }}</p>
+            <ul class="cta-benefits">
+                <li *ngFor="let benefit of config.cta.benefits">
+                    <span class="material-symbols-outlined ms-fill">check_circle</span>
+                    {{ benefit }}
+                </li>
+            </ul>
+            <div class="cta-actions">
+                <button class="btn btn--primary btn--large" (click)="router.navigate(['/contact'])">
+                    <span class="material-symbols-outlined ms-size-20">send</span>
+                    {{ config.slug === 'one-pager' ? 'Gespräch buchen' : 'Jetzt Projekt anfragen' }}
+                </button>
+                <button class="btn btn--secondary" (click)="router.navigate(['/services'])">
+                    {{ config.slug === 'one-pager' ? 'Andere Pakete ansehen' : 'Andere Pakete ansehen' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+</section>

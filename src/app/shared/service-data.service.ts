@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
+import { SERVICE_CONFIGS } from '../components/services/common-service/service.config';
 
 export interface ServiceItem {
   title: string;
   slug: string;
-  img: string;
-  short?: string;
-  features?: string[];
-  badge?: string
-  price?: string;
-  cta?: string;
+  badge: {
+    icon: string;
+    text: string;
+  };
+  price: string;
+  short: string;
+  features: string[];
   route: string;
+  cta: string;
 }
 
 @Injectable({
@@ -17,76 +20,143 @@ export interface ServiceItem {
 })
 export class ServiceDataService {
 
-private services: ServiceItem[] = [
-  {
-    title: 'Starter',
-    slug: 'starter',
-    img: 'assets/cards/simple-min.png',
-    short: 'Deine erste Website. Alles auf einer Seite, genau wie du es brauchst.',
-    features: [
-      'Fertig in 1-2 Wochen',
-      'Alle Bereiche die du willst',
-      'Auf Handy perfekt',
-      'Kontaktformular',
-      'Bei Google findbar',
-      'Deine Farben & Texte',
-      '3 Monate Support gratis'
-    ],
-    badge: '🚀 Schnellstart',
-    price: 'ab 1.490 € ',
-    cta: 'Mehr erfahren',
-    route: 'one-pager',
-  },
-  {
-    title: 'Business',
-    slug: 'business',
-    img: 'assets/cards/standard-min.png',
-    short: 'Mehrere Seiten für dein Angebot. Komplett nach deinen Wünschen gebaut.',
-    features: [
-      'Fertig in 2-4 Wochen',
-      'So viele Seiten wie du brauchst',
-      'Blog oder News-Bereich',
-      'Mehrere Kontaktformulare',
-      'Volle Google-Optimierung',
-      'Alle Texte & Bilder von dir',
-      'Spezielle Features möglich',
-      '6 Monate Support gratis'
-    ],
-    badge: '⭐ Am beliebtesten',
-    price: 'ab 2.490 € ',
-    cta: 'Mehr erfahren',
-    route: 'standard-website',
-  },
-  {
-    title: 'Premium',
-    slug: 'premium',
-    img: 'assets/cards/individual-min.png',
-    short: 'Komplette Design-Freiheit. Ich baue genau das, was du dir vorstellst.',
-    features: [
-      'Keine Limits bei Seiten',
-      'Login für Mitglieder',
-      'Buchungssystem möglich',
-      'Kalender-Integration',
-      'Eigene Spezial-Funktionen',
-      'Anbindung zu anderen Tools',
-      'Interaktive Elemente',
-      'Animationen & Effekte',
-      '12 Monate Premium-Support'
-    ],
-    badge: '💎 Individuell',
-    price: 'ab 3.990 € ',
-    cta: 'Mehr erfahren',
-    route: 'individual-website',
-  }
-];
-
   constructor() { }
 
+  /**
+   * Generiert ServiceItems aus den SERVICE_CONFIGS
+   * Automatisch aus der zentralen Konfiguration
+   */
   getServices(): ServiceItem[] {
-    return this.services;
+    const services: ServiceItem[] = [];
+
+    // One-Pager Service
+    if (SERVICE_CONFIGS['one-pager']) {
+      const config = SERVICE_CONFIGS['one-pager'];
+      services.push({
+        title: config.pageTitle,
+        slug: config.slug,
+        badge: { icon: config.hero.badge.icon, text: config.hero.badge.text },
+        price: config.hero.facts.price,
+        short: this.stripHtml(config.hero.description),
+        features: this.extractFeatures(config, 4), // Erste 4 Features
+        route: `/services/${config.slug}`,
+        cta: 'Mehr erfahren'
+      });
+    }
+
+    // Standard Website Service
+    if (SERVICE_CONFIGS['standard-website']) {
+      const config = SERVICE_CONFIGS['standard-website'];
+      services.push({
+        title: config.pageTitle,
+        slug: config.slug,
+        badge: { icon: config.hero.badge.icon, text: config.hero.badge.text },
+        price: config.hero.facts.price,
+        short: this.stripHtml(config.hero.description),
+        features: this.extractFeatures(config, 4),
+        route: `/services/${config.slug}`,
+        cta: 'Mehr erfahren'
+      });
+    }
+
+    // Individual Website Service
+    if (SERVICE_CONFIGS['individual-website']) {
+      const config = SERVICE_CONFIGS['individual-website'];
+      services.push({
+        title: config.pageTitle,
+        slug: config.slug,
+        badge: { icon: config.hero.badge.icon, text: config.hero.badge.text },
+        price: config.hero.facts.price,
+        short: this.stripHtml(config.hero.description),
+        features: this.extractFeatures(config, 4),
+        route: `/services/${config.slug}`,
+        cta: 'Mehr erfahren'
+      });
+    }
+
+    return services;
   }
 
+  /**
+   * Holt einen einzelnen Service nach Slug
+   */
   getServiceBySlug(slug: string): ServiceItem | undefined {
-    return this.services.find(service => service.slug === slug);
+    return this.getServices().find(s => s.slug === slug);
+  }
+
+  /**
+   * Extrahiert Features aus der Config
+   * Nimmt die wichtigsten Features aus fit.good oder includes
+   */
+  private extractFeatures(config: any, limit: number = 4): string[] {
+    const features: string[] = [];
+
+    // Versuche zuerst aus fit.good
+    if (config.fit?.good?.items) {
+      features.push(...config.fit.good.items.slice(0, limit));
+    }
+
+    // Falls nicht genug, nehme aus includes
+    if (features.length < limit && config.includes) {
+      const remaining = limit - features.length;
+      const includesTitles = config.includes
+        .slice(0, remaining)
+        .map((inc: any) => this.stripHtml(inc.title));
+      features.push(...includesTitles);
+    }
+
+    // Begrenze auf gewünschte Anzahl
+    return features.slice(0, limit).map(f => this.stripHtml(f));
+  }
+
+  /**
+   * Entfernt HTML-Tags aus Strings
+   */
+  private stripHtml(html: string): string {
+    if (!html) return '';
+    const tmp = document.createElement('DIV');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+  }
+
+  /**
+   * Optional: Vordefinierte Features falls du die manuelle Kontrolle willst
+   */
+  private getCustomFeatures(slug: string): string[] {
+    const customFeatures: { [key: string]: string[] } = {
+      'one-pager': [
+        'Fertig in 1-2 Wochen',
+        'Ein klares Angebot',
+        'Mobile optimiert',
+        'SEO-Grundlagen inklusive'
+      ],
+      'standard-website': [
+        '3-8 Unterseiten',
+        'Blog-System optional',
+        'Erweiterte SEO',
+        'Professionelle Navigation'
+      ],
+      'individual-website': [
+        'Custom Features',
+        'API-Integrationen',
+        'Login-Systeme',
+        'Vollständige Datenbank'
+      ]
+    };
+
+    return customFeatures[slug] || [];
+  }
+
+  /**
+   * Optional: Wenn du die Features manuell definieren willst statt automatisch
+   */
+  getServicesWithCustomFeatures(): ServiceItem[] {
+    return this.getServices().map(service => {
+      const customFeatures = this.getCustomFeatures(service.slug);
+      if (customFeatures.length > 0) {
+        service.features = customFeatures;
+      }
+      return service;
+    });
   }
 }

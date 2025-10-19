@@ -1,15 +1,15 @@
 @import '../../../utils/shared-styles.scss';
 
 .admin-bookings {
-    min-height: calc(100vh - 200px);
-    padding-block: 2rem;
+    min-height: 100vh;
+    padding: 1.5rem 0;
+    background: $gradient-bg;
 }
 
 .container {
-    width: 100%;
     max-width: 1400px;
-    margin-inline: auto;
-    padding-inline: clamp(1rem, 4vw, 2rem);
+    margin: 0 auto;
+    padding: 0 1rem;
 }
 
 /* ===== HEADER ===== */
@@ -17,9 +17,9 @@
     background: $glass-bg;
     backdrop-filter: blur(20px);
     border: 1px solid $glass-border;
-    border-radius: $radius-xl;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    border-radius: $radius-lg;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
     box-shadow: $shadow-glass;
 }
 
@@ -27,8 +27,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 1.25rem;
+    gap: 1rem;
+    margin-bottom: 1rem;
 
     @media (max-width: 768px) {
         flex-direction: column;
@@ -37,34 +37,41 @@
 }
 
 .page-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 800;
-    color: $color-text-primary;
     margin: 0;
-    letter-spacing: -0.02em;
+    background: $gradient-primary;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .page-subtitle {
-    font-size: 0.875rem;
+    font-size: .875rem;
     color: $color-text-secondary;
-    margin: 0.25rem 0 0;
+    margin: .25rem 0 0;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 }
 
 .header-actions {
     display: flex;
-    gap: 0.75rem;
+    gap: .5rem;
 }
 
 /* ===== STATS ===== */
 .stats-compact {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid $glass-border;
+    gap: .75rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(226, 232, 240, .5);
 
     @media (max-width: 640px) {
         grid-template-columns: repeat(2, 1fr);
+        gap: .5rem;
     }
 }
 
@@ -72,52 +79,58 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.375rem;
-    padding: 0.875rem;
-    background: $color-white;
+    gap: .25rem;
+    padding: .75rem;
+    background: rgba(255, 255, 255, .8);
     border-radius: $radius-md;
-    border: 1px solid $glass-border;
+    border: 1px solid rgba(226, 232, 240, .6);
 
     .stat-icon {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
     }
 
     strong {
-        font-size: 1.5rem;
-        font-weight: 800;
+        font-size: 1.375rem;
+        font-weight: 900;
         color: $color-text-primary;
         line-height: 1;
     }
 
     span:last-child {
-        font-size: 0.75rem;
+        font-size: .6875rem;
         color: $color-text-secondary;
-        font-weight: 500;
+        font-weight: 600;
+        text-transform: uppercase;
     }
 }
 
-/* ===== CALENDAR NAVIGATION ===== */
+/* ===== CALENDAR NAV (nur Desktop) ===== */
 .calendar-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
     background: $glass-bg;
+    backdrop-filter: blur(20px);
     border: 1px solid $glass-border;
-    border-radius: $radius-xl;
-    padding: 1rem 1.5rem;
+    border-radius: $radius-lg;
+    padding: .875rem 1.25rem;
     margin-bottom: 1rem;
-    box-shadow: $shadow-glass;
+    box-shadow: $shadow-sm;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 }
 
 .nav-btn {
-    width: 40px;
-    height: 40px;
-    background: $color-white;
-    border: 1px solid $glass-border;
+    width: 36px;
+    height: 36px;
+    background: #fff;
+    border: 1px solid rgba(226, 232, 240, .6);
     border-radius: $radius-md;
-    font-size: 1.125rem;
+    font-size: 1rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
 
     &:hover {
         background: $gradient-primary;
@@ -129,10 +142,10 @@
 .nav-center {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: .75rem;
 
     h2 {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         font-weight: 700;
         color: $color-text-primary;
         margin: 0;
@@ -140,41 +153,49 @@
 }
 
 .btn-today {
-    padding: 0.5rem 1rem;
-    background: $gradient-subtle;
-    border: 1px solid $color-brand-primary;
-    border-radius: $radius-sm;
-    font-weight: 600;
+    padding: .5rem .875rem;
+    background: rgba(37, 99, 235, .08);
+    border: 1px solid rgba(37, 99, 235, .3);
+    border-radius: $radius-md;
+    font-weight: 700;
+    font-size: .8125rem;
     color: $color-brand-primary;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
 
     &:hover {
         background: $gradient-primary;
         color: white;
+        border-color: $color-brand-primary;
     }
 }
 
-/* ===== FILTER BAR ===== */
+/* ===== FILTER BAR (nur Desktop) ===== */
 .filter-bar {
     display: flex;
-    gap: 0.75rem;
+    gap: .75rem;
     align-items: center;
     background: $glass-bg;
+    backdrop-filter: blur(20px);
     border: 1px solid $glass-border;
-    border-radius: $radius-xl;
-    padding: 0.875rem 1.25rem;
-    margin-bottom: 1.5rem;
-    box-shadow: $shadow-glass;
+    border-radius: $radius-lg;
+    padding: .75rem;
+    margin-bottom: 1rem;
+    box-shadow: $shadow-sm;
     flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 }
 
 .filter-input {
-    padding: 0.625rem 0.875rem;
-    border: 1px solid $glass-border;
-    border-radius: $radius-sm;
-    font-size: 0.875rem;
-    background: $color-white;
+    padding: .5rem .875rem;
+    border: 1px solid rgba(226, 232, 240, .6);
+    border-radius: $radius-md;
+    font-size: .8125rem;
+    background: #fff;
+    font-weight: 600;
 
     &.search {
         flex: 1;
@@ -184,62 +205,70 @@
     &:focus {
         outline: none;
         border-color: $color-brand-primary;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
     }
 }
 
 .filter-count {
     margin-left: auto;
-    font-size: 0.875rem;
+    font-size: .8125rem;
     color: $color-text-secondary;
-    font-weight: 500;
+    font-weight: 600;
 }
 
-/* ===== CALENDAR GRID ===== */
+/* ===== CALENDAR (nur Desktop) ===== */
 .calendar-container {
     background: $glass-bg;
+    backdrop-filter: blur(20px);
     border: 1px solid $glass-border;
-    border-radius: $radius-xl;
+    border-radius: $radius-lg;
     overflow: hidden;
     box-shadow: $shadow-glass;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 }
 
 .calendar-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     background: $gradient-primary;
-    padding: 1rem 0;
+    padding: .875rem 0;
 }
 
 .weekday {
     text-align: center;
     font-weight: 700;
-    font-size: 0.875rem;
+    font-size: .8125rem;
     color: white;
+    text-transform: uppercase;
+    letter-spacing: .03em;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: minmax(120px, auto);
+    grid-auto-rows: minmax(110px, auto);
     gap: 1px;
-    background: $glass-border;
+    background: rgba(226, 232, 240, .4);
     padding: 1px;
 }
 
 .calendar-day {
-    background: $color-white;
-    padding: 0.75rem;
-    min-height: 120px;
+    background: #fff;
+    padding: .625rem;
+    min-height: 110px;
     position: relative;
-    transition: all 0.2s;
+    transition: all .2s;
+    overflow: hidden;
 
     &:hover {
-        background: $gradient-subtle;
+        background: rgba(37, 99, 235, .03);
     }
 
     &.other-month {
-        background: rgba(241, 245, 249, 0.5);
+        background: rgba(248, 250, 252, .7);
 
         .day-number {
             color: $color-text-tertiary;
@@ -247,22 +276,18 @@
     }
 
     &.today {
-        background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(59, 130, 246, 0.08) 100%);
+        background: linear-gradient(135deg, rgba(37, 99, 235, .06) 0%, rgba(59, 130, 246, .1) 100%);
 
         .day-number {
             background: $gradient-primary;
             color: white;
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-    }
-
-    &.has-slots {
-        cursor: pointer;
     }
 }
 
@@ -270,40 +295,40 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.5rem;
+    margin-bottom: .5rem;
 }
 
 .day-number {
     font-weight: 700;
-    font-size: 0.9375rem;
+    font-size: .875rem;
     color: $color-text-primary;
 }
 
 .slot-count {
     background: $color-brand-primary;
     color: white;
-    font-size: 0.625rem;
+    font-size: .625rem;
     font-weight: 700;
-    padding: 0.125rem 0.375rem;
+    padding: .125rem .375rem;
     border-radius: $radius-sm;
 }
 
 .day-slots {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: .25rem;
 }
 
 .slot-preview {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.375rem 0.5rem;
-    background: $gradient-subtle;
+    padding: .375rem .5rem;
+    background: rgba(37, 99, 235, .05);
     border-radius: $radius-sm;
-    font-size: 0.75rem;
+    font-size: .75rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
     border-left: 3px solid transparent;
 
     &:hover {
@@ -312,17 +337,17 @@
 
     &.available {
         border-left-color: #22c55e;
-        background: rgba(34, 197, 94, 0.08);
+        background: rgba(34, 197, 94, .08);
     }
 
     &.booked {
         border-left-color: #f97316;
-        background: rgba(249, 115, 22, 0.08);
+        background: rgba(249, 115, 22, .08);
     }
 
     &.unavailable {
         border-left-color: #64748b;
-        background: rgba(100, 116, 139, 0.08);
+        background: rgba(100, 116, 139, .08);
     }
 }
 
@@ -331,20 +356,16 @@
     color: $color-text-primary;
 }
 
-.slot-status {
-    font-size: 0.875rem;
-}
-
 .more-slots {
-    padding: 0.25rem 0.5rem;
-    background: $gradient-subtle;
-    border: 1px solid $color-brand-primary;
+    padding: .25rem .5rem;
+    background: rgba(37, 99, 235, .05);
+    border: 1px solid rgba(37, 99, 235, .3);
     border-radius: $radius-sm;
-    font-size: 0.7rem;
-    font-weight: 600;
+    font-size: .6875rem;
+    font-weight: 700;
     color: $color-brand-primary;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
 
     &:hover {
         background: $gradient-primary;
@@ -354,18 +375,18 @@
 
 .btn-add-slot {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 24px;
-    height: 24px;
-    background: $gradient-subtle;
-    border: 1px dashed $color-brand-primary;
+    top: .5rem;
+    right: .5rem;
+    width: 22px;
+    height: 22px;
+    background: rgba(37, 99, 235, .05);
+    border: 1px dashed rgba(37, 99, 235, .4);
     border-radius: $radius-sm;
     color: $color-brand-primary;
-    font-size: 1rem;
+    font-size: .875rem;
     cursor: pointer;
     opacity: 0;
-    transition: all 0.2s;
+    transition: all .2s;
 
     .calendar-day:hover & {
         opacity: 1;
@@ -378,34 +399,244 @@
     }
 }
 
-/* ===== MODAL ===== */
+/* ===== MOBILE LIST VIEW ===== */
+.mobile-list-view {
+    display: none;
+
+    @media (max-width: 768px) {
+        display: block;
+    }
+}
+
+.mobile-tabs {
+    display: flex;
+    gap: .5rem;
+    background: $glass-bg;
+    backdrop-filter: blur(20px);
+    border: 1px solid $glass-border;
+    border-radius: $radius-lg;
+    padding: .5rem;
+    margin-bottom: 1rem;
+    box-shadow: $shadow-sm;
+}
+
+.mobile-tab {
+    flex: 1;
+    padding: .625rem;
+    border-radius: $radius-md;
+    border: none;
+    background: transparent;
+    color: $color-text-secondary;
+    font-weight: 700;
+    font-size: .8125rem;
+    cursor: pointer;
+    transition: all .2s;
+
+    &.active {
+        background: $gradient-primary;
+        color: white;
+        box-shadow: $shadow-brand;
+    }
+}
+
+.mobile-slots-list {
+    display: grid;
+    gap: .75rem;
+}
+
+.mobile-slot-card {
+    background: $glass-bg;
+    backdrop-filter: blur(20px);
+    border: 1px solid $glass-border;
+    border-radius: $radius-lg;
+    padding: 1rem;
+    box-shadow: $shadow-sm;
+    transition: all .2s;
+    overflow: hidden;
+
+    &:active {
+        transform: scale(.98);
+    }
+
+    &.available {
+        border-left: 4px solid #22c55e;
+    }
+
+    &.booked {
+        border-left: 4px solid #f97316;
+    }
+
+    &.unavailable {
+        border-left: 4px solid #64748b;
+        opacity: .7;
+    }
+}
+
+.mobile-slot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: .75rem;
+    gap: .75rem;
+}
+
+.mobile-slot-date {
+    strong {
+        display: block;
+        font-size: .9375rem;
+        font-weight: 700;
+        color: $color-text-primary;
+        margin-bottom: .25rem;
+    }
+
+    span {
+        font-size: .8125rem;
+        color: $color-text-secondary;
+    }
+}
+
+.mobile-slot-status {
+    padding: .25rem .625rem;
+    border-radius: $radius-full;
+    font-size: .6875rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    white-space: nowrap;
+
+    &.available {
+        background: rgba(34, 197, 94, .12);
+        color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, .3);
+    }
+
+    &.booked {
+        background: rgba(249, 115, 22, .12);
+        color: #f97316;
+        border: 1px solid rgba(249, 115, 22, .3);
+    }
+
+    &.unavailable {
+        background: rgba(100, 116, 139, .12);
+        color: #64748b;
+        border: 1px solid rgba(100, 116, 139, .3);
+    }
+}
+
+.mobile-slot-info {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .625rem;
+    background: rgba(37, 99, 235, .04);
+    border-radius: $radius-md;
+    margin-bottom: .75rem;
+    font-size: .8125rem;
+    color: $color-text-secondary;
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: .375rem;
+
+        strong {
+            color: $color-text-primary;
+            font-weight: 700;
+        }
+    }
+}
+
+.mobile-slot-bookings {
+    border-top: 1px solid rgba(226, 232, 240, .5);
+    padding-top: .75rem;
+
+    .booking-preview {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .5rem;
+        background: rgba(255, 255, 255, .8);
+        border-radius: $radius-md;
+        margin-bottom: .5rem;
+        font-size: .8125rem;
+
+        strong {
+            color: $color-text-primary;
+        }
+
+        span {
+            margin-left: auto;
+            padding: .125rem .5rem;
+            border-radius: $radius-full;
+            font-size: .6875rem;
+            font-weight: 700;
+        }
+    }
+}
+
+.mobile-empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: $glass-bg;
+    backdrop-filter: blur(20px);
+    border: 1px solid $glass-border;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-glass;
+
+    .empty-icon {
+        font-size: 3rem;
+        margin-bottom: .75rem;
+        opacity: .7;
+    }
+
+    h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: $color-text-primary;
+        margin: 0 0 .5rem;
+    }
+
+    p {
+        font-size: .875rem;
+        color: $color-text-secondary;
+        margin: 0;
+    }
+}
+
+/* ===== MODALS ===== */
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, .6);
     backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
     padding: 1rem;
-    animation: fadeIn 0.2s;
+    animation: fadeIn .2s;
 }
 
 .modal {
-    background: $color-white;
-    border-radius: $radius-xl;
+    background: #fff;
+    border-radius: $radius-lg;
     width: 100%;
     max-width: 600px;
     max-height: 85vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    animation: slideUp 0.3s;
+    animation: slideUp .3s;
     box-shadow: $shadow-xl;
 
     &.modal-wide {
         max-width: 900px;
+    }
+
+    @media (max-width: 768px) {
+        max-height: 95vh;
+        border-radius: $radius-lg $radius-lg 0 0;
+        margin-top: auto;
     }
 }
 
@@ -413,12 +644,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem;
-    border-bottom: 1px solid $glass-border;
-    background: $gradient-subtle;
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(226, 232, 240, .6);
+    background: rgba(37, 99, 235, .04);
 
     h2 {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         font-weight: 700;
         color: $color-text-primary;
         margin: 0;
@@ -428,15 +659,15 @@
 .modal-close {
     width: 32px;
     height: 32px;
-    background: $color-white;
-    border: 1px solid $glass-border;
-    border-radius: $radius-sm;
-    font-size: 1.125rem;
+    background: #fff;
+    border: 1px solid rgba(226, 232, 240, .6);
+    border-radius: $radius-md;
+    font-size: 1rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
 
     &:hover {
-        background: rgba(239, 68, 68, 0.1);
+        background: rgba(239, 68, 68, .1);
         border-color: $color-error;
         color: $color-error;
     }
@@ -445,87 +676,98 @@
 .modal-body {
     flex: 1;
     overflow-y: auto;
-    padding: 1.5rem;
+    padding: 1.25rem;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(37, 99, 235, .3);
+        border-radius: $radius-full;
+    }
 }
 
 .modal-footer {
-    padding: 1.25rem 1.5rem;
-    border-top: 1px solid $glass-border;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid rgba(226, 232, 240, .6);
     display: flex;
-    gap: 0.75rem;
+    gap: .5rem;
     justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
-/* ===== FORM ELEMENTS IN MODAL ===== */
+/* ===== FORM ===== */
 .form-section {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 
     label {
         display: block;
-        font-size: 0.875rem;
+        font-size: .8125rem;
         font-weight: 600;
         color: $color-text-primary;
-        margin-bottom: 0.625rem;
+        margin-bottom: .5rem;
     }
 }
 
 .form-row {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.875rem;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: .75rem;
     margin-bottom: 1rem;
 }
 
 .form-group {
     label {
         display: block;
-        font-size: 0.75rem;
+        font-size: .75rem;
         font-weight: 600;
         color: $color-text-secondary;
-        margin-bottom: 0.375rem;
+        margin-bottom: .375rem;
     }
 }
 
 .input-field {
     width: 100%;
-    border: 1px solid $glass-border;
-    border-radius: $radius-sm;
-    padding: 0.625rem 0.875rem;
-    font-size: 0.875rem;
-    background: $color-white;
-    transition: all 0.2s;
+    border: 1px solid rgba(226, 232, 240, .6);
+    border-radius: $radius-md;
+    padding: .625rem .875rem;
+    font-size: .875rem;
+    background: #fff;
+    transition: all .2s;
+    font-weight: 600;
 
     &:focus {
         outline: none;
         border-color: $color-brand-primary;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
     }
 }
 
 .pattern-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.625rem;
+    gap: .625rem;
 }
 
 .pattern-btn {
-    background: $color-white;
-    border: 2px solid $glass-border;
+    background: #fff;
+    border: 2px solid rgba(226, 232, 240, .6);
     border-radius: $radius-md;
-    padding: 0.875rem;
+    padding: .875rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.375rem;
+    gap: .375rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
 
     span {
         font-size: 1.5rem;
     }
 
     small {
-        font-size: 0.75rem;
+        font-size: .75rem;
         font-weight: 600;
         color: $color-text-primary;
     }
@@ -548,18 +790,18 @@
 .days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0.5rem;
+    gap: .5rem;
 }
 
 .day-btn {
     aspect-ratio: 1;
-    background: $color-white;
-    border: 2px solid $glass-border;
-    border-radius: $radius-sm;
+    background: #fff;
+    border: 2px solid rgba(226, 232, 240, .6);
+    border-radius: $radius-md;
     font-weight: 700;
-    font-size: 0.875rem;
+    font-size: .8125rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
 
     &:hover {
         border-color: $color-brand-primary;
@@ -573,12 +815,13 @@
 }
 
 .preview-box {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.06) 0%, rgba(59, 130, 246, 0.1) 100%);
-    border: 1px solid rgba(37, 99, 235, 0.2);
+    background: linear-gradient(135deg, rgba(37, 99, 235, .06) 0%, rgba(59, 130, 246, .1) 100%);
+    border: 1px solid rgba(37, 99, 235, .2);
     border-radius: $radius-md;
     padding: 1rem;
     text-align: center;
-    margin: 1.5rem 0;
+    margin: 1.25rem 0;
+    font-size: .875rem;
 
     strong {
         color: $color-brand-primary;
@@ -586,155 +829,168 @@
     }
 }
 
-/* ===== SLOT DETAILS MODAL ===== */
+/* ===== SLOT DETAILS ===== */
 .slot-detail-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem;
-    background: $gradient-subtle;
+    padding: 1rem;
+    background: rgba(37, 99, 235, .04);
     border-radius: $radius-md;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
+    gap: .75rem;
+    flex-wrap: wrap;
 }
 
 .detail-date {
     strong {
         display: block;
-        font-size: 1.125rem;
+        font-size: 1rem;
         color: $color-text-primary;
-        margin-bottom: 0.375rem;
+        margin-bottom: .25rem;
     }
 
     span {
         color: $color-text-secondary;
-        font-size: 0.875rem;
+        font-size: .8125rem;
     }
 }
 
 .status-badge {
-    padding: 0.5rem 1rem;
-    border-radius: $radius-md;
+    padding: .4rem .875rem;
+    border-radius: $radius-full;
     font-weight: 700;
-    font-size: 0.875rem;
+    font-size: .75rem;
+    white-space: nowrap;
 
     &.status-available {
-        background: rgba(34, 197, 94, 0.1);
+        background: rgba(34, 197, 94, .1);
         color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, .3);
     }
 
     &.status-booked {
-        background: rgba(249, 115, 22, 0.1);
+        background: rgba(249, 115, 22, .1);
         color: #f97316;
+        border: 1px solid rgba(249, 115, 22, .3);
     }
 
     &.status-unavailable {
-        background: rgba(100, 116, 139, 0.1);
+        background: rgba(100, 116, 139, .1);
         color: #64748b;
+        border: 1px solid rgba(100, 116, 139, .3);
     }
 }
 
 .slot-info-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: .75rem;
+    margin-bottom: 1.25rem;
 }
 
 .info-item {
-    padding: 1rem;
-    background: $gradient-subtle;
+    padding: .875rem;
+    background: rgba(37, 99, 235, .04);
     border-radius: $radius-md;
     text-align: center;
 
     label {
         display: block;
-        font-size: 0.75rem;
+        font-size: .6875rem;
         color: $color-text-secondary;
-        margin-bottom: 0.5rem;
+        margin-bottom: .375rem;
+        font-weight: 600;
     }
 
     strong {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         color: $color-text-primary;
     }
 }
 
-/* ===== BOOKINGS SECTION ===== */
+/* ===== BOOKINGS ===== */
 .bookings-section {
     h3 {
-        font-size: 1.125rem;
+        font-size: 1rem;
         font-weight: 700;
         color: $color-text-primary;
-        margin-bottom: 1rem;
+        margin-bottom: .875rem;
     }
 }
 
 .booking-list {
     display: flex;
     flex-direction: column;
-    gap: 0.875rem;
+    gap: .75rem;
 }
 
 .booking-card {
-    background: $gradient-subtle;
-    border: 1px solid $glass-border;
+    background: rgba(37, 99, 235, .04);
+    border: 1px solid rgba(226, 232, 240, .6);
     border-radius: $radius-md;
-    padding: 1rem;
+    padding: .875rem;
 }
 
 .booking-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: .625rem;
+    gap: .5rem;
 
     strong {
-        font-size: 1rem;
+        font-size: .9375rem;
         color: $color-text-primary;
     }
 }
 
 .booking-badge {
-    font-size: 0.75rem;
+    font-size: .6875rem;
     font-weight: 700;
-    padding: 0.25rem 0.625rem;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: $radius-sm;
+    padding: .25rem .625rem;
+    background: rgba(0, 0, 0, .05);
+    border-radius: $radius-full;
 }
 
 .booking-details {
-    font-size: 0.875rem;
+    font-size: .8125rem;
     color: $color-text-secondary;
-    margin-bottom: 0.875rem;
+    margin-bottom: .75rem;
 
     div {
-        margin-bottom: 0.375rem;
+        margin-bottom: .25rem;
     }
 }
 
 .booking-message {
-    padding: 0.5rem;
-    background: $color-white;
-    border-radius: $radius-sm;
-    margin-top: 0.5rem;
+    padding: .5rem;
+    background: #fff;
+    border-radius: $radius-md;
+    margin-top: .5rem;
+    font-size: .8125rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .booking-actions {
     display: flex;
-    gap: 0.5rem;
+    gap: .5rem;
+    flex-wrap: wrap;
 }
 
 .btn-action {
-    padding: 0.5rem 0.875rem;
+    padding: .5rem .875rem;
     border: none;
-    border-radius: $radius-sm;
-    font-size: 0.8125rem;
-    font-weight: 600;
+    border-radius: $radius-md;
+    font-size: .75rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
 
     &.confirm {
-        background: rgba(34, 197, 94, 0.1);
+        background: rgba(34, 197, 94, .1);
         color: #22c55e;
 
         &:hover {
@@ -744,7 +1000,7 @@
     }
 
     &.cancel {
-        background: rgba(239, 68, 68, 0.1);
+        background: rgba(239, 68, 68, .1);
         color: #ef4444;
 
         &:hover {
@@ -754,7 +1010,7 @@
     }
 
     &.complete {
-        background: rgba(59, 130, 246, 0.1);
+        background: rgba(59, 130, 246, .1);
         color: #3b82f6;
 
         &:hover {
@@ -768,22 +1024,23 @@
     text-align: center;
     padding: 2rem;
     color: $color-text-tertiary;
+    font-size: .875rem;
 }
 
 /* ===== DAY MODAL ===== */
 .day-slots-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: .75rem;
 }
 
 .day-slot-card {
-    background: $gradient-subtle;
-    border: 1px solid $glass-border;
+    background: rgba(37, 99, 235, .04);
+    border: 1px solid rgba(226, 232, 240, .6);
     border-radius: $radius-md;
-    padding: 1rem;
+    padding: .875rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
 
     &:hover {
         transform: translateY(-2px);
@@ -792,10 +1049,10 @@
 }
 
 .slot-time-range {
-    margin-bottom: 0.75rem;
+    margin-bottom: .625rem;
 
     strong {
-        font-size: 1rem;
+        font-size: .9375rem;
         color: $color-text-primary;
     }
 }
@@ -803,42 +1060,44 @@
 .slot-status-info {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
+    gap: .5rem;
+    margin-bottom: .625rem;
+    font-size: .8125rem;
 }
 
 .status-indicator {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: $radius-sm;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.875rem;
+    font-size: .8125rem;
 
     &.available {
-        background: rgba(34, 197, 94, 0.1);
+        background: rgba(34, 197, 94, .1);
     }
 
     &.booked {
-        background: rgba(249, 115, 22, 0.1);
+        background: rgba(249, 115, 22, .1);
     }
 
     &.unavailable {
-        background: rgba(100, 116, 139, 0.1);
+        background: rgba(100, 116, 139, .1);
     }
 }
 
 .slot-booking-preview {
     small {
         display: block;
-        font-size: 0.75rem;
+        font-size: .6875rem;
         color: $color-text-secondary;
-        margin-bottom: 0.25rem;
+        margin-bottom: .25rem;
+        font-weight: 600;
     }
 
     .booking-names {
-        font-size: 0.8125rem;
+        font-size: .8125rem;
         color: $color-text-primary;
         white-space: nowrap;
         overflow: hidden;
@@ -851,16 +1110,19 @@
 .btn-secondary,
 .btn-danger,
 .btn-icon {
-    padding: 0.625rem 1.25rem;
+    padding: .625rem 1rem;
     border: none;
-    border-radius: $radius-sm;
-    font-weight: 600;
-    font-size: 0.875rem;
+    border-radius: $radius-md;
+    font-weight: 700;
+    font-size: .8125rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
+    display: inline-flex;
+    align-items: center;
+    gap: .375rem;
 
     &:disabled {
-        opacity: 0.5;
+        opacity: .5;
         cursor: not-allowed;
     }
 }
@@ -871,18 +1133,23 @@
     box-shadow: $shadow-brand;
 
     &:hover:not(:disabled) {
-        transform: translateY(-2px);
+        transform: translateY(-1px);
         box-shadow: $shadow-brand-hover;
+    }
+
+    &:active {
+        transform: translateY(0);
     }
 }
 
 .btn-secondary {
-    background: $color-white;
+    background: #fff;
     color: $color-text-primary;
-    border: 1px solid $glass-border;
+    border: 1px solid rgba(226, 232, 240, .6);
 
     &:hover:not(:disabled) {
-        background: $gradient-subtle;
+        background: rgba(37, 99, 235, .05);
+        border-color: rgba(37, 99, 235, .3);
     }
 }
 
@@ -891,20 +1158,26 @@
     color: white;
 
     &:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, .3);
+    }
+
+    &:active {
+        transform: translateY(0);
     }
 }
 
 .btn-icon {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     padding: 0;
-    background: $color-white;
-    border: 1px solid $glass-border;
+    background: #fff;
+    border: 1px solid rgba(226, 232, 240, .6);
+    justify-content: center;
 
     &:hover:not(:disabled) {
-        background: $gradient-subtle;
+        background: rgba(37, 99, 235, .05);
+        border-color: rgba(37, 99, 235, .3);
     }
 
     .spin {
@@ -916,25 +1189,29 @@
 .loading-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, .95);
+    backdrop-filter: blur(4px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 100;
+    border-radius: $radius-lg;
 
     .spinner {
-        width: 40px;
-        height: 40px;
-        border: 3px solid $color-gray-200;
+        width: 36px;
+        height: 36px;
+        border: 3px solid rgba(37, 99, 235, .15);
         border-top-color: $color-brand-primary;
         border-radius: 50%;
-        animation: spin 0.8s linear infinite;
+        animation: spin .7s linear infinite;
     }
 
     p {
-        margin-top: 1rem;
+        margin-top: .875rem;
         color: $color-text-secondary;
+        font-size: .875rem;
+        font-weight: 600;
     }
 }
 
@@ -969,22 +1246,92 @@
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-    .calendar-grid {
-        grid-auto-rows: minmax(100px, auto);
+    .admin-bookings {
+        padding: 1rem 0;
     }
 
-    .calendar-day {
-        padding: 0.5rem;
-        min-height: 100px;
+    .page-header {
+        padding: .875rem 1rem;
     }
 
-    .slot-preview {
-        font-size: 0.7rem;
-        padding: 0.25rem 0.375rem;
+    .page-title {
+        font-size: 1.25rem;
+    }
+
+    .header-actions {
+        width: 100%;
+
+        button {
+            flex: 1;
+        }
+    }
+
+    .stats-compact {
+        padding-top: .875rem;
     }
 
     .modal {
-        max-height: 100vh;
-        border-radius: 0;
+        max-width: 100%;
+        margin: 0;
+    }
+
+    .modal-footer {
+        button {
+            flex: 1;
+        }
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .pattern-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .day-slots-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .slot-info-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-compact {
+        gap: .375rem;
+    }
+
+    .stat-item {
+        padding: .5rem;
+
+        .stat-icon {
+            font-size: 1rem;
+        }
+
+        strong {
+            font-size: 1.125rem;
+        }
+
+        span:last-child {
+            font-size: .625rem;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+
+    .calendar-day:hover,
+    .slot-preview:hover,
+    .mobile-slot-card:active,
+    .day-slot-card:hover,
+    .btn-primary:hover,
+    .btn-danger:hover {
+        transform: none;
     }
 }

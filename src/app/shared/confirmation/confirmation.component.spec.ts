@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OnePagerComponent } from './one-pager.component';
+import { ConfirmationComponent } from './confirmation.component';
 
-describe('OnePagerComponent', () => {
-  let component: OnePagerComponent;
-  let fixture: ComponentFixture<OnePagerComponent>;
+describe('ConfirmationComponent', () => {
+  let component: ConfirmationComponent;
+  let fixture: ComponentFixture<ConfirmationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OnePagerComponent]
+      imports: [ConfirmationComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(OnePagerComponent);
+    fixture = TestBed.createComponent(ConfirmationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -8,13 +8,9 @@ import { ServicesComponent } from './components/services/services.component';
 import { ServerStatusComponent } from './components/server-status/server-status.component';
 import { VorgehenComponent } from './components/vorgehen/vorgehen.component';
 import { FaqComponent } from './components/faq/faq.component';
-import { OnePagerComponent } from './components/services/one-pager/one-pager.component';
-import { SeoOptimizationComponent } from './components/services/seo-optimization/seo-optimization.component';
 import { MainContainerComponent } from './components/preview/main-container/main-container.component';
 import { InputFormComponent } from './components/preview/input-form/input-form.component';
 import { SurveyComponent } from './components/survey/survey.component';
-import { StandardWebsiteComponent } from './components/services/standard-website/standard-website.component';
-import { IndividualWebsiteComponent } from './components/services/individual-website/individual-website.component';
 import { MaintenanceComponent } from './components/maintenance/maintenance.component';
 import { AdminRequestsComponent } from './components/admin/admin-requests/admin-requests.component';
 import { adminGuard } from './guards/admin.guard';
@@ -30,6 +26,7 @@ import { BookingComponent } from './components/booking/booking.component';
 import { AdminBookingComponent } from './components/admin/admin-booking/admin-booking.component';
 import { ItServicesComponent } from './components/it-services/it-services.component';
 import { AdminNewsletterComponent } from './components/admin/admin-newsletter/admin-newsletter.component';
+import { CommonServiceComponent } from './components/services/common-service/common-service.component';
 
 const pageMainName = 'LeonardsMedia';
 export const routes: Routes = [
@@ -43,10 +40,6 @@ export const routes: Routes = [
     { path: 'faq', component: FaqComponent, title: pageMainName + ' | FAQ', data: { description: 'FAQ von LeonardsMedia.' } },
     { path: 'policy', component: PolicyComponent, title: pageMainName + ' | Datenschutz', data: { description: 'Datenschutzerklärung von LeonardsMedia.' } },
     { path: 'booking', component: BookingComponent, title: pageMainName + ' | Buchung', data: { description: 'Buchungsseite von LeonardsMedia.' } },
-    { path: 'services/one-pager', component: OnePagerComponent, title: pageMainName + ' | Einfache Website', data: { description: 'Einfache Webseite von LeonardsMedia.' } },
-    { path: 'services/standard-website', component: StandardWebsiteComponent, title: pageMainName + ' | Standard Website', data: { description: 'Standard Website von LeonardsMedia.' } },
-    { path: 'services/individual-website', component: IndividualWebsiteComponent, title: pageMainName + ' | Individuelle Website', data: { description: 'Individuelle Website von LeonardsMedia.' } },
-    { path: 'services/seo-optimization', component: SeoOptimizationComponent, title: pageMainName + ' | SEO Optimierung', data: { description: 'SEO Optimierung von LeonardsMedia.' } },
     { path: 'survey', component: SurveyComponent, title: pageMainName + ' | Umfrage', data: { description: 'Umfrage von LeonardsMedia.' } },
     { path: 'preview', component: MainContainerComponent, title: pageMainName + ' | Vorschau', data: { description: 'Vorschau von LeonardsMedia.' } },
     { path: 'preview-form', component: InputFormComponent, title: pageMainName + ' | Vorschau Formular', data: { description: 'Vorschau Formular von LeonardsMedia.' } },
@@ -55,6 +48,7 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent, title: pageMainName + ' | Register', data: { description: 'Register von LeonardsMedia.' } },
     { path: 'generation-loading', component: GenerationLoadingComponent, title: pageMainName + ' | Wird erstellt', data: { description: 'Website wird generiert' } },
     { path: 'it-services', component: ItServicesComponent, title: pageMainName + ' | IT-Services', data: { description: 'IT-Services von LeonardsMedia.' } },
+    { path: 'services/:slug', component: CommonServiceComponent, title: pageMainName + ' | Service Details', data: { description: 'Details zu unserer Dienstleistung.' } },
 
     { path: 'admin/requests', component: AdminRequestsComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Requests', data: { description: 'Admin Requests von LeonardsMedia.' } },
     { path: 'admin/users', component: AdminUsersComponent, canActivate: [authGuard, adminGuard], title: pageMainName + ' | Admin Users', data: { description: 'Admin Users von LeonardsMedia.' } },

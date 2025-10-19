@@ -124,6 +124,52 @@
             </table>
         </div>
 
+        <div *ngIf="!loading && !error && filteredPages.length > 0" class="pages-mobile-list">
+            <div *ngFor="let page of filteredPages" class="page-mobile-card">
+
+                <div class="page-mobile-header">
+                    <div class="page-mobile-title">
+                        <strong>{{ page.name }}</strong>
+                        <span class="page-size">{{ (page.pageContent.length / 1024).toFixed(1) }} KB</span>
+                    </div>
+                </div>
+
+                <div class="page-mobile-user" *ngIf="page.user">
+                    <span class="user-name">{{ page.user.name }}</span>
+                    <span class="user-email">{{ page.user.email }}</span>
+                </div>
+
+                <div class="page-mobile-user" *ngIf="!page.user">
+                    <span class="user-name">No Account</span>
+                    <span class="user-email">{{ page.contactEmail }}</span>
+                </div>
+
+                <div class="page-mobile-desc" [class.no-desc]="!page.description">
+                    {{ page.description || 'Keine Beschreibung' }}
+                </div>
+
+                <div class="page-mobile-meta">
+                    <span>📅 {{ formatDate(page.createdAt) }}</span>
+                </div>
+
+                <div class="page-mobile-actions">
+                    <button class="mobile-action-btn primary" (click)="openPreview(page)">
+                        👁️ Vorschau
+                    </button>
+                    <button class="mobile-action-btn secondary" (click)="downloadPage(page)">
+                        ⬇️ Download
+                    </button>
+                    <button class="mobile-action-btn info" (click)="copyContent(page)">
+                        📋 Kopieren
+                    </button>
+                    <button class="mobile-action-btn danger" (click)="deletePage(page)">
+                        🗑️ Löschen
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
         <!-- Results Count -->
         <div class="results-footer" *ngIf="!loading && !error && filteredPages.length > 0">
             <p>{{ filteredPages.length }} von {{ pages.length }} Seiten angezeigt</p>

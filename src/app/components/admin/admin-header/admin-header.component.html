@@ -1,13 +1,29 @@
-<div class="admin-header">
-    <div class="container">
-        <nav class="admin-nav" role="navigation" aria-label="Admin Navigation">
-            <a *ngFor="let route of routes" class="nav-link" [class.nav-link--active]="isActive(route.path)"
-                [attr.aria-current]="isActive(route.path) ? 'page' : null" [attr.href]="getHref(route.path)"
-                (click)="routeTo(route.path, $event)" [attr.aria-label]="route.label">
-                <span class="material-symbols-outlined" *ngIf="route.icon">{{ route.icon }}</span>
-                {{ route.label }}
+<div class="admin-header" role="banner">
+    <div class="container header__inner">
+        <!-- (Optional) Admin-Logo / Titel -->
+        <div class="brand" (click)="routeTo('/admin/requests')" tabindex="0" role="link" aria-label="Admin Home">
+            <span class="material-symbols-outlined" aria-hidden="true">admin_panel_settings</span>
+            <span class="brand__label">{{ getCurrentRouteLabel() }}</span>
+        </div>
+
+        <!-- NAV -->
+        <nav id="admin-nav" class="admin-nav" [class.open]="open" role="navigation" aria-label="Admin Navigation"
+            [attr.aria-hidden]="!open && isMobile ? 'true' : null">
+            <a *ngFor="let route of routes" class="nav-link" routerLinkActive="nav-link--active"
+                [routerLink]="normalize(route.path)" [routerLinkActiveOptions]="{ exact: true }"
+                [attr.aria-label]="route.label" (click)="onNavClick()">
+                <span class="material-symbols-outlined" *ngIf="route.icon" aria-hidden="true">{{ route.icon }}</span>
+                <span class="nav-label">{{ route.label }}</span>
             </a>
         </nav>
 
+        <!-- Burger -->
+        <button class="nav-toggle" type="button" [attr.aria-expanded]="open" aria-controls="admin-nav"
+            [attr.aria-label]="open ? 'Menü schließen' : 'Menü öffnen'" (click)="toggle()">
+            <span class="material-symbols-outlined">{{ open ? 'close' : 'menu' }}</span>
+        </button>
     </div>
+
+    <!-- Backdrop -->
+    <div class="backdrop" *ngIf="open" (click)="toggle()" aria-hidden="true"></div>
 </div>

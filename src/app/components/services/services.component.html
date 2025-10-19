@@ -4,7 +4,7 @@
 
         <!-- HERO -->
         <header class="services-hero">
-            <h1 class="gradient-text">Was ich für dich bauen kann</h1>
+            <h1 class="gradient-text">Was wir für dich bauen können</h1>
             <p class="services-subtitle">
                 Drei klare Pakete. Du suchst dir aus was passt.
             </p>
@@ -12,18 +12,16 @@
 
         <!-- SERVICE CARDS -->
         <div class="services-grid">
-            <article class="service-card" *ngFor="let s of services" [class.featured]="s.badge === '⭐ Am beliebtesten'">
+            <article class="service-card" *ngFor="let s of services" [class.featured]="s.badge. text">
 
                 <!-- Badge -->
                 <div class="card-badge" *ngIf="s.badge">
-                    {{ s.badge }}
+                  {{ s.badge.icon }}  {{ s.badge.text }}
                 </div>
 
                 <!-- Icon -->
                 <div class="card-icon">
-                    <span class="icon-emoji" *ngIf="s.badge === '🚀 Schnellstart'">🚀</span>
-                    <span class="icon-emoji" *ngIf="s.badge === '⭐ Am beliebtesten'">⭐</span>
-                    <span class="icon-emoji" *ngIf="s.badge === '💎 Individuell'">💎</span>
+                    <span class="icon-emoji">{{ s.badge.icon }}</span>
                 </div>
 
                 <!-- Content -->
