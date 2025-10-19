@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ApiService, PageAiMockupDto } from '../../../api/api.service';
+import { ConfirmationService } from '../../../shared/confirmation/confirmation.service';
 
 interface WebsiteType {
   value: string;
@@ -51,12 +52,12 @@ export class InputFormComponent implements OnInit {
   private apiService = inject(ApiService);
   public authService = inject(AuthService);
   public router = inject(Router);
+  private confirmationService = inject(ConfirmationService);
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn?.() ?? false;
     this.currentUrl = this.router.url.split('?')[0];
 
-    // Validatoren nur ergänzen, wenn eingeloggt (dein ursprüngliches Verhalten)
     if (this.isLoggedIn) {
       this.applyValidatorsAndSubscriptions();
     }
@@ -106,19 +107,29 @@ export class InputFormComponent implements OnInit {
     return this.form.get('contentInformation')?.value?.length || 0;
   }
 
-  onReset(): void {
-    if (confirm('Alle Eingaben zurücksetzen?')) {
-      this.form.reset({
-        customerType: '',
-        projectName: '',
-        companyName: '',
-        typeOfWebsite: '',
-        primaryColor: '#2563eb',
-        designStyle: 'modern',
-        contentInformation: '',
-        email: ''
-      });
-    }
+  // NEU: Mit Confirmation Service
+  async onReset(): Promise<void> {
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Formular zurücksetzen',
+      message: 'Möchtest du wirklich alle Eingaben zurücksetzen?',
+      confirmText: 'Ja, zurücksetzen',
+      cancelText: 'Abbrechen',
+      type: 'warning',
+      icon: 'restart_alt'
+    });
+
+    if (!confirmed) return;
+
+    this.form.reset({
+      customerType: '',
+      projectName: '',
+      companyName: '',
+      typeOfWebsite: '',
+      primaryColor: '#2563eb',
+      designStyle: 'modern',
+      contentInformation: '',
+      email: ''
+    });
   }
 
   toggleQualitySelector(): void {
@@ -137,13 +148,12 @@ export class InputFormComponent implements OnInit {
       return;
     }
 
-    // Wenn eingeloggt, gelten deine strengeren Pflichtfelder (weil Validatoren hinzugefügt wurden)
+    // Wenn eingeloggt, gelten strengere Pflichtfelder
     if (!this.form.valid) {
       Object.keys(this.form.controls).forEach(key => this.form.get(key)?.markAsTouched());
-      // Im Public-Flow sind nur manche Felder Pflicht; damit Public nicht „hängen bleibt“,
-      // erlauben wir trotzdem die Submission, wenn nur Email valid ist.
+      
       if (!this.isLoggedIn) {
-        // Fällt durch zum Public-Submit unten
+        // Public-Flow erlaubt Submission mit nur Email
       } else {
         return;
       }
@@ -164,8 +174,8 @@ export class InputFormComponent implements OnInit {
       };
 
       const call$ = this.isLoggedIn
-        ? this.apiService.generateWebsiteMockup(dto, this.selectedQuality)        // auth route
-        : this.apiService.generateWebsiteMockupPublic(dto, this.selectedQuality); // public route
+        ? this.apiService.generateWebsiteMockup(dto, this.selectedQuality)
+        : this.apiService.generateWebsiteMockupPublic(dto, this.selectedQuality);
 
       call$.subscribe({
         next: (response: any) => {
@@ -173,25 +183,45 @@ export class InputFormComponent implements OnInit {
           this.router.navigate(['/generation-loading']);
           this.loading = false;
         },
-        error: (err: any) => {
+        error: async (err: any) => {
           console.error('[mockup] API call failed:', err);
 
+          let title = 'Fehler';
           let message = 'Ein Fehler ist aufgetreten.';
+          let icon: 'error' | 'warning' = 'error';
+
           if (err.status === 401 && this.isLoggedIn) {
-            message = 'Sitzung abgelaufen. Bitte erneut anmelden.';
+            title = 'Sitzung abgelaufen';
+            message = 'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.';
+            icon = 'warning';
             this.authService.logout?.();
           } else if (err.error?.message) {
             message = err.error.message;
           }
 
-          alert(message);
+          await this.confirmationService.confirm({
+            title,
+            message,
+            confirmText: 'OK',
+            type: 'danger',
+            icon
+          });
+
           this.loading = false;
         }
       });
 
     } catch (err: any) {
       console.error('[mockup] Unexpected error:', err);
-      alert('Ein unerwarteter Fehler ist aufgetreten.');
+      
+      await this.confirmationService.confirm({
+        title: 'Unerwarteter Fehler',
+        message: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.',
+        confirmText: 'OK',
+        type: 'danger',
+        icon: 'error'
+      });
+      
       this.loading = false;
     }
   }

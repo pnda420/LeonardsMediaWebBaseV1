@@ -1,12 +1,10 @@
-// ==================== pages/admin-users/admin-users.component.ts ====================
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PageTitleComponent } from '../../../shared/page-title/page-title.component';
 import { ApiService } from '../../../api/api.service';
 import { User, UserRole } from '../../../services/auth.service';
 import { AdminHeaderComponent } from "../admin-header/admin-header.component";
-
+import { ConfirmationService } from '../../../shared/confirmation/confirmation.service';
 
 interface UserStats {
   totalUsers: number;
@@ -32,7 +30,10 @@ export class AdminUsersComponent implements OnInit {
 
   UserRole = UserRole; // Für Template
 
-  constructor(private api: ApiService) { }
+  constructor(
+    private api: ApiService,
+    private confirmationService: ConfirmationService
+  ) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -72,38 +73,65 @@ export class AdminUsersComponent implements OnInit {
 
       // Newsletter Filter (optional - falls User das Property hat)
       const matchesNewsletter = this.filterNewsletter === 'all';
-      // || (this.filterNewsletter === 'subscribed' && user.wantsNewsletter) ||
-      // (this.filterNewsletter === 'not-subscribed' && !user.wantsNewsletter);
 
       return matchesSearch && matchesRole && matchesNewsletter;
     });
   }
 
-  deleteUser(user: User) {
-    if (!confirm(`User "${user.name}" wirklich löschen?\n\nDiese Aktion kann nicht rückgängig gemacht werden!`)) {
-      return;
-    }
+  // NEU: Mit Confirmation Service
+  async deleteUser(user: User) {
+    const confirmed = await this.confirmationService.confirm({
+      title: 'User löschen',
+      message: `Möchtest du den User "${user.name}" wirklich löschen?\n\nDiese Aktion kann nicht rückgängig gemacht werden.`,
+      confirmText: 'Ja, löschen',
+      cancelText: 'Abbrechen',
+      type: 'danger',
+      icon: 'delete'
+    });
+
+    if (!confirmed) return;
 
     this.api.deleteUser(user.id).subscribe({
       next: () => {
         this.users = this.users.filter(u => u.id !== user.id);
         console.log('✅ User gelöscht:', user.email);
       },
-      error: (err) => {
+      error: async (err) => {
         console.error('❌ Fehler beim Löschen:', err);
-        alert('Fehler beim Löschen des Users');
+        await this.confirmationService.confirm({
+          title: 'Fehler',
+          message: 'Beim Löschen des Users ist ein Fehler aufgetreten.',
+          confirmText: 'OK',
+          type: 'danger',
+          icon: 'error'
+        });
       }
     });
   }
 
-  makeAdmin(user: User) {
-    if (!confirm(`"${user.name}" zum Admin machen?`)) {
-      return;
-    }
+  // NEU: Mit Confirmation Service
+  async makeAdmin(user: User) {
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Admin-Rechte vergeben',
+      message: `Möchtest du "${user.name}" zum Administrator machen?`,
+      confirmText: 'Ja, zum Admin machen',
+      cancelText: 'Abbrechen',
+      type: 'warning',
+      icon: 'admin_panel_settings'
+    });
+
+    if (!confirmed) return;
 
     // TODO: Implementiere Update-Endpoint im Backend für Role
     console.log('⚠️ Role-Update noch nicht implementiert');
-    alert('Role-Update Endpoint muss noch im Backend implementiert werden');
+    
+    await this.confirmationService.confirm({
+      title: 'Noch nicht verfügbar',
+      message: 'Der Role-Update Endpoint muss noch im Backend implementiert werden.',
+      confirmText: 'OK',
+      type: 'info',
+      icon: 'info'
+    });
 
     // Wenn implementiert:
     // this.api.updateUser(user.id, { role: UserRole.ADMIN }).subscribe({
@@ -113,26 +141,67 @@ export class AdminUsersComponent implements OnInit {
     //       this.users[index] = updated;
     //     }
     //   },
-    //   error: (err) => {
+    //   error: async (err) => {
     //     console.error('Fehler:', err);
+    //     await this.confirmationService.confirm({
+    //       title: 'Fehler',
+    //       message: 'Beim Aktualisieren der Rolle ist ein Fehler aufgetreten.',
+    //       confirmText: 'OK',
+    //       type: 'danger',
+    //       icon: 'error'
+    //     });
     //   }
     // });
   }
 
-  removeAdmin(user: User) {
-    if (!confirm(`Admin-Rechte von "${user.name}" entfernen?`)) {
-      return;
-    }
+  // NEU: Mit Confirmation Service
+  async removeAdmin(user: User) {
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Admin-Rechte entfernen',
+      message: `Möchtest du die Admin-Rechte von "${user.name}" wirklich entfernen?`,
+      confirmText: 'Ja, entfernen',
+      cancelText: 'Abbrechen',
+      type: 'warning',
+      icon: 'remove_moderator'
+    });
+
+    if (!confirmed) return;
 
     // TODO: Implementiere Update-Endpoint im Backend für Role
     console.log('⚠️ Role-Update noch nicht implementiert');
-    alert('Role-Update Endpoint muss noch im Backend implementiert werden');
+    
+    await this.confirmationService.confirm({
+      title: 'Noch nicht verfügbar',
+      message: 'Der Role-Update Endpoint muss noch im Backend implementiert werden.',
+      confirmText: 'OK',
+      type: 'info',
+      icon: 'info'
+    });
   }
 
-  copyEmail(email: string) {
-    navigator.clipboard.writeText(email).then(() => {
+  async copyEmail(email: string) {
+    try {
+      await navigator.clipboard.writeText(email);
       console.log('📋 Email kopiert:', email);
-    });
+      
+      // Optional: Kurze Erfolgsbestätigung
+      await this.confirmationService.confirm({
+        title: 'Kopiert!',
+        message: `Die E-Mail-Adresse wurde in die Zwischenablage kopiert.`,
+        confirmText: 'OK',
+        type: 'success',
+        icon: 'check_circle'
+      });
+    } catch (err) {
+      console.error('Fehler beim Kopieren:', err);
+      await this.confirmationService.confirm({
+        title: 'Fehler',
+        message: 'Beim Kopieren ist ein Fehler aufgetreten.',
+        confirmText: 'OK',
+        type: 'danger',
+        icon: 'error'
+      });
+    }
   }
 
   formatDate(dateString?: Date): string {

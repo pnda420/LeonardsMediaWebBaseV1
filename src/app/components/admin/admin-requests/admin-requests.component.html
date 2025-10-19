@@ -142,7 +142,7 @@
                             <span class="btn__icon" aria-hidden="true">↩️</span>
                             <span class="btn__label">Wieder öffnen</span>
                         </button>
-                        <button class="btn btn--danger" (click)="requestToDelete = request.id; showModal = true">
+                        <button class="btn btn--danger" (click)="deleteRequest(request.id)">
                             <span class="btn__icon" aria-hidden="true">🗑️</span>
                             <span class="btn__label">Löschen</span>
                         </button>
@@ -153,7 +153,3 @@
 
     </div>
 </section>
-
-<app-confirmation [isOpen]="showModal" [config]="modalConfig" [loading]="modalLoading" (confirmed)="onConfirmDelete()"
-    (cancelled)="onCancelDelete()">
-</app-confirmation>

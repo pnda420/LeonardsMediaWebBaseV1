@@ -27,3 +27,8 @@
 
 <!-- Toast Container (immer sichtbar) -->
 <app-toast-container></app-toast-container>
+
+<app-confirmation [isOpen]="(confirmationState$ | async)?.isOpen || false"
+  [config]="(confirmationState$ | async)?.config || defaultConfig" (confirmed)="onConfirmed()"
+  (cancelled)="onCancelled()">
+</app-confirmation>

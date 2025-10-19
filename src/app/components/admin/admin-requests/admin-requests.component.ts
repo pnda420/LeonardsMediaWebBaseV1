@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminHeaderComponent } from "../admin-header/admin-header.component";
-import { ConfirmationConfig, ConfirmationComponent } from '../../../shared/confirmation/confirmation.component';
+import { ConfirmationService } from '../../../shared/confirmation/confirmation.service';
 import { ContactRequest, ApiService, ServiceType } from '../../../api/api.service';
 
 type Tab = 'unprocessed' | 'processed';
@@ -9,7 +9,7 @@ type Tab = 'unprocessed' | 'processed';
 @Component({
   selector: 'app-admin-requests',
   standalone: true,
-  imports: [CommonModule, AdminHeaderComponent, ConfirmationComponent],
+  imports: [CommonModule, AdminHeaderComponent],
   templateUrl: './admin-requests.component.html',
   styleUrl: './admin-requests.component.scss'
 })
@@ -20,22 +20,14 @@ export class AdminRequestsComponent implements OnInit {
   loading = true;
   error = '';
 
-  showModal = false;
-  modalLoading = false;
-  requestToDelete: string | null = null;
+  constructor(
+    private api: ApiService,
+    private confirmationService: ConfirmationService
+  ) { }
 
-  modalConfig: ConfirmationConfig = {
-    title: 'Anfrage löschen',
-    message: 'Diese Aktion kann nicht rückgängig gemacht werden.',
-    confirmText: 'Ja, löschen',
-    cancelText: 'Abbrechen',
-    type: 'danger',
-    icon: 'delete'
-  };
-
-  constructor(private api: ApiService) { }
-
-  ngOnInit(): void { this.loadRequests(); }
+  ngOnInit(): void { 
+    this.loadRequests(); 
+  }
 
   get currentRequests(): ContactRequest[] {
     return this.activeTab === 'unprocessed' ? this.unprocessedRequests : this.processedRequests;
@@ -43,10 +35,13 @@ export class AdminRequestsComponent implements OnInit {
 
   trackById = (_: number, r: ContactRequest) => r.id;
 
-  switchTab(tab: Tab) { this.activeTab = tab; }
+  switchTab(tab: Tab) { 
+    this.activeTab = tab; 
+  }
 
   loadRequests() {
-    this.loading = true; this.error = '';
+    this.loading = true; 
+    this.error = '';
     Promise.all([
       this.api.getUnprocessedContactRequests().toPromise(),
       this.api.getAllContactRequests().toPromise()
@@ -72,7 +67,16 @@ export class AdminRequestsComponent implements OnInit {
           this.processedRequests.unshift({ ...request, isProcessed: true });
         }
       },
-      error: (err) => { console.error('Fehler beim Markieren:', err); alert('Fehler beim Markieren der Anfrage'); }
+      error: async (err) => { 
+        console.error('Fehler beim Markieren:', err);
+        await this.confirmationService.confirm({
+          title: 'Fehler',
+          message: 'Beim Markieren der Anfrage ist ein Fehler aufgetreten.',
+          confirmText: 'OK',
+          type: 'danger',
+          icon: 'error'
+        });
+      }
     });
   }
 
@@ -85,25 +89,49 @@ export class AdminRequestsComponent implements OnInit {
           this.unprocessedRequests.unshift({ ...request, isProcessed: false });
         }
       },
-      error: (err) => { console.error('Fehler beim Markieren:', err); alert('Fehler beim Markieren der Anfrage'); }
+      error: async (err) => { 
+        console.error('Fehler beim Markieren:', err);
+        await this.confirmationService.confirm({
+          title: 'Fehler',
+          message: 'Beim Markieren der Anfrage ist ein Fehler aufgetreten.',
+          confirmText: 'OK',
+          type: 'danger',
+          icon: 'error'
+        });
+      }
     });
   }
 
-  onConfirmDelete() {
-    if (!this.requestToDelete) return;
-    this.modalLoading = true;
-    this.api.deleteContactRequest(this.requestToDelete).subscribe({
-      next: () => {
-        this.unprocessedRequests = this.unprocessedRequests.filter(r => r.id !== this.requestToDelete);
-        this.processedRequests = this.processedRequests.filter(r => r.id !== this.requestToDelete);
-        this.showModal = false; this.requestToDelete = null;
-      },
-      error: (err) => { console.error('Fehler beim Löschen:', err); alert('Fehler beim Löschen der Anfrage'); },
-      complete: () => { this.modalLoading = false; }
+  // NEU: Verwendet den Service statt lokalem Modal-State
+  async deleteRequest(id: string) {
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Anfrage löschen',
+      message: 'Diese Aktion kann nicht rückgängig gemacht werden.',
+      confirmText: 'Ja, löschen',
+      cancelText: 'Abbrechen',
+      type: 'danger',
+      icon: 'delete'
     });
-  }
 
-  onCancelDelete() { this.showModal = false; this.requestToDelete = null; }
+    if (confirmed) {
+      this.api.deleteContactRequest(id).subscribe({
+        next: () => {
+          this.unprocessedRequests = this.unprocessedRequests.filter(r => r.id !== id);
+          this.processedRequests = this.processedRequests.filter(r => r.id !== id);
+        },
+        error: async (err) => { 
+          console.error('Fehler beim Löschen:', err);
+          await this.confirmationService.confirm({
+            title: 'Fehler',
+            message: 'Beim Löschen der Anfrage ist ein Fehler aufgetreten.',
+            confirmText: 'OK',
+            type: 'danger',
+            icon: 'error'
+          });
+        }
+      });
+    }
+  }
 
   getServiceLabel(type: ServiceType): string {
     const labels: Record<ServiceType, string> = {
@@ -113,9 +141,7 @@ export class AdminRequestsComponent implements OnInit {
       [ServiceType.INDIVIDUAL_WEBSITE]: 'Individual Website',
       [ServiceType.SEO]: 'SEO Optimierung'
     };
-    // Fallback auf enum-Wert
     return (type in labels ? labels[type] : String(type)) || '—';
-    // Tipp: Wenn ServiceType numerisch ist, ggf. Mapping umdrehen.
   }
 
   formatDate(dateInput: Date | string): string {
@@ -134,7 +160,6 @@ export class AdminRequestsComponent implements OnInit {
     return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
 
-  /** Zeigt ALLE Felder, die nicht schon prominent gerendert werden */
   getAdditionalFields(request: any): Array<{ key: string; value: any; isDate: boolean }> {
     const shown = new Set(['id', 'name', 'email', 'phoneNumber', 'serviceType', 'message', 'createdAt', 'prefersCallback', 'isProcessed']);
     return Object.keys(request || {})

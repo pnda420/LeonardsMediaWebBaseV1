@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../../api/api.service';
 import { AdminHeaderComponent } from "../admin-header/admin-header.component";
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ConfirmationService } from '../../../shared/confirmation/confirmation.service';
 
 interface GeneratedPage {
   id: string;
@@ -27,7 +28,7 @@ interface GeneratedPage {
   templateUrl: './admin-gen-pages.component.html',
   styleUrl: './admin-gen-pages.component.scss'
 })
-export class AdminGenPagesComponent implements OnInit {
+export class AdminGenPagesComponent implements OnInit, OnDestroy {
   @ViewChild('previewIframe') previewIframe?: ElementRef<HTMLIFrameElement>;
 
   pages: GeneratedPage[] = [];
@@ -41,11 +42,19 @@ export class AdminGenPagesComponent implements OnInit {
 
   constructor(
     private api: ApiService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
     this.loadPages();
+  }
+
+  ngOnDestroy() {
+    // Cleanup beim Zerstören der Komponente
+    if (this.currentBlobUrl) {
+      URL.revokeObjectURL(this.currentBlobUrl);
+    }
   }
 
   loadPages() {
@@ -182,7 +191,7 @@ export class AdminGenPagesComponent implements OnInit {
 
   private extractBody(html: string): string {
     // Entferne <style> Tags
-    let  body= html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+    let body = html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
 
     const bodyMatch = body.match(/<body[^>]*>([\s\S]*)<\/body>/i);
     if (bodyMatch) {
@@ -192,10 +201,18 @@ export class AdminGenPagesComponent implements OnInit {
     return body;
   }
 
-  deletePage(page: GeneratedPage) {
-    if (!confirm(`Page "${page.name}" wirklich löschen?\n\nDiese Aktion kann nicht rückgängig gemacht werden!`)) {
-      return;
-    }
+  // NEU: Mit Confirmation Service
+  async deletePage(page: GeneratedPage) {
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Page löschen',
+      message: `Möchtest du die Page "${page.name}" wirklich löschen?\n\nDiese Aktion kann nicht rückgängig gemacht werden.`,
+      confirmText: 'Ja, löschen',
+      cancelText: 'Abbrechen',
+      type: 'danger',
+      icon: 'delete'
+    });
+
+    if (!confirmed) return;
 
     this.api.deleteGeneratedPage(page.id).subscribe({
       next: () => {
@@ -205,9 +222,15 @@ export class AdminGenPagesComponent implements OnInit {
           this.closePreview();
         }
       },
-      error: (err) => {
+      error: async (err) => {
         console.error('Fehler beim Löschen:', err);
-        alert('Fehler beim Löschen der Page');
+        await this.confirmationService.confirm({
+          title: 'Fehler',
+          message: 'Beim Löschen der Page ist ein Fehler aufgetreten.',
+          confirmText: 'OK',
+          type: 'danger',
+          icon: 'error'
+        });
       }
     });
   }
@@ -224,12 +247,28 @@ export class AdminGenPagesComponent implements OnInit {
     console.log('⬇️ Page heruntergeladen');
   }
 
-  copyContent(page: GeneratedPage) {
+  async copyContent(page: GeneratedPage) {
     const fullHtml = this.createFullHtmlDocument(page.pageContent);
-    navigator.clipboard.writeText(fullHtml).then(() => {
+    try {
+      await navigator.clipboard.writeText(fullHtml);
       console.log('📋 Content kopiert');
-      alert('✅ Content in Zwischenablage kopiert!');
-    });
+      await this.confirmationService.confirm({
+        title: 'Kopiert!',
+        message: 'Der Content wurde in die Zwischenablage kopiert.',
+        confirmText: 'OK',
+        type: 'success',
+        icon: 'check_circle'
+      });
+    } catch (err) {
+      console.error('Fehler beim Kopieren:', err);
+      await this.confirmationService.confirm({
+        title: 'Fehler',
+        message: 'Beim Kopieren ist ein Fehler aufgetreten.',
+        confirmText: 'OK',
+        type: 'danger',
+        icon: 'error'
+      });
+    }
   }
 
   formatDate(dateString: Date): string {
@@ -255,12 +294,5 @@ export class AdminGenPagesComponent implements OnInit {
 
   clearFilters() {
     this.searchTerm = '';
-  }
-
-  ngOnDestroy() {
-    // Cleanup beim Zerstören der Komponente
-    if (this.currentBlobUrl) {
-      URL.revokeObjectURL(this.currentBlobUrl);
-    }
   }
 }

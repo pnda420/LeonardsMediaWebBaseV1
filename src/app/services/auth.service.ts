@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
@@ -42,7 +42,7 @@ export class AuthService {
   private loadUserFromStorage() {
     const token = localStorage.getItem('access_token');
     const userJson = localStorage.getItem('current_user');
-    
+
     if (token && userJson) {
       try {
         const user = JSON.parse(userJson);
@@ -51,6 +51,27 @@ export class AuthService {
         this.logout();
       }
     }
+  }
+
+  verifyAdminStatus(): Observable<boolean> {
+    if (!this.getToken()) {
+      return of(false);
+    }
+
+    return this.http.get<User>(`${API_URL}/auth/me`).pipe(
+      map(user => {
+        localStorage.setItem('current_user', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+        return user.role === UserRole.ADMIN;
+      }),
+      catchError((error) => {
+        console.error('Admin-Validierung fehlgeschlagen:', error);
+        if (error.status === 401) {
+          this.logout();
+        }
+        return of(false);
+      })
+    );
   }
 
   register(email: string, name: string, password: string): Observable<LoginResponse> {

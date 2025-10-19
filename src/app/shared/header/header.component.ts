@@ -1,39 +1,37 @@
-// ==================== header.component.ts (UPDATED) ====================
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { PreviewService } from '../../state/preview.service';
 import { AuthService, User, UserRole } from '../../services/auth.service';
 import { ToastService } from '../toasts/toast.service';
-import { IconComponent } from "../icon/icon.component";
+import { ConfirmationService } from '../confirmation/confirmation.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, CommonModule, IconComponent],
+  imports: [RouterModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
   open = false;
   user: User | null = null;
-  UserRole = UserRole; // Für Template
+  UserRole = UserRole;
 
   constructor(
     @Inject(DOCUMENT) private doc: Document,
     public router: Router,
     private previewService: PreviewService,
     private authService: AuthService,
-    private toasts: ToastService
+    private toasts: ToastService,
+    private confirmationService: ConfirmationService 
   ) { }
 
   ngOnInit(): void {
-    // Subscribe zu User-Änderungen (wichtig!)
     this.authService.currentUser$.subscribe(user => {
       this.user = user;
     });
   }
-
 
   toggle() {
     this.open = !this.open;
@@ -52,14 +50,26 @@ export class HeaderComponent implements OnInit {
     return this.previewService.previews().length;
   }
 
-  logout() {
-    this.authService.logout();
-    this.toasts.success('Erfolgreich abgemeldet.', );
-    this.router.navigate(['/']);
+  // GEÄNDERT!
+  async logout() {
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Abmelden',
+      message: 'Möchtest du dich wirklich abmelden?',
+      confirmText: 'Ja, abmelden',
+      cancelText: 'Abbrechen',
+      type: 'warning',
+      icon: 'logout'
+    });
 
-    this.open = false; // Menu schließen
-    this.doc.body.style.overflow = '';
-    this.doc.body.style.touchAction = '';
+    if (confirmed) {
+      this.authService.logout();
+      this.toasts.success('Erfolgreich abgemeldet.');
+      this.router.navigate(['/']);
+
+      this.open = false;
+      this.doc.body.style.overflow = '';
+      this.doc.body.style.touchAction = '';
+    }
   }
 
   getRoleBadgeClass(): string {

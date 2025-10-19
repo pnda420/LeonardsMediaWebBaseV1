@@ -5,6 +5,7 @@ import { PreviewService } from '../../../state/preview.service';
 import { AuthService } from '../../../services/auth.service';
 import { ApiService } from '../../../api/api.service';
 import { FormsModule } from '@angular/forms';
+import { ConfirmationService } from '../../../shared/confirmation/confirmation.service';
 
 @Component({
   selector: 'app-main-container',
@@ -19,11 +20,6 @@ export class MainContainerComponent implements OnInit, OnDestroy {
   loading = false;
   hasContent = false;
 
-  /**
-   * Öffentliche Vorschau, wenn via URL ?id=... aufgerufen wird
-   * und (a) der User nicht eingeloggt ist, oder
-   * (b) die Page nicht in den User-Previews vorhanden ist.
-   */
   publicPreview: {
     id: string;
     name: string;
@@ -37,7 +33,8 @@ export class MainContainerComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private api: ApiService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private confirmationService: ConfirmationService
   ) {
     // Effekt für Live-Updates der Preview-Liste (nur für eingeloggte Nutzer)
     effect(() => {
@@ -315,27 +312,50 @@ export class MainContainerComponent implements OnInit, OnDestroy {
     });
   }
 
+  // NEU: Mit Confirmation Service
   async deleteCurrent(): Promise<void> {
     const selected = this.previewService.selected();
     const currentUser = this.authService.getCurrentUser();
 
-    if (selected?.pageId && currentUser?.id) {
-      if (confirm('Diese Seite wirklich löschen?')) {
-        this.loading = true;
-        const success = await this.previewService.deletePage(selected.pageId, currentUser.id);
-        this.loading = false;
+    if (!selected?.pageId || !currentUser?.id) return;
 
-        if (success) {
-          // URL Parameter entfernen
-          this.router.navigate([], {
-            relativeTo: this.route,
-            queryParams: {}
-          });
-          alert('Seite gelöscht!');
-        } else {
-          alert('Fehler beim Löschen');
-        }
-      }
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Seite löschen',
+      message: 'Möchtest du diese Seite wirklich löschen?\n\nDiese Aktion kann nicht rückgängig gemacht werden.',
+      confirmText: 'Ja, löschen',
+      cancelText: 'Abbrechen',
+      type: 'danger',
+      icon: 'delete'
+    });
+
+    if (!confirmed) return;
+
+    this.loading = true;
+    const success = await this.previewService.deletePage(selected.pageId, currentUser.id);
+    this.loading = false;
+
+    if (success) {
+      // URL Parameter entfernen
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {}
+      });
+
+      await this.confirmationService.confirm({
+        title: 'Gelöscht!',
+        message: 'Die Seite wurde erfolgreich gelöscht.',
+        confirmText: 'OK',
+        type: 'success',
+        icon: 'check_circle'
+      });
+    } else {
+      await this.confirmationService.confirm({
+        title: 'Fehler',
+        message: 'Beim Löschen der Seite ist ein Fehler aufgetreten.',
+        confirmText: 'OK',
+        type: 'danger',
+        icon: 'error'
+      });
     }
   }
 

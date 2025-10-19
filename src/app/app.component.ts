@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { MaintenanceComponent } from "./components/maintenance/maintenance.component";
 import { ToastContainerComponent } from "./shared/toasts/toast-container.component";
 import { ToastService } from './shared/toasts/toast.service';
+import { ConfirmationComponent } from "./shared/confirmation/confirmation.component";
+import { ConfirmationService } from './shared/confirmation/confirmation.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +22,8 @@ import { ToastService } from './shared/toasts/toast.service';
     CommonModule,
     FormsModule,
     MaintenanceComponent,
-    ToastContainerComponent
+    ToastContainerComponent,
+    ConfirmationComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -34,12 +37,24 @@ export class AppComponent implements OnInit {
   isScrolled: boolean = false;
   showScrollTop: boolean = false;
 
+  defaultConfig = {
+    title: 'Bestätigung',
+    message: 'Möchtest du fortfahren?',
+    type: 'info' as const
+  };
+
+  // WICHTIG: Erst nach defaultConfig deklarieren!
+  get confirmationState$() {
+    return this.confirmationService.state$;
+  }
+
   constructor(
     public router: Router,
     private route: ActivatedRoute,
     private seo: SeoService,
     @Inject(DOCUMENT) private doc: Document,
-    private toasts: ToastService
+    private toasts: ToastService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
@@ -70,6 +85,14 @@ export class AppComponent implements OnInit {
         // Scroll to top bei Route-Change
         window.scrollTo(0, 0);
       });
+  }
+
+  onConfirmed(): void {
+    this.confirmationService.handleConfirm();
+  }
+
+  onCancelled(): void {
+    this.confirmationService.handleCancel();
   }
 
   // Listen to scroll events
