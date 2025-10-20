@@ -23,15 +23,6 @@
             Anforderungen. Bald sind wir zurück!
         </p>
 
-        <!-- Features Grid -->
-        <!-- <div class="features-grid">
-            <article class="feature" *ngFor="let feature of features">
-                <div class="icon">{{ feature.icon }}</div>
-                <h3>{{ feature.title }}</h3>
-                <p>{{ feature.description }}</p>
-            </article>
-        </div> -->
-
         <!-- Email Notification -->
         <div class="notify-box">
             <h2>Bleib auf dem Laufenden</h2>
@@ -39,10 +30,18 @@
 
             <div class="email-form" *ngIf="!submitted">
                 <input type="email" class="email-input" placeholder="deine@email.de" [(ngModel)]="email"
-                    (keyup.enter)="onSubmit()" required />
-                <button class="btn btn--primary" (click)="onSubmit()">
-                    Benachrichtigen
+                    (keyup.enter)="onSubmit()" [disabled]="isLoading" required />
+                <button class="btn btn--primary" (click)="onSubmit()" [disabled]="isLoading"
+                    [class.btn--loading]="isLoading">
+                    <span class="btn-content" [class.btn-content--hidden]="isLoading">
+                        Benachrichtigen
+                    </span>
+                    <span class="spinner" *ngIf="isLoading"></span>
                 </button>
+            </div>
+
+            <div class="error-message" *ngIf="errorMessage">
+                ⚠️ {{ errorMessage }}
             </div>
 
             <div class="success-message" *ngIf="submitted">
@@ -54,8 +53,8 @@
         <div class="contact">
             <p class="contact-text">
                 Dringende Anfragen?
-                <a href="mailto:tom@leonardsmedia.de" class="link">
-                    tom&#64;leonardsmedia.de
+                <a [href]="getMailtoLink()" class="link">
+                    {{ contactEmail }}
                 </a>
             </p>
         </div>

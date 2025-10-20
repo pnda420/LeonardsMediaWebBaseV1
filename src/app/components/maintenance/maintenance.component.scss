@@ -333,3 +333,93 @@ h1 {
     width: 100%;
   }
 }
+
+/* ===== Spinner Animation ===== */
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: $white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.btn {
+  position: relative;
+  padding: .85rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: .95rem;
+  cursor: pointer;
+  transition: all .22s ease;
+  overflow: hidden;
+
+  &--primary {
+    background: linear-gradient(135deg, $brand 0%, $brand-light 100%);
+    color: $white;
+    box-shadow: 0 8px 24px rgba($brand, .3);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba($brand, .4);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &--loading {
+    pointer-events: none;
+  }
+}
+
+.btn-content {
+  display: inline-block;
+  transition: opacity .2s ease;
+
+  &--hidden {
+    opacity: 0;
+  }
+}
+
+/* ===== Error Message ===== */
+.error-message {
+  margin-top: .75rem;
+  font-weight: 700;
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  padding: .6rem .8rem;
+  border-radius: 12px;
+  display: inline-flex;
+  gap: .5rem;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

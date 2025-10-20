@@ -16,6 +16,10 @@ export class MaintenanceComponent {
   isLoading: boolean = false;
   errorMessage: string = '';
 
+  // Verschlüsselte E-Mail-Adresse (Base64)
+  private encryptedEmail = 'dG9tQGxlb25hcmRzbWVkaWEuZGU=';
+  contactEmail: string = '';
+
   features = [
     {
       icon: '⚡',
@@ -45,7 +49,29 @@ export class MaintenanceComponent {
     'Cloud Hosting'
   ];
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {
+    // E-Mail erst beim Laden der Component entschlüsseln
+    this.contactEmail = this.decryptEmail(this.encryptedEmail);
+  }
+
+  private decryptEmail(encrypted: string): string {
+    try {
+      return atob(encrypted);
+    } catch (e) {
+      return '';
+    }
+  }
+
+  getMailtoLink(): string {
+    return `mailto:${this.contactEmail}`;
+  }
+
+  // Alternative: E-Mail erst bei Klick entschlüsseln und öffnen
+  openEmail(event: Event): void {
+    event.preventDefault();
+    const email = this.decryptEmail(this.encryptedEmail);
+    window.location.href = `mailto:${email}`;
+  }
 
   onSubmit(): void {
     if (!this.email) {
@@ -65,7 +91,6 @@ export class MaintenanceComponent {
 
     this.apiService.subscribeNewsletter(this.email).subscribe({
       next: (response) => {
-        // console.log('Newsletter subscription successful:', response);
         this.submitted = true;
         this.isLoading = false;
       },
@@ -73,7 +98,6 @@ export class MaintenanceComponent {
         console.error('Newsletter subscription failed:', error);
         this.isLoading = false;
 
-        // Freundliche Fehlermeldung anzeigen
         if (error.status === 409) {
           this.errorMessage = 'Diese E-Mail ist bereits angemeldet';
         } else {
