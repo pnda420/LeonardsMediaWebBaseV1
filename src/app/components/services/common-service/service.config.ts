@@ -7,19 +7,19 @@ export const SERVICE_CONFIGS: { [key: string]: ServiceConfig } = {
     slug: 'one-pager',
     hero: {
       badge: {
-        icon: '🚀',
-        text: 'Schnellstart',
+        icon: '⚡',
+        text: 'Sofort loslegen',
         variant: 'primary'
       },
-      title: 'Eine Seite. Alles drauf. Fertig in 2 Wochen.',
-      description: 'Dein Angebot, deine Vorteile, Kontaktmöglichkeit - <strong>alles auf einer Seite</strong>. Perfekt für den schnellen Start.',
+      title: 'Eine Seite. Alles drauf.',
+      description: 'Wer du bist. Was du anbietest. Wie man dich erreicht. <strong>Fertig.</strong>',
       image: 'assets/cards/simple-min.png',
       facts: {
-        price: 'Ab 1.490€',
-        timeline: 'Fertig in 1-2 Wochen',
-        highlight: 'Auf Handy perfekt'
+        price: '1.490€',
+        timeline: '2 Wochen',
+        highlight: 'Mobile perfekt'
       },
-      guarantee: 'Fester Preis · 14 Tage Geld-zurück'
+      guarantee: 'Kein Risiko · Fester Preis'
     },
     infoBox: {
       type: 'ki',
@@ -46,7 +46,7 @@ export const SERVICE_CONFIGS: { [key: string]: ServiceConfig } = {
           'Login für Mitglieder willst',
           'Die Seite in mehreren Sprachen brauchst'
         ],
-        note: 'Dann schau dir <a style="color: blue !important;"  href="/services/standard-website">Business</a> oder <a style="color: blue !important;"  href="/services/individual-website">Premium</a> an.'
+        note: 'Dann schau dir <a href="/services/standard-website">Standard</a> oder <a href="/services/individual-website">Individual</a> an.'
       }
     },
     includes: [
@@ -87,18 +87,18 @@ export const SERVICE_CONFIGS: { [key: string]: ServiceConfig } = {
     hero: {
       badge: {
         icon: '⭐',
-        text: 'Empfohlen',
+        text: 'Meistgewählt',
         variant: 'star'
       },
-      title: 'Mehrere Seiten. Strukturiert. Professionell.',
-      description: 'Eine <strong>vollständige Website</strong> mit mehreren Unterseiten für strukturierte Inhalte. Professionelle Navigation, Blog-Option, erweiterte SEO.',
+      title: 'Richtige Website. Volle Kontrolle.',
+      description: '3-8 Seiten. Eigener Blog. <strong>Alles was eine echte Website braucht.</strong>',
       image: 'assets/cards/standard-min.png',
       facts: {
-        price: 'Ab 3.500€',
-        timeline: 'Live in 3–6 Wochen',
-        highlight: '3–8 Unterseiten'
+        price: '3.500€',
+        timeline: '3-6 Wochen',
+        highlight: 'Für Wachstum gemacht'
       },
-      guarantee: 'Keine versteckten Kosten · 14 Tage Zufriedenheitsgarantie'
+      guarantee: 'Transparenter Preis · Keine Überraschungen'
     },
     infoBox: {
       type: 'comparison',
@@ -152,7 +152,7 @@ export const SERVICE_CONFIGS: { [key: string]: ServiceConfig } = {
           'Mehrsprachige Versionen',
           'Sehr knappes Budget (unter 3.000€)'
         ],
-        note: '💡 Für andere Projekte: <a style="color: blue !important;"  href="/services/one-pager">Einfache Website</a> oder <a style="color: blue !important;"  href="/services/individual-website">Individual Website</a>'
+        note: '💡 Für andere Projekte: <a href="/services/one-pager">Starter</a> oder <a href="/services/individual-website">Individual</a>'
       }
     },
     includes: [
@@ -200,116 +200,241 @@ export const SERVICE_CONFIGS: { [key: string]: ServiceConfig } = {
     hero: {
       badge: {
         icon: '💎',
-        text: 'Premium',
+        text: 'Alles möglich',
         variant: 'premium'
       },
-      title: 'Maßgeschneidert. Skalierbar. Einzigartig.',
-      description: 'Eine <strong>komplett individuelle Web-Anwendung</strong> nach deinen spezifischen Anforderungen. Custom Features, API-Integrationen, Datenbanken, Mitgliederbereiche. Für Projekte, die mehr als eine Standard-Website brauchen.',
+      title: 'Sag was du willst. Wir bauen\'s.',
+      description: 'Login-Bereiche? Check. Buchungssystem? Check. Verrückte Idee die es so noch nicht gibt? <strong>Check.</strong> Von Planung bis Launch – du machst nichts, wir machen alles.',
       image: 'assets/cards/individual-min.png',
       facts: {
-        price: 'Ab 5.000 €',
-        timeline: 'Projektdauer nach Umfang',
-        highlight: 'Unbegrenzte Möglichkeiten'
+        price: 'Ab 5.000€',
+        timeline: 'So schnell wie möglich',
+        highlight: 'Zero Stress für dich'
       },
-      guarantee: 'Festpreis nach Konzeptphase · Premium-Support inklusive'
+      guarantee: 'Festpreis · Keine Überraschungen'
     },
     infoBox: {
       type: 'comparison',
-      title: '🔄 Unterschied zu anderen Paketen',
+      title: 'Standard reicht nicht? Dann das hier:',
       items: [
         {
-          title: 'Standard Website (3.500 €)',
+          title: 'Standard (3.500 €)',
           features: [
-            '3-8 vordefinierte Seiten',
-            'Standard-Features',
-            'Templates & bewährte Patterns'
+            'Website mit paar Seiten',
+            'Bewährte Struktur',
+            'Schnell fertig'
           ]
         },
         {
-          title: 'Individual Website (ab 5.000 €)',
+          title: 'Individual (ab 5.000 €)',
           features: [
-            'Unbegrenzte Funktionen',
-            'Eigene Datenbank-Strukturen',
-            'Custom APIs & Integrationen',
-            'Login-Systeme & Benutzerrollen',
-            'Komplett nach deinen Specs'
+            'Alles was du brauchst',
+            'Nichts was du nicht brauchst',
+            'Gebaut für dich, nicht für alle',
+            'Wächst mit dir mit'
           ],
           highlight: true
         }
       ]
     },
     useCases: [
-      { icon: '🏋️', title: 'Buchungssysteme', description: 'Fitnessstudio-Buchungen, Terminvergabe, Raumbuchungen mit Kalenderintegration und automatischen Benachrichtigungen' },
-      { icon: '👥', title: 'Mitgliederplattformen', description: 'Geschützte Bereiche, verschiedene Nutzerrollen, Dokumentenverwaltung, Forum oder Community-Features' },
-      { icon: '📊', title: 'Verwaltungstools', description: 'Interne Tools für Kundenverwaltung, Projekttracking, Zeiterfassung oder Ressourcenplanung' },
-      { icon: '🔗', title: 'System-Integrationen', description: 'Anbindung an Warenwirtschaft, CRM, Payment-Provider oder andere externe Dienste via API' },
-      { icon: '📱', title: 'Portale & Dashboards', description: 'Kundenportale mit individuellen Dashboards, Reports und Datenvisualisierungen' }
+      {
+        icon: '🎯',
+        title: 'Was auch immer',
+        description: 'Buchungen, Mitgliederbereiche, Kalender, Dashboards, Automatisierung. Wenn du sagst "Geht das?" sagen wir "Klar".'
+      },
+      {
+        icon: '🔗',
+        title: 'Läuft zusammen',
+        description: 'Google Kalender, Zoom, Stripe, E-Mail. Alles redet miteinander. Keine manuelle Arbeit mehr.'
+      },
+      {
+        icon: '⚡',
+        title: 'Spart Zeit',
+        description: 'Automatische E-Mails, Erinnerungen, Reports. Du schläfst, deine Website arbeitet.'
+      },
+      {
+        icon: '🔒',
+        title: 'Geschützt',
+        description: 'Login für Kunden, Mitarbeiter, Premium-Member. Jeder sieht nur was er darf.'
+      },
+      {
+        icon: '📊',
+        title: 'Überblick',
+        description: 'Dashboard mit deinen Zahlen. Wer bucht? Wann? Wie viel? Alles auf einen Blick.'
+      }
     ],
     techStack: [
-      { category: 'Frontend', technologies: ['Angular', 'TypeScript', 'Responsive Design'] },
-      { category: 'Backend', technologies: ['Node.js', 'NestJS', 'REST APIs'] },
-      { category: 'Datenbank', technologies: ['PostgreSQL', 'TypeORM', 'Redis Cache'] },
-      { category: 'Infrastruktur', technologies: ['Docker', 'CI/CD', 'Cloud Hosting'] }
+      { category: 'Das Wichtige', technologies: ['Schnell', 'Sicher', 'Funktioniert'] }
     ],
     fit: {
       good: {
-        title: 'Perfekt geeignet',
+        title: 'Perfekt für dich wenn',
         items: [
-          'Du brauchst <strong>spezielle Features</strong>, die es nicht von der Stange gibt',
-          '<strong>Datenbank-getriebene</strong> Anwendungen (CRM, Verwaltungssysteme)',
-          '<strong>Login-Bereiche</strong> mit verschiedenen Nutzerrollen',
-          '<strong>API-Integrationen</strong> zu externen Systemen',
-          'Komplexe <strong>Buchungs- oder Reservierungssysteme</strong>',
-          '<strong>Skalierbare Lösungen</strong> für wachsende Anforderungen'
+          'Standard zu <strong>langweilig</strong> ist',
+          'Du was <strong>Spezielles</strong> brauchst',
+          'Zeit = Geld ist bei dir <strong>wörtlich gemeint</strong>',
+          'Du <strong>wachsen</strong> willst',
+          'Du keine Lust auf <strong>Kompromisse</strong> hast'
         ]
       },
       warning: {
-        title: 'Eher nicht geeignet',
+        title: 'Brauchst du wahrscheinlich nicht wenn',
         items: [
-          'Du brauchst nur eine <strong>einfache Präsenz</strong> im Web',
-          'Standard-Features reichen völlig aus',
+          'Eine normale Website <strong>völlig reicht</strong>',
           'Budget unter 5.000 €',
-          'Projekt muss in 2-3 Wochen fertig sein',
-          'Keine technischen Anforderungen bekannt'
+          'In 2 Wochen fertig sein muss',
+          'Du nur <strong>"online sein"</strong> willst'
         ],
-        note: '💡 Für einfachere Projekte: <a style="color: blue !important;"  href="/services/one-pager">Einfache Website</a> oder <a style="color: blue !important;"  href="/services/standard-website">Standard Website</a>'
+        note: '💡 Dann lieber: <a href="/services/one-pager">Starter</a> oder <a href="/services/standard-website">Standard</a>'
       }
     },
     includes: [
-      { title: 'Ausführliche Analyse', text: 'Discovery-Phase mit User Stories, Datenmodell-Design, technischer Architektur. Detailliertes Konzept vor Start.' },
-      { title: 'Custom Design & UX', text: 'Individuelle UI/UX-Designs, klickbare Prototypen, mehrere Feedback-Runden bis alles perfekt sitzt.' },
-      { title: 'Vollständige Entwicklung', text: 'Frontend (Angular/TS), Backend (Node.js/NestJS), Datenbank (PostgreSQL). Sauberer, wartbarer Code nach Best Practices.' },
-      { title: 'Custom Features', text: 'Login-Systeme, Benutzerrollen, Dashboards, komplexe Formulare, Buchungssysteme - was immer du brauchst.' },
-      { title: 'API-Integrationen', text: 'Anbindung externer Dienste (Payment, CRM, E-Mail, etc.). REST-APIs für eigene Schnittstellen.' },
-      { title: 'Datenbank & Backend', text: 'PostgreSQL-Setup mit Migrations, Caching (Redis), optimierte Queries, Backup-Strategie.' },
-      { title: 'Testing & QA', text: 'Umfangreiche Tests (Unit, Integration, E2E). Performance- und Security-Checks. Bug-Fixing inklusive.' },
-      { title: 'Deployment & DevOps', text: 'Docker-Setup, CI/CD-Pipeline, Cloud-Hosting, Monitoring, automatische Deployments.' },
-      { title: 'Dokumentation', text: 'Technische Dokumentation, API-Specs, Admin-Anleitung, Code-Kommentare für zukünftige Entwicklung.' },
-      { title: 'Schulung & Support', text: 'Einweisung für Admin-Bereiche, 30 Tage Priority-Support nach Launch. Optional: Wartungsvertrag.' },
-      { title: 'Skalierbarkeit', text: 'Architektur für Wachstum ausgelegt. Performance-Optimierung, Caching-Strategien, Load-Balancing-Ready.' },
-      { title: 'Security & DSGVO', text: 'Sichere Authentifizierung, Datenverschlüsselung, DSGVO-konforme Datenverarbeitung, Security-Audits.' }
+      {
+        title: 'Wir hören zu',
+        text: 'Was willst du? Was nervt dich aktuell? Was wäre perfekt? Wir nehmen uns Zeit und denken mit.'
+      },
+      {
+        title: 'Wir planen',
+        text: 'Wie muss das aussehen? Welche Features? In welcher Reihenfolge? Du bekommst klares Konzept mit Festpreis.'
+      },
+      {
+        title: 'Wir designen',
+        text: 'Wie es aussehen soll, zeigen wir vorher. Klickbare Version zum Testen. Ändern bis du sagst "genau so".'
+      },
+      {
+        title: 'Wir bauen',
+        text: 'Frontend, Backend, Datenbank. Alles aus einer Hand. Du siehst Fortschritt, gibst Feedback, wir setzen um.'
+      },
+      {
+        title: 'Wir verbinden',
+        text: 'Kalender, E-Mail, Payment, was auch immer. Alles spricht miteinander, automatisch.'
+      },
+      {
+        title: 'Wir testen',
+        text: 'Funktioniert alles? Ist es schnell? Ist es sicher? Erst wenn alles perfekt ist, geht\'s online.'
+    },
+      {
+        title: 'Wir launchen',
+        text: 'Domain, Hosting, Setup. Du drückst keinen Button, wir machen das.'
+      },
+      {
+        title: 'Wir erklären',
+        text: 'Persönliche Einführung. Wie bedienst du was? Wo findest du was? Bis du sicher bist.'
+      },
+      {
+        title: 'Wir bleiben da',
+        text: '30 Tage Support nach Start. Frage? Problem? Wir antworten schnell. Optional: Langzeit-Betreuung.'
+      },
+      {
+        title: 'Wir denken voraus',
+        text: 'Neue Idee in 6 Monaten? Kein Problem. Wir bauen so dass später alles dazu kann.'
+      }
     ],
     process: [
-      { number: '1', title: 'Discovery-Phase', description: 'Ausführliche Analyse deiner Anforderungen. User Stories, Datenmodelle, technische Architektur. Dauer: 1-2 Wochen.' },
-      { number: '2', title: 'Konzept & Angebot', description: 'Detailliertes Konzept mit Festpreis. Mockups, Datenbank-Schema, API-Spezifikation. Klare Phasen und Timelines.' },
-      { number: '3', title: 'Design & Prototyping', description: 'UX/UI-Design für alle wichtigen Views. Klickbarer Prototyp zum Testen der User Journey. Feedback-Schleifen.' },
-      { number: '4', title: 'Iterative Entwicklung', description: 'Umsetzung in Sprints (2-3 Wochen). Regelmäßige Demos und Reviews. Schrittweise Integration aller Features.' },
-      { number: '5', title: 'Testing & QA', description: 'Umfangreiche Tests (Funktional, Performance, Security). Bug-Fixing und Optimierung. User Acceptance Tests.' },
-      { number: '6', title: 'Launch & Übergabe', description: 'Deployment in Production. Monitoring-Setup. Dokumentation und Schulung. Optional: Maintenance-Vertrag.' }
+      {
+        number: '1',
+        title: 'Quatschen',
+        description: 'Kostenlos. Unverbindlich. Was brauchst du? Wie viel kostet das ungefähr? Wie lange dauert das?'
+      },
+      {
+        number: '2',
+        title: 'Konzept',
+        description: 'Wir schreiben auf was genau gebaut wird. Mit Preis. Mit Timeline. Entweder du sagst ja oder nein. Kein Druck.'
+      },
+      {
+        number: '3',
+        title: 'Design',
+        description: 'So soll es aussehen. Klickbar zum Testen. Passt nicht? Ändern wir. Passt? Weiter.'
+      },
+      {
+        number: '4',
+        title: 'Bauen',
+        description: 'Wir entwickeln. Du siehst Fortschritt. Alle 1-2 Wochen zeigen wir was fertig ist. Feedback? Gerne.'
+      },
+      {
+        number: '5',
+        title: 'Testen',
+        description: 'Alles checken. Schnell genug? Sicher genug? Funktioniert alles? Ja? Gut. Nein? Fixen.'
+      },
+      {
+        number: '6',
+        title: 'Live',
+        description: 'Online. Läuft. Wir zeigen dir wie du es bedienst. 30 Tage sind wir da falls was ist.'
+      }
     ],
     faq: [
-      { q: 'Wie lange dauert so ein Projekt?', a: ['Das hängt stark vom Umfang ab. Typischerweise 8-16 Wochen von Konzept bis Launch.', 'In der Discovery-Phase (1-2 Wochen) erstellen wir einen detaillierten Zeitplan mit Meilensteinen.'] },
-      { q: 'Wie wird der Preis kalkuliert?', a: ['Nach der Discovery-Phase bekommst du ein Festpreis-Angebot basierend auf dem finalen Konzept.', 'Basis ab 5.000 €. Komplexere Projekte mit vielen Features können 10.000-30.000 € oder mehr kosten.', 'Transparente Kalkulation - du weißt vorher genau, was es kostet.'] },
-      { q: 'Kann ich das Projekt später erweitern?', a: ['Absolut. Die Architektur ist so gebaut, dass neue Features hinzugefügt werden können.', 'Du bekommst den kompletten Quellcode und Dokumentation - auch andere Entwickler können später dran arbeiten.'] }
+      {
+        q: 'Wie lange dauert das?',
+        a: [
+          'Kommt drauf an. Meist 2-4 Monate.',
+          'Kleine Sache? Geht schneller. Große Sache? Dauert länger.',
+          'Nach dem ersten Gespräch sagen wir dir genau wie lange.'
+        ]
+      },
+      {
+        q: 'Was kostet das?',
+        a: [
+          'Startet bei 5.000 €. Nach oben offen.',
+          'Hängt davon ab was du brauchst. Mehr Features = mehr Geld.',
+          'Du bekommst Festpreis nach Konzept. Keine Überraschungen später.'
+        ]
+      },
+      {
+        q: 'Kann ich später mehr Features haben?',
+        a: [
+          'Ja. Wir bauen so dass du später erweitern kannst.',
+          'Neue Idee? Sag Bescheid, wir bauen dazu.'
+        ]
+      },
+      {
+        q: 'Muss ich was können?',
+        a: [
+          'Nein. Null Technik-Wissen nötig.',
+          'Du sagst was du willst, wir bauen es.',
+          'Am Ende zeigen wir dir wie du es bedienst. Easy.'
+        ]
+      },
+      {
+        q: 'Macht ihr auch Online-Shops?',
+        a: [
+          'Nein. Shops sind nicht unser Ding.',
+          'Alles andere aber schon.'
+        ]
+      },
+      {
+        q: 'Was ist wenn mir was nicht gefällt?',
+        a: [
+          'Sag\'s. Wir ändern es.',
+          'Design, Farben, Texte, alles anpassbar.',
+          'Erst wenn du zufrieden bist, geht\'s weiter.'
+        ]
+      },
+      {
+        q: 'Gehört mir das dann?',
+        a: [
+          'Ja. Kompletter Code gehört dir.',
+          'Willst du später selbst weitermachen? Kannst du.',
+          'Willst du anderen Entwickler ranlassen? Kannst du.'
+        ]
+      },
+      {
+        q: 'Was ist nach Launch?',
+        a: [
+          '30 Tage Support inklusive.',
+          'Danach: Optional Wartungsvertrag. Oder du machst selbst weiter.',
+          'Deine Wahl.'
+        ]
+      }
     ],
     cta: {
-      title: 'Bereit für dein individuelles Projekt?',
-      description: 'Kostenloses Erstgespräch - wir analysieren deine Anforderungen und entwickeln ein maßgeschneidertes Konzept.',
+      title: 'Lass uns reden',
+      description: 'Kostenlos. Unverbindlich. Kein Sales-Gelaber. Ehrliche Einschätzung ob und wie das geht.',
       benefits: [
-        '60 Min Discovery-Gespräch',
-        'Technische Machbarkeitsanalyse',
-        'Grobe Aufwandsschätzung',
-        'Keine Verpflichtung, kein Sales-Druck'
+        'Was geht, was nicht',
+        'Grob was es kostet',
+        'Grob wie lange es dauert',
+        'Null Risiko'
       ]
     }
   }

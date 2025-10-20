@@ -211,6 +211,15 @@
   }
 }
 
+span ::ng-deep a {
+  color: #2563eb !important; // Tailwind blue-600
+  text-decoration: underline;
+  
+  &:hover {
+    color: #1d4ed8 !important; // Tailwind blue-700
+  }
+}
+
 // ===== SECTION TITLE =====
 .section-title {
   font-size: clamp(1.5rem, 4vw, 2rem);
@@ -244,13 +253,6 @@
   backdrop-filter: blur(20px);
   position: relative;
 
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 0%, rgba(37, 99, 235, 0.03) 50%, transparent 100%);
-    pointer-events: none;
-  }
 
   .fit-grid {
     display: grid;
@@ -273,17 +275,6 @@
     overflow: hidden;
     transition: all $transition-base;
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
-      opacity: 0;
-      transition: opacity $transition-base;
-    }
 
     @media (min-width: 769px) {
       &:hover {
@@ -1581,33 +1572,4 @@
 
 .badge-pop {
   animation: badge-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
-}
-
-// ===== PERFORMANCE =====
-@media (max-width: 768px) {
-
-  .service-detail::before,
-  .service-detail::after,
-  .icon-rings,
-  .icon-glow,
-  .step-pulse {
-    display: none !important;
-  }
-
-  .hero-badge::before,
-  .comp-icon::after {
-    animation: none !important;
-  }
-}
-
-// ===== REDUCE MOTION =====
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }

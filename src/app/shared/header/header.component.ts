@@ -57,7 +57,7 @@ export class HeaderComponent implements OnInit {
       message: 'Möchtest du dich wirklich abmelden?',
       confirmText: 'Ja, abmelden',
       cancelText: 'Abbrechen',
-      type: 'warning',
+      type: 'danger',
       icon: 'logout'
     });
 

@@ -19,7 +19,7 @@
                         <span class="material-symbols-outlined">mail</span>
                         <div>
                             <strong>Bestätigung per E-Mail</strong>
-                            <span>Du erhältst eine Kopie an {{ form.get('contactEmail')?.value }}</span>
+                            <span>Du erhältst eine Kopie an {{ form.get('email')?.value }}</span>
                         </div>
                     </div>
 
@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <!-- SURVEY VIEW (nur anzeigen wenn NICHT submitted) -->
+    <!-- SURVEY VIEW -->
     <ng-container *ngIf="!isSubmitted()">
 
         <!-- Hero Section -->
@@ -72,14 +72,10 @@
                     Interaktive Projekt-Analyse
                 </div>
                 <h1>Finde dein perfektes Website-Paket</h1>
-                <!-- <p>
-                    Beantworte ein paar kurze Fragen und erhalte eine individuelle Empfehlung.
-                    Die Informationen helfen mir, dir ein passendes Angebot zu erstellen.
-                </p> -->
                 <div class="hero-meta">
                     <div class="meta-chip">
                         <span class="material-symbols-outlined">nest_clock_farsight_analog</span>
-                        ~1-2 Minuten
+                        ~2 Minuten
                     </div>
                     <div class="meta-chip meta-chip--highlight">
                         <span class="material-symbols-outlined">line_end_arrow_notch</span>
@@ -89,23 +85,10 @@
             </div>
         </div>
 
-        <!-- Progress Stepper -->
+        <!-- Progress Bar -->
         <div class="container stepper-section">
             <div class="progress-bar">
                 <div class="progress-fill" [style.width.%]="((step() + 1) / steps.length) * 100"></div>
-            </div>
-            <div class="stepper-grid">
-                <button *ngFor="let s of steps; let i = index" class="step-item" [class.active]="i === step()"
-                    [class.completed]="i < step()" [class.accessible]="i <= maxStepReached()"
-                    [disabled]="i > maxStepReached()" (click)="i <= maxStepReached() && goToStep(i)"
-                    [attr.aria-label]="'Schritt ' + (i + 1) + ': ' + s"
-                    [attr.aria-current]="i === step() ? 'step' : null">
-                    <span class="step-number">
-                        <span *ngIf="i < step()" class="material-symbols-outlined ms-fill">check</span>
-                        <span *ngIf="i >= step()">{{ i + 1 }}</span>
-                    </span>
-                    <span class="step-label">{{ s }}</span>
-                </button>
             </div>
         </div>
 
@@ -122,139 +105,69 @@
                         <p class="step-subtitle" *ngIf="question.subtitle">{{ question.subtitle }}</p>
                     </div>
 
-                    <!-- Single Choice Options -->
-                    <div *ngIf="question.type === 'single-choice'" class="options-wrapper">
-                        <div [ngClass]="question.layout === 'cards' ? 'options-grid' : 'options-list'">
-                            <button *ngFor="let opt of question.options" type="button"
-                                [ngClass]="question.layout === 'cards' ? 'option-card' : 'option-row'"
+                    <!-- Single Choice - Cards Layout -->
+                    <div *ngIf="question.type === 'single-choice' && question.layout === 'cards'"
+                        class="options-wrapper">
+                        <div class="options-grid">
+                            <button *ngFor="let opt of question.options" type="button" class="option-card"
                                 [class.selected]="form.get(question.formKey)?.value === opt.value"
-                                (click)="handleOptionClick(question.formKey, opt.value, question.resetFields)">
-                                <span *ngIf="question.layout === 'cards'" class="option-icon">{{ opt.icon }}</span>
-                                <div class="option-main" *ngIf="question.layout === 'list'">
+                                (click)="handleOptionClick(question.formKey, opt.value)">
+                                <span class="option-icon">{{ opt.icon }}</span>
+                                <strong>{{ opt.label }}</strong>
+                                <span class="option-description" *ngIf="opt.hint">{{ opt.hint }}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Single Choice - List Layout -->
+                    <div *ngIf="question.type === 'single-choice' && question.layout === 'list'"
+                        class="options-wrapper">
+                        <div class="options-list">
+                            <button *ngFor="let opt of question.options" type="button" class="option-row"
+                                [class.selected]="form.get(question.formKey)?.value === opt.value"
+                                (click)="handleOptionClick(question.formKey, opt.value)">
+                                <div class="option-main">
                                     <span class="option-radio"></span>
                                     <div class="option-text">
                                         <strong>{{ opt.label }}</strong>
                                         <span class="option-hint" *ngIf="opt.hint">{{ opt.hint }}</span>
                                     </div>
                                 </div>
-                                <ng-container *ngIf="question.layout === 'cards'">
-                                    <strong>{{ opt.label }}</strong>
-                                    <span class="option-description" *ngIf="opt.hint">{{ opt.hint }}</span>
-                                </ng-container>
                             </button>
                         </div>
+                    </div>
 
-                        <!-- Conditional Text Input -->
-                        <div *ngIf="question.conditionalInput && form.get(question.formKey)?.value === question.conditionalInput.showWhen"
-                            class="form-field">
-                            <label [for]="question.conditionalInput.formKey">{{ question.conditionalInput.label
-                                }}</label>
-                            <input [id]="question.conditionalInput.formKey" type="text" class="input"
-                                [formControl]="$any(form.get(question.conditionalInput.formKey))"
-                                [placeholder]="question.conditionalInput.placeholder" [class.invalid]="$any(form.get(question.conditionalInput.formKey))?.invalid && 
-                                           $any(form.get(question.conditionalInput.formKey))?.touched">
-                        </div>
+                    <!-- Text Input -->
+                    <div *ngIf="question.type === 'text'" class="form-field">
+                        <textarea [id]="question.formKey" rows="4" class="textarea"
+                            [formControl]="$any(form.get(question.formKey))" [placeholder]="question.placeholder || ''"
+                            [class.invalid]="!question.optional && $any(form.get(question.formKey))?.invalid && $any(form.get(question.formKey))?.touched">
+                        </textarea>
                     </div>
 
                     <!-- Multiple Choice (Checkboxes) -->
                     <div *ngIf="question.type === 'multiple-choice'" class="features-grid"
-                        [formGroup]="$any(featuresGroup)">
+                        [formGroup]="$any(specialGroup)">
                         <label *ngFor="let opt of question.options" class="feature-checkbox">
-                            <input type="checkbox" [formControlName]="opt.value">
+                            <input type="checkbox" [formControlName]="opt.value"
+                                (change)="handleCheckboxChange(question.formKey, opt.value, $any($event.target).checked)">
                             <span class="checkbox-custom"></span>
                             <div class="feature-text">
                                 <strong>{{ opt.label }}</strong>
-                                <span *ngIf="opt.hint">{{ opt.hint }}</span>
                             </div>
                         </label>
-                    </div>
-
-                    <!-- Budget & Timeframe (Combined) -->
-                    <div *ngIf="question.type === 'combined'" class="combined-sections">
-                        <div class="form-section" *ngFor="let section of question.sections">
-                            <label class="section-label">{{ section.label }}</label>
-                            <div
-                                [ngClass]="section.layout === 'grid' ? 'options-grid options-grid--compact' : 'options-list'">
-                                <button *ngFor="let opt of section.options" type="button"
-                                    [ngClass]="section.layout === 'grid' ? 'option-card option-card--small' : 'option-row'"
-                                    [class.selected]="form.get(section.formKey)?.value === opt.value"
-                                    (click)="setSectionValue(section.formKey, opt.value)">
-                                    <div class="option-main" *ngIf="section.layout === 'list'">
-                                        <span class="option-radio"></span>
-                                        <div class="option-text">
-                                            <strong>{{ opt.label }}</strong>
-                                            <span class="option-hint" *ngIf="opt.hint">{{ opt.hint }}</span>
-                                        </div>
-                                    </div>
-                                    <strong *ngIf="section.layout === 'grid'">{{ opt.label }}</strong>
-                                </button>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Contact Form -->
                     <div *ngIf="question.type === 'contact'" class="contact-form">
                         <div class="form-fields">
-                            <div class="form-field">
-                                <label for="contactName">{{ getFieldLabel(question, 0) }}</label>
-                                <input id="contactName" type="text" class="input"
-                                    [formControl]="$any(form.get('contactName'))"
-                                    [placeholder]="getFieldPlaceholder(question, 0)"
-                                    [class.invalid]="$any(form.get('contactName'))?.invalid && $any(form.get('contactName'))?.touched">
-                            </div>
-
-                            <div class="form-field">
-                                <label for="contactEmail">{{ getFieldLabel(question, 1) }}</label>
-                                <input id="contactEmail" type="email" class="input"
-                                    [formControl]="$any(form.get('contactEmail'))"
-                                    [placeholder]="getFieldPlaceholder(question, 1)"
-                                    [class.invalid]="$any(form.get('contactEmail'))?.invalid && $any(form.get('contactEmail'))?.touched">
-                            </div>
-
-                            <div class="form-field">
-                                <label for="notes">{{ getFieldLabel(question, 2) }}</label>
-                                <textarea id="notes" rows="4" class="textarea" [formControl]="$any(form.get('notes'))"
-                                    [placeholder]="getFieldPlaceholder(question, 2)"></textarea>
+                            <div class="form-field" *ngFor="let field of question.fields">
+                                <label [for]="field.key">{{ field.label }}</label>
+                                <input [id]="field.key" [type]="field.type || 'text'" class="input"
+                                    [formControl]="$any(form.get(field.key))" [placeholder]="field.placeholder"
+                                    [class.invalid]="field.required && $any(form.get(field.key))?.invalid && $any(form.get(field.key))?.touched">
                             </div>
                         </div>
-
-                        <!-- Recommendation Box -->
-                        <div class="recommendation-box" *ngIf="recommendation().pkg as rec">
-                            <div class="recommendation-header">
-                                <span class="material-symbols-outlined ms-fill">lightbulb</span>
-                                <h3>Meine Empfehlung für dich</h3>
-                            </div>
-
-                            <!-- <div class="recommendation-card">
-                                <div class="rec-image">
-                                    <img [src]="rec.img" [alt]="rec.title" loading="lazy">
-                                </div>
-                                <div class="rec-content">
-                                    <div class="rec-header">
-                                        <h4>{{ rec.title }}</h4>
-                                    </div>
-                                    <p class="rec-description">{{ rec.short }}</p>
-
-                                    <div class="rec-reasons">
-                                        <div class="reasons-badge">
-                                            <span class="material-symbols-outlined">psychology</span>
-                                            Warum ich das empfehle
-                                        </div>
-                                        <ul>
-                                            <li *ngFor="let r of recommendation().reasons">
-                                                <span class="material-symbols-outlined ms-fill">check_circle</span>
-                                                {{ r }}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div> -->
-                        </div>
-
-                        <p class="recommendation-fallback" *ngIf="!recommendation().pkg">
-                            <span class="material-symbols-outlined">info</span>
-                            Nach einem kurzen Gespräch kann ich dir die perfekte Lösung empfehlen.
-                        </p>
                     </div>
 
                     <!-- Navigation Buttons -->
@@ -271,12 +184,19 @@
                             <span class="material-symbols-outlined ms-size-20" *ngIf="!isSubmitting()">send</span>
                             <span class="material-symbols-outlined ms-size-20 spinning"
                                 *ngIf="isSubmitting()">progress_activity</span>
-                            {{ isSubmitting() ? 'Wird gesendet...' : 'Absenden & Beratung starten' }}
+                            {{ isSubmitting() ? 'Wird gesendet...' : 'Empfehlung erhalten' }}
                         </button>
                     </div>
                 </div>
 
             </div>
+        </div>
+
+        <!-- Trust Elements -->
+        <div class="container" style="text-align: center; margin-top: 2rem; color: #475569; font-size: 0.875rem;">
+            <p style="margin: 0;">
+                🔒 Deine Daten werden vertraulich behandelt • Keine Verpflichtungen • Kostenlose Beratung
+            </p>
         </div>
 
     </ng-container>

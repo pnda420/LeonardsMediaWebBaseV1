@@ -1,4 +1,4 @@
-import { Component, Signal, computed, effect, signal } from '@angular/core';
+import { Component, Signal, computed, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -21,26 +21,18 @@ interface Question {
   title: string;
   subtitle?: string;
   icon: string;
-  type: 'single-choice' | 'multiple-choice' | 'combined' | 'contact';
+  type: 'single-choice' | 'multiple-choice' | 'text' | 'contact';
   formKey: string;
-  layout?: 'cards' | 'list' | 'grid';
+  layout?: 'cards' | 'list';
   options?: QuestionOption[];
-  resetFields?: string[];
-  conditionalInput?: {
-    showWhen: string;
-    formKey: string;
-    label: string;
-    placeholder: string;
-  };
-  sections?: Array<{
-    label: string;
-    formKey: string;
-    layout: 'grid' | 'list';
-    options: QuestionOption[];
-  }>;
+  placeholder?: string;
+  optional?: boolean;
   fields?: Array<{
+    key: string;
     label: string;
     placeholder: string;
+    type?: string;
+    required?: boolean;
   }>;
 }
 
@@ -57,278 +49,124 @@ export class SurveyComponent {
 
   packages: ReturnType<ServiceDataService['getServices']>;
 
-  // NEU: State für Success-View
   isSubmitted = signal(false);
   isSubmitting = signal(false);
 
   questions: Question[] = [
     {
-      title: 'Was passt grob zu deinem Vorhaben?',
-      subtitle: 'Keine Sorge - wir helfen dir, die richtige Lösung zu finden.',
+      title: 'Was willst du mit deiner Website erreichen?',
+      subtitle: 'Wähle, was am besten passt',
       icon: '🎯',
       type: 'single-choice',
-      formKey: 'projectType',
+      formKey: 'goal',
       layout: 'cards',
       options: [
         {
-          value: 'one',
-          label: 'Eine einfache Seite',
-          hint: 'Alles auf einen Blick - perfekt für schnelle Online-Präsenz',
-          icon: '📄'
+          value: 'present',
+          icon: '👋',
+          label: 'Online sichtbar sein',
+          hint: 'Ich will gefunden werden und seriös wirken'
         },
         {
-          value: 'multi',
-          label: 'Mehrere Seiten',
-          hint: 'Klassische Website mit Start, Leistungen, Kontakt usw.',
-          icon: '📑'
+          value: 'leads',
+          icon: '📞',
+          label: 'Kunden gewinnen',
+          hint: 'Anfragen und Buchungen generieren'
         },
         {
-          value: 'custom',
-          label: 'Etwas Individuelles',
-          hint: 'Spezielle Features wie Buchungssystem, Shop oder Datenbank',
-          icon: '⚙️'
+          value: 'inform',
+          icon: '📰',
+          label: 'Informieren',
+          hint: 'News, Blog oder Wissen teilen'
         }
       ]
     },
     {
-      title: 'Wie viel Inhalt ist geplant?',
-      subtitle: 'Eine grobe Einschätzung reicht - wir passen das später gemeinsam an.',
-      icon: '📊',
-      type: 'single-choice',
-      formKey: 'contentAmount',
-      layout: 'list',
-      options: [
-        {
-          value: 'very-low',
-          label: 'Sehr wenig',
-          hint: 'Zum Beispiel: Startseite mit Kontaktdaten und kurzer Beschreibung'
-        },
-        {
-          value: 'low',
-          label: 'Wenig',
-          hint: 'Zum Beispiel: Start, Über uns, Leistungen, Kontakt (3-5 Bereiche)'
-        },
-        {
-          value: 'medium',
-          label: 'Mittel',
-          hint: 'Zum Beispiel: + Portfolio, Team, FAQ, Referenzen (6-10 Bereiche)'
-        },
-        {
-          value: 'high',
-          label: 'Viel',
-          hint: 'Mehr als 10 Bereiche, z.B. mit Blog, vielen Unterseiten oder Produkten'
-        }
-      ]
-    },
-    {
-      title: 'Hast du bereits eine Domain?',
-      subtitle: 'Eine Domain ist deine Website-Adresse (z.B. meinefirma.de). Falls nicht - wir kümmern uns darum.',
-      icon: '🌐',
-      type: 'single-choice',
-      formKey: 'hasDomain',
-      layout: 'list',
-      options: [
-        {
-          value: 'yes',
-          label: 'Ja, habe ich bereits',
-          hint: 'Perfekt - wir verbinden sie mit deiner neuen Website'
-        },
-        {
-          value: 'no',
-          label: 'Nein, brauche ich noch',
-          hint: 'Kein Problem - wir helfen dir bei der Auswahl und Registrierung'
-        },
-        {
-          value: 'unsure',
-          label: 'Bin mir nicht sicher',
-          hint: 'Wir klären das gemeinsam im Gespräch'
-        }
-      ],
-      resetFields: ['domainName'],
-      conditionalInput: {
-        showWhen: 'yes',
-        formKey: 'domainName',
-        label: 'Wie lautet deine Domain? (Optional - hilft uns bei der Vorbereitung)',
-        placeholder: 'z.B. meinefirma.de'
-      }
-    },
-    {
-      title: 'Wo soll die Website gehostet werden?',
-      subtitle: 'Hosting = wo deine Website technisch liegt. Wir kümmern uns komplett darum, falls gewünscht.',
-      icon: '☁️',
-      type: 'single-choice',
-      formKey: 'hosting',
-      layout: 'list',
-      options: [
-        {
-          value: 'with-me',
-          label: 'Bitte komplett bei euch hosten',
-          hint: 'Wir kümmern uns um alles - du musst dich um nichts Technisches kümmern'
-        },
-        {
-          value: 'self',
-          label: 'Ich habe bereits Hosting',
-          hint: 'Du hast schon einen Anbieter - wir richten die Website dort ein'
-        },
-        {
-          value: 'unsure',
-          label: 'Weiß ich noch nicht',
-          hint: 'Wir beraten dich gerne - je nach Projekt gibt es unterschiedliche Optionen'
-        }
-      ],
-      resetFields: ['hostingProvider'],
-      conditionalInput: {
-        showWhen: 'self',
-        formKey: 'hostingProvider',
-        label: 'Bei welchem Anbieter hostest du? (Optional - hilft uns bei der Einschätzung)',
-        placeholder: 'z.B. IONOS, Strato, all-inkl, netcup'
-      }
-    },
-    {
-      title: 'Welche Funktionen brauchst du?',
-      subtitle: 'Wähle alle Bereiche aus, die auf deiner Website sein sollen. Mehrfachauswahl möglich.',
+      title: 'Gibt es Websites, die dir gefallen?',
+      subtitle: 'Zeig mir Beispiele, die deinen Geschmack treffen (optional)',
       icon: '✨',
-      type: 'multiple-choice',
-      formKey: 'features',
+      type: 'text',
+      formKey: 'inspiration',
+      placeholder: 'z.B. www.example.com - oder beschreibe den Stil',
+      optional: true
+    },
+    {
+      title: 'Wer soll deine Website besuchen?',
+      subtitle: 'Das hilft mir, den richtigen Ton zu treffen',
+      icon: '👥',
+      type: 'single-choice',
+      formKey: 'visitors',
+      layout: 'cards',
       options: [
         {
-          value: 'startSection',
-          label: 'Startbereich mit großem Bild',
-          hint: 'Hero-Bereich - das erste, was Besucher sehen'
+          value: 'b2c',
+          icon: '👤',
+          label: 'Privatpersonen',
+          hint: 'Endkunden, die ein Problem lösen wollen'
         },
         {
-          value: 'about',
-          label: 'Über mich / Über uns',
-          hint: 'Vorstellung von dir, deinem Team oder deinem Unternehmen'
+          value: 'b2b',
+          icon: '🏢',
+          label: 'Unternehmen',
+          hint: 'Andere Firmen sind meine Kunden'
         },
         {
-          value: 'services',
-          label: 'Leistungen / Angebote',
-          hint: 'Was du anbietest - Dienstleistungen oder Produkte'
-        },
-        {
-          value: 'gallery',
-          label: 'Bildergalerie / Portfolio',
-          hint: 'Zeige deine Arbeiten, Projekte oder Referenzen mit Bildern'
-        },
-        {
-          value: 'team',
-          label: 'Teamvorstellung',
-          hint: 'Stelle deine Mitarbeiter mit Fotos und Infos vor'
-        },
-        {
-          value: 'testimonials',
-          label: 'Kundenstimmen / Bewertungen',
-          hint: 'Zeige, was deine Kunden über dich sagen'
-        },
-        {
-          value: 'contactForm',
-          label: 'Kontaktformular',
-          hint: 'Besucher können dir direkt Nachrichten schicken'
-        },
-        {
-          value: 'map',
-          label: 'Standortkarte (Google Maps)',
-          hint: 'Zeige, wo du zu finden bist - mit interaktiver Karte'
-        },
-        {
-          value: 'faq',
-          label: 'FAQ / Häufige Fragen',
-          hint: 'Beantworte die wichtigsten Fragen deiner Kunden vorab'
-        },
-        {
-          value: 'pricing',
-          label: 'Preise / Pakete',
-          hint: 'Zeige deine Preise transparent - mit oder ohne Buchungsmöglichkeit'
-        },
-        {
-          value: 'blog',
-          label: 'Blog / News-Bereich',
-          hint: 'Regelmäßig Artikel veröffentlichen - gut für Google & Kunden'
-        },
-        {
-          value: 'booking',
-          label: 'Online-Terminbuchung',
-          hint: 'Kunden können direkt online Termine bei dir buchen'
-        },
-        {
-          value: 'downloads',
-          label: 'Download-Bereich',
-          hint: 'Stelle PDFs, Broschüren oder Dokumente zum Download bereit'
-        },
-        {
-          value: 'newsletter',
-          label: 'Newsletter-Anmeldung',
-          hint: 'Sammle E-Mail-Adressen für Marketing & Updates'
-        },
-        {
-          value: 'multilingual',
-          label: 'Mehrsprachigkeit',
-          hint: 'Website in Deutsch + einer oder mehreren weiteren Sprachen'
-        },
-        {
-          value: 'socialLinks',
-          label: 'Social Media Links',
-          hint: 'Verlinke zu Instagram, Facebook, LinkedIn usw.'
+          value: 'both',
+          icon: '🤝',
+          label: 'Beides',
+          hint: 'Sowohl Privat- als auch Geschäftskunden'
         }
       ]
     },
     {
-      title: 'Budget & Zeitrahmen',
-      subtitle: 'Hilft uns, dir ein realistisches und passendes Angebot zu machen. Alles bleibt vertraulich.',
-      icon: '💰',
-      type: 'combined',
-      formKey: 'combined',
-      sections: [
+      title: 'Brauchst du etwas Besonderes?',
+      subtitle: 'Nur auswählen, wenn du sicher bist, dass du es brauchst',
+      icon: '⚡',
+      type: 'multiple-choice',
+      formKey: 'special',
+      options: [
+        { value: 'booking', label: 'Online-Terminbuchung' },
+        { value: 'shop', label: 'Online-Shop' },
+        { value: 'languages', label: 'Mehrere Sprachen' },
+        { value: 'blog', label: 'Blog / News-Bereich' },
+        { value: 'none', label: 'Nein, nichts Besonderes' }
+      ]
+    },
+    {
+      title: 'Wann brauchst du die Website?',
+      subtitle: 'Hilft mir bei der Planung',
+      icon: '📅',
+      type: 'single-choice',
+      formKey: 'timeline',
+      layout: 'list',
+      options: [
         {
-          label: 'Was kannst du ungefähr investieren?',
-          formKey: 'budget',
-          layout: 'grid',
-          options: [
-            { value: '<2k', label: 'unter 2.000 €' },
-            { value: '2-4k', label: '2.000–4.000 €' },
-            { value: '4-7k', label: '4.000–7.000 €' },
-            { value: '>7k', label: 'über 7.000 €' },
-            { value: 'unsure', label: 'Weiß ich noch nicht' }
-          ]
+          value: 'asap',
+          label: 'So schnell wie möglich',
+          hint: 'Ich brauche das dringend'
         },
         {
-          label: 'Wie dringend brauchst du die Website?',
-          formKey: 'timeframe',
-          layout: 'list',
-          options: [
-            {
-              value: 'fast',
-              label: 'So schnell wie möglich',
-              hint: 'Dringendes Projekt - wir priorisieren es entsprechend'
-            },
-            {
-              value: 'normal',
-              label: 'Normal (4–8 Wochen)',
-              hint: 'Standard-Zeitrahmen für die meisten Projekte'
-            },
-            {
-              value: 'flex',
-              label: 'Kein Zeitdruck',
-              hint: 'Flexibel planbar - wir finden gemeinsam den besten Zeitpunkt'
-            }
-          ]
+          value: 'normal',
+          label: 'In 4-8 Wochen',
+          hint: 'Normaler Zeitrahmen ist okay'
+        },
+        {
+          value: 'flexible',
+          label: 'Kein Zeitdruck',
+          hint: 'Wir können uns Zeit lassen'
         }
       ]
     },
     {
-      title: 'Fast geschafft!',
-      subtitle: 'Wie können wir dich erreichen? Du bekommst dann deine persönliche Empfehlung von uns.',
+      title: 'Wie kann ich dich erreichen?',
+      subtitle: 'Du bekommst innerhalb von 24h meine Empfehlung und ein unverbindliches Angebot',
       icon: '📬',
       type: 'contact',
       formKey: 'contact',
       fields: [
-        { label: 'Dein Name', placeholder: 'Vor- und Nachname' },
-        { label: 'Deine E-Mail-Adresse', placeholder: 'name@beispiel.de' },
-        {
-          label: 'Noch etwas, das wir wissen sollten? (Optional)',
-          placeholder: 'Besondere Wünsche, Fragen, Deadline, Design-Vorstellungen...'
-        }
+        { key: 'name', label: 'Dein Name', placeholder: 'Max Mustermann', required: true },
+        { key: 'email', label: 'E-Mail', placeholder: 'max@beispiel.de', type: 'email', required: true },
+        { key: 'phone', label: 'Telefon (optional)', placeholder: '+49 123 456789', required: false }
       ]
     }
   ];
@@ -343,35 +181,20 @@ export class SurveyComponent {
     this.packages = this.serviceDataService.getServices();
 
     this.form = this.fb.group({
-      projectType: this.fb.control<'one' | 'multi' | 'custom' | null>(null, Validators.required),
-      contentAmount: this.fb.control<'very-low' | 'low' | 'medium' | 'high' | null>(null, Validators.required),
-      hasDomain: this.fb.control<'yes' | 'no' | 'unsure' | null>(null, Validators.required),
-      domainName: this.fb.control<string>(''),
-      hosting: this.fb.control<'self' | 'with-me' | 'unsure' | null>(null, Validators.required),
-      hostingProvider: this.fb.control<string>(''),
-      features: this.fb.group({
-        startSection: this.fb.control<boolean>(false),
-        about: this.fb.control<boolean>(false),
-        services: this.fb.control<boolean>(false),
-        gallery: this.fb.control<boolean>(false),
-        team: this.fb.control<boolean>(false),
-        testimonials: this.fb.control<boolean>(false),
-        contactForm: this.fb.control<boolean>(false),
-        map: this.fb.control<boolean>(false),
-        faq: this.fb.control<boolean>(false),
-        pricing: this.fb.control<boolean>(false),
-        blog: this.fb.control<boolean>(false),
+      goal: this.fb.control<string | null>(null, Validators.required),
+      inspiration: this.fb.control<string>(''),
+      visitors: this.fb.control<string | null>(null, Validators.required),
+      special: this.fb.group({
         booking: this.fb.control<boolean>(false),
-        downloads: this.fb.control<boolean>(false),
-        newsletter: this.fb.control<boolean>(false),
-        multilingual: this.fb.control<boolean>(false),
-        socialLinks: this.fb.control<boolean>(false),
+        shop: this.fb.control<boolean>(false),
+        languages: this.fb.control<boolean>(false),
+        blog: this.fb.control<boolean>(false),
+        none: this.fb.control<boolean>(false),
       }),
-      budget: this.fb.control<'<2k' | '2-4k' | '4-7k' | '>7k' | 'unsure' | null>(null, Validators.required),
-      timeframe: this.fb.control<'fast' | 'normal' | 'flex' | null>(null, Validators.required),
-      contactName: this.fb.control<string>('', [Validators.required, Validators.minLength(2)]),
-      contactEmail: this.fb.control<string>('', [Validators.required, Validators.email]),
-      notes: this.fb.control<string>(''),
+      timeline: this.fb.control<string | null>(null, Validators.required),
+      name: this.fb.control<string>('', [Validators.required, Validators.minLength(2)]),
+      email: this.fb.control<string>('', [Validators.required, Validators.email]),
+      phone: this.fb.control<string>(''),
     });
 
     this.formValue = toSignal(
@@ -413,43 +236,49 @@ export class SurveyComponent {
     }
   }
 
-  get featuresGroup() {
-    return this.form.get('features')!;
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  get specialGroup() {
+    return this.form.get('special')!;
   }
 
   answers = computed(() => this.formValue());
 
-  handleOptionClick(formKey: string, value: string, resetFields?: string[]) {
+  handleOptionClick(formKey: string, value: string) {
     this.form.patchValue({ [formKey]: value });
-    if (resetFields) {
-      const resetObj: any = {};
-      resetFields.forEach(field => (resetObj[field] = ''));
-      this.form.patchValue(resetObj);
+  }
+
+  handleCheckboxChange(parentKey: string, checkboxKey: string, checked: boolean) {
+    const group = this.form.get(parentKey) as any;
+    if (checkboxKey === 'none' && checked) {
+      // Wenn "Nichts Besonderes" gewählt wird, alle anderen deaktivieren
+      Object.keys(group.controls).forEach(key => {
+        group.patchValue({ [key]: key === 'none' });
+      });
+    } else if (checked) {
+      // Wenn etwas anderes gewählt wird, "Nichts Besonderes" deaktivieren
+      group.patchValue({ none: false });
     }
   }
 
-  setSectionValue(formKey: string, value: string) {
-    this.form.patchValue({ [formKey]: value });
-  }
-
-  getFieldLabel(question: Question, index: number): string {
-    return question.fields?.[index]?.label ?? '';
-  }
-
-  getFieldPlaceholder(question: Question, index: number): string {
-    return question.fields?.[index]?.placeholder ?? '';
-  }
-
   isStepValid(stepIndex: number): boolean {
-    switch (stepIndex) {
-      case 0: return !!this.form.get('projectType')?.value;
-      case 1: return !!this.form.get('contentAmount')?.value;
-      case 2: return !!this.form.get('hasDomain')?.value;
-      case 3: return !!this.form.get('hosting')?.value;
-      case 4: return true;
-      case 5: return !!this.form.get('budget')?.value && !!this.form.get('timeframe')?.value;
-      case 6: return !!this.form.get('contactName')?.valid && !!this.form.get('contactEmail')?.valid;
-      default: return false;
+    const question = this.questions[stepIndex];
+
+    if (question.optional) return true;
+
+    switch (question.type) {
+      case 'single-choice':
+        return !!this.form.get(question.formKey)?.value;
+      case 'text':
+        return question.optional || !!this.form.get(question.formKey)?.value;
+      case 'multiple-choice':
+        return true; // Checkboxes sind immer optional
+      case 'contact':
+        return !!this.form.get('name')?.valid && !!this.form.get('email')?.valid;
+      default:
+        return false;
     }
   }
 
@@ -460,44 +289,34 @@ export class SurveyComponent {
   }>(() => {
     const a = this.answers();
 
-    const wantsShopOrComplex =
-      a.features?.booking ||
-      a.features?.multilingual === true;
+    const hasComplexFeatures =
+      a.special?.shop ||
+      a.special?.booking ||
+      a.special?.languages;
 
-    const manyPages =
-      a.projectType === 'multi' ||
-      a.contentAmount === 'medium' ||
-      a.contentAmount === 'high';
-
-    const minimalContent =
-      a.projectType === 'one' ||
-      a.contentAmount === 'very-low' ||
-      a.contentAmount === 'low';
+    const needsEcommerce = a.goal === 'sell';
+    const needsLeadGen = a.goal === 'leads';
+    const isSimplePresence = a.goal === 'present' || a.goal === 'inform';
 
     let slug: PackageSlug | null = null;
     const reasons: string[] = [];
 
-    if (wantsShopOrComplex) {
+    if (needsEcommerce || hasComplexFeatures) {
       slug = 'individual-website';
-      reasons.push('Spezielle Funktionen wie Terminbuchung oder Mehrsprachigkeit benötigt');
-    } else if (manyPages) {
+      if (needsEcommerce) reasons.push('Online-Verkauf benötigt Shop-System');
+      if (a.special?.booking) reasons.push('Terminbuchung ist eine individuelle Lösung');
+      if (a.special?.languages) reasons.push('Mehrsprachigkeit erfordert spezielle Struktur');
+    } else if (needsLeadGen || a.special?.blog) {
       slug = 'standard-website';
-      reasons.push('Mehrere Seiten oder mittlere Menge an Inhalten geplant');
-    } else if (minimalContent) {
+      if (needsLeadGen) reasons.push('Kundengewinnung funktioniert am besten mit mehreren Seiten');
+      if (a.special?.blog) reasons.push('Blog-System ist in der Standard-Website enthalten');
+    } else if (isSimplePresence) {
       slug = 'one-pager';
-      reasons.push('Wenige Inhalte – eine klare Seite reicht perfekt aus');
-    }
-
-    if (a.budget === '<2k' && slug && slug !== 'one-pager') {
-      reasons.push('Budget passt gut zum One-Pager - ggf. mit kleinerem Umfang starten');
-    }
-    if ((a.budget === '4-7k' || a.budget === '>7k') && slug === 'one-pager' && wantsShopOrComplex) {
-      slug = 'individual-website';
-      reasons.push('Budget ermöglicht individuelle Lösung mit speziellen Features');
+      reasons.push('Für Online-Präsenz reicht eine klare, fokussierte Seite perfekt aus');
     }
 
     const confidence: 'low' | 'medium' | 'high' =
-      wantsShopOrComplex ? 'high' : manyPages ? 'medium' : 'medium';
+      needsEcommerce || hasComplexFeatures ? 'high' : needsLeadGen ? 'medium' : 'medium';
 
     const pkg = slug ? this.packages.find(p => p.slug === slug) ?? null : null;
     return { pkg, reasons, confidence };
@@ -507,23 +326,15 @@ export class SurveyComponent {
     const a = this.answers();
     const rec = this.recommendation();
     return {
-      projekt: a.projectType,
-      inhalte: a.contentAmount,
-      domain: {
-        status: a.hasDomain,
-        name: (a.domainName || '').trim() || null,
-      },
-      hosting: {
-        wunsch: a.hosting,
-        provider: (a.hostingProvider || '').trim() || null,
-      },
-      funktionen: a.features,
-      budget: a.budget,
-      zeitrahmen: a.timeframe,
+      ziel: a.goal,
+      inspiration: (a.inspiration || '').trim() || null,
+      zielgruppe: a.visitors,
+      spezial: a.special,
+      zeitrahmen: a.timeline,
       kontakt: {
-        name: a.contactName,
-        email: a.contactEmail,
-        notizen: a.notes?.trim() || null,
+        name: a.name,
+        email: a.email,
+        telefon: (a.phone || '').trim() || null,
       },
       empfehlung: rec.pkg?.slug ?? null,
       begruendung: rec.reasons,
@@ -534,7 +345,7 @@ export class SurveyComponent {
 
   submit() {
     if (this.form.invalid) {
-      const firstInvalid = document.querySelector('.form-input.invalid, .form-textarea.invalid') as HTMLElement | null;
+      const firstInvalid = document.querySelector('.input.invalid, .textarea.invalid') as HTMLElement | null;
       if (firstInvalid) {
         firstInvalid.focus();
         firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -545,43 +356,99 @@ export class SurveyComponent {
     this.isSubmitting.set(true);
 
     const serviceTypeMap: { [key: string]: ServiceType } = {
-      'Einfache Website': ServiceType.SIMPLE_WEBSITE,
-      'Standard Website': ServiceType.STANDARD_WEBSITE,
-      'Individual Website': ServiceType.INDIVIDUAL_WEBSITE,
-      'SEO Optimierung': ServiceType.SEO
+      'one-pager': ServiceType.SIMPLE_WEBSITE,
+      'standard-website': ServiceType.STANDARD_WEBSITE,
+      'individual-website': ServiceType.INDIVIDUAL_WEBSITE,
+    };
+
+    const specialFeatures = Object.entries(this.summary.spezial || {})
+      .filter(([_, v]) => v)
+      .map(([k, _]) => k)
+      .join(', ') || 'Keine';
+
+    // Lesbare Labels für die Antworten
+    const goalLabels: { [key: string]: string } = {
+      'present': 'Online sichtbar sein',
+      'leads': 'Kunden gewinnen',
+      'inform': 'Informieren (Blog/News)'
+    };
+
+    const visitorLabels: { [key: string]: string } = {
+      'b2c': 'Privatpersonen',
+      'b2b': 'Unternehmen',
+      'both': 'B2B + B2C'
+    };
+
+    const timelineLabels: { [key: string]: string } = {
+      'asap': 'So schnell wie möglich',
+      'normal': 'In 4-8 Wochen',
+      'flexible': 'Kein Zeitdruck'
+    };
+
+    const featureLabels: { [key: string]: string } = {
+      'booking': 'Online-Terminbuchung',
+      'shop': 'Online-Shop',
+      'languages': 'Mehrsprachigkeit',
+      'blog': 'Blog/News-Bereich',
+      'none': 'Nichts Besonderes'
+    };
+
+    const selectedFeatures = Object.entries(this.summary.spezial || {})
+      .filter(([_, v]) => v)
+      .map(([k, _]) => featureLabels[k] || k)
+      .join(', ') || 'Keine besonderen Features';
+
+    const packageLabels: { [key: string]: string } = {
+      'one-pager': '📄 One-Pager (Einfache Website)',
+      'standard-website': '📑 Standard Website',
+      'individual-website': '⚙️ Individual Website'
     };
 
     const message = `
-    Anfrage über den Website-Fragebogen:
-    Projekt: ${this.summary.projekt}
-    Inhalte: ${this.summary.inhalte}
-    Domain: ${this.summary.domain.status}${this.summary.domain.name ? ' (' + this.summary.domain.name + ')' : ''}
-    Hosting: ${this.summary.hosting.wunsch}${this.summary.hosting.provider ? ' (' + this.summary.hosting.provider + ')' : ''}
-    Funktionen: ${Object.entries(this.summary.funktionen).filter(([_, v]) => v).map(([k, _]) => k).join(', ') || 'Keine'}
-    Budget: ${this.summary.budget}
-    Zeitrahmen: ${this.summary.zeitrahmen}
-    Empfehlung: ${this.summary.empfehlung}
-    Begründung: ${this.summary.begruendung.join('; ') || 'Keine'}
-    Kontaktname: ${this.summary.kontakt.name}
-    Kontaktemail: ${this.summary.kontakt.email}
-    Notizen: ${this.summary.kontakt.notizen || 'Keine'}
-    Zeitstempel: ${this.summary.timestamp}
-    `;
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 NEUE WEBSITE-ANFRAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👤 KONTAKT
+   Name:     ${this.summary.kontakt.name}
+   E-Mail:   ${this.summary.kontakt.email}
+   Telefon:  ${this.summary.kontakt.telefon || '—'}
+
+🎯 PROJEKT-DETAILS
+   Hauptziel:     ${goalLabels[this.summary.ziel] || this.summary.ziel}
+   Zielgruppe:    ${visitorLabels[this.summary.zielgruppe] || this.summary.zielgruppe}
+   Features:      ${selectedFeatures}
+   Zeitrahmen:    ${timelineLabels[this.summary.zeitrahmen] || this.summary.zeitrahmen}
+
+${this.summary.inspiration ? `💡 INSPIRATION\n   ${this.summary.inspiration}\n` : ''}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🤖 AUTOMATISCHE EMPFEHLUNG
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Empfohlenes Paket: ${packageLabels[this.summary.empfehlung || ''] || 'Noch nicht festgelegt'}
+
+${this.summary.begruendung.length > 0 ? `Begründung:\n${this.summary.begruendung.map(r => `   • ${r}`).join('\n')}` : ''}
+
+Konfidenz: ${this.summary.sicherheit === 'high' ? '⭐⭐⭐ Sehr sicher' : this.summary.sicherheit === 'medium' ? '⭐⭐ Ziemlich sicher' : '⭐ Unsicher'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Eingegangen am: ${new Date(this.summary.timestamp).toLocaleString('de-DE')}
+    `.trim();
 
     const contactRequest: CreateContactRequestDto = {
       name: this.summary.kontakt.name,
       email: this.summary.kontakt.email,
       message: message,
       serviceType: serviceTypeMap[this.summary.empfehlung ?? ''] || ServiceType.NOT_SURE,
-      prefersCallback: false,
-      phoneNumber: undefined
+      prefersCallback: !!this.summary.kontakt.telefon,
+      phoneNumber: this.summary.kontakt.telefon || undefined
     };
 
     this.api.createContactRequest(contactRequest)
       .pipe(finalize(() => this.isSubmitting.set(false)))
       .subscribe({
         next: (response) => {
-          // console.log('✅ Kontaktanfrage erfolgreich gesendet:', response);
+          this.scrollToTop();
           this.isSubmitted.set(true);
           this.toasts.success('Kontaktanfrage erfolgreich gesendet!', { duration: 5000 });
         },
@@ -592,12 +459,10 @@ export class SurveyComponent {
       });
   }
 
-  // NEU: Zurück zur Startseite
   goToHome() {
     this.router.navigate(['/']);
   }
 
-  // NEU: Formular zurücksetzen
   resetSurvey() {
     this.isSubmitted.set(false);
     this.step.set(0);
