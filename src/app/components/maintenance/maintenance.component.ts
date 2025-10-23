@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '../../api/api.service';
 
 @Component({
   selector: 'app-maintenance',
@@ -49,7 +48,7 @@ export class MaintenanceComponent {
     'Cloud Hosting'
   ];
 
-  constructor(private apiService: ApiService) {
+  constructor() {
     // E-Mail erst beim Laden der Component entschlüsseln
     this.contactEmail = this.decryptEmail(this.encryptedEmail);
   }
@@ -89,23 +88,5 @@ export class MaintenanceComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.apiService.subscribeNewsletter(this.email).subscribe({
-      next: (response) => {
-        this.submitted = true;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Newsletter subscription failed:', error);
-        this.isLoading = false;
-
-        if (error.status === 409) {
-          this.errorMessage = 'Diese E-Mail ist bereits angemeldet';
-        } else {
-          this.errorMessage = 'Etwas ist schiefgelaufen. Bitte versuche es später nochmal.';
-        }
-
-        setTimeout(() => this.errorMessage = '', 5000);
-      }
-    });
   }
 }

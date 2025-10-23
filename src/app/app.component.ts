@@ -30,7 +30,7 @@ import { ConfirmationService } from './shared/confirmation/confirmation.service'
 })
 export class AppComponent implements OnInit {
   title = 'WebsiteBaseV2';
-  isUnderConstruction = true;
+  isUnderConstruction = false;
   private readonly accessPassword = 'lm';
 
   // Neue Properties für Scroll-Handling
