@@ -364,3 +364,71 @@ section {
     transition-duration: 0.01ms !important;
   }
 }
+
+// Diese Styles zu deinem bestehenden SCSS hinzufügen
+
+/* ===== TEAM INTRO SECTION ===== */
+.team-intro {
+  background: $gradient-subtle;
+  padding-block: 2rem;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    padding-block: 2.5rem;
+  }
+
+  .team-intro__text {
+    font-size: 1.125rem;
+    color: $color-text-secondary;
+    margin: 0;
+    font-weight: 500;
+    line-height: 1.6;
+    max-width: 800px;
+    margin-inline: auto;
+  }
+}
+
+/* ===== MULTIPLE PROFILES ===== */
+.about--single {
+  // Abstand zwischen mehreren Profilen
+  & + .about--single {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid $color-gray-200;
+
+    @media (min-width: 768px) {
+      margin-top: 4rem;
+      padding-top: 4rem;
+    }
+  }
+}
+
+// Optional: Jede zweite Person rechts-links tauschen
+.profile--reverse {
+  @media (min-width: 900px) {
+    .profile {
+      direction: rtl;
+
+      > * {
+        direction: ltr;
+      }
+    }
+  }
+}
+
+/* ===== GEMEINSAME ACTIONS SECTION ===== */
+.about-actions {
+  background: $glass-bg;
+  backdrop-filter: blur(10px);
+  padding-block: 2.5rem;
+  margin-top: 2rem;
+
+  @media (min-width: 768px) {
+    padding-block: 3rem;
+    margin-top: 3rem;
+  }
+
+  .profile__actions {
+    justify-content: center;
+  }
+}
